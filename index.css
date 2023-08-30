@@ -1,8 +1,8 @@
 :root {
     --bg-color: #282828; /* background color */
     --bg-content-color: var(--bg-color); /* background color for #main-content */
-    --fg-color: #e2d3ba; /* default foreground color */
-    --fg-highlight: #d8a657; /* foreground color for "highlighted" items */
+    --fg-color: white; /* default foreground color */
+    --fg-highlight: white; /* foreground color for "highlighted" items */
     --pane-bg-color: #32302f; /* background color for panes e.g. search bar and link containers */
     --button-color: #45403d; /* background color for buttons */
     --text-input-underline-color: #7c6f64; /* underline color for text input when not focused */
