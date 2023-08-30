@@ -11,13 +11,16 @@
     --link-hover-color: var(--fg-highlight); /* color for links when hovered */
     --shadow-color: #1d2021; /* shadow color */
     --border-color: #928374; /* border color, in case borders are used */
+    --darktheme: #2a2a2a;
+    --whitetheme: white;
 }
 /* DARKTHEME STUFF */
 html[data-theme='light'] {
     --backgroundtheme: var(--whitetheme);
+    main-content
   }
   
-  html[data-theme='dark'] {
+html[data-theme='dark'] {
     --backgroundtheme: var(--darktheme);
     
   }
