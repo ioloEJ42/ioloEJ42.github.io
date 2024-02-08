@@ -219,7 +219,8 @@ a:hover > .link-text {
   background-color: transparent; /* Set background color to transparent */
   color: #ccc; /* Lighter grey text for better readability */
   text-align: right; /* Align text to the far right */
-  padding: 0.5rem; /* Reduced padding to decrease margins */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
   width: 100%; /* Ensure the footer spans the entire width of the viewport */
   box-sizing: border-box; /* Include padding and border in the width */
   position: fixed; /* Fixed positioning to keep it at the bottom of the viewport */
@@ -238,7 +239,9 @@ a:hover > .link-text {
 }
 
 .site-footer p {
-  margin: 0; /* Remove margin for the paragraph element */
+  display: block; /* Ensure each paragraph is on a new line */
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
 }
 
 /* Displaying both lines inline */
