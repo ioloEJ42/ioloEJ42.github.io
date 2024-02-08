@@ -213,3 +213,36 @@ a:hover > .link-text {
     grid-template-columns: 1fr;
   }
 }
+
+/* Footer styling */
+.site-footer {
+  background-color: transparent; /* Set background color to transparent */
+  color: #ccc; /* Lighter grey text for better readability */
+  text-align: right; /* Align text to the far right */
+  padding: 0.5rem; /* Reduced padding to decrease margins */
+  width: 100%; /* Ensure the footer spans the entire width of the viewport */
+  box-sizing: border-box; /* Include padding and border in the width */
+  position: fixed; /* Fixed positioning to keep it at the bottom of the viewport */
+  bottom: 0;
+  left: 0;
+}
+
+.footer-content a {
+  color: #f0f0f0; /* Light grey link color */
+  text-decoration: none;
+}
+
+.footer-content a:hover {
+  color: #ffffff; /* White color on hover for contrast */
+  text-decoration: underline;
+}
+
+.site-footer p {
+  margin: 0; /* Remove margin for the paragraph element */
+}
+
+/* Displaying both lines inline */
+.site-footer a,
+.site-footer p {
+  display: inline; /* Display both anchor and paragraph inline */
+}
