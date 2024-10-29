@@ -1,77 +1,127 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Adref</title>
-        <link rel="shortcut icon" href="img/shortcuticon.png" type="image/x-icon">
-        <link rel="stylesheet" href="index.css">
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-    </head>
-    <body>
-        <div id="main-container">
-            <div id="main-content">
-                <div id="time-greeting">
-                    <span id="time-greeting-text"></span>
-                </div>
-                <div id="current-time">
-                    <span id="current-time-text"></span></h1>
-                </div>
-                <div id="search">
-                    <div id="search-engine-cont">
-                        <select name="search-engine" class="button" id="search-engine-select">
-                            <option value="ddg" selected="selected">ChwadanChwadanMynd</option>
-                            <option value="google">Google</option>
-                            <option value="bing">Bing</option>
-                        </select>
-                    </div>
-                    <div id="search-input-cont">
-                        <input id="search-input" placeholder="Ymchwilio'r rhyngrwyd..." autofocus/>
-                    </div>
-                    <div id="search-button-cont">
-                        <button class="button" id="search-button" onclick="doSearch()">Chwilio</button>
-                    </div>
-                </div>
-                <div id="links">
-                    <div class="link-group" id="general">
-                        <ul>
-                            <li class="link-group-title">General</li>
-                            <li><a href="https://en.wikipedia.org"><span class="link-text">Wikipedia</span></a></li>
-                            <li><a href="https://www.gmail.com"><span class="link-text">Gmail</span></a></li>
-                            <li><a href="https://web.whatsapp.com/"><span class="link-text">WhatsApp</span></a></li>
-                            <li><a href="https://wttr.in"><span class="link-text">wttr.in</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="link-group" id="dev">
-                        <ul>
-                            <li class="link-group-title">Dev Stuff</li>
-                            <li><a href="https://www.stackoverflow.com"><span class="link-text">Stack Overflow</span></a></li>
-                            <li><a href="https://www.github.com"><span class="link-text">GitHub</span></a></li>
-                            <li><a href="https://wiki.archlinux.org"><span class="link-text">Arch Wiki</span></a></li>
-                            <li><a href="https://developer.mozilla.org"><span class="link-text">MDN Web Docs</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="link-group" id="media">
-                        <ul>
-                            <li class="link-group-title">Media</li>
-                            <li><a href="https://www.youtube.com"><span class="link-text">YouTube</span></a></li>
-                            <li><a href="https://www.netflix.com"><span class="link-text">Netflix</span></a></li>
-                            <li><a href="https://www.disneyplus.com/"><span class="link-text">Disney+</span></a></li>
-                            <li><a href="https://open.spotify.com"><span class="link-text">Spotify </span></a></li>
-                        </ul>
-                    </div>
-                    <div class="link-group" id="socials">
-                        <ul>
-                            <li class="link-group-title">Socials</li>
-                            <li><a href="https://www.discord.com"><span class="link-text">Discord</span></a></li>
-                            <li><a href="https://www.reddit.com"><span class="link-text">Reddit</span></a></li>
-                            <li><a href="https://www.twitter.com"><span class="link-text">Twitter</span></a></li>
-                            <li><a href="https://web.whatsapp.com"><span class="link-text">WhatsApp </span></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+  <head>
+    <title>DASHBOARD_</title>
+    <link rel="shortcut icon" href="img/shortcuticon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/inter/3.19.3/inter.css"
+    />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  </head>
+  <body>
+    <div class="noise"></div>
+    <div class="grid"></div>
+    <div class="diagonal-line"></div>
+
+    <main id="main-container">
+      <div id="main-content">
+        <div class="glitch-container">
+          <div id="time-greeting">
+            <span id="time-greeting-text" class="glitch" data-text=""></span>
+          </div>
+          <div id="current-time">
+            <span id="current-time-text" class="glitch" data-text=""></span>
+          </div>
         </div>
-        <footer class="site-footer">
-          </footer>
-    </body>
-    <script src="index.js"></script>
+
+        <div id="search">
+          <div id="search-engine-cont">
+            <select
+              name="search-engine"
+              class="button"
+              id="search-engine-select"
+            >
+              <option value="ddg" selected="selected">DUCK_</option>
+              <option value="google">GOOGLE_</option>
+              <option value="bing">BING_</option>
+            </select>
+          </div>
+          <div id="search-input-cont">
+            <input id="search-input" placeholder="SEARCH_" autofocus />
+          </div>
+          <div id="search-button-cont">
+            <button class="button" id="search-button" onclick="doSearch()">
+              EXECUTE_
+            </button>
+          </div>
+        </div>
+
+        <div id="links">
+          <div class="link-group" id="general">
+            <ul>
+              <li class="link-group-title">GENERAL_</li>
+              <li>
+                <a href="https://en.wikipedia.org"
+                  ><span class="link-text">> WIKIPEDIA</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.gmail.com"
+                  ><span class="link-text">> GMAIL</span></a
+                >
+              </li>
+              <li>
+                <a href="https://wttr.in"
+                  ><span class="link-text">> WTTR.IN</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="link-group" id="dev">
+            <ul>
+              <li class="link-group-title">DEV_UTILS</li>
+              <li>
+                <a href="https://www.stackoverflow.com"
+                  ><span class="link-text">> STACK</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.github.com"
+                  ><span class="link-text">> GITHUB</span></a
+                >
+              </li>
+              <li>
+                <a href="https://wiki.archlinux.org"
+                  ><span class="link-text">> ARCH</span></a
+                >
+              </li>
+              <li>
+                <a href="https://developer.mozilla.org"
+                  ><span class="link-text">> MDN</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="link-group" id="sec">
+            <ul>
+              <li class="link-group-title">SEC_</li>
+              <li>
+                <a href="https://www.virustotal.com"
+                  ><span class="link-text">> VIRUSTOTAL</span></a
+                >
+              </li>
+              <li>
+                <a href="https://attack.mitre.org"
+                  ><span class="link-text">> MITRE</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.shodan.io"
+                  ><span class="link-text">> SHODAN</span></a
+                >
+              </li>
+              <li>
+                <a href="https://cve.mitre.org"
+                  ><span class="link-text">> CVE</span></a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="index.js"></script>
 </html>
