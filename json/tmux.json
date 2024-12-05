@@ -1,0 +1,94 @@
+{
+  "tmux": {
+    "title": "TMUX_",
+    "sections": [
+      {
+        "name": "Prefix Key",
+        "shortcuts": [
+          {
+            "key": "C-b",
+            "desc": "Send the prefix key (C-b) through to the application"
+          }
+        ]
+      },
+      {
+        "name": "Window Management",
+        "shortcuts": [
+          { "key": "c", "desc": "Create new window" },
+          { "key": "&", "desc": "Kill current window" },
+          { "key": "w", "desc": "Choose window interactively" },
+          { "key": "0-9", "desc": "Select windows 0 to 9" },
+          { "key": ",", "desc": "Rename current window" },
+          { "key": ".", "desc": "Move current window to another window index" },
+          { "key": "l", "desc": "Move to previously selected window" },
+          { "key": "n", "desc": "Move to next window" },
+          { "key": "p", "desc": "Move to previous window" }
+        ]
+      },
+      {
+        "name": "Pane Management",
+        "shortcuts": [
+          { "key": "\"", "desc": "Split window into panes horizontally" },
+          { "key": "%", "desc": "Split window into panes vertically" },
+          { "key": "x", "desc": "Kill current pane" },
+          { "key": "!", "desc": "Break pane out into a new window" },
+          { "key": ";", "desc": "Move to the previously active pane" },
+          { "key": "o", "desc": "Select next pane in current window" },
+          { "key": "{", "desc": "Swap current pane with previous pane" },
+          { "key": "}", "desc": "Swap current pane with next pane" },
+          { "key": "z", "desc": "Toggle zoom state of current pane" },
+          { "key": "space", "desc": "Select next layout preset" },
+          { "key": "C-o", "desc": "Rotate panes in current window forward" },
+          { "key": "M-o", "desc": "Rotate panes in current window backwards" }
+        ]
+      },
+      {
+        "name": "Navigation",
+        "shortcuts": [
+          { "key": "Up", "desc": "Select pane above" },
+          { "key": "Down", "desc": "Select pane below" },
+          { "key": "Left", "desc": "Select pane to the left" },
+          { "key": "Right", "desc": "Select pane to the right" }
+        ]
+      },
+      {
+        "name": "Session Management",
+        "shortcuts": [
+          { "key": "$", "desc": "Rename current session" },
+          { "key": "d", "desc": "Detach current client" },
+          { "key": "D", "desc": "Choose client to detach" },
+          { "key": "s", "desc": "Select new session interactively" },
+          { "key": "L", "desc": "Switch to last session" },
+          { "key": "(", "desc": "Switch to previous session" },
+          { "key": ")", "desc": "Switch to next session" }
+        ]
+      },
+      {
+        "name": "Copy Mode",
+        "shortcuts": [
+          { "key": "[", "desc": "Enter copy mode" },
+          { "key": "]", "desc": "Paste most recently copied buffer" },
+          {
+            "key": "Page Up",
+            "desc": "Enter copy mode and scroll one page up"
+          },
+          { "key": "#", "desc": "List all paste buffers" },
+          { "key": "=", "desc": "Choose which buffer to paste interactively" },
+          { "key": "-", "desc": "Delete most recently copied buffer" }
+        ]
+      },
+      {
+        "name": "Misc",
+        "shortcuts": [
+          { "key": "t", "desc": "Show a clock" },
+          { "key": "?", "desc": "List all key bindings" },
+          { "key": ":", "desc": "Enter the tmux command prompt" },
+          { "key": "r", "desc": "Force redraw of attached client" },
+          { "key": "m", "desc": "Mark the current pane" },
+          { "key": "M", "desc": "Clear the marked pane" },
+          { "key": "~", "desc": "Show previous messages from tmux" }
+        ]
+      }
+    ]
+  }
+}

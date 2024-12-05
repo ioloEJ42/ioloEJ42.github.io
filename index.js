@@ -8,26 +8,9 @@ function updateClock() {
   const date = new Date();
   const timeText = date.toLocaleTimeString([], { hourCycle: "h23" });
   const timeElement = document.getElementById("current-time-text");
-  const greetingElement = document.getElementById("time-greeting-text");
 
-  // Update time display
+  // Update time display only
   timeElement.innerText = timeText;
-  timeElement.setAttribute("data-text", timeText);
-
-  // Update greeting based on time
-  const hour = date.getHours();
-  let greetingText = "";
-
-  if (hour < 5 || hour >= 18) {
-    greetingText = "Noswaith dda, Iolo_";
-  } else if (hour < 12) {
-    greetingText = "Bore da, Iolo_";
-  } else {
-    greetingText = "Prynhawn da, Iolo_";
-  }
-
-  greetingElement.innerText = greetingText;
-  greetingElement.setAttribute("data-text", greetingText);
 }
 
 // Update clock every second
@@ -77,64 +60,121 @@ document.body.addEventListener("animationend", (e) => {
   }
 });
 
-// Color combinations array
-const colorCombos = [
-  { bg: "#000000", fg: "#ffffff" }, // Classic
-  { bg: "#0D0221", fg: "#F6019D" }, // Neon Pink
-  { bg: "#2D00F7", fg: "#E500A4" }, // Electric
-  { bg: "#390099", fg: "#FF5400" }, // Sunset
-  { bg: "#1A1B41", fg: "#C2E7D9" }, // Pastel Ice
-  { bg: "#241734", fg: "#F0C808" }, // Gold Night
-  { bg: "#2E294E", fg: "#FFD400" }, // Royal Sun
-  { bg: "#1B1B1E", fg: "#7DBA84" }, // Forest
-  { bg: "#2B061E", fg: "#F7D6E0" }, // Rose
-  { bg: "#2D3047", fg: "#F7FFF7" }, // Clean Slate
-  { bg: "#1A535C", fg: "#FFE66D" }, // Ocean Sun
-  { bg: "#172A3A", fg: "#09BC8A" }, // Mint
-  { bg: "#004E89", fg: "#FFD93D" }, // Navy Gold
-  { bg: "#780116", fg: "#F7B538" }, // Ruby
-  { bg: "#373F51", fg: "#DAA49A" }, // Dusty Rose
-  { bg: "#451F55", fg: "#F7ECE1" }, // Royal Cream
-  { bg: "#1E2019", fg: "#E2C044" }, // Dark Gold
-  { bg: "#0B3954", fg: "#FF6B6B" }, // Ocean Coral
-  { bg: "#2E0219", fg: "#84DCCF" }, // Wine Mint
-  { bg: "#1A1423", fg: "#F1BF98" }, // Night Sand
+// Modal elements
+const modal = document.getElementById("modal");
+const helpButton = document.getElementById("help-button");
+const closeButton = document.getElementById("close-modal");
+const prevButton = document.getElementById("prev-page");
+const nextButton = document.getElementById("next-page");
+const pageTitle = document.getElementById("page-title");
+const modalContent = document.getElementById("modal-content");
+
+// Page configuration
+const pages = [
+  { title: "i3WM_", jsonFile: "/json/i3wm.json" },
+  { title: "TMUX_", jsonFile: "/json/tmux.json" },
+  { title: "NANO_", jsonFile: "/json/nano.json" },
 ];
 
-let isAnimating = false;
-const SEGMENT_DELAY = 90; // Faster timing (was 100)
+let currentPageIndex = 0;
 
-// Function to animate color transition
-function animateColorTransition(newBg, newFg) {
-  const segments = document.querySelectorAll(".color-segment");
-  const root = document.documentElement;
-
-  // Reset animation state
-  segments.forEach((segment) => {
-    segment.style.opacity = "0";
-    segment.style.backgroundColor = newBg;
-  });
-
-  // Animate segments from bottom to top
-  segments.forEach((segment, index) => {
-    setTimeout(() => {
-      segment.style.opacity = "1"; // Full opacity
-      segment.style.backgroundColor = newBg;
-    }, (segments.length - index - 1) * SEGMENT_DELAY);
-  });
-
-  // Update CSS variables after last segment
-  setTimeout(() => {
-    root.style.setProperty("--pure-black", newBg);
-    root.style.setProperty("--pure-white", newFg);
-    isAnimating = false;
-  }, segments.length * SEGMENT_DELAY + 100);
+// Load and render functions
+async function loadPageContent(jsonFile) {
+  try {
+    const response = await fetch(jsonFile);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error loading shortcuts:", error);
+    return null;
+  }
 }
 
-// Color switch button click handler
-document.getElementById("color-switch").addEventListener("click", () => {
-  // Allow new animation to start even if one is in progress
-  const randomCombo =
-    colorCombos[Math.floor(Math.random() * colorCombos.length)];
-  animateColorTransition(randomCombo.bg, randomCombo.fg);
+function renderShortcuts(data) {
+  if (!data) return;
+  const pageData = data[Object.keys(data)[0]];
+  let html = '<div class="shortcuts-container">';
+
+  pageData.sections.forEach((section) => {
+    html += `
+      <div class="shortcut-section">
+        <h3 class="section-title">${section.name}</h3>
+        <div class="shortcut-list">
+    `;
+
+    section.shortcuts.forEach((shortcut) => {
+      html += `
+        <div class="shortcut-item">
+          <span class="shortcut-key">${shortcut.key}</span>
+          <span class="shortcut-desc">${shortcut.desc}</span>
+        </div>
+      `;
+    });
+
+    html += `</div></div>`;
+  });
+
+  html += "</div>";
+  modalContent.innerHTML = html;
+}
+
+async function updatePage() {
+  pageTitle.textContent = pages[currentPageIndex].title;
+  const data = await loadPageContent(pages[currentPageIndex].jsonFile);
+  renderShortcuts(data);
+}
+
+// Modal control functions
+function toggleModal() {
+  modal.style.display = modal.style.display === "flex" ? "none" : "flex";
+  if (modal.style.display === "flex") {
+    currentPageIndex = 0;
+    updatePage();
+  }
+}
+
+// Event listeners
+helpButton.onclick = toggleModal;
+closeButton.onclick = () => (modal.style.display = "none");
+
+// Navigation handlers
+prevButton.onclick = () => {
+  currentPageIndex = (currentPageIndex - 1 + pages.length) % pages.length;
+  updatePage();
+};
+
+nextButton.onclick = () => {
+  currentPageIndex = (currentPageIndex + 1) % pages.length;
+  updatePage();
+};
+
+// Keyboard controls
+document.addEventListener("keydown", function (event) {
+  // Toggle modal with 'h' key when search isn't focused
+  if (event.key === "h" && document.activeElement !== searchInput) {
+    event.preventDefault();
+    toggleModal();
+  }
+
+  // Handle arrow keys when modal is open and search isn't focused
+  if (
+    modal.style.display === "flex" &&
+    document.activeElement !== searchInput
+  ) {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      prevButton.click();
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      nextButton.click();
+    }
+  }
 });
+
+// Close modal when clicking outside
+window.onclick = function (event) {
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};

@@ -1,0 +1,118 @@
+{
+  "nano": {
+    "title": "NANO_",
+    "sections": [
+      {
+        "name": "File Handling",
+        "shortcuts": [
+          { "key": "Ctrl + S", "desc": "Save current file" },
+          { "key": "Ctrl + O", "desc": "Save as" },
+          { "key": "Ctrl + R", "desc": "Insert a file into current one" },
+          { "key": "Ctrl + X", "desc": "Close buffer, exit from nano" }
+        ]
+      },
+      {
+        "name": "Editing",
+        "shortcuts": [
+          { "key": "Ctrl + K", "desc": "Cut current line into cutbuffer" },
+          { "key": "Alt + 6", "desc": "Copy current line into cutbuffer" },
+          { "key": "Ctrl + U", "desc": "Paste contents of cutbuffer" },
+          { "key": "Ctrl + ]", "desc": "Complete current word" },
+          { "key": "Alt + 3", "desc": "Comment/uncomment line/region" },
+          { "key": "Alt + U", "desc": "Undo last action" },
+          { "key": "Alt + E", "desc": "Redo last undone action" }
+        ]
+      },
+      {
+        "name": "Search and Replace",
+        "shortcuts": [
+          { "key": "Ctrl + B", "desc": "Start backward search" },
+          { "key": "Ctrl + F", "desc": "Start forward search" },
+          { "key": "Alt + B", "desc": "Find next occurrence backward" },
+          { "key": "Alt + F", "desc": "Find next occurrence forward" },
+          { "key": "Alt + R", "desc": "Start a replacing session" }
+        ]
+      },
+      {
+        "name": "Deletion",
+        "shortcuts": [
+          { "key": "Ctrl + H", "desc": "Delete character before cursor" },
+          { "key": "Ctrl + D", "desc": "Delete character under cursor" },
+          { "key": "Alt + Bsp", "desc": "Delete word to the left" },
+          { "key": "Ctrl + Del", "desc": "Delete word to the right" },
+          { "key": "Alt + Del", "desc": "Delete current line" }
+        ]
+      },
+      {
+        "name": "Operations",
+        "shortcuts": [
+          { "key": "Ctrl + T", "desc": "Execute some command" },
+          { "key": "Ctrl + T Ctrl + S", "desc": "Run a spell check" },
+          { "key": "Ctrl + T Ctrl + Y", "desc": "Run a syntax check" },
+          { "key": "Ctrl + T Ctrl + O", "desc": "Run a formatter" },
+          { "key": "Tab", "desc": "Indent marked region" },
+          { "key": "Shift + Tab", "desc": "Unindent marked region" },
+          { "key": "Ctrl + J", "desc": "Justify paragraph or region" },
+          { "key": "Alt + J", "desc": "Justify entire buffer" },
+          { "key": "Alt + T", "desc": "Cut until end of buffer" },
+          { "key": "Alt + :", "desc": "Start/stop recording of macro" },
+          { "key": "Alt + ;", "desc": "Replay macro" }
+        ]
+      },
+      {
+        "name": "Navigation",
+        "shortcuts": [
+          { "key": "←", "desc": "One character backward" },
+          { "key": "→", "desc": "One character forward" },
+          { "key": "Ctrl + ←", "desc": "One word backward" },
+          { "key": "Ctrl + →", "desc": "One word forward" },
+          { "key": "Ctrl + A", "desc": "To start of line" },
+          { "key": "Ctrl + E", "desc": "To end of line" },
+          { "key": "Ctrl + P", "desc": "One line up" },
+          { "key": "Ctrl + N", "desc": "One line down" },
+          { "key": "Ctrl + ↑", "desc": "To previous block" },
+          { "key": "Ctrl + ↓", "desc": "To next block" },
+          { "key": "Alt + Home", "desc": "To first row in viewport" },
+          { "key": "Alt + End", "desc": "To last row in viewport" },
+          { "key": "Ctrl + Y", "desc": "One page up" },
+          { "key": "Ctrl + V", "desc": "One page down" },
+          { "key": "Alt + \\", "desc": "To top of buffer" },
+          { "key": "Alt + /", "desc": "To end of buffer" }
+        ]
+      },
+      {
+        "name": "Special Movement",
+        "shortcuts": [
+          { "key": "Alt + G", "desc": "Go to specified line" },
+          { "key": "Alt + ]", "desc": "Go to complementary bracket" },
+          { "key": "Alt + ↑", "desc": "Scroll viewport up" },
+          { "key": "Alt + ↓", "desc": "Scroll viewport down" },
+          { "key": "Alt + <", "desc": "Switch to preceding buffer" },
+          { "key": "Alt + >", "desc": "Switch to succeeding buffer" }
+        ]
+      },
+      {
+        "name": "Information",
+        "shortcuts": [
+          { "key": "Ctrl + C", "desc": "Report cursor position" },
+          { "key": "Alt + D", "desc": "Report line/word/character counts" },
+          { "key": "Ctrl + G", "desc": "Display help text" }
+        ]
+      },
+      {
+        "name": "Various",
+        "shortcuts": [
+          { "key": "Alt + A", "desc": "Set or unset the mark" },
+          { "key": "Alt + V", "desc": "Enter next keystroke verbatim" },
+          { "key": "Alt + C", "desc": "Turn constant position info on/off" },
+          { "key": "Alt + N", "desc": "Turn line numbers on/off" },
+          { "key": "Alt + P", "desc": "Turn visible whitespace on/off" },
+          { "key": "Alt + S", "desc": "Turn softwrapping on/off" },
+          { "key": "Alt + X", "desc": "Hide/unhide the help lines" },
+          { "key": "Alt + Z", "desc": "Hide/unhide the info bars" },
+          { "key": "Ctrl + L", "desc": "Refresh the screen" }
+        ]
+      }
+    ]
+  }
+}

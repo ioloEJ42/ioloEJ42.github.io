@@ -13,17 +13,11 @@
   <body>
     <div class="noise"></div>
     <div class="grid"></div>
-    <div class="diagonal-line"></div>
 
     <main id="main-container">
       <div id="main-content">
-        <div class="glitch-container">
-          <div id="time-greeting">
-            <span id="time-greeting-text" class="glitch" data-text=""></span>
-          </div>
-          <div id="current-time">
-            <span id="current-time-text" class="glitch" data-text=""></span>
-          </div>
+        <div id="current-time">
+          <span id="current-time-text"></span>
         </div>
 
         <div id="search">
@@ -71,7 +65,7 @@
           </div>
           <div class="link-group" id="dev">
             <ul>
-              <li class="link-group-title">DEV_UTILS</li>
+              <li class="link-group-title">DEV_</li>
               <li>
                 <a href="https://www.stackoverflow.com"
                   ><span class="link-text">> STACK</span></a
@@ -83,13 +77,43 @@
                 >
               </li>
               <li>
-                <a href="https://wiki.archlinux.org"
-                  ><span class="link-text">> ARCH</span></a
+                <a href="https://developer.mozilla.org"
+                  ><span class="link-text">> MDN</span></a
                 >
               </li>
               <li>
-                <a href="https://developer.mozilla.org"
-                  ><span class="link-text">> MDN</span></a
+                <a href="https://leetcode.com"
+                  ><span class="link-text">> LeetCode</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="link-group" id="linux">
+            <ul>
+              <li class="link-group-title">LINUX_</li>
+              <li>
+                <a href="https://i3wm.org/"
+                  ><span class="link-text">> i3WM</span></a
+                >
+              </li>
+              <li>
+                <a href="https://help.ubuntu.com/"
+                  ><span class="link-text">> UBUNTU</span></a
+                >
+              </li>
+              <li>
+                <a href="https://manpages.ubuntu.com/"
+                  ><span class="link-text">> MANPAGES</span></a
+                >
+              </li>
+              <li>
+                <a href="https://packages.ubuntu.com/"
+                  ><span class="link-text">> PACKAGES</span></a
+                >
+              </li>
+              <li>
+                <a href="https://wiki.debian.org/"
+                  ><span class="link-text">> DEBIAN</span></a
                 >
               </li>
             </ul>
@@ -121,21 +145,22 @@
           </div>
         </div>
       </div>
-      <!-- Add after main content -->
-      <button id="color-switch">!</button>
+      <!-- Question mark button -->
+      <button id="help-button" class="modal-button">?</button>
 
-      <!-- Add color transition segments -->
-      <div id="color-segments">
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
-        <div class="color-segment"></div>
+      <!-- Modal -->
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <button id="close-modal" class="modal-close">×</button>
+          <div class="modal-header">
+            <button class="nav-button" id="prev-page">←</button>
+            <span id="page-title">i3WM_</span>
+            <button class="nav-button" id="next-page">→</button>
+          </div>
+          <div id="modal-content" class="modal-body">
+            <!-- Content will be loaded here -->
+          </div>
+        </div>
       </div>
     </main>
   </body>
