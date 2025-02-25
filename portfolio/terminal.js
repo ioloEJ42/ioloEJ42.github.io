@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCommands() {
       // Define available commands
       this.commands = {
+        neofetch: this.cmdNeofetch.bind(this),
         ls: this.cmdLs.bind(this),
         cd: this.cmdCd.bind(this),
         pwd: this.cmdPwd.bind(this),
@@ -608,6 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     cmdHelp(args) {
       const commandHelp = {
+        neofetch: 'Display system information with ASCII art',
         ls: 'List directory contents',
         cd: 'Change the current directory',
         pwd: 'Print current directory',
@@ -885,6 +887,81 @@ document.addEventListener('DOMContentLoaded', () => {
       
       this.write(`==> ${filePath} <==`, 'command-name');
       this.write(result);
+    }
+  }
+
+  cmdNeofetch(args) {
+    // ASCII art for Linux penguin
+    const asciiArt = `
+          *nnnn*                      
+        dGGGGMMb     ,"""""""""""""".
+       @p~qp~~qMb    | Linux Rules! |
+       M|@||@) M|   *;..............'
+       @,----.JM| -'
+      JS^\\*_/  qKL
+     dZP        qKRb
+    dZP          qKKb
+   fZP            SMMb
+   HZM            MMMM
+   FqM            MMMM
+ __| ".        |\\dS"qML
+ |    \`.       | \`' \\Zq
+*)      \\.*__.,|     .'
+\\____   )MMMMMM|   .'
+     \`-'       \`--' hjm
+`;
+
+    // System information (customized for portfolio)
+    const systemInfo = [
+      '<span class="terminal-user">user</span>@<span class="terminal-host">portfolio</span>',
+      '-------------------------',
+      '<span class="command-name">OS:</span> Portfolio Linux 25.02.2',
+      '<span class="command-name">Host:</span> Virtual Portfolio Server',
+      '<span class="command-name">Kernel:</span> 5.15.0-portfolio',
+      '<span class="command-name">Uptime:</span> ' + this.getUptime(),
+      '<span class="command-name">Packages:</span> 42 (npm)',
+      '<span class="command-name">Shell:</span> portfolio-bash 5.1.16',
+      '<span class="command-name">Resolution:</span> Dynamic x Responsive',
+      '<span class="command-name">DE:</span> Portfolio-Desktop',
+      '<span class="command-name">WM:</span> JavaScript',
+      '<span class="command-name">WM Theme:</span> Minimalist-Dark',
+      '<span class="command-name">Terminal:</span> portfolio-term',
+      '<span class="command-name">CPU:</span> JavaScript V8 @ 60fps',
+      '<span class="command-name">GPU:</span> HTML5 Canvas Accelerated',
+      '<span class="command-name">Memory:</span> 256MB / 512MB'
+    ];
+
+    // Format the output with ASCII art on the left and system info on the right
+    const asciiLines = asciiArt.split('\n');
+    const maxAsciiWidth = Math.max(...asciiLines.map(line => line.length));
+    
+    let output = '';
+    const padding = 2; // Padding between ASCII and info
+    
+    for (let i = 0; i < Math.max(asciiLines.length, systemInfo.length); i++) {
+      const asciiLine = i < asciiLines.length ? asciiLines[i] : '';
+      const infoLine = i < systemInfo.length ? systemInfo[i] : '';
+      
+      // Pad the ASCII line to align system info
+      const paddedAscii = asciiLine.padEnd(maxAsciiWidth + padding);
+      
+      output += paddedAscii + infoLine + '\n';
+    }
+    
+    this.write(output, 'neofetch-output');
+  }
+  
+  // Helper method to get uptime for neofetch
+  getUptime() {
+    // Generate a random but realistic uptime
+    const hours = Math.floor(Math.random() * 24);
+    const mins = Math.floor(Math.random() * 60);
+    const days = Math.floor(Math.random() * 5);
+    
+    if (days > 0) {
+      return `${days} days, ${hours} hours, ${mins} mins`;
+    } else {
+      return `${hours} hours, ${mins} mins`;
     }
   }
 }
