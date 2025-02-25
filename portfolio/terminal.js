@@ -38,10 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Initialize command bindings
         this.initCommands();
+        
+        // Add welcome message referencing filesystem's motd
+        if (this.fileSystem && this.fileSystem.etc && this.fileSystem.etc.motd) {
+          this.write(this.fileSystem.etc.motd, 'success-text');
+        }
       } catch (error) {
         console.error('Error initializing file system:', error);
         this.fileSystem = this.createDefaultFileSystem();
         this.initCommands();
+        this.write("Warning: Failed to load custom filesystem. Using default.", "error-text");
       }
     }
     
@@ -80,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             }
           }
+        },
+        etc: {
+          motd: "Welcome to the Portfolio Terminal!\nType 'help' to see available commands.\n\nThis terminal emulator allows you to explore the portfolio using Linux-style commands."
         }
       };
     }
@@ -150,8 +159,79 @@ document.addEventListener('DOMContentLoaded', () => {
         
         event.preventDefault();
       } else if (event.key === 'Tab') {
-        // Basic tab completion (future enhancement)
+        // Tab completion
         event.preventDefault();
+        this.tabComplete();
+      }
+    }
+    
+    tabComplete() {
+      const commandText = this.input.value.trim();
+      const parts = this.parseCommand(commandText);
+      const cmd = parts.command;
+      const args = parts.args;
+      
+      // No autocomplete on empty input
+      if (!commandText) return;
+      
+      // Command completion
+      if (!args.length && !commandText.endsWith(' ')) {
+        const availableCommands = Object.keys(this.commands);
+        const matchingCommands = availableCommands.filter(c => c.startsWith(cmd));
+        
+        if (matchingCommands.length === 1) {
+          this.input.value = `${matchingCommands[0]} `;
+        } else if (matchingCommands.length > 1) {
+          // Show possible completions
+          this.write(this.getPrompt() + ' ' + commandText, 'term-command');
+          this.write(matchingCommands.join('  '));
+        }
+        return;
+      }
+      
+      // Path completion
+      if (cmd === 'cd' || cmd === 'cat' || cmd === 'ls' || cmd === 'find') {
+        const lastArg = args.length > 0 ? args[args.length - 1] : '';
+        const directoryPath = this.getParentDir(lastArg || '.');
+        const dirObj = this.getFileSystemObject(directoryPath);
+        
+        if (!dirObj || typeof dirObj !== 'object') return;
+        
+        // Get basename for matching
+        const basename = this.getFileName(lastArg);
+        const matchingItems = Object.keys(dirObj).filter(item => item.startsWith(basename));
+        
+        if (matchingItems.length === 1) {
+          // Single match - autocomplete
+          const completePath = lastArg.includes('/') 
+            ? lastArg.substring(0, lastArg.lastIndexOf('/') + 1) + matchingItems[0]
+            : matchingItems[0];
+          
+          // Check if it's a directory, add trailing slash
+          if (typeof dirObj[matchingItems[0]] === 'object') {
+            this.input.value = `${cmd} ${completePath}/`;
+          } else {
+            this.input.value = `${cmd} ${completePath}`;
+          }
+        } else if (matchingItems.length > 1) {
+          // Multiple matches - show options
+          this.write(this.getPrompt() + ' ' + commandText, 'term-command');
+          
+          // Format the output to show directories and files differently
+          const formattedItems = matchingItems.map(item => {
+            if (typeof dirObj[item] === 'object') {
+              return `<span class="directory">${item}/</span>`;
+            } else if (item.endsWith('.md') || item.endsWith('.txt')) {
+              return `<span class="text-file">${item}</span>`;
+            } else if (item.endsWith('.exe') || item.endsWith('.sh')) {
+              return `<span class="executable">${item}</span>`;
+            } else {
+              return item;
+            }
+          });
+          
+          this.write(formattedItems.join('  '));
+        }
       }
     }
     
@@ -194,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     parseCommand(commandStr) {
-      // Simple command parsing (handles quotes and spaces)
+      // Advanced command parsing (handles quotes and spaces)
       const parts = [];
       let current = '';
       let inQuotes = false;
@@ -382,7 +462,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Command implementations
     cmdLs(args) {
-      const path = args.length > 0 ? args[0] : '.';
+      // Parse arguments
+      let path = '.';
+      let showHidden = false;
+      let showDetails = false;
+      
+      for (const arg of args) {
+        if (arg === '-a' || arg === '--all') {
+          showHidden = true;
+        } else if (arg === '-l') {
+          showDetails = true;
+        } else if (arg === '-la' || arg === '-al') {
+          showHidden = true;
+          showDetails = true;
+        } else if (!arg.startsWith('-')) {
+          path = arg;
+        }
+      }
+      
       const targetPath = this.resolvePath(path);
       const obj = this.getFileSystemObject(targetPath);
       
@@ -390,10 +487,6 @@ document.addEventListener('DOMContentLoaded', () => {
         this.write(`ls: cannot access '${path}': No such file or directory`, 'error-text');
         return;
       }
-      
-      // Check for flags
-      const showHidden = args.includes('-a') || args.includes('--all');
-      const showDetails = args.includes('-l');
       
       let output = '';
       
@@ -409,12 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
           const owner = 'user';
           const group = 'portfolio';
           const size = isDir ? 4096 : (typeof obj[item] === 'string' ? obj[item].length : 0);
-          const date = 'Feb 25 10:30';
+          const date = new Date().toLocaleString('default', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
           
           if (isDir) {
-            output += `${permissions} 2 ${owner} ${group} ${size} ${date} <span class="directory">${item}/</span>\n`;
+            output += `${permissions} 2 ${owner} ${group} ${size.toString().padStart(5)} ${date} <span class="directory">${item}/</span>\n`;
           } else {
-            output += `${permissions} 1 ${owner} ${group} ${size} ${date} ${item}\n`;
+            output += `${permissions} 1 ${owner} ${group} ${size.toString().padStart(5)} ${date} ${item}\n`;
           }
         }
       } else {
@@ -466,7 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     cmdCat(args) {
       if (args.length === 0) {
-        this.write('Usage: cat [file...]', 'error-text');
+        this.write('Usage: cat [file...]', 'term-info');
         return;
       }
       
@@ -479,13 +572,29 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (typeof obj === 'object') {
           this.write(`cat: ${arg}: Is a directory`, 'error-text');
         } else {
-          this.write(obj);
+          // Format markdown for better display
+          if (arg.endsWith('.md')) {
+            const content = obj.toString();
+            let formattedContent = content.replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                                         .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                                         .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                                         .replace(/^- (.+)$/gm, '• $1')
+                                         .replace(/^(\d+)\. (.+)$/gm, '$1. $2');
+            this.write(formattedContent);
+          } else {
+            this.write(obj);
+          }
         }
       }
     }
     
     cmdEcho(args) {
-      this.write(args.join(' '));
+      // Handle special variables
+      const text = args.join(' ').replace(/\$PWD/g, this.currentDir)
+                                  .replace(/\$HOME/g, '/home/user')
+                                  .replace(/\$USER/g, 'user')
+                                  .replace(/\$HOSTNAME/g, 'portfolio');
+      this.write(text);
     }
     
     cmdClear(args) {
@@ -515,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (args.length > 0) {
         const cmd = args[0];
         if (cmd in commandHelp) {
-          this.write(`${cmd}: ${commandHelp[cmd]}`);
+          this.write(`<span class="command-name">${cmd}</span>: ${commandHelp[cmd]}`);
         } else {
           this.write(`No help available for '${cmd}'`, 'error-text');
         }
@@ -523,10 +632,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let output = 'Available commands:\n\n';
         
         for (const cmd in commandHelp) {
-          output += `<span class="command-name">${cmd}</span>`.padEnd(20) + `${commandHelp[cmd]}\n`;
+          output += `<span class="command-name">${cmd}</span>`.padEnd(15) + ' - ' + `${commandHelp[cmd]}\n`;
         }
         
-        output += '\nYou can also use <span class="command-name">!!</span> to repeat the last command';
+        output += '\nYou can also use <span class="command-name">!!</span> to repeat the last command.\n';
+        output += 'Use <span class="command-name">help [command]</span> for more information about a specific command.';
         
         this.write(output);
       }
@@ -534,7 +644,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     cmdFind(args) {
       if (args.length === 0) {
-        this.write('Usage: find [path] [expression]', 'error-text');
+        this.write('Usage: find [path] [expression]', 'term-info');
+        this.write('Example: find . -name "*.txt"', 'term-info');
         return;
       }
       
@@ -542,28 +653,50 @@ document.addEventListener('DOMContentLoaded', () => {
       let startPath = '.';
       let pattern = null;
       let nameFlag = false;
+      let typeFlag = null;
       
       for (let i = 0; i < args.length; i++) {
         if (args[i] === '-name' && i + 1 < args.length) {
           nameFlag = true;
           pattern = args[i + 1].replace(/"/g, '').replace(/\*/g, '.*');
           i++; // Skip the next argument
-        } else if (!nameFlag) {
+        } else if (args[i] === '-type' && i + 1 < args.length) {
+          if (args[i + 1] === 'f') {
+            typeFlag = 'file';
+          } else if (args[i + 1] === 'd') {
+            typeFlag = 'directory';
+          }
+          i++;
+        } else if (!nameFlag && !args[i].startsWith('-')) {
           startPath = args[i];
         }
       }
       
       const targetPath = this.resolvePath(startPath);
-      const results = this.findRecursive(targetPath, pattern ? new RegExp(pattern) : null);
+      const results = this.findRecursive(targetPath, pattern ? new RegExp(pattern) : null, typeFlag);
       
       if (results.length === 0) {
-        this.write('No matching files found');
+        this.write('No matching files found', 'term-info');
       } else {
-        this.write(results.join('\n'));
+        // Format results with colors based on file type
+        const formattedResults = results.map(path => {
+          const obj = this.getFileSystemObject(path);
+          if (typeof obj === 'object') {
+            return `<span class="directory">${path}</span>`;
+          } else if (path.endsWith('.md') || path.endsWith('.txt')) {
+            return `<span class="text-file">${path}</span>`;
+          } else if (path.endsWith('.exe') || path.endsWith('.sh')) {
+            return `<span class="executable">${path}</span>`;
+          } else {
+            return path;
+          }
+        });
+        
+        this.write(formattedResults.join('\n'));
       }
     }
     
-    findRecursive(path, pattern, relativeTo = null) {
+    findRecursive(path, pattern, typeFilter = null, relativeTo = null) {
       if (!relativeTo) relativeTo = path;
       
       const obj = this.getFileSystemObject(path);
@@ -574,13 +707,17 @@ document.addEventListener('DOMContentLoaded', () => {
       for (const item in obj) {
         const itemPath = `${path}/${item}`;
         const relPath = itemPath.replace(relativeTo, '.').replace(/\/\//g, '/');
+        const isDir = typeof obj[item] === 'object';
         
-        if (!pattern || pattern.test(item)) {
+        // Apply type filter if specified
+        if ((typeFilter === 'file' && isDir) || (typeFilter === 'directory' && !isDir)) {
+          // Skip this item as it doesn't match the type filter
+        } else if (!pattern || pattern.test(item)) {
           results.push(relPath);
         }
         
-        if (typeof obj[item] === 'object') {
-          results.push(...this.findRecursive(itemPath, pattern, relativeTo));
+        if (isDir) {
+          results.push(...this.findRecursive(itemPath, pattern, typeFilter, relativeTo));
         }
       }
       
@@ -589,48 +726,88 @@ document.addEventListener('DOMContentLoaded', () => {
     
     cmdGrep(args) {
       if (args.length < 2) {
-        this.write('Usage: grep [pattern] [file...]', 'error-text');
+        this.write('Usage: grep [pattern] [file...]', 'term-info');
+        this.write('Example: grep "TODO" *.txt', 'term-info');
         return;
       }
       
       const pattern = args[0];
       const files = args.slice(1);
       const regex = new RegExp(pattern, 'gi');
+      let matchFound = false;
       
       for (const file of files) {
-        const targetPath = this.resolvePath(file);
-        const obj = this.getFileSystemObject(targetPath);
-        
-        if (obj === null) {
-          this.write(`grep: ${file}: No such file or directory`, 'error-text');
-        } else if (typeof obj === 'object') {
-          this.write(`grep: ${file}: Is a directory`, 'error-text');
-        } else {
-          const content = obj.toString();
-          const lines = content.split('\n');
-          const matches = [];
+        // Handle wildcards in filenames
+        if (file.includes('*')) {
+          const dir = this.getParentDir(file);
+          const filePattern = file.split('/').pop().replace(/\*/g, '.*');
+          const dirObj = this.getFileSystemObject(dir);
           
-          for (let i = 0; i < lines.length; i++) {
-            if (regex.test(lines[i])) {
-              const highlightedLine = lines[i].replace(new RegExp(pattern, 'gi'), match => 
-                `<span class="success-text">${match}</span>`
-              );
-              matches.push(`${file}:${i+1}: ${highlightedLine}`);
+          if (!dirObj || typeof dirObj !== 'object') {
+            this.write(`grep: ${dir}: No such directory`, 'error-text');
+            continue;
+          }
+          
+          // Find matching files
+          const matchingFiles = Object.keys(dirObj).filter(name => new RegExp(`^${filePattern}$`).test(name));
+          
+          for (const match of matchingFiles) {
+            if (typeof dirObj[match] !== 'object') {
+              const filePath = dir === '/' ? `/${match}` : `${dir}/${match}`;
+              this.grepFile(filePath, regex);
+              matchFound = true;
             }
           }
-          
-          if (matches.length > 0) {
-            this.write(matches.join('\n'));
-          } else {
-            this.write(`No matches found in ${file}`);
-          }
+        } else {
+          // Process regular files
+          const targetPath = this.resolvePath(file);
+          this.grepFile(targetPath, regex);
+          matchFound = true;
         }
       }
+      
+      if (!matchFound) {
+        this.write('No matches found', 'term-info');
+      }
+    }
+    
+    grepFile(filePath, regex) {
+      const obj = this.getFileSystemObject(filePath);
+      
+      if (obj === null) {
+        this.write(`grep: ${filePath}: No such file or directory`, 'error-text');
+        return false;
+      } else if (typeof obj === 'object') {
+        this.write(`grep: ${filePath}: Is a directory`, 'error-text');
+        return false;
+      }
+      
+      const content = obj.toString();
+      const lines = content.split('\n');
+      const matches = [];
+      
+      for (let i = 0; i < lines.length; i++) {
+        if (regex.test(lines[i])) {
+          regex.lastIndex = 0; // Reset regex state
+          const highlightedLine = lines[i].replace(regex, match => 
+            `<span class="success-text">${match}</span>`
+          );
+          matches.push(`${filePath}:${i+1}: ${highlightedLine}`);
+        }
+      }
+      
+      if (matches.length > 0) {
+        this.write(matches.join('\n'));
+        return true;
+      }
+      
+      return false;
     }
     
     cmdHead(args) {
       if (args.length === 0) {
-        this.write('Usage: head [file]', 'error-text');
+        this.write('Usage: head [options] [file]', 'term-info');
+        this.write('Example: head -n 5 README.md', 'term-info');
         return;
       }
       
@@ -638,9 +815,18 @@ document.addEventListener('DOMContentLoaded', () => {
       let lineCount = 10; // Default
       let filePath = args[0];
       
-      if (args[0] === '-n' && args.length > 2) {
-        lineCount = parseInt(args[1]);
-        filePath = args[2];
+      if (args[0] === '-n' && args.length > 1) {
+        lineCount = parseInt(args[1], 10);
+        if (isNaN(lineCount) || lineCount < 1) {
+          this.write('head: invalid number of lines', 'error-text');
+          return;
+        }
+        filePath = args.length > 2 ? args[2] : null;
+      }
+      
+      if (!filePath) {
+        this.write('head: missing file operand', 'error-text');
+        return;
       }
       
       const targetPath = this.resolvePath(filePath);
@@ -655,38 +841,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const lines = content.split('\n');
         const result = lines.slice(0, lineCount).join('\n');
         
+        this.write(`==> ${filePath} <==`, 'command-name');
         this.write(result);
-      }
-    }
-    
-    cmdTail(args) {
-      if (args.length === 0) {
-        this.write('Usage: tail [file]', 'error-text');
-        return;
-      }
-      
-      // Parse arguments
-      let lineCount = 10; // Default
-      let filePath = args[0];
-      
-      if (args[0] === '-n' && args.length > 2) {
-        lineCount = parseInt(args[1]);
-        filePath = args[2];
-      }
-      
-      const targetPath = this.resolvePath(filePath);
-      const obj = this.getFileSystemObject(targetPath);
-      
-      if (obj === null) {
-        this.write(`tail: ${filePath}: No such file or directory`, 'error-text');
-      } else if (typeof obj === 'object') {
-        this.write(`tail: ${filePath}: Is a directory`, 'error-text');
-      } else {
-        const content = obj.toString();
-        const lines = content.split('\n');
-        const result = lines.slice(-lineCount).join('\n');
-        
-        this.write(result);
-      }
     }
   }
+  
+  cmdTail(args) {
+    if (args.length === 0) {
+      this.write('Usage: tail [options] [file]', 'term-info');
+      this.write('Example: tail -n 5 README.md', 'term-info');
+      return;
+    }
+    
+    // Parse arguments
+    let lineCount = 10; // Default
+    let filePath = args[0];
+    
+    if (args[0] === '-n' && args.length > 1) {
+      lineCount = parseInt(args[1], 10);
+      if (isNaN(lineCount) || lineCount < 1) {
+        this.write('tail: invalid number of lines', 'error-text');
+        return;
+      }
+      filePath = args.length > 2 ? args[2] : null;
+    }
+    
+    if (!filePath) {
+      this.write('tail: missing file operand', 'error-text');
+      return;
+    }
+    
+    const targetPath = this.resolvePath(filePath);
+    const obj = this.getFileSystemObject(targetPath);
+    
+    if (obj === null) {
+      this.write(`tail: ${filePath}: No such file or directory`, 'error-text');
+    } else if (typeof obj === 'object') {
+      this.write(`tail: ${filePath}: Is a directory`, 'error-text');
+    } else {
+      const content = obj.toString();
+      const lines = content.split('\n');
+      const result = lines.slice(-lineCount).join('\n');
+      
+      this.write(`==> ${filePath} <==`, 'command-name');
+      this.write(result);
+    }
+  }
+}

@@ -26,7 +26,7 @@ const Components = {
   Footer: () => {
     const currentYear = new Date().getFullYear();
     return `
-      <p>&copy; ${currentYear} NAME_ | $ echo "Built with HTML, CSS, JS"</p>
+      <p>&copy; ${currentYear} Iolo Evans Jones| $ echo "Built with HTML, CSS, JS"</p>
     `;
   },
   
