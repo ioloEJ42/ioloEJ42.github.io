@@ -14,6 +14,72 @@
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      /* Override defaults for terminal-like appearance */
+      .terminal-output pre {
+        font-family: "JetBrains Mono", monospace;
+        padding: 0;
+        margin: 0;
+        overflow-x: visible;
+        border: none;
+        background: transparent;
+        color: var(--text-color);
+        line-height: 1.2;
+        font-size: 0.95rem;
+      }
+
+      /* Fix spacing in terminal output */
+      .terminal-output {
+        padding-left: 0;
+        margin-top: 0.25rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Tighter paragraphs for terminal feel */
+      .terminal-output p {
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      /* Add small space between paragraphs but keep compact */
+      .terminal-output p:not(:last-child) {
+        margin-bottom: 0.1rem;
+      }
+
+      /* Contact options with no large gaps */
+      .contact-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .contact-option h3 {
+        margin-bottom: 0.1rem;
+        color: var(--terminal-prompt-color);
+      }
+
+      /* Link styling for terminal with colors */
+      .email-link {
+        text-decoration: underline;
+        color: var(--color-light-cyan);
+      }
+
+      .github-link {
+        text-decoration: underline;
+        color: var(--color-light-green);
+      }
+
+      .linkedin-link {
+        text-decoration: underline;
+        color: var(--color-light-blue);
+      }
+
+      /* Hover effect for links */
+      .terminal-output a:hover {
+        opacity: 0.8;
+        color: var(--color-high-white);
+      }
+    </style>
   </head>
   <body>
     <div class="grid"></div>
@@ -21,11 +87,6 @@
     <main>
       <div class="terminal-window">
         <div class="terminal-header">
-          <div class="terminal-buttons">
-            <div class="terminal-button close"></div>
-            <div class="terminal-button minimize"></div>
-            <div class="terminal-button maximize"></div>
-          </div>
           <div class="terminal-title">contact@portfolio: ~</div>
         </div>
         <div class="terminal-body">
@@ -38,32 +99,23 @@
               <span class="terminal-path">~</span>
               <span>$</span>
             </div>
-            <div class="terminal-command">finger contact</div>
+            <div class="terminal-command">cat contact_info.txt</div>
           </div>
 
-          <div class="terminal-output contact-options">
-            <div class="contact-option">
-              <h3>$ echo $EMAIL</h3>
-              <p>
-                <a href="mailto:contact@example.com">contact@example.com</a>
-              </p>
-            </div>
-            <div class="contact-option">
-              <h3>$ echo $GITHUB</h3>
-              <p>
-                <a href="https://github.com/username" target="_blank"
-                  >github.com/username</a
-                >
-              </p>
-            </div>
-            <div class="contact-option">
-              <h3>$ echo $LINKEDIN</h3>
-              <p>
-                <a href="https://linkedin.com/in/username" target="_blank"
-                  >linkedin.com/in/username</a
-                >
-              </p>
-            </div>
+          <div class="terminal-output">
+            <pre>
+  _____            _             _   
+ / ____|          | |           | |  
+| |     ___  _ __ | |_ __ _  ___| |_ 
+| |    / _ \| '_ \| __/ _` |/ __| __|
+| |___| (_) | | | | || (_| | (__| |_ 
+ \_____\___/|_| |_|\__\__,_|\___|\__|
+                                     </pre
+            >
+            <p>
+              Looking to connect or discuss potential projects? Here's how to
+              reach me:
+            </p>
           </div>
 
           <div class="terminal-line">
@@ -75,112 +127,105 @@
               <span class="terminal-path">~</span>
               <span>$</span>
             </div>
-            <div class="terminal-command">./send_message.sh</div>
+            <div class="terminal-command">ls -la contact_methods/</div>
+          </div>
+
+          <div class="terminal-output contact-options">
+            <p>total 4</p>
+            <p>drwxr-xr-x 2 user portfolio 4096 Feb 25 12:34 .</p>
+            <p>drwxr-xr-x 10 user portfolio 4096 Feb 25 12:34 ..</p>
+            <p>
+              -rw-r--r-- 1 user portfolio 220 Feb 25 12:34
+              <span class="text-file"
+                ><a href="mailto:contact@example.com" class="email-link"
+                  >email.txt</a
+                ></span
+              >
+            </p>
+            <p>
+              -rw-r--r-- 1 user portfolio 220 Feb 25 12:34
+              <span class="text-file"
+                ><a
+                  href="https://github.com/username"
+                  target="_blank"
+                  class="github-link"
+                  >github.txt</a
+                ></span
+              >
+            </p>
+            <p>
+              -rw-r--r-- 1 user portfolio 220 Feb 25 12:34
+              <span class="text-file"
+                ><a
+                  href="https://linkedin.com/in/username"
+                  target="_blank"
+                  class="linkedin-link"
+                  >linkedin.txt</a
+                ></span
+              >
+            </p>
+          </div>
+
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">user</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~</span>
+              <span>$</span>
+            </div>
+            <div class="terminal-command">cat contact_policy.txt</div>
           </div>
 
           <div class="terminal-output">
-            <div class="contact-form">
-              <h2>SEND_MESSAGE_</h2>
-              <form id="contact-form" onsubmit="return handleSubmit(event)">
-                <div class="form-group">
-                  <label for="name" class="form-label">$ echo $NAME</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    class="form-input"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="email" class="form-label">$ echo $EMAIL</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    class="form-input"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="subject" class="form-label"
-                    >$ echo $SUBJECT</label
-                  >
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    class="form-input"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="message" class="form-label"
-                    >$ cat > message.txt</label
-                  >
-                  <textarea
-                    id="message"
-                    name="message"
-                    class="form-input"
-                    rows="5"
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" class="button">$ ./send.sh</button>
-              </form>
+            <p>I typically respond to messages within 24-48 hours.</p>
+            <p>
+              For urgent inquiries, please include "URGENT" in your email
+              subject line.
+            </p>
+            <p>
+              Current availability for new projects:
+              <span class="success-text">OPEN</span>
+            </p>
+          </div>
+
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">user</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~</span>
+              <span>$</span>
             </div>
+            <div class="terminal-command">./preferred_contact_method.sh</div>
+          </div>
+
+          <div class="terminal-output">
+            <p>Email is my preferred method of initial contact.</p>
+            <p>Please include the following information:</p>
+            <p>- Your name</p>
+            <p>- Project overview/requirements</p>
+            <p>- Timeline expectations</p>
+            <p>- Any additional relevant details</p>
+          </div>
+
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">user</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~</span>
+              <span>$</span>
+            </div>
+            <div class="terminal-command blink-cursor"></div>
           </div>
         </div>
       </div>
     </main>
     <footer></footer>
     <script src="./assets/script.js"></script>
-    <script>
-      // Simple form handler - in production you'd want to connect this to a proper backend
-      function handleSubmit(event) {
-        event.preventDefault();
-
-        const form = document.getElementById("contact-form");
-        const name = form.elements.name.value;
-        const email = form.elements.email.value;
-        const subject = form.elements.subject.value;
-        const message = form.elements.message.value;
-
-        // Here you would normally send this data to your backend
-        console.log("Form submitted:", { name, email, subject, message });
-
-        // Show success message as terminal output
-        form.innerHTML = `
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">user</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~</span>
-            <span>$</span>
-          </div>
-          <div class="terminal-command">./send.sh</div>
-        </div>
-        <div class="terminal-output success-message">
-          <p>Message sent successfully.</p>
-          <p>Thank you for your message. I'll get back to you soon.</p>
-        </div>
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">user</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~</span>
-            <span>$</span>
-          </div>
-          <div class="terminal-command blink-cursor"></div>
-        </div>
-      `;
-
-        return false;
-      }
-    </script>
   </body>
 </html>
