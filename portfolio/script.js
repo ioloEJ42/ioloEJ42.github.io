@@ -4,24 +4,81 @@
  * Enhanced with terminal-style interactions
  */
 
-// Import components
-document.addEventListener("DOMContentLoaded", () => {
-  // Display loading state
-  const loadingIndicator = document.createElement('div');
-  loadingIndicator.id = 'loading-indicator';
-  loadingIndicator.style.cssText = 'position: fixed; top: 10px; right: 10px; background: #333; color: white; padding: 5px 10px; border-radius: 3px; z-index: 1000; font-family: "JetBrains Mono", monospace;';
-  loadingIndicator.textContent = '$ loading components...';
-  document.body.appendChild(loadingIndicator);
+// Preload components as early as possible
+// We define an inline component system for navigation and footer as fallback
+// This ensures something displays even before components.js loads
+(function preloadBasicComponents() {
+  // Minimal component system for immediate rendering
+  window.BasicComponents = {
+    Navbar: (activePage = "") => {
+      return `
+        <nav>
+          <div class="nav-title">PORTFOLIO_</div>
+          <ul class="nav-links">
+            <li class="${activePage === "home" ? "active" : ""}"><a href="index.html">$ HOME</a></li>
+            <li class="${activePage === "projects" ? "active" : ""}"><a href="projects.html">$ PROJECTS</a></li>
+            <li class="${activePage === "blogs" ? "active" : ""}"><a href="blogs.html">$ BLOGS</a></li>
+            <li class="${activePage === "contact" ? "active" : ""}"><a href="contact.html">$ CONTACT</a></li>
+            <li><a href="../">$ DASHBOARD</a></li>
+          </ul>
+        </nav>
+      `;
+    },
+    
+    Footer: () => {
+      const currentYear = new Date().getFullYear();
+      return `
+        <p>&copy; ${currentYear} NAME_ | $ echo "Built with HTML, CSS, JS"</p>
+      `;
+    }
+  };
   
-  // Load components script first, then initialize the page
+  // Render the basic components instantly
+  const currentPage = getCurrentPage();
+  const headerElement = document.querySelector("header");
+  const footerElement = document.querySelector("footer");
+  
+  if (headerElement) {
+    headerElement.innerHTML = window.BasicComponents.Navbar(currentPage);
+  }
+  
+  if (footerElement) {
+    footerElement.innerHTML = window.BasicComponents.Footer();
+  }
+  
+  // Helper function for initial page detection
+  function getCurrentPage() {
+    const pathname = window.location.pathname;
+    const filename = pathname.split("/").pop();
+    
+    if (filename === "index.html" || filename === "" || pathname.endsWith("/portfolio/")) {
+      return "home";
+    } else if (filename === "projects.html") {
+      return "projects";
+    } else if (filename === "blogs.html") {
+      return "blogs";
+    } else if (filename === "contact.html") {
+      return "contact";
+    } else if (filename === "project.html") {
+      return "project";
+    } else if (filename === "blog.html") {
+      return "blog";
+    }
+    return "home";
+  }
+})();
+
+// Initialize main functionality after DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  // Use console logging instead of visual indicators
+  console.log('$ loading components...');
+  
+  // Load components script for full functionality
   const componentsScript = document.createElement("script");
   componentsScript.src = "components.js";
   componentsScript.onload = () => {
-    loadingIndicator.textContent = '$ components loaded';
-    setTimeout(() => {
-      loadingIndicator.remove();
-      initializePage();
-    }, 500);
+    console.log('$ components loaded successfully');
+    initializePage();
   };
   componentsScript.onerror = handleComponentError;
   document.body.appendChild(componentsScript);
@@ -29,9 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Handle component loading error
 function handleComponentError() {
-  console.error("Failed to load components.js!");
+  console.error("$ components.js: No such file or directory");
   document.body.insertAdjacentHTML('afterbegin', 
-    '<div style="background: #ff3333; color: white; padding: 1rem; margin: 1rem; font-family: \'JetBrains Mono\', monospace;">' +
+    '<div style="background: #222; color: #ddd; padding: 1rem; margin: 1rem; font-family: \'JetBrains Mono\', monospace; border: 1px solid #555;">' +
     '<h3>Error: components.js not found</h3>' +
     '<p>$ cat components.js<br>cat: components.js: No such file or directory</p>' +
     '</div>'
@@ -57,13 +114,15 @@ function simulateTyping(element, text, speed = 50) {
   });
 }
 
-// Page initialization
+// Page initialization - we don't need to re-render the header/footer
+// since they were already rendered by the preload function
 async function initializePage() {
   // Check if Components were properly loaded
   if (typeof Components === 'undefined') {
-    console.error("Components object is not defined!");
+    console.error("$ typeof Components");
+    console.error("undefined");
     document.body.insertAdjacentHTML('afterbegin', 
-      '<div style="background: #ff3333; color: white; padding: 1rem; margin: 1rem; font-family: \'JetBrains Mono\', monospace;">' +
+      '<div style="background: #222; color: #ddd; padding: 1rem; margin: 1rem; font-family: \'JetBrains Mono\', monospace; border: 1px solid #555;">' +
       '<h3>Error: Components not defined</h3>' +
       '<p>$ typeof Components<br>undefined</p>' +
       '</div>'
@@ -73,13 +132,11 @@ async function initializePage() {
 
   // Determine current page
   const currentPage = getCurrentPage();
-  console.log("Current page:", currentPage);
+  console.log("$ echo $CURRENT_PAGE");
+  console.log(currentPage);
 
-  // Render common components
-  renderHeader(currentPage);
-  renderFooter();
-
-  // Load page-specific content
+  // Load page-specific content without re-rendering nav/footer
+  // This prevents the flash of unstyled content
   switch (currentPage) {
     case "home":
       loadHomeContent();
@@ -107,7 +164,8 @@ function getCurrentPage() {
   const pathname = window.location.pathname;
   const filename = pathname.split("/").pop();
   
-  console.log("Pathname:", pathname, "Filename:", filename);
+  console.log("$ pwd");
+  console.log(pathname);
 
   if (
     filename === "index.html" ||
@@ -136,23 +194,7 @@ function getUrlParam(param) {
   return urlParams.get(param);
 }
 
-// Render header with navigation
-function renderHeader(currentPage) {
-  const headerElement = document.querySelector("header");
-  if (headerElement) {
-    headerElement.innerHTML = Components.Navbar(currentPage);
-  }
-}
-
-// Render footer
-function renderFooter() {
-  const footerElement = document.querySelector("footer");
-  if (footerElement) {
-    footerElement.innerHTML = Components.Footer();
-  }
-}
-
-// Enhanced JSON loading with better error handling
+// Enhanced JSON loading with better error handling and console logging
 async function loadJsonData(filename) {
   console.log(`$ curl -s https://api.portfolio.local/data/${filename}.json`);
   
@@ -160,12 +202,13 @@ async function loadJsonData(filename) {
     const response = await fetch(`data/${filename}.json`);
     
     if (!response.ok) {
-      console.error(`curl: (404) Not Found - ${filename}.json: ${response.status} ${response.statusText}`);
+      console.error(`curl: (404) Not Found - ${filename}.json (${response.status})`);
       return null;
     }
     
     const data = await response.json();
-    console.log(`Successfully loaded ${filename}.json`);
+    console.log(`$ jq . data/${filename}.json | head -3`);
+    console.log(`{...}`); // Simulating partial output of jq
     return data;
   } catch (error) {
     console.error(`curl: Failed to connect to api.portfolio.local - ${error.message}`);
@@ -175,6 +218,8 @@ async function loadJsonData(filename) {
 
 // Home page content
 async function loadHomeContent() {
+  console.log('$ loading home content...');
+  
   // Load profile data
   const profileData = await loadJsonData("profile");
   if (profileData) {
@@ -194,13 +239,14 @@ async function loadHomeContent() {
   if (projectsContainer) {
     const projectsData = await loadJsonData("projects");
     if (projectsData && projectsData.projects) {
+      console.log('$ filtering featured projects...');
       const featuredProjects = projectsData.projects
         .filter((p) => p.featured)
         .slice(0, 3);
 
       if (featuredProjects.length > 0) {
         // Add a short delay to simulate loading
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        await new Promise(resolve => setTimeout(resolve, 500)); 
         projectsContainer.innerHTML = featuredProjects
           .map((project) => Components.ProjectCard(project))
           .join("");
@@ -217,11 +263,12 @@ async function loadHomeContent() {
   if (postsContainer) {
     const blogsData = await loadJsonData("blogs");
     if (blogsData && blogsData.posts) {
+      console.log('$ fetching recent posts...');
       const recentPosts = blogsData.posts.slice(0, 3);
 
       if (recentPosts.length > 0) {
         // Add a short delay to simulate loading
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 500));
         postsContainer.innerHTML = recentPosts
           .map((post) => Components.BlogPostItem(post))
           .join("");
@@ -232,14 +279,17 @@ async function loadHomeContent() {
       postsContainer.innerHTML = "<p>$ find: No such file or directory</p>";
     }
   }
+  
+  console.log('$ home content loaded');
 }
 
 // Projects page content
 async function loadProjectsContent() {
+  console.log('$ loading projects...');
   const projectsContainer = document.querySelector(".terminal-output");
   if (projectsContainer) {
-    // Simulate SSH connection time
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate SSH connection time but shorter
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     const projectsData = await loadJsonData("projects");
     if (projectsData && projectsData.projects) {
@@ -260,14 +310,16 @@ async function loadProjectsContent() {
       projectsContainer.innerHTML = "<p>ls: cannot access '.': Connection timed out</p>";
     }
   }
+  console.log('$ projects loaded');
 }
 
 // Blogs page content
 async function loadBlogsContent() {
+  console.log('$ loading blogs...');
   const blogsContainer = document.querySelector(".terminal-output");
   if (blogsContainer) {
-    // Simulate SSH connection time
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate SSH connection time but shorter
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     const blogsData = await loadJsonData("blogs");
     if (blogsData && blogsData.posts) {
@@ -287,6 +339,7 @@ async function loadBlogsContent() {
       blogsContainer.innerHTML = "<p>find: cannot access './': Connection timed out</p>";
     }
   }
+  console.log('$ blogs loaded');
 }
 
 // Project detail page
@@ -297,7 +350,7 @@ async function loadProjectDetail() {
     return;
   }
 
-  console.log("Loading project detail for ID:", projectId);
+  console.log(`$ loading project ${projectId}...`);
   const contentContainer = document.getElementById("project-content");
   const projectDirectory = document.getElementById("project-directory");
   const projectPath = document.getElementById("project-path");
@@ -337,8 +390,8 @@ async function loadProjectDetail() {
     // Now load the full project content
     const projectContent = await loadJsonData(`projects/${projectId}`);
     if (projectContent) {
-      // Simulate loading time
-      await new Promise(resolve => setTimeout(resolve, 1000)); 
+      // Simulate loading time but shorter
+      await new Promise(resolve => setTimeout(resolve, 300)); 
       contentContainer.innerHTML = projectContent.content;
       
       // Update document title
@@ -347,6 +400,7 @@ async function loadProjectDetail() {
       contentContainer.innerHTML = "<p>cat: README.md: No such file or directory</p>";
     }
   }
+  console.log(`$ project ${projectId} loaded`);
 }
 
 // Blog detail page
@@ -357,7 +411,7 @@ async function loadBlogDetail() {
     return;
   }
 
-  console.log("Loading blog detail for ID:", blogId);
+  console.log(`$ loading blog ${blogId}...`);
   const contentContainer = document.getElementById("blog-content");
   const titleEl = document.getElementById("blog-title");
   const dateEl = document.getElementById("blog-date");
@@ -388,13 +442,14 @@ async function loadBlogDetail() {
     // Now load the full blog content
     const blogContent = await loadJsonData(`blogs/${blogId}`);
     if (blogContent) {
-      // Simulate loading time
-      await new Promise(resolve => setTimeout(resolve, 1000)); 
+      // Simulate loading time but shorter
+      await new Promise(resolve => setTimeout(resolve, 300)); 
       contentContainer.innerHTML = blogContent.content;
     } else {
       contentContainer.innerHTML = "<p>less: " + blogId + ".md: No such file or directory</p>";
     }
   }
+  console.log(`$ blog ${blogId} loaded`);
 }
 
 // Add blinking cursor animation to elements
@@ -414,13 +469,15 @@ function simulateCommandTyping() {
     const text = cmd.textContent;
     cmd.classList.add('typed');
     cmd.textContent = '';
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 500));
-    simulateTyping(cmd, text, Math.floor(Math.random() * 30) + 30);
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 300));
+    simulateTyping(cmd, text, Math.floor(Math.random() * 15) + 15);
   });
 }
 
 // Add these effects after page loads
 window.addEventListener('load', () => {
+  console.log('$ initializing terminal effects...');
   addBlinkingCursors();
   simulateCommandTyping();
+  console.log('$ terminal ready');
 });

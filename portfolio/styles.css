@@ -1,17 +1,37 @@
-/* Base styles */
+/* Base styles with classic terminal colors */
 :root {
-  --bg-color: #0c0c0c;
-  --text-color: #f0f0f0;
-  --accent-color: #54e346;
-  --border-color: rgba(255, 255, 255, 0.2);
-  --grid-color: rgba(255, 255, 255, 0.05);
-  --hover-color: rgba(255, 255, 255, 0.1);
-  --code-bg: rgba(255, 255, 255, 0.1);
-  --terminal-bg: #0c0c0c;
-  --terminal-header-bg: #2d2d2d;
-  --terminal-prompt-color: #54e346;
-  --terminal-user-color: #5f85e8;
-  --terminal-host-color: #e5c07b;
+  /* Traditional terminal 16-color palette */
+  --color-black: rgb(0, 0, 0);         /* Color_0 */
+  --color-light-red: rgb(255, 0, 0);   /* Color_1 */
+  --color-light-green: rgb(0, 255, 0); /* Color_2 */
+  --color-yellow: rgb(255, 255, 0);    /* Color_3 */
+  --color-light-blue: rgb(0, 0, 255);  /* Color_4 */
+  --color-light-magenta: rgb(255, 0, 255); /* Color_5 */
+  --color-light-cyan: rgb(0, 255, 255);    /* Color_6 */
+  --color-high-white: rgb(255, 255, 255);  /* Color_7 */
+  --color-grey: rgb(128, 128, 128);    /* Color_8 */
+  --color-red: rgb(128, 0, 0);         /* Color_9 */
+  --color-green: rgb(0, 128, 0);       /* Color_10 */
+  --color-brown: rgb(128, 128, 0);     /* Color_11 */
+  --color-blue: rgb(0, 0, 128);        /* Color_12 */
+  --color-magenta: rgb(128, 0, 128);   /* Color_13 */
+  --color-cyan: rgb(0, 128, 128);      /* Color_14 */
+  --color-white: rgb(192, 192, 192);   /* Color_15 */
+  
+  /* Theme variables mapped to terminal colors */
+  --bg-color: var(--color-black);
+  --text-color: var(--color-white);
+  --accent-color: var(--color-light-green);
+  --border-color: var(--color-grey);
+  --grid-color: rgba(255, 255, 255, 0.03);
+  --hover-color: rgba(255, 255, 255, 0.05);
+  --code-bg: rgba(128, 128, 128, 0.1);
+  --terminal-bg: var(--color-black);
+  --terminal-header-bg: var(--color-grey);
+  --terminal-prompt-color: var(--color-light-green);
+  --terminal-user-color: var(--color-light-cyan);
+  --terminal-host-color: var(--color-light-cyan);
+  --terminal-path-color: var(--color-light-blue);
 }
 
 * {
@@ -62,11 +82,13 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-size: 2.5rem;
   letter-spacing: 1px;
+  color: var(--accent-color);
 }
 
 h2 {
   font-size: 1.75rem;
   margin-top: 2rem;
+  color: var(--accent-color);
 }
 
 p {
@@ -76,14 +98,14 @@ p {
 a {
   color: var(--text-color);
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: color 0.2s;
 }
 
 a:hover {
-  opacity: 0.8;
+  color: var(--accent-color);
 }
 
-/* Navigation styled as terminal tabs */
+/* Navigation styled as terminal */
 header {
   padding: 1rem 0;
 }
@@ -100,6 +122,7 @@ nav {
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 1px;
+  color: var(--accent-color);
 }
 
 .nav-links {
@@ -113,7 +136,6 @@ nav {
 
 .nav-links li.active a {
   color: var(--accent-color);
-  font-weight: bold;
 }
 
 /* Main content */
@@ -122,46 +144,25 @@ main {
   padding: 2rem 0;
 }
 
-/* Terminal Window */
+/* Terminal Window - Classic Linux Style */
 .terminal-window {
   background-color: var(--terminal-bg);
   border: 1px solid var(--border-color);
-  border-radius: 5px;
-  overflow: hidden;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .terminal-header {
-  background-color: var(--terminal-header-bg);
-  padding: 0.5rem 1rem;
+  background-color: var(--color-grey);
+  padding: 5px 10px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
 }
 
 .terminal-buttons {
-  display: flex;
-  margin-right: 1rem;
-}
-
-.terminal-button {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 8px;
-}
-
-.terminal-button.close {
-  background-color: #ff5f56;
-}
-
-.terminal-button.minimize {
-  background-color: #ffbd2e;
-}
-
-.terminal-button.maximize {
-  background-color: #27c93f;
+  display: none; /* Hide macOS style buttons for classic Linux look */
 }
 
 .terminal-title {
@@ -169,6 +170,7 @@ main {
   text-align: center;
   font-size: 0.9rem;
   opacity: 0.8;
+  color: var(--color-black);
 }
 
 .terminal-body {
@@ -176,9 +178,10 @@ main {
   line-height: 1.6;
   max-height: 80vh;
   overflow-y: auto;
+  font-size: 0.95rem;
 }
 
-/* Terminal prompt */
+/* Terminal prompt - Linux style */
 .terminal-line {
   display: flex;
   margin-bottom: 0.5rem;
@@ -202,7 +205,7 @@ main {
 }
 
 .terminal-path {
-  color: #61afef;
+  color: var(--terminal-path-color);
 }
 
 .terminal-command {
@@ -269,7 +272,6 @@ main {
   font-size: 0.9rem;
   opacity: 0.7;
   margin-bottom: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
 }
 
 .post-title {
@@ -285,16 +287,16 @@ main {
 
 /* Loading indicator */
 .loading {
-  padding: 2rem 0;
-  text-align: center;
+  padding: 1rem 0;
+  text-align: left;
   font-style: italic;
   opacity: 0.7;
-  font-family: 'JetBrains Mono', monospace;
 }
 
 /* SSH loading animation */
 .ssh-loading {
   margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 .ssh-loading p {
@@ -307,6 +309,7 @@ footer {
   border-top: 1px solid var(--border-color);
   text-align: center;
   font-size: 0.9rem;
+  opacity: 0.7;
 }
 
 /* Blog and project detail pages */
@@ -322,7 +325,6 @@ footer {
 .blog-date {
   opacity: 0.7;
   margin-bottom: 1rem;
-  font-family: 'JetBrains Mono', monospace;
 }
 
 .blog-content, .project-content {
@@ -339,10 +341,10 @@ footer {
   border: 1px solid var(--border-color);
 }
 
-/* Code blocks */
+/* Code blocks - Linux terminal style */
 pre, code {
   background-color: var(--code-bg);
-  border-radius: 3px;
+  border-radius: 0; /* More Linux-like */
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -350,6 +352,7 @@ pre {
   padding: 1rem;
   overflow-x: auto;
   margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
 }
 
 code {
@@ -374,12 +377,12 @@ pre code {
 .form-label {
   display: block;
   margin-bottom: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--terminal-prompt-color);
 }
 
 .form-input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--code-bg);
   border: 1px solid var(--border-color);
   padding: 0.8rem;
   color: var(--text-color);
@@ -389,7 +392,7 @@ pre code {
 
 .form-input:focus {
   outline: none;
-  border-color: var(--text-color);
+  border-color: var(--accent-color);
 }
 
 textarea.form-input {
@@ -405,11 +408,13 @@ textarea.form-input {
   font-family: 'JetBrains Mono', monospace;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 .button:hover {
-  background-color: var(--hover-color);
+  background-color: var(--code-bg);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 /* Contact page styles */
@@ -428,6 +433,7 @@ textarea.form-input {
 
 .contact-option h3 {
   margin-bottom: 0.5rem;
+  color: var(--terminal-prompt-color);
 }
 
 .success-message {
@@ -439,7 +445,6 @@ textarea.form-input {
 .read-more {
   font-weight: 500;
   color: var(--accent-color);
-  font-family: 'JetBrains Mono', monospace;
 }
 
 /* Blinking cursor effect for certain elements */
@@ -463,6 +468,49 @@ textarea.form-input {
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
+}
+
+/* Classic Linux Directory Colors */
+.directory {
+  color: var(--color-light-blue); /* Light blue for directories */
+}
+
+.executable {
+  color: var(--color-light-green); /* Light green for executables */
+}
+
+.text-file {
+  color: var(--color-high-white); /* High white for text files */
+}
+
+.image-file {
+  color: var(--color-light-magenta); /* Light magenta for images */
+}
+
+.symlink {
+  color: var(--color-light-cyan); /* Light cyan for symlinks */
+}
+
+/* Default ls colors for various file types */
+.file-archive {
+  color: var(--color-red); /* Red for archives */
+}
+
+.file-media {
+  color: var(--color-light-magenta); /* Light magenta for media */
+}
+
+.file-config {
+  color: var(--color-brown); /* Brown for config files */
+}
+
+.file-temp {
+  color: var(--color-grey); /* Grey for temp files */
+}
+
+/* System files and directories */
+.system-dir {
+  color: var(--color-blue); /* Blue for system directories */
 }
 
 /* Responsive adjustments */
