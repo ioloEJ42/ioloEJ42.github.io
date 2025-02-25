@@ -1,0 +1,65 @@
+{
+    "home": {
+      "user": {
+        "README.md": "# Welcome to the Portfolio Terminal\n\nThis terminal interface allows you to explore content using Linux commands.\n\nType `help` to see available commands.\nUse `ls` to list directories.\nUse `cd` to change directories.\nUse `cat` to read files.\n\nTry exploring the projects/ and blogs/ directories to see content.",
+        "projects": {
+          "minimal-dashboard": {
+            "README.md": "# Minimal Dashboard\n\nA minimalist browser dashboard with search functionality and customizable links.\n\n## Features\n\n* Search functionality with multiple engine options\n* Customizable link groups\n* Real-time clock\n* Minimal UI with grid background\n* Zero dependencies\n\n## Technical Details\n\nThe dashboard is built using vanilla HTML, CSS, and JavaScript with no frameworks or build tools. This ensures minimal loading times and excellent performance across all devices.",
+            "index.html": "<!DOCTYPE html>\n<html>\n  <head>\n    <title>DASHBOARD_</title>\n    <link rel=\"shortcut icon\" href=\"img/shortcuticon.png\" type=\"image/x-icon\" />\n    <!-- Additional code truncated for brevity -->\n  </head>\n  <body>\n    <!-- Content truncated -->\n  </body>\n</html>",
+            "index.css": "/* Dashboard CSS styles */\n:root {\n  --pure-white: #ffffff;\n  --pure-black: #000000;\n  --dot-size: 2px;\n  --dot-space: 22px;\n}\n/* Additional styles truncated for brevity */",
+            "index.js": "// Dashboard JavaScript functionality\n// Code truncated for brevity"
+          },
+          "terminal-portfolio": {
+            "README.md": "# Terminal Portfolio\n\nA terminal-inspired portfolio website built with vanilla web technologies.\n\n## Features\n\n* Terminal-like interface with command prompt\n* Interactive terminal emulator\n* Responsive design\n* Grid background\n* Custom typography\n\n## Technical Details\n\nThis portfolio is built with HTML, CSS, and JavaScript without any frameworks or libraries (except Google Fonts). The terminal emulator allows visitors to explore the site content through a familiar command-line interface.",
+            "index.html": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>TERMINAL_ | PORTFOLIO_</title>\n    <!-- Code truncated for brevity -->\n  </head>\n  <body>\n    <!-- Content truncated -->\n  </body>\n</html>",
+            "styles.css": "/* Terminal Portfolio CSS */\n:root {\n  --terminal-bg: #282a36;\n  --terminal-text: #f8f8f2;\n  --terminal-prompt-color: #50fa7b;\n}\n/* Additional styles truncated */",
+            "terminal.js": "/**\n * Terminal Emulator\n * A simulated Linux environment with basic command line functionality\n */\n// Code truncated for brevity"
+          },
+          "weather-app": {
+            "README.md": "# Weather Application\n\nA clean, minimal weather application that displays current conditions and forecasts.\n\n## Features\n\n* Current weather conditions\n* 5-day forecast\n* Location search\n* Responsive design\n* Weather icons\n\n## Technical Details\n\nBuilt with HTML, CSS, and JavaScript. Uses the OpenWeatherMap API for weather data. Implements geolocation for automatic location detection.",
+            "app.js": "// Weather app functionality\n// API integration code\n// Forecast calculation\n// UI update functions"
+          }
+        },
+        "blogs": {
+          "minimal-design.md": "# The Power of Minimal Design\n\nDate: February 15, 2025\n\n## Introduction\n\nMinimalism in web design isn't just about aesthetics—it's about function, purpose, and user experience. In this article, I explore how stripping away unnecessary elements can create more powerful and effective digital experiences.\n\n## Key Principles\n\n1. **Remove the unnecessary**: Every element should serve a purpose\n2. **Embrace whitespace**: Give content room to breathe\n3. **Typography matters**: Choose readable, purposeful fonts\n4. **Contrast creates focus**: Use contrast to guide attention\n5. **Consistency builds trust**: Maintain visual language throughout\n\n## Conclusion\n\nBy embracing minimalism, we create interfaces that are not only visually appealing but also more functional, accessible, and user-friendly. Remember: in design, less is often more.",
+          "vanilla-js.md": "# Why I Still Use Vanilla JavaScript\n\nDate: January 20, 2025\n\n## Introduction\n\nIn an era dominated by JavaScript frameworks and libraries, I want to make a case for vanilla JavaScript. While frameworks certainly have their place, there's something powerful about understanding and using the core language.\n\n## Benefits of Vanilla JS\n\n1. **Performance**: No framework overhead means faster load times\n2. **Future-proof skills**: The core language evolves more slowly than frameworks\n3. **Better understanding**: Working with vanilla JS improves your understanding of how frameworks work\n4. **Smaller bundle sizes**: Ship less code to your users\n5. **No unnecessary abstractions**: Solve problems directly\n\n## When to Use Frameworks\n\nFrameworks are excellent for:\n- Large, complex applications\n- Team projects requiring consistency\n- Projects with tight deadlines\n- Specific UI patterns a framework handles well\n\n## Conclusion\n\nWhile I appreciate what frameworks offer, maintaining proficiency in vanilla JavaScript provides a solid foundation that makes you a better developer regardless of what tools you use.",
+          "terminal-interfaces.md": "# The Enduring Appeal of Terminal Interfaces\n\nDate: February 22, 2025\n\n## Introduction\n\nDespite decades of GUI development, terminal interfaces remain popular among developers and power users. This article explores why command-line interfaces continue to thrive in an era of polished graphical experiences.\n\n## Why Terminals Endure\n\n1. **Efficiency**: Text commands can be faster than navigating menus\n2. **Scriptability**: Terminals enable automation\n3. **Remote access**: Terminal interfaces work well over low-bandwidth connections\n4. **Resource efficiency**: Terminal applications typically use fewer system resources\n5. **Precision**: Commands offer exact control over operations\n\n## The Aesthetic Appeal\n\nBeyond practicality, there's an undeniable aesthetic appeal to terminal interfaces. The monospaced fonts, the cursor blinking at the prompt, the feeling of directly communicating with your computer—these elements create a distinctive experience that many find both nostalgic and futuristic.\n\n## Conclusion\n\nTerminal interfaces aren't just relics of computing history; they're efficient tools that continue to evolve and remain relevant in modern computing. Their blend of efficiency, flexibility, and distinctive aesthetic ensures they'll remain part of our computing landscape for years to come."
+        },
+        "about": {
+          "bio.txt": "Frontend developer with a passion for minimal design and user experience. I create web applications that balance form and function, with special attention to performance and accessibility.\n\nMy work focuses on building interfaces that are both visually appealing and highly functional, always prioritizing the end user's needs.\n\nWhen not coding, I enjoy exploring new technologies, writing about web development, and contributing to open source projects.",
+          "skills.txt": "LANGUAGES:\n- HTML5/CSS3\n- JavaScript (ES6+)\n- TypeScript\n- Python\n\nFRAMEWORKS & LIBRARIES:\n- React\n- Vue.js\n- Next.js\n- Node.js\n\nTOOLS & TECHNOLOGIES:\n- Git/GitHub\n- Webpack/Vite\n- Jest/Testing Library\n- Figma/Adobe XD\n- CI/CD\n\nSKILLS:\n- Responsive Design\n- Web Performance Optimization\n- Accessibility (WCAG)\n- UI/UX Design Principles\n- Technical Writing",
+          "contact.txt": "Email: developer@example.com\nGitHub: github.com/portfolio-dev\nLinkedIn: linkedin.com/in/portfolio-dev\nTwitter: @portfolio_dev\n\nFeel free to reach out for collaboration opportunities, job inquiries, or just to chat about web development and design."
+        },
+        "downloads": {
+          "resume.pdf": "[PDF CONTENT - Resume with professional experience and education details]",
+          "portfolio-showcase.pdf": "[PDF CONTENT - Collection of project highlights and case studies]"
+        }
+      }
+    },
+    "bin": {
+      "ls": "executable",
+      "cd": "executable",
+      "pwd": "executable",
+      "cat": "executable",
+      "echo": "executable",
+      "clear": "executable",
+      "help": "executable",
+      "find": "executable",
+      "grep": "executable",
+      "head": "executable",
+      "tail": "executable"
+    },
+    "usr": {
+      "share": {
+        "doc": {
+          "terminal-help": {
+            "commands.txt": "AVAILABLE COMMANDS:\n\nls - List directory contents\ncd - Change directory\npwd - Print working directory\ncat - Concatenate and display file contents\necho - Display a line of text\nclear - Clear the terminal screen\nhelp - Display help information\nfind - Search for files\ngrep - Search for patterns in files\nhead - Display first lines of a file\ntail - Display last lines of a file\n\nSpecial shortcuts:\n!! - Repeat the last command",
+            "examples.txt": "COMMAND EXAMPLES:\n\nls -l /home/user/projects\ncd ~/blogs\npwd\ncat README.md\necho \"Hello World\"\nclear\nhelp grep\nfind . -name \"*.md\"\ngrep \"JavaScript\" blogs/vanilla-js.md\nhead -n 5 about/bio.txt\ntail -n 3 about/contact.txt"
+          }
+        }
+      }
+    },
+    "etc": {
+      "motd": "Welcome to the Portfolio Terminal!\nType 'help' to see available commands.\n\nThis terminal emulator allows you to explore the portfolio using Linux-style commands.\nNavigate to ~/projects to see development projects.\nNavigate to ~/blogs to read articles."
+    }
+  }

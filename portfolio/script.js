@@ -18,6 +18,7 @@
             <li class="${activePage === "home" ? "active" : ""}"><a href="index.html">$ HOME</a></li>
             <li class="${activePage === "projects" ? "active" : ""}"><a href="projects.html">$ PROJECTS</a></li>
             <li class="${activePage === "blogs" ? "active" : ""}"><a href="blogs.html">$ BLOGS</a></li>
+            <li class="${activePage === "interface" ? "active" : ""}"><a href="interface.html">$ TERMINAL</a></li>
             <li class="${activePage === "contact" ? "active" : ""}"><a href="contact.html">$ CONTACT</a></li>
             <li><a href="../">$ DASHBOARD</a></li>
           </ul>
@@ -57,6 +58,8 @@
       return "projects";
     } else if (filename === "blogs.html") {
       return "blogs";
+    } else if (filename === "interface.html") {
+      return "interface";
     } else if (filename === "contact.html") {
       return "contact";
     } else if (filename === "project.html") {
@@ -153,6 +156,10 @@ async function initializePage() {
     case "blog":
       loadBlogDetail();
       break;
+    case "interface":
+      // Terminal interface page doesn't need data loading
+      // Terminal functionality is handled by terminal.js
+      break;
     case "contact":
       // Contact page doesn't need data loading
       break;
@@ -177,6 +184,8 @@ function getCurrentPage() {
     return "projects";
   } else if (filename === "blogs.html") {
     return "blogs";
+  } else if (filename === "interface.html") {
+    return "interface";
   } else if (filename === "contact.html") {
     return "contact";
   } else if (filename === "project.html") {

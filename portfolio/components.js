@@ -5,7 +5,7 @@
 
 // Components registry
 const Components = {
-  // Navbar component
+  // Navbar component - Updated to include Terminal link
   Navbar: (activePage = "") => {
     return `
       <nav>
@@ -14,6 +14,7 @@ const Components = {
           <li class="${activePage === "home" ? "active" : ""}"><a href="index.html">$ HOME</a></li>
           <li class="${activePage === "projects" ? "active" : ""}"><a href="projects.html">$ PROJECTS</a></li>
           <li class="${activePage === "blogs" ? "active" : ""}"><a href="blogs.html">$ BLOGS</a></li>
+          <li class="${activePage === "interface" ? "active" : ""}"><a href="interface.html">$ TERMINAL</a></li>
           <li class="${activePage === "contact" ? "active" : ""}"><a href="contact.html">$ CONTACT</a></li>
           <li><a href="../">$ DASHBOARD</a></li>
         </ul>
