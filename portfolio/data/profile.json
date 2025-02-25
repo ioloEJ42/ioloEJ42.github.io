@@ -1,0 +1,20 @@
+{
+    "name": "DEV_NAME_",
+    "title": "FRONT_END_DEVELOPER_",
+    "bio": "<p>I'm a developer focused on creating minimal, efficient digital solutions. My work emphasizes performance, accessibility, and thoughtful design principles.</p><p>With a background in computer science and a passion for clean code, I build web applications that prioritize user experience while maintaining technical excellence.</p>",
+    "contact": {
+      "email": "contact@example.com",
+      "github": "https://github.com/username",
+      "linkedin": "https://linkedin.com/in/username"
+    },
+    "skills": [
+      "HTML/CSS",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Node.js",
+      "UI/UX Design",
+      "Performance Optimization",
+      "Accessibility"
+    ]
+  }

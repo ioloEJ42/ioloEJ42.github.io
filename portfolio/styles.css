@@ -1,0 +1,489 @@
+/* Base styles */
+:root {
+  --bg-color: #0c0c0c;
+  --text-color: #f0f0f0;
+  --accent-color: #54e346;
+  --border-color: rgba(255, 255, 255, 0.2);
+  --grid-color: rgba(255, 255, 255, 0.05);
+  --hover-color: rgba(255, 255, 255, 0.1);
+  --code-bg: rgba(255, 255, 255, 0.1);
+  --terminal-bg: #0c0c0c;
+  --terminal-header-bg: #2d2d2d;
+  --terminal-prompt-color: #54e346;
+  --terminal-user-color: #5f85e8;
+  --terminal-host-color: #e5c07b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* JetBrains Mono font import */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  font-size: 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Grid background - very subtle */
+.grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: 0.5em;
+  letter-spacing: 0.5px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: 1.75rem;
+  margin-top: 2rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Navigation styled as terminal tabs */
+header {
+  padding: 1rem 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.nav-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+}
+
+.nav-links li {
+  margin-left: 1.5rem;
+}
+
+.nav-links li.active a {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+/* Main content */
+main {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+/* Terminal Window */
+.terminal-window {
+  background-color: var(--terminal-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.terminal-header {
+  background-color: var(--terminal-header-bg);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.terminal-buttons {
+  display: flex;
+  margin-right: 1rem;
+}
+
+.terminal-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.terminal-button.close {
+  background-color: #ff5f56;
+}
+
+.terminal-button.minimize {
+  background-color: #ffbd2e;
+}
+
+.terminal-button.maximize {
+  background-color: #27c93f;
+}
+
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.terminal-body {
+  padding: 1rem;
+  line-height: 1.6;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Terminal prompt */
+.terminal-line {
+  display: flex;
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-prompt {
+  color: var(--terminal-prompt-color);
+  margin-right: 0.5rem;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.terminal-user {
+  color: var(--terminal-user-color);
+}
+
+.terminal-host {
+  color: var(--terminal-host-color);
+}
+
+.terminal-path {
+  color: #61afef;
+}
+
+.terminal-command {
+  color: var(--text-color);
+  flex: 1;
+}
+
+.terminal-output {
+  padding-left: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* Projects grid as output of ls command */
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+}
+
+.project-card {
+  margin-bottom: 1.5rem;
+  border-left: 2px solid var(--border-color);
+  padding-left: 1rem;
+}
+
+.project-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0.5rem 0;
+}
+
+.project-tag {
+  font-size: 0.8rem;
+  background-color: var(--code-bg);
+  padding: 0.2rem 0.5rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 3px;
+}
+
+/* Blog posts list as output of cat command */
+.posts-list {
+  margin-top: 0.5rem;
+}
+
+.post-item {
+  padding: 1rem 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-date {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.post-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.post-excerpt {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Loading indicator */
+.loading {
+  padding: 2rem 0;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.7;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* SSH loading animation */
+.ssh-loading {
+  margin-bottom: 1rem;
+}
+
+.ssh-loading p {
+  margin-bottom: 0.3rem;
+}
+
+/* Footer */
+footer {
+  padding: 2rem 0;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Blog and project detail pages */
+.blog-post, .project-detail {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.blog-header, .project-header {
+  margin-bottom: 2rem;
+}
+
+.blog-date {
+  opacity: 0.7;
+  margin-bottom: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.blog-content, .project-content {
+  line-height: 1.8;
+}
+
+.blog-content p, .project-content p {
+  margin-bottom: 1.5rem;
+}
+
+.blog-content img, .project-content img {
+  max-width: 100%;
+  margin: 2rem 0;
+  border: 1px solid var(--border-color);
+}
+
+/* Code blocks */
+pre, code {
+  background-color: var(--code-bg);
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.9rem;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+/* Contact page */
+.contact-form {
+  max-width: 600px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  padding: 0.8rem;
+  color: var(--text-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--text-color);
+}
+
+textarea.form-input {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.button {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.8rem 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Contact page styles */
+.contact-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.contact-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-option h3 {
+  margin-bottom: 0.5rem;
+}
+
+.success-message {
+  padding: 2rem 0;
+  line-height: 1.8;
+}
+
+/* Terminal effect for links */
+.read-more {
+  font-weight: 500;
+  color: var(--accent-color);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Blinking cursor effect for certain elements */
+.blink-cursor::after {
+  content: "_";
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Simulated typing effect */
+.typing {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end);
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .nav-links {
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .contact-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .terminal-window {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}

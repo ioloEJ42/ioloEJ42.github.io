@@ -1,0 +1,39 @@
+{
+  "posts": [
+    {
+      "id": "minimalism-in-web-design",
+      "title": "The Power of Minimalism in Web Design",
+      "date": "February 20, 2025",
+      "excerpt": "Exploring how minimalist principles can enhance user experience, improve performance, and create more accessible websites.",
+      "tags": ["Design", "Performance", "UX"]
+    },
+    {
+      "id": "vanilla-js-components",
+      "title": "Building a Component System with Vanilla JavaScript",
+      "date": "February 10, 2025",
+      "excerpt": "How to create a lightweight, reusable component system without frameworks or libraries.",
+      "tags": ["JavaScript", "Components", "Web Development"]
+    },
+    {
+      "id": "grid-vs-flexbox",
+      "title": "CSS Grid vs Flexbox: When to Use Each",
+      "date": "January 25, 2025",
+      "excerpt": "A practical guide to understanding the strengths and use cases for CSS Grid and Flexbox layouts.",
+      "tags": ["CSS", "Layout", "Design"]
+    },
+    {
+      "id": "json-based-cms",
+      "title": "Creating a Simple JSON-based CMS for Static Sites",
+      "date": "January 15, 2025",
+      "excerpt": "How to implement a lightweight content management system using JSON files for small static websites.",
+      "tags": ["JavaScript", "CMS", "Static Sites"]
+    },
+    {
+      "id": "performance-optimization",
+      "title": "Web Performance Optimization Techniques",
+      "date": "December 30, 2024",
+      "excerpt": "Essential strategies for improving website loading times and overall performance.",
+      "tags": ["Performance", "Optimization", "Web Development"]
+    }
+  ]
+}

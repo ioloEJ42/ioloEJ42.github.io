@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CONTACT_ | PORTFOLIO_</title>
+  <link rel="shortcut icon" href="../img/shortcuticon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="grid"></div>
+  <header>
+    <!-- Navigation will be inserted here by components.js -->
+  </header>
+  <main>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <div class="terminal-buttons">
+          <div class="terminal-button close"></div>
+          <div class="terminal-button minimize"></div>
+          <div class="terminal-button maximize"></div>
+        </div>
+        <div class="terminal-title">contact@portfolio: ~</div>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-line">
+          <div class="terminal-prompt">
+            <span class="terminal-user">user</span>
+            <span>@</span>
+            <span class="terminal-host">portfolio</span>
+            <span>:</span>
+            <span class="terminal-path">~</span>
+            <span>$</span>
+          </div>
+          <div class="terminal-command">finger contact</div>
+        </div>
+        
+        <div class="terminal-output contact-options">
+          <div class="contact-option">
+            <h3>$ echo $EMAIL</h3>
+            <p><a href="mailto:contact@example.com">contact@example.com</a></p>
+          </div>
+          <div class="contact-option">
+            <h3>$ echo $GITHUB</h3>
+            <p><a href="https://github.com/username" target="_blank">github.com/username</a></p>
+          </div>
+          <div class="contact-option">
+            <h3>$ echo $LINKEDIN</h3>
+            <p><a href="https://linkedin.com/in/username" target="_blank">linkedin.com/in/username</a></p>
+          </div>
+        </div>
+        
+        <div class="terminal-line">
+          <div class="terminal-prompt">
+            <span class="terminal-user">user</span>
+            <span>@</span>
+            <span class="terminal-host">portfolio</span>
+            <span>:</span>
+            <span class="terminal-path">~</span>
+            <span>$</span>
+          </div>
+          <div class="terminal-command">./send_message.sh</div>
+        </div>
+        
+        <div class="terminal-output">
+          <div class="contact-form">
+            <h2>SEND_MESSAGE_</h2>
+            <form id="contact-form" onsubmit="return handleSubmit(event)">
+              <div class="form-group">
+                <label for="name" class="form-label">$ echo $NAME</label>
+                <input type="text" id="name" name="name" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">$ echo $EMAIL</label>
+                <input type="email" id="email" name="email" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="subject" class="form-label">$ echo $SUBJECT</label>
+                <input type="text" id="subject" name="subject" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="message" class="form-label">$ cat > message.txt</label>
+                <textarea id="message" name="message" class="form-input" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="button">$ ./send.sh</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <!-- Footer will be inserted here by components.js -->
+  </footer>
+  <script src="script.js"></script>
+  <script>
+    // Simple form handler - in production you'd want to connect this to a proper backend
+    function handleSubmit(event) {
+      event.preventDefault();
+      
+      const form = document.getElementById('contact-form');
+      const name = form.elements.name.value;
+      const email = form.elements.email.value;
+      const subject = form.elements.subject.value;
+      const message = form.elements.message.value;
+      
+      // Here you would normally send this data to your backend
+      console.log('Form submitted:', { name, email, subject, message });
+      
+      // Show success message as terminal output
+      form.innerHTML = `
+        <div class="terminal-line">
+          <div class="terminal-prompt">
+            <span class="terminal-user">user</span>
+            <span>@</span>
+            <span class="terminal-host">portfolio</span>
+            <span>:</span>
+            <span class="terminal-path">~</span>
+            <span>$</span>
+          </div>
+          <div class="terminal-command">./send.sh</div>
+        </div>
+        <div class="terminal-output success-message">
+          <p>Message sent successfully.</p>
+          <p>Thank you for your message. I'll get back to you soon.</p>
+        </div>
+        <div class="terminal-line">
+          <div class="terminal-prompt">
+            <span class="terminal-user">user</span>
+            <span>@</span>
+            <span class="terminal-host">portfolio</span>
+            <span>:</span>
+            <span class="terminal-path">~</span>
+            <span>$</span>
+          </div>
+          <div class="terminal-command blink-cursor"></div>
+        </div>
+      `;
+      
+      return false;
+    }
+  </script>
+</body>
+</html>

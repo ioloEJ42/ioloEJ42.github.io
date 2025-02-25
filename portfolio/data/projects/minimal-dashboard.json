@@ -1,0 +1,10 @@
+{
+  "id": "minimal-dashboard",
+  "title": "Minimal Dashboard",
+  "description": "A minimalist browser dashboard with search functionality and customizable links.",
+  "date": "2024-09-15",
+  "tags": ["HTML", "CSS", "JavaScript"],
+  "github": "https://github.com/username/minimal-dashboard",
+  "live": "https://username.github.io/minimal-dashboard",
+  "content": "<p>The Minimal Dashboard is a custom browser homepage designed with speed and minimalism in mind. It features a clean black and white aesthetic, ultra-fast loading times, and focuses on providing essential functionality without visual distractions.</p><h2>Features</h2><ul><li>Search functionality with multiple engine options</li><li>Customizable link groups</li><li>Real-time clock</li><li>Minimal UI with grid background</li><li>Zero dependencies</li></ul><h2>Technical Details</h2><p>The dashboard is built using vanilla HTML, CSS, and JavaScript with no frameworks or build tools. This ensures minimal loading times and excellent performance across all devices.</p><p>The core features include:</p><ul><li>Custom search implementation that supports multiple search engines</li><li>Time display with real-time updates</li><li>CSS grid for responsive layout</li><li>Configurable link groups via JSON</li></ul><h2>Implementation</h2><p>The layout uses CSS Grid for the main structure, with flexbox for individual components. The visual design incorporates a subtle grid background with a noise texture overlay to add depth without compromising the minimalist aesthetic.</p>"
+}

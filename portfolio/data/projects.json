@@ -1,0 +1,44 @@
+{
+  "projects": [
+    {
+      "id": "minimal-dashboard",
+      "title": "Minimal Dashboard",
+      "description": "A minimalist browser dashboard with search functionality and customizable links.",
+      "featured": true,
+      "tags": ["HTML", "CSS", "JavaScript"],
+      "thumbnail": "dashboard-thumb.png"
+    },
+    {
+      "id": "terminal-portfolio",
+      "title": "Terminal Portfolio",
+      "description": "A terminal-inspired portfolio website built with vanilla web technologies.",
+      "featured": true,
+      "tags": ["HTML", "CSS", "JavaScript"],
+      "thumbnail": "terminal-thumb.png"
+    },
+    {
+      "id": "json-parser",
+      "title": "Lightweight JSON Parser",
+      "description": "A minimal implementation of a JSON parser in JavaScript with zero dependencies.",
+      "featured": true,
+      "tags": ["JavaScript", "Parsing", "Data Structures"],
+      "thumbnail": "json-thumb.png"
+    },
+    {
+      "id": "markdown-editor",
+      "title": "Markdown Editor",
+      "description": "A distraction-free markdown editor with live preview and local storage.",
+      "featured": false,
+      "tags": ["HTML", "CSS", "JavaScript", "Markdown"],
+      "thumbnail": "markdown-thumb.png"
+    },
+    {
+      "id": "css-grid-system",
+      "title": "Minimal CSS Grid System",
+      "description": "A lightweight, responsive grid system in less than 1KB of CSS.",
+      "featured": false,
+      "tags": ["CSS", "Design System", "Responsive"],
+      "thumbnail": "grid-thumb.png"
+    }
+  ]
+}
