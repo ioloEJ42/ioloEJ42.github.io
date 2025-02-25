@@ -113,6 +113,41 @@ a:hover {
   color: var(--accent-color);
 }
 
+.terminal-output a {
+  text-decoration: underline;
+  transition: all 0.2s ease;
+}
+
+/* Different colors for different link types */
+.terminal-output a[href^="mailto:"] {
+  color: var(--color-light-cyan);
+}
+
+.terminal-output a[href*="github"] {
+  color: var(--color-light-green);
+}
+
+.terminal-output a[href*="linkedin"] {
+  color: var(--color-light-blue);
+}
+
+.terminal-output a[href*="twitter"] {
+  color: var(--color-light-magenta);
+}
+
+/* Project and blog links */
+.project-title a,
+.post-title a {
+  color: var(--accent-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.project-title a:hover,
+.post-title a:hover {
+  border-bottom: 1px solid var(--accent-color);
+}
+
 /* Navigation styled as terminal */
 header {
   padding: 1rem 0;
@@ -199,9 +234,10 @@ main {
 
 .terminal-prompt {
   color: var(--terminal-prompt-color);
-  margin-right: 0.5rem;
+  margin-right: 0.5rem !important;
   display: flex;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .terminal-user {
@@ -226,6 +262,14 @@ main {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   color: var(--text-color);
+}
+.terminal-output p {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.terminal-output p:not(:last-child) {
+  margin-bottom: 0.1rem;
 }
 
 /* Projects grid as output of ls command */
@@ -465,6 +509,33 @@ textarea.form-input {
 .blink-cursor::after {
   content: "_";
   animation: blink 1s step-end infinite;
+}
+
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--terminal-prompt-color);
+  animation: loading-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes loading-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
 }
 
 @keyframes blink {
