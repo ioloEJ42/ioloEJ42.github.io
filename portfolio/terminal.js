@@ -22,6 +22,7 @@ class TerminalEmulator {
     this.historyIndex = -1;
     this.commandsRun = 0;
     this.fileSystem = null;
+    this.aliases = {};
 
     // Initialize file system
     this.initFileSystem();
@@ -117,6 +118,9 @@ class TerminalEmulator {
     // Define available commands
     this.commands = {
       neofetch: this.cmdNeofetch.bind(this),
+      theme: this.cmdTheme.bind(this),
+      history: this.cmdHistory.bind(this),
+      alias: this.cmdAlias.bind(this),
       ls: this.cmdLs.bind(this),
       cd: this.cmdCd.bind(this),
       pwd: this.cmdPwd.bind(this),
@@ -196,14 +200,93 @@ class TerminalEmulator {
       if (matchingCommands.length === 1) {
         this.input.value = `${matchingCommands[0]} `;
       } else if (matchingCommands.length > 1) {
-        // Show possible completions
+        // Show possible completions with descriptions
         this.write(this.getPrompt() + " " + commandText, "term-command");
-        this.write(matchingCommands.join("  "));
+
+        const commandDescriptions = {
+          neofetch: "Display system information with ASCII art",
+          ls: "List directory contents",
+          cd: "Change the current directory",
+          pwd: "Print current directory",
+          cat: "Concatenate and display file contents",
+          echo: "Display a line of text",
+          clear: "Clear the terminal screen",
+          help: "Display this help message",
+          find: "Search for files in a directory hierarchy",
+          grep: "Search for patterns in files",
+          head: "Display first lines of a file",
+          tail: "Display last lines of a file",
+          theme: "Change terminal color theme",
+        };
+
+        const formattedCommands = matchingCommands.map(
+          (cmd) =>
+            `<span class="command-name">${cmd}</span> - ${
+              commandDescriptions[cmd] || "No description"
+            }`
+        );
+
+        this.write(formattedCommands.join("\n"));
       }
       return;
     }
 
-    // Path completion
+    // Flag completion for commands
+    if (
+      args.length > 0 &&
+      args[args.length - 1].startsWith("-") &&
+      !args[args.length - 1].includes(" ")
+    ) {
+      const commandFlags = {
+        ls: {
+          "-a": "Show all files (including hidden)",
+          "-l": "Use a long listing format",
+          "-la": "Long format, show all files",
+          "--all": "Show all files (including hidden)",
+        },
+        find: {
+          "-name": "Pattern to match files",
+          "-type": "Type of file (f for files, d for directories)",
+        },
+        grep: {
+          "-i": "Ignore case distinctions",
+          "-v": "Select non-matching lines",
+          "-n": "Print line number with output lines",
+        },
+        head: {
+          "-n": "Print the first n lines",
+        },
+        tail: {
+          "-n": "Print the last n lines",
+        },
+      };
+
+      const currentFlag = args[args.length - 1];
+      if (commandFlags[cmd]) {
+        const matchingFlags = Object.keys(commandFlags[cmd]).filter((flag) =>
+          flag.startsWith(currentFlag)
+        );
+
+        if (matchingFlags.length === 1) {
+          // Replace the current flag with the completed one
+          args[args.length - 1] = matchingFlags[0];
+          this.input.value = `${cmd} ${args.join(" ")} `;
+        } else if (matchingFlags.length > 1) {
+          // Show possible flag completions with descriptions
+          this.write(this.getPrompt() + " " + commandText, "term-command");
+
+          const formattedFlags = matchingFlags.map(
+            (flag) =>
+              `<span class="command-flag">${flag}</span> - ${commandFlags[cmd][flag]}`
+          );
+
+          this.write(formattedFlags.join("\n"));
+        }
+        return;
+      }
+    }
+
+    // Path completion (keep your existing code)
     if (cmd === "cd" || cmd === "cat" || cmd === "ls" || cmd === "find") {
       const lastArg = args.length > 0 ? args[args.length - 1] : "";
       const directoryPath = this.getParentDir(lastArg || ".");
@@ -279,8 +362,23 @@ class TerminalEmulator {
     const cmd = parts.command;
     const args = parts.args;
 
-    // Execute command
-    if (cmd in this.commands) {
+    // Check for aliases
+    if (this.aliases[cmd]) {
+      // Replace the command with its alias
+      const aliasedCommand = this.aliases[cmd];
+      const aliasedParts = this.parseCommand(aliasedCommand);
+
+      // If the alias contains arguments, merge them with the provided args
+      const aliasedArgs = aliasedParts.args.concat(args);
+
+      // Execute the aliased command
+      if (aliasedParts.command in this.commands) {
+        this.commands[aliasedParts.command](aliasedArgs);
+      } else {
+        this.write(`command not found: ${aliasedParts.command}`, "error-text");
+      }
+    } else if (cmd in this.commands) {
+      // Execute regular command
       this.commands[cmd](args);
     } else if (cmd) {
       this.write(`command not found: ${cmd}`, "error-text");
@@ -654,18 +752,22 @@ class TerminalEmulator {
 
   cmdHelp(args) {
     const commandHelp = {
-      neofetch: "Display system information with ASCII art",
-      ls: "List directory contents",
+      neofetch: "Display system information with ASCII art and color blocks",
+      theme:
+        "Change terminal color theme (dracula, monokai, nord, solarized-dark)",
+      history: "Display command history with -n option to limit entries",
+      alias: "Define or display aliases for commands",
+      ls: "List directory contents (-a for hidden files, -l for long format)",
       cd: "Change the current directory",
-      pwd: "Print current directory",
+      pwd: "Print current working directory",
       cat: "Concatenate and display file contents",
-      echo: "Display a line of text",
+      echo: "Display a line of text (supports $PWD, $HOME, $USER variables)",
       clear: "Clear the terminal screen",
       help: "Display this help message",
-      find: "Search for files in a directory hierarchy",
-      grep: "Search for patterns in files",
-      head: "Display first lines of a file",
-      tail: "Display last lines of a file",
+      find: "Search for files in a directory hierarchy (-name pattern, -type f|d)",
+      grep: "Search for patterns in files (supports regex patterns)",
+      head: "Display first lines of a file (-n to specify number of lines)",
+      tail: "Display last lines of a file (-n to specify number of lines)",
     };
 
     if (args.length > 0) {
@@ -687,10 +789,19 @@ class TerminalEmulator {
           `${commandHelp[cmd]}\n`;
       }
 
+      output += "\nSpecial features:\n";
       output +=
-        '\nYou can also use <span class="command-name">!!</span> to repeat the last command.\n';
+        '• <span class="command-name">!!</span> - Repeat the last command\n';
       output +=
-        'Use <span class="command-name">help [command]</span> for more information about a specific command.';
+        '• <span class="command-name">Tab</span> - Auto-complete commands, flags, and paths\n';
+      output +=
+        '• <span class="command-name">Arrow Up/Down</span> - Navigate command history\n';
+      output +=
+        "• Command aliases can be defined with <span class=\"command-name\">alias name='command'</span>\n";
+      output +=
+        '• Multiple themes available with <span class="command-name">theme</span> command\n';
+      output +=
+        '\nUse <span class="command-name">help [command]</span> for more information about a specific command.';
 
       this.write(output);
     }
@@ -955,7 +1066,7 @@ class TerminalEmulator {
   }
 
   cmdNeofetch(args) {
-    // ASCII art for Linux penguin
+    // ASCII art for Linux penguin (keep your existing ASCII art)
     const asciiArt = `
           *nnnn*                      
         dGGGGMMb     ,"""""""""""""".
@@ -968,12 +1079,16 @@ class TerminalEmulator {
    fZP            SMMb
    HZM            MMMM
    FqM            MMMM
- __| ".        |\\dS"qML
- |    \`.       | \`' \\Zq
-*)      \\.*__.,|     .'
-\\____   )MMMMMM|   .'
+  __| ".        |\\dS"qML
+  |    \`.       | \`' \\Zq
+  )      \\.*__.,|     .'
+  \\____   )MMMMMM|   .'
      \`-'       \`--' hjm
-`;
+  `;
+
+    // Get actual terminal dimensions
+    const termWidth = this.terminal.clientWidth;
+    const termHeight = this.terminal.clientHeight;
 
     // System information (customized for portfolio)
     const systemInfo = [
@@ -985,7 +1100,7 @@ class TerminalEmulator {
       '<span class="command-name">Uptime:</span> ' + this.getUptime(),
       '<span class="command-name">Packages:</span> 42 (npm)',
       '<span class="command-name">Shell:</span> portfolio-bash 5.1.16',
-      '<span class="command-name">Resolution:</span> Dynamic x Responsive',
+      `<span class="command-name">Resolution:</span> ${termWidth}px x ${termHeight}px`,
       '<span class="command-name">DE:</span> Portfolio-Desktop',
       '<span class="command-name">WM:</span> JavaScript',
       '<span class="command-name">WM Theme:</span> Minimalist-Dark',
@@ -994,6 +1109,17 @@ class TerminalEmulator {
       '<span class="command-name">GPU:</span> HTML5 Canvas Accelerated',
       '<span class="command-name">Memory:</span> 256MB / 512MB',
     ];
+
+    const colorBlocks = `
+<span style="color:#000000">███</span><span style="color:#CC0000">███</span><span style="color:#4E9A06">███</span><span style="color:#C4A000">███</span><span style="color:#3465A4">███</span><span style="color:#75507B">███</span><span style="color:#06989A">███</span><span style="color:#D3D7CF">███</span>
+<span style="color:#555753">███</span><span style="color:#EF2929">███</span><span style="color:#8AE234">███</span><span style="color:#FCE94F">███</span><span style="color:#729FCF">███</span><span style="color:#AD7FA8">███</span><span style="color:#34E2E2">███</span><span style="color:#EEEEEC">███</span>
+`;
+
+    // Add color blocks to the system info
+    systemInfo.push(""); // Empty line
+    colorBlocks.split("\n").forEach((line) => {
+      systemInfo.push(line);
+    });
 
     // Format the output with ASCII art on the left and system info on the right
     const asciiLines = asciiArt.split("\n");
@@ -1026,6 +1152,156 @@ class TerminalEmulator {
       return `${days} days, ${hours} hours, ${mins} mins`;
     } else {
       return `${hours} hours, ${mins} mins`;
+    }
+  }
+  cmdTheme(args) {
+    const availableThemes = {
+      dracula: {
+        "--terminal-bg": "#282a36",
+        "--text-color": "#f8f8f2",
+        "--terminal-prompt-color": "#50fa7b",
+        "--color-light-green": "#50fa7b",
+        "--color-light-cyan": "#8be9fd",
+        "--color-light-blue": "#6272a4",
+        "--color-light-purple": "#bd93f9",
+        "--color-yellow": "#f1fa8c",
+        "--color-light-red": "#ff5555",
+      },
+      monokai: {
+        "--terminal-bg": "#272822",
+        "--text-color": "#f8f8f2",
+        "--terminal-prompt-color": "#a6e22e",
+        "--color-light-green": "#a6e22e",
+        "--color-light-cyan": "#66d9ef",
+        "--color-light-blue": "#75715e",
+        "--color-light-purple": "#ae81ff",
+        "--color-yellow": "#e6db74",
+        "--color-light-red": "#f92672",
+      },
+      nord: {
+        "--terminal-bg": "#2e3440",
+        "--text-color": "#d8dee9",
+        "--terminal-prompt-color": "#a3be8c",
+        "--color-light-green": "#a3be8c",
+        "--color-light-cyan": "#88c0d0",
+        "--color-light-blue": "#81a1c1",
+        "--color-light-purple": "#b48ead",
+        "--color-yellow": "#ebcb8b",
+        "--color-light-red": "#bf616a",
+      },
+      "solarized-dark": {
+        "--terminal-bg": "#002b36",
+        "--text-color": "#839496",
+        "--terminal-prompt-color": "#859900",
+        "--color-light-green": "#859900",
+        "--color-light-cyan": "#2aa198",
+        "--color-light-blue": "#268bd2",
+        "--color-light-purple": "#6c71c4",
+        "--color-yellow": "#b58900",
+        "--color-light-red": "#dc322f",
+      },
+    };
+
+    if (args.length === 0) {
+      // Display available themes
+      this.write("Available themes:", "term-info");
+      Object.keys(availableThemes).forEach((theme) => {
+        this.write(`  ${theme}`, "command-name");
+      });
+      this.write("Usage: theme [theme-name]", "term-info");
+      return;
+    }
+
+    const requestedTheme = args[0].toLowerCase();
+    if (availableThemes[requestedTheme]) {
+      // Apply the theme
+      const themeColors = availableThemes[requestedTheme];
+      const root = document.documentElement;
+
+      Object.keys(themeColors).forEach((property) => {
+        root.style.setProperty(property, themeColors[property]);
+      });
+
+      this.write(`Theme changed to ${requestedTheme}`, "success-text");
+    } else {
+      this.write(
+        `Theme '${requestedTheme}' not found. Use 'theme' to see available themes.`,
+        "error-text"
+      );
+    }
+  }
+  cmdHistory(args) {
+    if (this.history.length === 0) {
+      this.write("No commands in history", "term-info");
+      return;
+    }
+
+    // Parse arguments
+    let limit = 10; // Default
+    if (args.length > 0 && args[0] === "-n" && args.length > 1) {
+      const requestedLimit = parseInt(args[1], 10);
+      if (!isNaN(requestedLimit) && requestedLimit > 0) {
+        limit = Math.min(requestedLimit, this.history.length);
+      } else {
+        this.write("history: invalid number of lines", "error-text");
+        return;
+      }
+    }
+
+    // Display limited history with numbers
+    const historyToShow = this.history.slice(0, limit);
+    let output = "";
+
+    for (let i = 0; i < historyToShow.length; i++) {
+      const commandNumber = this.commandsRun - i;
+      output += `<span class="command-name">${commandNumber
+        .toString()
+        .padStart(4)}</span>  ${historyToShow[i]}\n`;
+    }
+
+    this.write(output);
+  }
+  cmdAlias(args) {
+    if (args.length === 0) {
+      // Display all aliases
+      if (Object.keys(this.aliases).length === 0) {
+        this.write("No aliases defined", "term-info");
+        return;
+      }
+
+      let output = "";
+      for (const alias in this.aliases) {
+        output += `<span class="command-name">alias</span> ${alias}='${this.aliases[alias]}'\n`;
+      }
+      this.write(output);
+      return;
+    }
+
+    // Handle alias assignment or removal
+    if (args.length === 1) {
+      const aliasArg = args[0];
+      if (aliasArg.includes("=")) {
+        // Set alias
+        const [name, ...valueParts] = aliasArg.split("=");
+        const value = valueParts.join("=").replace(/^['"](.*)['"]$/, "$1");
+
+        if (!name) {
+          this.write("alias: invalid alias name", "error-text");
+          return;
+        }
+
+        this.aliases[name] = value;
+        this.write(`Alias set: ${name}='${value}'`, "success-text");
+      } else {
+        // Show specific alias
+        if (this.aliases[aliasArg]) {
+          this.write(
+            `<span class="command-name">alias</span> ${aliasArg}='${this.aliases[aliasArg]}'`
+          );
+        } else {
+          this.write(`alias: ${aliasArg}: not found`, "error-text");
+        }
+      }
     }
   }
 }
