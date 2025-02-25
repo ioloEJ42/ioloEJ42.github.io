@@ -23,21 +23,45 @@
         position: relative;
         background-color: var(--terminal-bg);
       }
+
+      /* Unified terminal text styling for all content */
+      .terminal-body * {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.95rem;
+        line-height: 1.2 !important;
+      }
+
       .term-output {
-        white-space: pre-wrap;
+        /* Standard terminal text display */
+        white-space: normal;
         word-break: break-word;
       }
+
+      /* Override any paragraph margins */
+      .term-output p {
+        margin: 0 !important; /* No margin between lines */
+        padding: 0 !important;
+        line-height: 1.2 !important; /* Tighter line height */
+      }
+
+      /* Add a small spacer after each line for readability */
+      .term-output p:not(:last-child) {
+        margin-bottom: 2px !important;
+      }
+
       .term-input-line {
         display: flex;
         position: relative;
         margin-top: 10px;
       }
+
       .term-input-prompt {
         color: var(--terminal-prompt-color);
         display: flex;
         margin-right: 8px;
         white-space: nowrap;
       }
+
       .term-input {
         background: transparent;
         border: none;
@@ -48,38 +72,49 @@
         padding: 0;
         outline: none;
       }
+
       .term-input:focus {
         outline: none;
       }
+
       /* Command syntax highlighting */
       .command-name {
         color: var(--color-light-green);
       }
+
       .command-param {
         color: var(--color-light-cyan);
       }
+
       .command-flag {
         color: var(--color-yellow);
       }
+
       .error-text {
         color: var(--color-light-red);
       }
+
       .success-text {
         color: var(--color-light-green);
       }
+
       /* Additional syntax highlighting */
       .directory {
         color: var(--color-light-blue);
       }
+
       .text-file {
         color: var(--color-light-cyan);
       }
+
       .executable {
         color: var(--color-light-green);
       }
+
       .image-file {
         color: var(--color-light-purple);
       }
+
       /* Terminal custom colors */
       :root {
         --color-light-green: #50fa7b;
@@ -92,12 +127,14 @@
         --text-color: #f8f8f2;
         --terminal-bg: #282a36;
       }
+
       .neofetch-output {
         font-family: monospace;
         white-space: pre;
         line-height: 1.2;
         color: var(--text-color);
       }
+
       .neofetch-output .command-name {
         color: var(--color-light-cyan);
         font-weight: bold;
