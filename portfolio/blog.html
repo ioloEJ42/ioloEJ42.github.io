@@ -1,71 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BLOG_POST_ | PORTFOLIO_</title>
-  <link rel="shortcut icon" href="../img/shortcuticon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="grid"></div>
-  <header>
-    <!-- Navigation will be inserted here by components.js -->
-  </header>
-  <main>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <div class="terminal-buttons">
-          <div class="terminal-button close"></div>
-          <div class="terminal-button minimize"></div>
-          <div class="terminal-button maximize"></div>
-        </div>
-        <div class="terminal-title">less post.md</div>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">blogs</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~/posts</span>
-            <span>$</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BLOG_POST_ | PORTFOLIO_</title>
+    <link
+      rel="shortcut icon"
+      href="../img/shortcuticon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="grid"></div>
+    <header>
+      <!-- Navigation will be inserted here by components.js -->
+    </header>
+    <main>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-buttons">
+            <div class="terminal-button close"></div>
+            <div class="terminal-button minimize"></div>
+            <div class="terminal-button maximize"></div>
           </div>
-          <div class="terminal-command">less <span id="blog-filename">post.md</span></div>
+          <div class="terminal-title">less post.md</div>
         </div>
-        
-        <div class="terminal-output">
-          <article class="blog-post">
-            <div class="blog-header">
-              <h1 id="blog-title">BLOG_POST_TITLE_</h1>
-              <div id="blog-date" class="blog-date">Date: FEBRUARY_25_2025_</div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">blogs</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~/posts</span>
+              <span>$</span>
             </div>
-            <div id="blog-content" class="blog-content">
-              <!-- Blog content will be loaded from JSON -->
-              <div class="loading">Loading content...<span class="blink-cursor"></span></div>
+            <div class="terminal-command">
+              less <span id="blog-filename">post.md</span>
             </div>
-          </article>
-        </div>
-        
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">blogs</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~/posts</span>
-            <span>$</span>
           </div>
-          <div class="terminal-command blink-cursor"></div>
+
+          <div class="terminal-output">
+            <article class="blog-post">
+              <div class="blog-header">
+                <h1 id="blog-title">BLOG_POST_TITLE_</h1>
+                <div id="blog-date" class="blog-date">
+                  Date: FEBRUARY_25_2025_
+                </div>
+              </div>
+              <div id="blog-content" class="blog-content">
+                <!-- Blog content will be loaded from JSON -->
+                <div class="loading">
+                  Loading content...<span class="blink-cursor"></span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">blogs</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~/posts</span>
+              <span>$</span>
+            </div>
+            <div class="terminal-command blink-cursor"></div>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-  <footer>
-    <!-- Footer will be inserted here by components.js -->
-  </footer>
-  <script src="script.js"></script>
-</body>
+    </main>
+    <footer>
+      <!-- Footer will be inserted here by components.js -->
+    </footer>
+    <script src="script.js"></script>
+  </body>
 </html>

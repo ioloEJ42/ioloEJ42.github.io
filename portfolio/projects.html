@@ -1,72 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PROJECTS_ | PORTFOLIO_</title>
-  <link rel="shortcut icon" href="../img/shortcuticon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="grid"></div>
-  <header>
-    <!-- Navigation will be inserted here by components.js -->
-  </header>
-  <main>
-    <section id="projects-list">
-      <!-- Projects will be loaded from JSON here -->
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <div class="terminal-buttons">
-            <div class="terminal-button close"></div>
-            <div class="terminal-button minimize"></div>
-            <div class="terminal-button maximize"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PROJECTS_ | PORTFOLIO_</title>
+    <link
+      rel="shortcut icon"
+      href="../img/shortcuticon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="grid"></div>
+    <header>
+      <!-- Navigation will be inserted here by components.js -->
+    </header>
+    <main>
+      <section id="projects-list">
+        <!-- Projects will be loaded from JSON here -->
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <div class="terminal-button close"></div>
+              <div class="terminal-button minimize"></div>
+              <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">ssh projects.portfolio.local</div>
           </div>
-          <div class="terminal-title">ssh projects.portfolio.local</div>
-        </div>
-        <div class="terminal-body">
-          <div class="ssh-loading">
+          <div class="terminal-body">
+            <div class="ssh-loading">
+              <div class="terminal-line">
+                <div class="terminal-prompt">
+                  <span class="terminal-user">user</span>
+                  <span>@</span>
+                  <span class="terminal-host">local</span>
+                  <span>:</span>
+                  <span class="terminal-path">~</span>
+                  <span>$</span>
+                </div>
+                <div class="terminal-command">ssh projects@portfolio.local</div>
+              </div>
+              <p>Connecting to projects@portfolio.local...</p>
+              <p>
+                The authenticity of host 'portfolio.local' can't be established.
+              </p>
+              <p>
+                ECDSA key fingerprint is
+                SHA256:dGhpciBpcyBhIGZha2Uga2V5IGZpbmdlcnByaW50
+              </p>
+              <p>
+                Are you sure you want to continue connecting
+                (yes/no/[fingerprint])? yes
+              </p>
+              <p>
+                Warning: Permanently added 'portfolio.local' (ECDSA) to the list
+                of known hosts.
+              </p>
+              <p>Password: ********</p>
+              <p>Last login: Tue Feb 25 13:37:42 2025 from 192.168.1.42</p>
+            </div>
             <div class="terminal-line">
               <div class="terminal-prompt">
-                <span class="terminal-user">user</span>
+                <span class="terminal-user">projects</span>
                 <span>@</span>
-                <span class="terminal-host">local</span>
+                <span class="terminal-host">portfolio</span>
                 <span>:</span>
                 <span class="terminal-path">~</span>
                 <span>$</span>
               </div>
-              <div class="terminal-command">ssh projects@portfolio.local</div>
+              <div class="terminal-command">ls -la</div>
             </div>
-            <p>Connecting to projects@portfolio.local...</p>
-            <p>The authenticity of host 'portfolio.local' can't be established.</p>
-            <p>ECDSA key fingerprint is SHA256:dGhpciBpcyBhIGZha2Uga2V5IGZpbmdlcnByaW50</p>
-            <p>Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</p>
-            <p>Warning: Permanently added 'portfolio.local' (ECDSA) to the list of known hosts.</p>
-            <p>Password: ********</p>
-            <p>Last login: Tue Feb 25 13:37:42 2025 from 192.168.1.42</p>
-          </div>
-          <div class="terminal-line">
-            <div class="terminal-prompt">
-              <span class="terminal-user">projects</span>
-              <span>@</span>
-              <span class="terminal-host">portfolio</span>
-              <span>:</span>
-              <span class="terminal-path">~</span>
-              <span>$</span>
+            <div class="terminal-output">
+              <div class="loading">
+                Fetching project data...<span class="blink-cursor"></span>
+              </div>
             </div>
-            <div class="terminal-command">ls -la</div>
-          </div>
-          <div class="terminal-output">
-            <div class="loading">Fetching project data...<span class="blink-cursor"></span></div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
-  <footer>
-    <!-- Footer will be inserted here by components.js -->
-  </footer>
-  <script src="script.js"></script>
-</body>
+      </section>
+    </main>
+    <footer>
+      <!-- Footer will be inserted here by components.js -->
+    </footer>
+    <script src="script.js"></script>
+  </body>
 </html>

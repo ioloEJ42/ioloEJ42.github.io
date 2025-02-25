@@ -1,290 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio Path Checker</title>
-  <style>
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #000;
-      color: #fff;
-    }
-    h1, h2 {
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding-bottom: 10px;
-    }
-    .file-test {
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 4px;
-    }
-    .success {
-      background-color: rgba(46, 204, 113, 0.2);
-      border: 1px solid #2ecc71;
-    }
-    .error {
-      background-color: rgba(231, 76, 60, 0.2);
-      border: 1px solid #e74c3c;
-    }
-    code {
-      font-family: monospace;
-      background: rgba(255,255,255,0.1);
-      padding: 2px 4px;
-      border-radius: 3px;
-    }
-    button {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white;
-      padding: 8px 15px;
-      cursor: pointer;
-      margin: 10px 0;
-    }
-    button:hover {
-      background: rgba(255,255,255,0.1);
-    }
-    .test-results {
-      margin-top: 20px;
-    }
-    .json-display {
-      background: rgba(255,255,255,0.05);
-      padding: 10px;
-      border-radius: 4px;
-      max-height: 300px;
-      overflow: auto;
-      white-space: pre-wrap;
-      margin-top: 5px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Portfolio Path Checker</h1>
-  <p>This tool checks the paths to your project files to help debug loading issues.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Path Checker</title>
+    <style>
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #000;
+        color: #fff;
+      }
+      h1,
+      h2 {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 10px;
+      }
+      .file-test {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 4px;
+      }
+      .success {
+        background-color: rgba(46, 204, 113, 0.2);
+        border: 1px solid #2ecc71;
+      }
+      .error {
+        background-color: rgba(231, 76, 60, 0.2);
+        border: 1px solid #e74c3c;
+      }
+      code {
+        font-family: monospace;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+      button {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 8px 15px;
+        cursor: pointer;
+        margin: 10px 0;
+      }
+      button:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .test-results {
+        margin-top: 20px;
+      }
+      .json-display {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow: auto;
+        white-space: pre-wrap;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Portfolio Path Checker</h1>
+    <p>
+      This tool checks the paths to your project files to help debug loading
+      issues.
+    </p>
 
-  <button id="check-btn">Run Path Checks</button>
-  <button id="check-json-btn">Check JSON Files</button>
+    <button id="check-btn">Run Path Checks</button>
+    <button id="check-json-btn">Check JSON Files</button>
 
-  <div class="test-results" id="results">
-    <p>Click the button above to start testing.</p>
-  </div>
+    <div class="test-results" id="results">
+      <p>Click the button above to start testing.</p>
+    </div>
 
-  <script>
-    document.getElementById('check-btn').addEventListener('click', runPathChecks);
-    document.getElementById('check-json-btn').addEventListener('click', checkJsonFiles);
+    <script>
+      document
+        .getElementById("check-btn")
+        .addEventListener("click", runPathChecks);
+      document
+        .getElementById("check-json-btn")
+        .addEventListener("click", checkJsonFiles);
 
-    async function runPathChecks() {
-      const results = document.getElementById('results');
-      results.innerHTML = '<h2>Running Path Checks...</h2>';
-      
-      // Define files to check
-      const filesToCheck = [
-        // CSS files
-        'styles.css',
-        // JS files
-        'components.js',
-        'script.js',
-        // HTML files
-        'index.html',
-        'projects.html',
-        'blogs.html',
-        'blog.html',
-        'project.html',
-        'contact.html',
-        // Data directory
-        'data/',
-        // JSON files
-        'data/profile.json',
-        'data/projects.json',
-        'data/blogs.json',
-        // Project details
-        'data/projects/minimal-dashboard.json',
-        // Blog posts
-        'data/blogs/minimalism-in-web-design.json',
-        // External resources
-        '../img/shortcuticon.png'
-      ];
-      
-      let resultsHTML = '<h2>Path Check Results</h2>';
-      
-      // Check each file
-      for (const file of filesToCheck) {
-        try {
-          const response = await fetch(file);
-          
-          if (response.ok) {
-            resultsHTML += `
+      async function runPathChecks() {
+        const results = document.getElementById("results");
+        results.innerHTML = "<h2>Running Path Checks...</h2>";
+
+        // Define files to check
+        const filesToCheck = [
+          // CSS files
+          "styles.css",
+          // JS files
+          "components.js",
+          "script.js",
+          // HTML files
+          "index.html",
+          "projects.html",
+          "blogs.html",
+          "blog.html",
+          "project.html",
+          "contact.html",
+          // Data directory
+          "data/",
+          // JSON files
+          "data/profile.json",
+          "data/projects.json",
+          "data/blogs.json",
+          // Project details
+          "data/projects/minimal-dashboard.json",
+          // Blog posts
+          "data/blogs/minimalism-in-web-design.json",
+          // External resources
+          "../img/shortcuticon.png",
+        ];
+
+        let resultsHTML = "<h2>Path Check Results</h2>";
+
+        // Check each file
+        for (const file of filesToCheck) {
+          try {
+            const response = await fetch(file);
+
+            if (response.ok) {
+              resultsHTML += `
               <div class="file-test success">
                 ✅ <code>${file}</code> - Found (${response.status})
               </div>
             `;
-          } else {
-            resultsHTML += `
+            } else {
+              resultsHTML += `
               <div class="file-test error">
                 ❌ <code>${file}</code> - Error: ${response.status} ${response.statusText}
               </div>
             `;
-          }
-        } catch (error) {
-          resultsHTML += `
+            }
+          } catch (error) {
+            resultsHTML += `
             <div class="file-test error">
               ❌ <code>${file}</code> - Exception: ${error.message}
             </div>
           `;
+          }
         }
+
+        results.innerHTML = resultsHTML;
       }
-      
-      results.innerHTML = resultsHTML;
-    }
-    
-    async function checkJsonFiles() {
-      const results = document.getElementById('results');
-      results.innerHTML = '<h2>Checking JSON Files...</h2>';
-      
-      // JSON files to check
-      const jsonFiles = [
-        'data/profile.json',
-        'data/projects.json',
-        'data/blogs.json',
-        'data/projects/minimal-dashboard.json',
-        'data/blogs/minimalism-in-web-design.json'
-      ];
-      
-      let resultsHTML = '<h2>JSON File Check Results</h2>';
-      
-      // Check each JSON file
-      for (const file of jsonFiles) {
-        try {
-          const response = await fetch(file);
-          
-          if (response.ok) {
-            try {
-              const jsonData = await response.json();
-              resultsHTML += `
+
+      async function checkJsonFiles() {
+        const results = document.getElementById("results");
+        results.innerHTML = "<h2>Checking JSON Files...</h2>";
+
+        // JSON files to check
+        const jsonFiles = [
+          "data/profile.json",
+          "data/projects.json",
+          "data/blogs.json",
+          "data/projects/minimal-dashboard.json",
+          "data/blogs/minimalism-in-web-design.json",
+        ];
+
+        let resultsHTML = "<h2>JSON File Check Results</h2>";
+
+        // Check each JSON file
+        for (const file of jsonFiles) {
+          try {
+            const response = await fetch(file);
+
+            if (response.ok) {
+              try {
+                const jsonData = await response.json();
+                resultsHTML += `
                 <div class="file-test success">
                   ✅ <code>${file}</code> - Valid JSON
-                  <div class="json-display">${JSON.stringify(jsonData, null, 2)}</div>
+                  <div class="json-display">${JSON.stringify(
+                    jsonData,
+                    null,
+                    2
+                  )}</div>
                 </div>
               `;
-            } catch (parseError) {
-              resultsHTML += `
+              } catch (parseError) {
+                resultsHTML += `
                 <div class="file-test error">
                   ❌ <code>${file}</code> - Invalid JSON: ${parseError.message}
                 </div>
               `;
-            }
-          } else {
-            resultsHTML += `
+              }
+            } else {
+              resultsHTML += `
               <div class="file-test error">
                 ❌ <code>${file}</code> - Error: ${response.status} ${response.statusText}
               </div>
             `;
-          }
-        } catch (error) {
-          resultsHTML += `
+            }
+          } catch (error) {
+            resultsHTML += `
             <div class="file-test error">
               ❌ <code>${file}</code> - Exception: ${error.message}
             </div>
           `;
+          }
         }
-      }
-      
-      // Check component script loading
-      resultsHTML += '<h2>Component Script Check</h2>';
-      
-      try {
-        // Create a test div
-        const testDiv = document.createElement('div');
-        testDiv.id = 'component-test';
-        document.body.appendChild(testDiv);
-        
-        // Load components script
-        const script = document.createElement('script');
-        script.src = 'components.js';
-        
-        // Set up listeners
-        let scriptLoadedSuccessfully = false;
-        
-        script.onload = () => {
-          scriptLoadedSuccessfully = true;
-          
-          // Check if Components object exists
-          if (typeof window.Components !== 'undefined') {
-            // Try to render a component
-            try {
-              testDiv.innerHTML = window.Components.Loading();
-              resultsHTML += `
+
+        // Check component script loading
+        resultsHTML += "<h2>Component Script Check</h2>";
+
+        try {
+          // Create a test div
+          const testDiv = document.createElement("div");
+          testDiv.id = "component-test";
+          document.body.appendChild(testDiv);
+
+          // Load components script
+          const script = document.createElement("script");
+          script.src = "components.js";
+
+          // Set up listeners
+          let scriptLoadedSuccessfully = false;
+
+          script.onload = () => {
+            scriptLoadedSuccessfully = true;
+
+            // Check if Components object exists
+            if (typeof window.Components !== "undefined") {
+              // Try to render a component
+              try {
+                testDiv.innerHTML = window.Components.Loading();
+                resultsHTML += `
                 <div class="file-test success">
                   ✅ Components object loaded and functional
                 </div>
               `;
-            } catch (componentError) {
-              resultsHTML += `
+              } catch (componentError) {
+                resultsHTML += `
                 <div class="file-test error">
                   ⚠️ Components object exists but throws error: ${componentError.message}
                 </div>
               `;
-            }
-          } else {
-            resultsHTML += `
+              }
+            } else {
+              resultsHTML += `
               <div class="file-test error">
                 ⚠️ components.js loaded but Components object not found
               </div>
             `;
-          }
-          
-          // Clean up
-          testDiv.remove();
-          results.innerHTML = resultsHTML;
-        };
-        
-        script.onerror = () => {
-          resultsHTML += `
+            }
+
+            // Clean up
+            testDiv.remove();
+            results.innerHTML = resultsHTML;
+          };
+
+          script.onerror = () => {
+            resultsHTML += `
             <div class="file-test error">
               ❌ Failed to load components.js script
             </div>
           `;
-          testDiv.remove();
-          results.innerHTML = resultsHTML;
-        };
-        
-        // Add script to page
-        document.body.appendChild(script);
-        
-        // Set a timeout to check if script loaded
-        setTimeout(() => {
-          if (!scriptLoadedSuccessfully) {
-            resultsHTML += `
+            testDiv.remove();
+            results.innerHTML = resultsHTML;
+          };
+
+          // Add script to page
+          document.body.appendChild(script);
+
+          // Set a timeout to check if script loaded
+          setTimeout(() => {
+            if (!scriptLoadedSuccessfully) {
+              resultsHTML += `
               <div class="file-test error">
                 ⚠️ Timeout waiting for components.js to load
               </div>
             `;
-            results.innerHTML = resultsHTML;
-          }
-        }, 3000);
-        
-      } catch (error) {
-        resultsHTML += `
+              results.innerHTML = resultsHTML;
+            }
+          }, 3000);
+        } catch (error) {
+          resultsHTML += `
           <div class="file-test error">
             ❌ Error testing component script: ${error.message}
           </div>
         `;
-        results.innerHTML = resultsHTML;
+          results.innerHTML = resultsHTML;
+        }
       }
-    }
-    
-    // Check if we have CORS issues
-    async function checkCorsStatus() {
-      try {
-        // Make a simple request to check if we're running on a server
-        await fetch('data/');
-        return true;
-      } catch (error) {
-        if (error.message.includes('CORS')) {
-          document.getElementById('results').innerHTML = `
+
+      // Check if we have CORS issues
+      async function checkCorsStatus() {
+        try {
+          // Make a simple request to check if we're running on a server
+          await fetch("data/");
+          return true;
+        } catch (error) {
+          if (error.message.includes("CORS")) {
+            document.getElementById("results").innerHTML = `
             <div class="file-test error">
               <h2>⚠️ CORS Error Detected</h2>
               <p>This page needs to be run from a web server to properly check file paths.</p>
@@ -297,14 +308,14 @@
               </ul>
             </div>
           `;
-          return false;
+            return false;
+          }
+          return true;
         }
-        return true;
       }
-    }
-    
-    // Check CORS on page load
-    checkCorsStatus();
-  </script>
-</body>
+
+      // Check CORS on page load
+      checkCorsStatus();
+    </script>
+  </body>
 </html>

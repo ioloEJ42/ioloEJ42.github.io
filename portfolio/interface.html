@@ -1,145 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TERMINAL_ | PORTFOLIO_</title>
-  <link rel="shortcut icon" href="../img/shortcuticon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Additional styles for interactive terminal */
-    .interactive-terminal {
-      height: 500px;
-      overflow-y: auto;
-      padding-bottom: 60px; /* Space for input */
-      position: relative;
-      background-color: var(--terminal-bg);
-    }
-    .term-output {
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .term-input-line {
-      display: flex;
-      position: relative;
-      margin-top: 10px;
-    }
-    .term-input-prompt {
-      color: var(--terminal-prompt-color);
-      display: flex;
-      margin-right: 8px;
-      white-space: nowrap;
-    }
-    .term-input {
-      background: transparent;
-      border: none;
-      color: var(--text-color);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.95rem;
-      width: 100%;
-      padding: 0;
-      outline: none;
-    }
-    .term-input:focus {
-      outline: none;
-    }
-    /* Command syntax highlighting */
-    .command-name {
-      color: var(--color-light-green);
-    }
-    .command-param {
-      color: var(--color-light-cyan);
-    }
-    .command-flag {
-      color: var(--color-yellow);
-    }
-    .error-text {
-      color: var(--color-light-red);
-    }
-    .success-text {
-      color: var(--color-light-green);
-    }
-    /* Additional syntax highlighting */
-    .directory {
-      color: var(--color-light-blue);
-    }
-    .text-file {
-      color: var(--color-light-cyan);
-    }
-    .executable {
-      color: var(--color-light-green);
-    }
-    .image-file {
-      color: var(--color-light-purple);
-    }
-    /* Terminal custom colors */
-    :root {
-      --color-light-green: #50fa7b;
-      --color-light-cyan: #8be9fd;
-      --color-light-blue: #6272a4;
-      --color-light-purple: #bd93f9;
-      --color-yellow: #f1fa8c;
-      --color-light-red: #ff5555;
-      --terminal-prompt-color: #50fa7b;
-      --text-color: #f8f8f2;
-      --terminal-bg: #282a36;
-    }
-    .neofetch-output {
-      font-family: monospace;
-      white-space: pre;
-      line-height: 1.2;
-      color: var(--text-color);
-    }
-    .neofetch-output .command-name {
-      color: var(--color-light-cyan);
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <div class="grid"></div>
-  <header>
-    <!-- Navigation will be inserted here by components.js -->
-  </header>
-  <main>
-    <div class="section-title">
-      <h2>Interactive Terminal</h2>
-      <p>Explore my portfolio through this simulated Linux terminal</p>
-    </div>
-    
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <div class="terminal-title">user@portfolio: ~/terminal</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TERMINAL_ | PORTFOLIO_</title>
+    <link
+      rel="shortcut icon"
+      href="../img/shortcuticon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Additional styles for interactive terminal */
+      .interactive-terminal {
+        height: 500px;
+        overflow-y: auto;
+        padding-bottom: 60px; /* Space for input */
+        position: relative;
+        background-color: var(--terminal-bg);
+      }
+      .term-output {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .term-input-line {
+        display: flex;
+        position: relative;
+        margin-top: 10px;
+      }
+      .term-input-prompt {
+        color: var(--terminal-prompt-color);
+        display: flex;
+        margin-right: 8px;
+        white-space: nowrap;
+      }
+      .term-input {
+        background: transparent;
+        border: none;
+        color: var(--text-color);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.95rem;
+        width: 100%;
+        padding: 0;
+        outline: none;
+      }
+      .term-input:focus {
+        outline: none;
+      }
+      /* Command syntax highlighting */
+      .command-name {
+        color: var(--color-light-green);
+      }
+      .command-param {
+        color: var(--color-light-cyan);
+      }
+      .command-flag {
+        color: var(--color-yellow);
+      }
+      .error-text {
+        color: var(--color-light-red);
+      }
+      .success-text {
+        color: var(--color-light-green);
+      }
+      /* Additional syntax highlighting */
+      .directory {
+        color: var(--color-light-blue);
+      }
+      .text-file {
+        color: var(--color-light-cyan);
+      }
+      .executable {
+        color: var(--color-light-green);
+      }
+      .image-file {
+        color: var(--color-light-purple);
+      }
+      /* Terminal custom colors */
+      :root {
+        --color-light-green: #50fa7b;
+        --color-light-cyan: #8be9fd;
+        --color-light-blue: #6272a4;
+        --color-light-purple: #bd93f9;
+        --color-yellow: #f1fa8c;
+        --color-light-red: #ff5555;
+        --terminal-prompt-color: #50fa7b;
+        --text-color: #f8f8f2;
+        --terminal-bg: #282a36;
+      }
+      .neofetch-output {
+        font-family: monospace;
+        white-space: pre;
+        line-height: 1.2;
+        color: var(--text-color);
+      }
+      .neofetch-output .command-name {
+        color: var(--color-light-cyan);
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <header>
+      <!-- Navigation will be inserted here by components.js -->
+    </header>
+    <main>
+      <div class="section-title">
+        <h2>Interactive Terminal</h2>
+        <p>Explore my portfolio through this simulated Linux terminal</p>
       </div>
-      <div class="terminal-body interactive-terminal" id="terminal">
-        <!-- Welcome message -->
-        <div class="term-output">
-          <p><span class="success-text">Welcome to the Portfolio Terminal Interface</span></p>
-          <p>Type <span class="command-name">help</span> to see available commands</p>
-          <p>Type <span class="command-name">clear</span> to clear the terminal</p>
-          <p>-------------------------------------------------</p>
-          <p>Last login: <span id="last-login-time">Tue Feb 25 09:41:30 2025</span></p>
+
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-title">user@portfolio: ~/terminal</div>
         </div>
-        <!-- Initial input line -->
-        <div class="term-input-line">
-          <div class="term-input-prompt">
-            <span class="terminal-user">user</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~</span>
-            <span>$</span>
+        <div class="terminal-body interactive-terminal" id="terminal">
+          <!-- Welcome message -->
+          <div class="term-output">
+            <p>
+              <span class="success-text"
+                >Welcome to the Portfolio Terminal Interface</span
+              >
+            </p>
+            <p>
+              Type <span class="command-name">help</span> to see available
+              commands
+            </p>
+            <p>
+              Type <span class="command-name">clear</span> to clear the terminal
+            </p>
+            <p>-------------------------------------------------</p>
+            <p>
+              Last login:
+              <span id="last-login-time">Tue Feb 25 09:41:30 2025</span>
+            </p>
           </div>
-          <input type="text" class="term-input" id="term-input" autofocus spellcheck="false" autocomplete="off">
+          <!-- Initial input line -->
+          <div class="term-input-line">
+            <div class="term-input-prompt">
+              <span class="terminal-user">user</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~</span>
+              <span>$</span>
+            </div>
+            <input
+              type="text"
+              class="term-input"
+              id="term-input"
+              autofocus
+              spellcheck="false"
+              autocomplete="off"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-  <footer>
-    <!-- Footer will be inserted here by components.js -->
-  </footer>
-  <script src="script.js"></script>
-  <script src="terminal.js"></script>
-</body>
+    </main>
+    <footer>
+      <!-- Footer will be inserted here by components.js -->
+    </footer>
+    <script src="script.js"></script>
+    <script src="terminal.js"></script>
+  </body>
 </html>

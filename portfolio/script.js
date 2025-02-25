@@ -15,44 +15,58 @@
         <nav>
           <div class="nav-title">PORTFOLIO_</div>
           <ul class="nav-links">
-            <li class="${activePage === "home" ? "active" : ""}"><a href="index.html">$ HOME</a></li>
-            <li class="${activePage === "projects" ? "active" : ""}"><a href="projects.html">$ PROJECTS</a></li>
-            <li class="${activePage === "blogs" ? "active" : ""}"><a href="blogs.html">$ BLOGS</a></li>
-            <li class="${activePage === "interface" ? "active" : ""}"><a href="interface.html">$ TERMINAL</a></li>
-            <li class="${activePage === "contact" ? "active" : ""}"><a href="contact.html">$ CONTACT</a></li>
+            <li class="${
+              activePage === "home" ? "active" : ""
+            }"><a href="index.html">$ HOME</a></li>
+            <li class="${
+              activePage === "projects" ? "active" : ""
+            }"><a href="projects.html">$ PROJECTS</a></li>
+            <li class="${
+              activePage === "blogs" ? "active" : ""
+            }"><a href="blogs.html">$ BLOGS</a></li>
+            <li class="${
+              activePage === "interface" ? "active" : ""
+            }"><a href="interface.html">$ TERMINAL</a></li>
+            <li class="${
+              activePage === "contact" ? "active" : ""
+            }"><a href="contact.html">$ CONTACT</a></li>
             <li><a href="../">$ DASHBOARD</a></li>
           </ul>
         </nav>
       `;
     },
-    
+
     Footer: () => {
       const currentYear = new Date().getFullYear();
       return `
         <p>&copy; ${currentYear} NAME_ | $ echo "Built with HTML, CSS, JS"</p>
       `;
-    }
+    },
   };
-  
+
   // Render the basic components instantly
   const currentPage = getCurrentPage();
   const headerElement = document.querySelector("header");
   const footerElement = document.querySelector("footer");
-  
+
   if (headerElement) {
     headerElement.innerHTML = window.BasicComponents.Navbar(currentPage);
   }
-  
+
   if (footerElement) {
     footerElement.innerHTML = window.BasicComponents.Footer();
   }
-  
+
   // Helper function for initial page detection
   function getCurrentPage() {
     const pathname = window.location.pathname;
     const filename = pathname.split("/").pop();
-    
-    if (filename === "index.html" || filename === "" || pathname.endsWith("/portfolio/")) {
+
+    if (
+      filename === "index.html" ||
+      filename === "" ||
+      pathname.endsWith("/portfolio/")
+    ) {
       return "home";
     } else if (filename === "projects.html") {
       return "projects";
@@ -74,13 +88,13 @@
 // Initialize main functionality after DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   // Use console logging instead of visual indicators
-  console.log('$ loading components...');
-  
+  console.log("$ loading components...");
+
   // Load components script for full functionality
   const componentsScript = document.createElement("script");
   componentsScript.src = "components.js";
   componentsScript.onload = () => {
-    console.log('$ components loaded successfully');
+    console.log("$ components loaded successfully");
     initializePage();
   };
   componentsScript.onerror = handleComponentError;
@@ -90,20 +104,21 @@ document.addEventListener("DOMContentLoaded", () => {
 // Handle component loading error
 function handleComponentError() {
   console.error("$ components.js: No such file or directory");
-  document.body.insertAdjacentHTML('afterbegin', 
-    '<div style="background: #222; color: #ddd; padding: 1rem; margin: 1rem; font-family: \'JetBrains Mono\', monospace; border: 1px solid #555;">' +
-    '<h3>Error: components.js not found</h3>' +
-    '<p>$ cat components.js<br>cat: components.js: No such file or directory</p>' +
-    '</div>'
+  document.body.insertAdjacentHTML(
+    "afterbegin",
+    "<div style=\"background: #222; color: #ddd; padding: 1rem; margin: 1rem; font-family: 'JetBrains Mono', monospace; border: 1px solid #555;\">" +
+      "<h3>Error: components.js not found</h3>" +
+      "<p>$ cat components.js<br>cat: components.js: No such file or directory</p>" +
+      "</div>"
   );
 }
 
 // Terminal typing animation
 function simulateTyping(element, text, speed = 50) {
   let i = 0;
-  element.textContent = '';
-  
-  return new Promise(resolve => {
+  element.textContent = "";
+
+  return new Promise((resolve) => {
     function type() {
       if (i < text.length) {
         element.textContent += text.charAt(i);
@@ -121,14 +136,15 @@ function simulateTyping(element, text, speed = 50) {
 // since they were already rendered by the preload function
 async function initializePage() {
   // Check if Components were properly loaded
-  if (typeof Components === 'undefined') {
+  if (typeof Components === "undefined") {
     console.error("$ typeof Components");
     console.error("undefined");
-    document.body.insertAdjacentHTML('afterbegin', 
-      '<div style="background: #222; color: #ddd; padding: 1rem; margin: 1rem; font-family: \'JetBrains Mono\', monospace; border: 1px solid #555;">' +
-      '<h3>Error: Components not defined</h3>' +
-      '<p>$ typeof Components<br>undefined</p>' +
-      '</div>'
+    document.body.insertAdjacentHTML(
+      "afterbegin",
+      "<div style=\"background: #222; color: #ddd; padding: 1rem; margin: 1rem; font-family: 'JetBrains Mono', monospace; border: 1px solid #555;\">" +
+        "<h3>Error: Components not defined</h3>" +
+        "<p>$ typeof Components<br>undefined</p>" +
+        "</div>"
     );
     return;
   }
@@ -170,7 +186,7 @@ async function initializePage() {
 function getCurrentPage() {
   const pathname = window.location.pathname;
   const filename = pathname.split("/").pop();
-  
+
   console.log("$ pwd");
   console.log(pathname);
 
@@ -206,41 +222,46 @@ function getUrlParam(param) {
 // Enhanced JSON loading with better error handling and console logging
 async function loadJsonData(filename) {
   console.log(`$ curl -s https://api.portfolio.local/data/${filename}.json`);
-  
+
   try {
     const response = await fetch(`data/${filename}.json`);
-    
+
     if (!response.ok) {
-      console.error(`curl: (404) Not Found - ${filename}.json (${response.status})`);
+      console.error(
+        `curl: (404) Not Found - ${filename}.json (${response.status})`
+      );
       return null;
     }
-    
+
     const data = await response.json();
     console.log(`$ jq . data/${filename}.json | head -3`);
     console.log(`{...}`); // Simulating partial output of jq
     return data;
   } catch (error) {
-    console.error(`curl: Failed to connect to api.portfolio.local - ${error.message}`);
+    console.error(
+      `curl: Failed to connect to api.portfolio.local - ${error.message}`
+    );
     return null;
   }
 }
 
 // Home page content
 async function loadHomeContent() {
-  console.log('$ loading home content...');
-  
+  console.log("$ loading home content...");
+
   // Load profile data
   const profileData = await loadJsonData("profile");
   if (profileData) {
     const nameEl = document.getElementById("profile-name");
     const titleEl = document.getElementById("profile-title");
     const bioEl = document.getElementById("profile-bio");
-    
+
     if (nameEl) nameEl.textContent = profileData.name;
     if (titleEl) titleEl.textContent = profileData.title;
     if (bioEl) bioEl.innerHTML = profileData.bio;
   } else {
-    document.getElementById("profile-bio").innerHTML = "<p>$ cat: bio.txt: No such file or directory</p>";
+    document.getElementById("profile-bio").innerHTML =
+      "<p>$ cat: bio.txt: No such file or directory</p>";
   }
 
   // Load featured projects
@@ -248,14 +269,14 @@ async function loadHomeContent() {
   if (projectsContainer) {
     const projectsData = await loadJsonData("projects");
     if (projectsData && projectsData.projects) {
-      console.log('$ filtering featured projects...');
+      console.log("$ filtering featured projects...");
       const featuredProjects = projectsData.projects
         .filter((p) => p.featured)
         .slice(0, 3);
 
       if (featuredProjects.length > 0) {
         // Add a short delay to simulate loading
-        await new Promise(resolve => setTimeout(resolve, 500)); 
+        await new Promise((resolve) => setTimeout(resolve, 500));
         projectsContainer.innerHTML = featuredProjects
           .map((project) => Components.ProjectCard(project))
           .join("");
@@ -272,12 +293,12 @@ async function loadHomeContent() {
   if (postsContainer) {
     const blogsData = await loadJsonData("blogs");
     if (blogsData && blogsData.posts) {
-      console.log('$ fetching recent posts...');
+      console.log("$ fetching recent posts...");
       const recentPosts = blogsData.posts.slice(0, 3);
 
       if (recentPosts.length > 0) {
         // Add a short delay to simulate loading
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
         postsContainer.innerHTML = recentPosts
           .map((post) => Components.BlogPostItem(post))
           .join("");
@@ -288,18 +309,18 @@ async function loadHomeContent() {
       postsContainer.innerHTML = "<p>$ find: No such file or directory</p>";
     }
   }
-  
-  console.log('$ home content loaded');
+
+  console.log("$ home content loaded");
 }
 
 // Projects page content
 async function loadProjectsContent() {
-  console.log('$ loading projects...');
+  console.log("$ loading projects...");
   const projectsContainer = document.querySelector(".terminal-output");
   if (projectsContainer) {
     // Simulate SSH connection time but shorter
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const projectsData = await loadJsonData("projects");
     if (projectsData && projectsData.projects) {
       if (projectsData.projects.length > 0) {
@@ -316,20 +337,21 @@ async function loadProjectsContent() {
         projectsContainer.innerHTML = "<p>total 0</p><p>No projects found.</p>";
       }
     } else {
-      projectsContainer.innerHTML = "<p>ls: cannot access '.': Connection timed out</p>";
+      projectsContainer.innerHTML =
+        "<p>ls: cannot access '.': Connection timed out</p>";
     }
   }
-  console.log('$ projects loaded');
+  console.log("$ projects loaded");
 }
 
 // Blogs page content
 async function loadBlogsContent() {
-  console.log('$ loading blogs...');
+  console.log("$ loading blogs...");
   const blogsContainer = document.querySelector(".terminal-output");
   if (blogsContainer) {
     // Simulate SSH connection time but shorter
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const blogsData = await loadJsonData("blogs");
     if (blogsData && blogsData.posts) {
       if (blogsData.posts.length > 0) {
@@ -345,10 +367,11 @@ async function loadBlogsContent() {
         blogsContainer.innerHTML = "<p>No blog posts found.</p>";
       }
     } else {
-      blogsContainer.innerHTML = "<p>find: cannot access './': Connection timed out</p>";
+      blogsContainer.innerHTML =
+        "<p>find: cannot access './': Connection timed out</p>";
     }
   }
-  console.log('$ blogs loaded');
+  console.log("$ blogs loaded");
 }
 
 // Project detail page
@@ -367,18 +390,20 @@ async function loadProjectDetail() {
   const titleEl = document.getElementById("project-title");
   const tagsEl = document.getElementById("project-tags");
   const descriptionEl = document.getElementById("project-description");
-  
+
   if (contentContainer) {
     // First load projects metadata
     const projectsData = await loadJsonData("projects");
     if (!projectsData || !projectsData.projects) {
-      contentContainer.innerHTML = "<p>cat: README.md: No such file or directory</p>";
+      contentContainer.innerHTML =
+        "<p>cat: README.md: No such file or directory</p>";
       return;
     }
 
     const projectMeta = projectsData.projects.find((p) => p.id === projectId);
     if (!projectMeta) {
-      contentContainer.innerHTML = "<p>cd: no such directory: " + projectId + "</p>";
+      contentContainer.innerHTML =
+        "<p>cd: no such directory: " + projectId + "</p>";
       return;
     }
 
@@ -400,13 +425,14 @@ async function loadProjectDetail() {
     const projectContent = await loadJsonData(`projects/${projectId}`);
     if (projectContent) {
       // Simulate loading time but shorter
-      await new Promise(resolve => setTimeout(resolve, 300)); 
+      await new Promise((resolve) => setTimeout(resolve, 300));
       contentContainer.innerHTML = projectContent.content;
-      
+
       // Update document title
       document.title = `${projectContent.title} | PORTFOLIO_`;
     } else {
-      contentContainer.innerHTML = "<p>cat: README.md: No such file or directory</p>";
+      contentContainer.innerHTML =
+        "<p>cat: README.md: No such file or directory</p>";
     }
   }
   console.log(`$ project ${projectId} loaded`);
@@ -425,18 +451,20 @@ async function loadBlogDetail() {
   const titleEl = document.getElementById("blog-title");
   const dateEl = document.getElementById("blog-date");
   const filenameEl = document.getElementById("blog-filename");
-  
+
   if (contentContainer) {
     // First load blogs metadata
     const blogsData = await loadJsonData("blogs");
     if (!blogsData || !blogsData.posts) {
-      contentContainer.innerHTML = "<p>less: post.md: No such file or directory</p>";
+      contentContainer.innerHTML =
+        "<p>less: post.md: No such file or directory</p>";
       return;
     }
 
     const blogMeta = blogsData.posts.find((p) => p.id === blogId);
     if (!blogMeta) {
-      contentContainer.innerHTML = "<p>less: post.md: No such file or directory</p>";
+      contentContainer.innerHTML =
+        "<p>less: post.md: No such file or directory</p>";
       return;
     }
 
@@ -444,7 +472,7 @@ async function loadBlogDetail() {
     if (titleEl) titleEl.textContent = blogMeta.title;
     if (dateEl) dateEl.textContent = "Date: " + blogMeta.date;
     if (filenameEl) filenameEl.textContent = blogId + ".md";
-    
+
     // Update document title
     document.title = `${blogMeta.title} | PORTFOLIO_`;
 
@@ -452,10 +480,11 @@ async function loadBlogDetail() {
     const blogContent = await loadJsonData(`blogs/${blogId}`);
     if (blogContent) {
       // Simulate loading time but shorter
-      await new Promise(resolve => setTimeout(resolve, 300)); 
+      await new Promise((resolve) => setTimeout(resolve, 300));
       contentContainer.innerHTML = blogContent.content;
     } else {
-      contentContainer.innerHTML = "<p>less: " + blogId + ".md: No such file or directory</p>";
+      contentContainer.innerHTML =
+        "<p>less: " + blogId + ".md: No such file or directory</p>";
     }
   }
   console.log(`$ blog ${blogId} loaded`);
@@ -463,30 +492,32 @@ async function loadBlogDetail() {
 
 // Add blinking cursor animation to elements
 function addBlinkingCursors() {
-  const cursors = document.querySelectorAll('.blink-cursor');
-  cursors.forEach(cursor => {
-    if (!cursor.classList.contains('animated')) {
-      cursor.classList.add('animated');
+  const cursors = document.querySelectorAll(".blink-cursor");
+  cursors.forEach((cursor) => {
+    if (!cursor.classList.contains("animated")) {
+      cursor.classList.add("animated");
     }
   });
 }
 
 // Simulate typing for terminal command elements
 function simulateCommandTyping() {
-  const commands = document.querySelectorAll('.terminal-command:not(.blink-cursor):not(.typed)');
+  const commands = document.querySelectorAll(
+    ".terminal-command:not(.blink-cursor):not(.typed)"
+  );
   commands.forEach(async (cmd) => {
     const text = cmd.textContent;
-    cmd.classList.add('typed');
-    cmd.textContent = '';
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 300));
+    cmd.classList.add("typed");
+    cmd.textContent = "";
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 300));
     simulateTyping(cmd, text, Math.floor(Math.random() * 15) + 15);
   });
 }
 
 // Add these effects after page loads
-window.addEventListener('load', () => {
-  console.log('$ initializing terminal effects...');
+window.addEventListener("load", () => {
+  console.log("$ initializing terminal effects...");
   addBlinkingCursors();
   simulateCommandTyping();
-  console.log('$ terminal ready');
+  console.log("$ terminal ready");
 });

@@ -5,12 +5,14 @@ A terminal-themed portfolio website with a custom browser dashboard. This projec
 ## Features
 
 ### Dashboard
+
 - Custom browser homepage/new tab replacement
 - Search functionality with multiple engine options
 - Categorized links
 - Dark theme with grid background
 
 ### Terminal Portfolio
+
 - Interactive terminal interface
 - Simulated SSH sessions
 - Real terminal commands and responses
@@ -18,6 +20,7 @@ A terminal-themed portfolio website with a custom browser dashboard. This projec
 - Contact form styled as shell script input
 
 ### Technical Details
+
 - Built with vanilla HTML, CSS, and JavaScript
 - No frameworks or build tools
 - JSON-based content management
@@ -40,10 +43,12 @@ A terminal-themed portfolio website with a custom browser dashboard. This projec
 ## Development
 
 ### Prerequisites
+
 - A web server for local development (to avoid CORS issues)
 - Basic knowledge of HTML, CSS, and JavaScript
 
 ### Setting Up Local Development
+
 ```bash
 # Using Python's built-in HTTP server
 python -m http.server
@@ -53,6 +58,7 @@ npx http-server
 ```
 
 ### Editing Content
+
 1. Update JSON files in the `/portfolio/data/` directory to modify your content
 2. The portfolio automatically loads content from these JSON files
 3. Add new projects and blog posts by creating new JSON files

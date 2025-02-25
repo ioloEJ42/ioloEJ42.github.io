@@ -1,88 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PROJECT_ | PORTFOLIO_</title>
-  <link rel="shortcut icon" href="../img/shortcuticon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="grid"></div>
-  <header>
-    <!-- Navigation will be inserted here by components.js -->
-  </header>
-  <main>
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <div class="terminal-buttons">
-          <div class="terminal-button close"></div>
-          <div class="terminal-button minimize"></div>
-          <div class="terminal-button maximize"></div>
-        </div>
-        <div class="terminal-title">cat README.md</div>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">projects</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~/code</span>
-            <span>$</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PROJECT_ | PORTFOLIO_</title>
+    <link
+      rel="shortcut icon"
+      href="../img/shortcuticon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="grid"></div>
+    <header>
+      <!-- Navigation will be inserted here by components.js -->
+    </header>
+    <main>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-buttons">
+            <div class="terminal-button close"></div>
+            <div class="terminal-button minimize"></div>
+            <div class="terminal-button maximize"></div>
           </div>
-          <div class="terminal-command">cd <span id="project-directory">project-name</span></div>
+          <div class="terminal-title">cat README.md</div>
         </div>
-        
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">projects</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~/code/<span id="project-path">project-name</span></span>
-            <span>$</span>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">projects</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~/code</span>
+              <span>$</span>
+            </div>
+            <div class="terminal-command">
+              cd <span id="project-directory">project-name</span>
+            </div>
           </div>
-          <div class="terminal-command">cat README.md</div>
-        </div>
-        
-        <div class="terminal-output">
-          <article class="project-detail">
-            <div class="project-header">
-              <h1 id="project-title">PROJECT_TITLE_</h1>
-              <div id="project-tags" class="project-tags">
-                <!-- Tags will be loaded from JSON -->
+
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">projects</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path"
+                >~/code/<span id="project-path">project-name</span></span
+              >
+              <span>$</span>
+            </div>
+            <div class="terminal-command">cat README.md</div>
+          </div>
+
+          <div class="terminal-output">
+            <article class="project-detail">
+              <div class="project-header">
+                <h1 id="project-title">PROJECT_TITLE_</h1>
+                <div id="project-tags" class="project-tags">
+                  <!-- Tags will be loaded from JSON -->
+                </div>
+                <p id="project-description" class="subtitle">
+                  <!-- Description will be loaded from JSON -->
+                </p>
               </div>
-              <p id="project-description" class="subtitle">
-                <!-- Description will be loaded from JSON -->
-              </p>
-            </div>
-            <div id="project-content" class="project-content">
-              <!-- Project content will be loaded from JSON -->
-              <div class="loading">Loading project README.md...<span class="blink-cursor"></span></div>
-            </div>
-          </article>
-        </div>
-        
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">projects</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-          <span>:</span>
-            <span class="terminal-path">~/code/<span class="project-path-cursor">project-name</span></span>
-            <span>$</span>
+              <div id="project-content" class="project-content">
+                <!-- Project content will be loaded from JSON -->
+                <div class="loading">
+                  Loading project README.md...<span class="blink-cursor"></span>
+                </div>
+              </div>
+            </article>
           </div>
-          <div class="terminal-command blink-cursor"></div>
+
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">projects</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path"
+                >~/code/<span class="project-path-cursor"
+                  >project-name</span
+                ></span
+              >
+              <span>$</span>
+            </div>
+            <div class="terminal-command blink-cursor"></div>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-  <footer>
-    <!-- Footer will be inserted here by components.js -->
-  </footer>
-  <script src="script.js"></script>
-</body>
+    </main>
+    <footer>
+      <!-- Footer will be inserted here by components.js -->
+    </footer>
+    <script src="script.js"></script>
+  </body>
 </html>

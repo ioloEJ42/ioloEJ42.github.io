@@ -1,68 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PORTFOLIO_</title>
-  <link rel="shortcut icon" href="../img/shortcuticon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="grid"></div>
-  <header>
-    <!-- Navigation will be inserted here by components.js -->
-  </header>
-  <main>
-    <!-- Profile Terminal Window -->
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <div class="terminal-buttons">
-          <div class="terminal-button close"></div>
-          <div class="terminal-button minimize"></div>
-          <div class="terminal-button maximize"></div>
-        </div>
-        <div class="terminal-title">profile@portfolio: ~</div>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">user</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~</span>
-            <span>$</span>
-          </div>
-          <div class="terminal-command">whoami</div>
-        </div>
-        <div class="terminal-output">
-          <h1 id="profile-name">NAME_</h1>
-          <p id="profile-title" class="subtitle">TITLE_ / ROLE_</p>
-        </div>
-        
-        <div class="terminal-line">
-          <div class="terminal-prompt">
-            <span class="terminal-user">user</span>
-            <span>@</span>
-            <span class="terminal-host">portfolio</span>
-            <span>:</span>
-            <span class="terminal-path">~</span>
-            <span>$</span>
-          </div>
-          <div class="terminal-command">cat bio.txt</div>
-        </div>
-        <div class="terminal-output">
-          <div id="profile-bio" class="description">
-            <!-- This content will be loaded from JSON -->
-            <p>I'm a developer focused on creating minimal, efficient solutions.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Featured Projects Terminal -->
-    <section class="featured">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PORTFOLIO_</title>
+    <link
+      rel="shortcut icon"
+      href="../img/shortcuticon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="grid"></div>
+    <header>
+      <!-- Navigation will be inserted here by components.js -->
+    </header>
+    <main>
+      <!-- Profile Terminal Window -->
       <div class="terminal-window">
         <div class="terminal-header">
           <div class="terminal-buttons">
@@ -70,104 +29,161 @@
             <div class="terminal-button minimize"></div>
             <div class="terminal-button maximize"></div>
           </div>
-          <div class="terminal-title">ssh projects@portfolio.local</div>
+          <div class="terminal-title">profile@portfolio: ~</div>
         </div>
         <div class="terminal-body">
           <div class="terminal-line">
             <div class="terminal-prompt">
               <span class="terminal-user">user</span>
               <span>@</span>
-              <span class="terminal-host">local</span>
-              <span>:</span>
-              <span class="terminal-path">~</span>
-              <span>$</span>
-            </div>
-            <div class="terminal-command">ssh projects@portfolio.local</div>
-          </div>
-          <div class="terminal-output">
-            <p>Connecting to projects@portfolio.local...</p>
-            <p>Password: ********</p>
-            <p>Last login: Tue Feb 25 09:41:30 2025</p>
-          </div>
-          
-          <div class="terminal-line">
-            <div class="terminal-prompt">
-              <span class="terminal-user">projects</span>
-              <span>@</span>
               <span class="terminal-host">portfolio</span>
               <span>:</span>
               <span class="terminal-path">~</span>
               <span>$</span>
             </div>
-            <div class="terminal-command">ls -la --sort=time | grep "featured" | head -3</div>
+            <div class="terminal-command">whoami</div>
           </div>
-          
           <div class="terminal-output">
-            <h2>FEATURED_PROJECTS_</h2>
-            <div class="projects-grid" id="featured-projects">
-              <!-- Projects will be loaded from JSON here -->
-              <div class="loading">fetching featured projects...<span class="blink-cursor"></span></div>
-            </div>
+            <h1 id="profile-name">NAME_</h1>
+            <p id="profile-title" class="subtitle">TITLE_ / ROLE_</p>
           </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Recent Posts Terminal -->
-    <section class="recent-posts">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <div class="terminal-buttons">
-            <div class="terminal-button close"></div>
-            <div class="terminal-button minimize"></div>
-            <div class="terminal-button maximize"></div>
-          </div>
-          <div class="terminal-title">ssh blogs@portfolio.local</div>
-        </div>
-        <div class="terminal-body">
+
           <div class="terminal-line">
             <div class="terminal-prompt">
               <span class="terminal-user">user</span>
               <span>@</span>
-              <span class="terminal-host">local</span>
+              <span class="terminal-host">portfolio</span>
               <span>:</span>
               <span class="terminal-path">~</span>
               <span>$</span>
             </div>
-            <div class="terminal-command">ssh blogs@portfolio.local</div>
+            <div class="terminal-command">cat bio.txt</div>
           </div>
           <div class="terminal-output">
-            <p>Connecting to blogs@portfolio.local...</p>
-            <p>Password: ********</p>
-            <p>Last login: Tue Feb 25 08:22:15 2025</p>
-          </div>
-          
-          <div class="terminal-line">
-            <div class="terminal-prompt">
-              <span class="terminal-user">blogs</span>
-              <span>@</span>
-              <span class="terminal-host">portfolio</span>
-              <span>:</span>
-              <span class="terminal-path">~/posts</span>
-              <span>$</span>
-            </div>
-            <div class="terminal-command">find . -type f -name "*.md" | sort -r | head -3 | xargs cat</div>
-          </div>
-          
-          <div class="terminal-output">
-            <h2>RECENT_POSTS_</h2>
-            <div class="posts-list" id="recent-posts">
-              <!-- Blog posts will be loaded from JSON here -->
-              <div class="loading">fetching recent posts...<span class="blink-cursor"></span></div>
+            <div id="profile-bio" class="description">
+              <!-- This content will be loaded from JSON -->
             </div>
           </div>
         </div>
       </div>
-    </section>
-  </main>
-  <footer>
-    <!-- Footer will be inserted here by components.js -->
-  </footer>
-  <script src="script.js"></script>
-</body>
+
+      <!-- Featured Projects Terminal -->
+      <section class="featured">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <div class="terminal-button close"></div>
+              <div class="terminal-button minimize"></div>
+              <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">ssh projects@portfolio.local</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <div class="terminal-prompt">
+                <span class="terminal-user">user</span>
+                <span>@</span>
+                <span class="terminal-host">local</span>
+                <span>:</span>
+                <span class="terminal-path">~</span>
+                <span>$</span>
+              </div>
+              <div class="terminal-command">ssh projects@portfolio.local</div>
+            </div>
+            <div class="terminal-output">
+              <p>Connecting to projects@portfolio.local...</p>
+              <p>Password: ********</p>
+              <p>Last login: Tue Feb 25 09:41:30 2025</p>
+            </div>
+
+            <div class="terminal-line">
+              <div class="terminal-prompt">
+                <span class="terminal-user">projects</span>
+                <span>@</span>
+                <span class="terminal-host">portfolio</span>
+                <span>:</span>
+                <span class="terminal-path">~</span>
+                <span>$</span>
+              </div>
+              <div class="terminal-command">
+                ls -la --sort=time | grep "featured" | head -3
+              </div>
+            </div>
+
+            <div class="terminal-output">
+              <h2>FEATURED_PROJECTS_</h2>
+              <div class="projects-grid" id="featured-projects">
+                <!-- Projects will be loaded from JSON here -->
+                <div class="loading">
+                  fetching featured projects...<span
+                    class="blink-cursor"
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Posts Terminal -->
+      <section class="recent-posts">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <div class="terminal-button close"></div>
+              <div class="terminal-button minimize"></div>
+              <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">ssh blogs@portfolio.local</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <div class="terminal-prompt">
+                <span class="terminal-user">user</span>
+                <span>@</span>
+                <span class="terminal-host">local</span>
+                <span>:</span>
+                <span class="terminal-path">~</span>
+                <span>$</span>
+              </div>
+              <div class="terminal-command">ssh blogs@portfolio.local</div>
+            </div>
+            <div class="terminal-output">
+              <p>Connecting to blogs@portfolio.local...</p>
+              <p>Password: ********</p>
+              <p>Last login: Tue Feb 25 08:22:15 2025</p>
+            </div>
+
+            <div class="terminal-line">
+              <div class="terminal-prompt">
+                <span class="terminal-user">blogs</span>
+                <span>@</span>
+                <span class="terminal-host">portfolio</span>
+                <span>:</span>
+                <span class="terminal-path">~/posts</span>
+                <span>$</span>
+              </div>
+              <div class="terminal-command">
+                find . -type f -name "*.md" | sort -r | head -3 | xargs cat
+              </div>
+            </div>
+
+            <div class="terminal-output">
+              <h2>RECENT_POSTS_</h2>
+              <div class="posts-list" id="recent-posts">
+                <!-- Blog posts will be loaded from JSON here -->
+                <div class="loading">
+                  fetching recent posts...<span class="blink-cursor"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <!-- Footer will be inserted here by components.js -->
+    </footer>
+    <script src="script.js"></script>
+  </body>
 </html>
