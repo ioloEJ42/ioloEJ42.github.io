@@ -19,7 +19,6 @@
     <div class="grid"></div>
     <header></header>
     <main>
-      <!-- Profile Terminal Window -->
       <div class="terminal-window">
         <div class="terminal-header">
           <div class="terminal-buttons">
@@ -58,8 +57,26 @@
             <div class="terminal-command">cat bio.txt</div>
           </div>
           <div class="terminal-output">
-            <div id="profile-bio" class="description">
-              <!-- This content will be loaded from JSON -->
+            <div id="profile-bio" class="description"></div>
+          </div>
+
+          <div class="terminal-line">
+            <div class="terminal-prompt">
+              <span class="terminal-user">user</span>
+              <span>@</span>
+              <span class="terminal-host">portfolio</span>
+              <span>:</span>
+              <span class="terminal-path">~</span>
+              <span>$</span>
+            </div>
+            <div class="terminal-command">cat tryhackme.html</div>
+          </div>
+          <div class="terminal-output">
+            <div class="tryhackme-badge">
+              <iframe
+                src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3567066"
+                style="border: none; width: 100%; height: 220px"
+              ></iframe>
             </div>
           </div>
         </div>

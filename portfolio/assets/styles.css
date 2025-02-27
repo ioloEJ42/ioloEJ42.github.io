@@ -629,3 +629,11 @@ textarea.form-input {
     overflow-x: auto;
   }
 }
+
+.tryhackme-badge {
+  margin: 1rem 0;
+  background-color: var(--terminal-bg);
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 100%;
+}
