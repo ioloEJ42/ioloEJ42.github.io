@@ -521,3 +521,102 @@ window.addEventListener("load", () => {
   simulateCommandTyping();
   console.log("$ terminal ready");
 });
+
+// GitHub Profile Data Fetcher
+async function fetchGitHubProfile() {
+  const username = "ioloEJ42";
+
+  try {
+    // Fetch basic profile data
+    const profileResponse = await fetch(
+      `https://api.github.com/users/${username}`
+    );
+    const profile = await profileResponse.json();
+
+    // Fetch repositories data
+    const reposResponse = await fetch(
+      `https://api.github.com/users/${username}/repos?sort=updated&per_page=3`
+    );
+    const repos = await reposResponse.json();
+
+    // Build profile HTML with two-column layout
+    let profileHTML = `
+      <div class="github-profile-grid">
+        <div class="github-profile-info">
+          <p><span class="terminal-green">Username:</span> ${profile.login}</p>
+          ${
+            profile.name
+              ? `<p><span class="terminal-green">Name:</span> ${profile.name}</p>`
+              : ""
+          }
+          ${
+            profile.bio
+              ? `<p><span class="terminal-green">Bio:</span> ${profile.bio}</p>`
+              : ""
+          }
+          <p><span class="terminal-green">Public Repos:</span> ${
+            profile.public_repos
+          }</p>
+          <p><span class="terminal-green">Followers:</span> ${
+            profile.followers
+          }</p>
+          <p><span class="terminal-green">Following:</span> ${
+            profile.following
+          }</p>
+          <p><span class="terminal-green">Profile URL:</span> <a href="${
+            profile.html_url
+          }" target="_blank">${profile.html_url}</a></p>
+        </div>
+    `;
+
+    // Add repos section as second column if repositories were found
+    if (repos.length > 0) {
+      profileHTML += `
+        <div class="github-profile-repos">
+          <p class="terminal-section-header">Recent Repositories:</p>
+          <ul class="github-repos">
+      `;
+
+      repos.forEach((repo) => {
+        profileHTML += `
+          <li>
+            <span class="repo-name"><a href="${
+              repo.html_url
+            }" target="_blank">${repo.name}</a></span>
+            ${
+              repo.language
+                ? `<span class="repo-language">[${repo.language}]</span>`
+                : ""
+            }
+            ${
+              repo.description
+                ? `<div class="repo-description">${repo.description}</div>`
+                : ""
+            }
+          </li>
+        `;
+      });
+
+      profileHTML += `</ul></div>`;
+    }
+
+    profileHTML += `</div>`;
+
+    // Update the profile element with the fetched data
+    document.getElementById("github-profile").innerHTML = profileHTML;
+  } catch (error) {
+    console.error("Error fetching GitHub data:", error);
+    document.getElementById("github-profile").innerHTML =
+      "Error fetching GitHub data. Please try again later.";
+  }
+}
+
+window.addEventListener("load", () => {
+  console.log("$ initializing terminal effects...");
+  addBlinkingCursors();
+  simulateCommandTyping();
+  console.log("$ terminal ready");
+
+  // Add this line to call the GitHub API fetch
+  fetchGitHubProfile();
+});

@@ -631,9 +631,142 @@ textarea.form-input {
 }
 
 .tryhackme-badge {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
+
   background-color: var(--terminal-bg);
   border-radius: 3px;
   overflow: hidden;
   max-width: 100%;
+}
+
+/* GitHub Profile Styling */
+.github-profile {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.terminal-green {
+  color: var(--terminal-prompt-color);
+}
+
+.terminal-section-header {
+  color: var(--accent-color);
+  margin-top: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.github-repos {
+  list-style-type: none;
+  padding-left: 1rem;
+}
+
+.github-repos li {
+  margin-bottom: 0.5rem;
+}
+
+.repo-name a {
+  color: var(--color-light-cyan);
+  text-decoration: none;
+}
+
+.repo-name a:hover {
+  text-decoration: underline;
+}
+
+.repo-description {
+  color: var(--text-color);
+}
+
+.repo-language {
+  color: var(--color-light-magenta);
+  margin-left: 0.5rem;
+}
+
+/* Loading indicator styling */
+.loading {
+  position: relative;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.loading::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--terminal-prompt-color);
+  animation: loading-pulse 1.5s infinite ease-in-out;
+}
+
+#github-profile {
+  margin-top: -20px; /* Adjust this value as needed */
+}
+
+/* GitHub Profile Grid Layout */
+.github-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.github-profile-info {
+  border-right: 1px dashed var(--border-color);
+  padding-right: 1rem;
+}
+
+.github-profile-repos {
+  padding-left: 0.5rem;
+}
+
+/* Adjust repo items to fit the column */
+.github-repos li {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dotted var(--border-color);
+}
+
+.github-repos li:last-child {
+  border-bottom: none;
+}
+
+.repo-description {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  opacity: 0.8;
+}
+
+.repo-language {
+  font-size: 0.85rem;
+  color: var(--color-light-magenta);
+  margin-left: 0.5rem;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .github-profile-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .github-profile-info {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 1rem;
+  }
+
+  .github-profile-repos {
+    padding-left: 0;
+  }
+}
+#github-profile.loading::after {
+  display: none;
+}
+
+/* Optional: You might also want to adjust the style of the loading text */
+#github-profile.loading {
+  font-style: normal;
+  opacity: 0.9;
 }
