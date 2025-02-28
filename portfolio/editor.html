@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CONTENT_MANAGER_ | PORTFOLIO_</title>
+    <link
+      rel="shortcut icon"
+      href="../img/shortcuticon.png"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #1e1e1e;
+        --terminal-bg: #282a36;
+        --text-color: #f8f8f2;
+        --accent-color: #50fa7b;
+        --secondary-color: #bd93f9;
+        --danger-color: #ff5555;
+        --warning-color: #f1fa8c;
+        --info-color: #8be9fd;
+        --border-color: #44475a;
+        --input-bg: #21222c;
+      }
+
+      body {
+        font-family: "JetBrains Mono", monospace;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        color: var(--accent-color);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .nav-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .nav-links li {
+        margin-left: 20px;
+      }
+
+      .nav-links a {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover,
+      .nav-links .active a {
+        color: var(--accent-color);
+      }
+
+      .terminal-window {
+        background-color: var(--terminal-bg);
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .terminal-header {
+        background-color: var(--border-color);
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+      }
+
+      .terminal-title {
+        color: var(--text-color);
+        font-size: 0.9rem;
+        flex-grow: 1;
+        text-align: center;
+      }
+
+      .terminal-buttons {
+        display: flex;
+        margin-right: 10px;
+      }
+
+      .terminal-button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+
+      .terminal-button.close {
+        background-color: #ff5f56;
+      }
+
+      .terminal-button.minimize {
+        background-color: #ffbd2e;
+      }
+
+      .terminal-button.maximize {
+        background-color: #27c93f;
+      }
+
+      .terminal-body {
+        padding: 20px;
+        min-height: 300px;
+      }
+
+      .terminal-line {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
+      .terminal-prompt {
+        color: var(--accent-color);
+        margin-right: 10px;
+        white-space: nowrap;
+      }
+
+      .terminal-command {
+        color: var(--text-color);
+      }
+
+      .terminal-output {
+        margin-bottom: 20px;
+        padding-left: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--info-color);
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 10px;
+        background-color: var(--input-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        font-family: "JetBrains Mono", monospace;
+        border-radius: 4px;
+      }
+
+      textarea {
+        min-height: 200px;
+        resize: vertical;
+      }
+
+      button {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        transition: opacity 0.3s;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .btn-secondary {
+        background-color: var(--secondary-color);
+      }
+
+      .btn-danger {
+        background-color: var(--danger-color);
+      }
+
+      .btn-warning {
+        background-color: var(--warning-color);
+        color: var(--terminal-bg);
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .tab-nav {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .tab-button {
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        padding: 10px 15px;
+        cursor: pointer;
+      }
+
+      .tab-button.active {
+        background-color: var(--accent-color);
+        color: var(--terminal-bg);
+        border-color: var(--accent-color);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .loading {
+        color: var(--warning-color);
+      }
+
+      .error {
+        color: var(--danger-color);
+      }
+
+      .success {
+        color: var(--accent-color);
+      }
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .checkbox-label input[type="checkbox"] {
+        width: auto;
+        margin-right: 10px;
+      }
+
+      .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .tag {
+        background-color: var(--secondary-color);
+        color: var(--terminal-bg);
+        padding: 5px 10px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+      }
+
+      .tag-remove {
+        margin-left: 8px;
+        cursor: pointer;
+      }
+
+      .preview-container {
+        background-color: var(--input-bg);
+        border: 1px solid var(--border-color);
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 15px;
+      }
+
+      .json-preview {
+        white-space: pre-wrap;
+        overflow-x: auto;
+      }
+
+      .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background-color: var(--accent-color);
+        color: var(--terminal-bg);
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1000;
+      }
+
+      .notification.show {
+        opacity: 1;
+      }
+
+      .notification.error {
+        background-color: var(--danger-color);
+      }
+
+      /* Editor Toolbar */
+      .editor-toolbar {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 5px;
+        flex-wrap: wrap;
+        background-color: var(--terminal-bg);
+        padding: 5px;
+        border: 1px solid var(--border-color);
+        border-bottom: none;
+        border-radius: 4px 4px 0 0;
+      }
+
+      .editor-toolbar button {
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+
+      .editor-container {
+        border: 1px solid var(--border-color);
+        border-radius: 0 0 4px 4px;
+      }
+
+      .blink-cursor::after {
+        content: "|";
+        animation: blink 1s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <nav>
+          <div class="nav-title">PORTFOLIO_ | CONTENT_MANAGER_</div>
+          <ul class="nav-links">
+            <li><a href="index.html">$ HOME</a></li>
+            <li><a href="projects.html">$ PROJECTS</a></li>
+            <li><a href="blogs.html">$ BLOGS</a></li>
+            <li><a href="crud.html" class="active">$ MANAGE</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <div class="terminal-button close"></div>
+              <div class="terminal-button minimize"></div>
+              <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">user@portfolio:~/content-manager</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <div class="terminal-prompt">
+                <span class="terminal-user">user</span>@<span
+                  class="terminal-host"
+                  >portfolio</span
+                >:<span class="terminal-path">~/content-manager</span>$
+              </div>
+              <div class="terminal-command">./content-manager.sh</div>
+            </div>
+            <div class="terminal-output">
+              <p>Terminal-themed content management system initialized.</p>
+              <p>Choose a content type to manage:</p>
+            </div>
+
+            <div class="tab-nav">
+              <button class="tab-button active" data-tab="projects">
+                Projects
+              </button>
+              <button class="tab-button" data-tab="blogs">Blog Posts</button>
+            </div>
+
+            <!-- Projects Tab -->
+            <div id="projects-tab" class="tab-content active">
+              <div class="terminal-line">
+                <div class="terminal-prompt">
+                  <span class="terminal-user">user</span>@<span
+                    class="terminal-host"
+                    >portfolio</span
+                  >:<span class="terminal-path">~/content-manager</span>$
+                </div>
+                <div class="terminal-command">cat projects.json | jq</div>
+              </div>
+              <div class="terminal-output">
+                <div id="projects-list-container">
+                  <p class="loading">
+                    Loading projects...<span class="blink-cursor"></span>
+                  </p>
+                </div>
+
+                <div class="btn-group">
+                  <button id="new-project-btn">+ New Project</button>
+                  <button id="load-project-btn" class="btn-secondary">
+                    Load Selected Project
+                  </button>
+                </div>
+              </div>
+
+              <div id="project-form-container" style="display: none">
+                <div class="terminal-line">
+                  <div class="terminal-prompt">
+                    <span class="terminal-user">user</span>@<span
+                      class="terminal-host"
+                      >portfolio</span
+                    >:<span class="terminal-path">~/content-manager</span>$
+                  </div>
+                  <div class="terminal-command">
+                    vim <span id="project-filename">new-project.json</span>
+                  </div>
+                </div>
+
+                <form id="project-form">
+                  <h3>Metadata (projects.json)</h3>
+                  <div class="form-group">
+                    <label for="project-id">Project ID (used in URL)</label>
+                    <input
+                      type="text"
+                      id="project-id"
+                      required
+                      placeholder="project-name-slug"
+                    />
+                    <small style="color: var(--info-color)"
+                      >Use lowercase letters, numbers and hyphens only</small
+                    >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="project-title">Title</label>
+                    <input
+                      type="text"
+                      id="project-title"
+                      required
+                      placeholder="Project Title"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="project-description">Short Description</label>
+                    <textarea
+                      id="project-description"
+                      required
+                      placeholder="A brief description for project listings"
+                      rows="3"
+                    ></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="project-featured">
+                      <input type="checkbox" id="project-featured" />
+                      Featured Project (shown on homepage)
+                    </label>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="project-tags-input">Tags</label>
+                    <div style="display: flex; gap: 10px">
+                      <input
+                        type="text"
+                        id="project-tags-input"
+                        placeholder="Add tag and press Enter"
+                      />
+                      <button
+                        type="button"
+                        id="add-project-tag"
+                        class="btn-secondary"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div
+                      id="project-tags-container"
+                      class="tags-container"
+                    ></div>
+                  </div>
+
+                  <h3>Full Content (projects/[id].json)</h3>
+
+                  <div class="form-group">
+                    <label for="project-date">Date</label>
+                    <input type="date" id="project-date" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="project-github">GitHub URL (optional)</label>
+                    <input
+                      type="url"
+                      id="project-github"
+                      placeholder="https://github.com/username/repo"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="project-live">Live Demo URL (optional)</label>
+                    <input
+                      type="url"
+                      id="project-live"
+                      placeholder="https://example.com"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="project-content">Full HTML Content</label>
+                    <div class="editor-toolbar">
+                      <button type="button" data-format="h2">H2</button>
+                      <button type="button" data-format="h3">H3</button>
+                      <button type="button" data-format="p">P</button>
+                      <button type="button" data-format="strong">Bold</button>
+                      <button type="button" data-format="em">Italic</button>
+                      <button type="button" data-format="ul">List</button>
+                      <button type="button" data-format="ol">
+                        Numbered List
+                      </button>
+                      <button type="button" data-format="li">List Item</button>
+                      <button type="button" data-format="a">Link</button>
+                      <button type="button" data-format="code">Code</button>
+                    </div>
+                    <div class="editor-container">
+                      <textarea
+                        id="project-content"
+                        required
+                        placeholder="<p>Project full description with HTML formatting</p>"
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      id="preview-project-btn"
+                      class="btn-secondary"
+                    >
+                      Preview JSON
+                    </button>
+                    <button type="button" id="save-project-btn">
+                      Generate & Download JSON Files
+                    </button>
+                    <button
+                      type="button"
+                      id="cancel-project-btn"
+                      class="btn-danger"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+
+                <div
+                  id="project-preview-container"
+                  class="preview-container"
+                  style="display: none"
+                >
+                  <h3>JSON Preview</h3>
+                  <h4>projects.json entry:</h4>
+                  <pre id="project-meta-preview" class="json-preview"></pre>
+
+                  <h4>projects/[id].json file:</h4>
+                  <pre id="project-content-preview" class="json-preview"></pre>
+
+                  <button
+                    type="button"
+                    id="close-project-preview-btn"
+                    class="btn-secondary"
+                  >
+                    Close Preview
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blogs Tab -->
+            <div id="blogs-tab" class="tab-content">
+              <div class="terminal-line">
+                <div class="terminal-prompt">
+                  <span class="terminal-user">user</span>@<span
+                    class="terminal-host"
+                    >portfolio</span
+                  >:<span class="terminal-path">~/content-manager</span>$
+                </div>
+                <div class="terminal-command">cat blogs.json | jq</div>
+              </div>
+              <div class="terminal-output">
+                <div id="blogs-list-container">
+                  <p class="loading">
+                    Loading blog posts...<span class="blink-cursor"></span>
+                  </p>
+                </div>
+
+                <div class="btn-group">
+                  <button id="new-blog-btn">+ New Blog Post</button>
+                  <button id="load-blog-btn" class="btn-secondary">
+                    Load Selected Post
+                  </button>
+                </div>
+              </div>
+
+              <div id="blog-form-container" style="display: none">
+                <div class="terminal-line">
+                  <div class="terminal-prompt">
+                    <span class="terminal-user">user</span>@<span
+                      class="terminal-host"
+                      >portfolio</span
+                    >:<span class="terminal-path">~/content-manager</span>$
+                  </div>
+                  <div class="terminal-command">
+                    vim <span id="blog-filename">new-blog-post.json</span>
+                  </div>
+                </div>
+
+                <form id="blog-form">
+                  <h3>Metadata (blogs.json)</h3>
+                  <div class="form-group">
+                    <label for="blog-id">Blog Post ID (used in URL)</label>
+                    <input
+                      type="text"
+                      id="blog-id"
+                      required
+                      placeholder="blog-post-slug"
+                    />
+                    <small style="color: var(--info-color)"
+                      >Use lowercase letters, numbers and hyphens only</small
+                    >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="blog-title">Title</label>
+                    <input
+                      type="text"
+                      id="blog-title"
+                      required
+                      placeholder="Blog Post Title"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="blog-date">Date</label>
+                    <input
+                      type="text"
+                      id="blog-date"
+                      required
+                      placeholder="February 28, 2025"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="blog-author">Author</label>
+                    <input
+                      type="text"
+                      id="blog-author"
+                      required
+                      placeholder="Your Name"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="blog-excerpt">Excerpt</label>
+                    <textarea
+                      id="blog-excerpt"
+                      required
+                      placeholder="A brief excerpt for blog listings"
+                      rows="3"
+                    ></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="blog-tags-input">Tags</label>
+                    <div style="display: flex; gap: 10px">
+                      <input
+                        type="text"
+                        id="blog-tags-input"
+                        placeholder="Add tag and press Enter"
+                      />
+                      <button
+                        type="button"
+                        id="add-blog-tag"
+                        class="btn-secondary"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div id="blog-tags-container" class="tags-container"></div>
+                  </div>
+
+                  <h3>Full Content (blogs/[id].json)</h3>
+
+                  <div class="form-group">
+                    <label for="blog-content">Full HTML Content</label>
+                    <div class="editor-toolbar">
+                      <button type="button" data-format="h2">H2</button>
+                      <button type="button" data-format="h3">H3</button>
+                      <button type="button" data-format="p">P</button>
+                      <button type="button" data-format="strong">Bold</button>
+                      <button type="button" data-format="em">Italic</button>
+                      <button type="button" data-format="ul">List</button>
+                      <button type="button" data-format="ol">
+                        Numbered List
+                      </button>
+                      <button type="button" data-format="li">List Item</button>
+                      <button type="button" data-format="a">Link</button>
+                      <button type="button" data-format="code">Code</button>
+                    </div>
+                    <div class="editor-container">
+                      <textarea
+                        id="blog-content"
+                        required
+                        placeholder="<p>Blog post full content with HTML formatting</p>"
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      id="preview-blog-btn"
+                      class="btn-secondary"
+                    >
+                      Preview JSON
+                    </button>
+                    <button type="button" id="save-blog-btn">
+                      Generate & Download JSON Files
+                    </button>
+                    <button
+                      type="button"
+                      id="cancel-blog-btn"
+                      class="btn-danger"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+
+                <div
+                  id="blog-preview-container"
+                  class="preview-container"
+                  style="display: none"
+                >
+                  <h3>JSON Preview</h3>
+                  <h4>blogs.json entry:</h4>
+                  <pre id="blog-meta-preview" class="json-preview"></pre>
+
+                  <h4>blogs/[id].json file:</h4>
+                  <pre id="blog-content-preview" class="json-preview"></pre>
+
+                  <button
+                    type="button"
+                    id="close-blog-preview-btn"
+                    class="btn-secondary"
+                  >
+                    Close Preview
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+      // Cache for storing loaded data
+      const dataCache = {
+        projectsMetadata: null,
+        blogMetadata: null,
+        projects: {},
+        blogs: {},
+      };
+
+      // DOM Elements
+      const projectsList = document.getElementById("projects-list-container");
+      const blogsList = document.getElementById("blogs-list-container");
+      const projectForm = document.getElementById("project-form");
+      const blogForm = document.getElementById("blog-form");
+      const projectFormContainer = document.getElementById(
+        "project-form-container"
+      );
+      const blogFormContainer = document.getElementById("blog-form-container");
+      const notification = document.getElementById("notification");
+
+      // Tab Switching
+      document.querySelectorAll(".tab-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          // Update tab buttons
+          document
+            .querySelectorAll(".tab-button")
+            .forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+
+          // Show the corresponding tab content
+          document
+            .querySelectorAll(".tab-content")
+            .forEach((tab) => tab.classList.remove("active"));
+          document
+            .getElementById(`${button.dataset.tab}-tab`)
+            .classList.add("active");
+        });
+      });
+
+      // Show notification
+      function showNotification(message, isError = false) {
+        notification.textContent = message;
+        notification.className = "notification" + (isError ? " error" : "");
+        notification.classList.add("show");
+
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      // Load JSON data
+      async function loadData(filename) {
+        try {
+          const response = await fetch(`data/${filename}.json`);
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to load ${filename}.json: ${response.status}`
+            );
+          }
+
+          return await response.json();
+        } catch (error) {
+          console.error(`Error loading ${filename}.json:`, error);
+          showNotification(
+            `Error loading ${filename}.json: ${error.message}`,
+            true
+          );
+          return null;
+        }
+      }
+
+      // Load projects
+      async function loadProjects() {
+        if (dataCache.projectsMetadata) {
+          return dataCache.projectsMetadata;
+        }
+
+        const data = await loadData("projects");
+        if (data) {
+          dataCache.projectsMetadata = data;
+        }
+        return data;
+      }
+
+      // Load blogs
+      async function loadBlogs() {
+        if (dataCache.blogMetadata) {
+          return dataCache.blogMetadata;
+        }
+
+        const data = await loadData("blogs");
+        if (data) {
+          dataCache.blogMetadata = data;
+        }
+        return data;
+      }
+
+      // Load individual project
+      async function loadProject(id) {
+        if (dataCache.projects[id]) {
+          return dataCache.projects[id];
+        }
+
+        const data = await loadData(`projects/${id}`);
+        if (data) {
+          dataCache.projects[id] = data;
+        }
+        return data;
+      }
+
+      // Load individual blog
+      async function loadBlog(id) {
+        if (dataCache.blogs[id]) {
+          return dataCache.blogs[id];
+        }
+
+        const data = await loadData(`blogs/${id}`);
+        if (data) {
+          dataCache.blogs[id] = data;
+        }
+        return data;
+      }
+
+      // Display projects list
+      async function displayProjects() {
+        projectsList.innerHTML =
+          '<p class="loading">Loading projects...<span class="blink-cursor"></span></p>';
+
+        const projectsData = await loadProjects();
+
+        if (
+          !projectsData ||
+          !projectsData.projects ||
+          projectsData.projects.length === 0
+        ) {
+          projectsList.innerHTML = "<p>No projects found.</p>";
+          return;
+        }
+
+        let html = '<div style="margin-bottom: 15px;">';
+        html += '<select id="project-select">';
+        projectsData.projects.forEach((project) => {
+          html += `<option value="${project.id}">${project.title}</option>`;
+        });
+        html += "</select>";
+        html += "</div>";
+
+        html += '<ul style="list-style: none; padding: 0;">';
+        projectsData.projects.forEach((project) => {
+          html += `
+          <li style="margin-bottom: 10px; padding: 10px; background: var(--input-bg); border-radius: 4px;">
+            <strong>${project.title}</strong> [${project.id}]
+            <div>${project.description}</div>
+            <div style="margin-top: 5px;">
+              ${project.tags
+                .map(
+                  (tag) =>
+                    `<span style="background: var(--secondary-color); color: var(--terminal-bg); padding: 2px 6px; border-radius: 3px; font-size: 0.8em; margin-right: 5px;">${tag}</span>`
+                )
+                .join("")}
+            </div>
+          </li>
+        `;
+        });
+        html += "</ul>";
+
+        projectsList.innerHTML = html;
+      }
+
+      // Display blogs list
+      async function displayBlogs() {
+        blogsList.innerHTML =
+          '<p class="loading">Loading blog posts...<span class="blink-cursor"></span></p>';
+
+        const blogsData = await loadBlogs();
+
+        if (!blogsData || !blogsData.posts || blogsData.posts.length === 0) {
+          blogsList.innerHTML = "<p>No blog posts found.</p>";
+          return;
+        }
+
+        let html = '<div style="margin-bottom: 15px;">';
+        html += '<select id="blog-select">';
+        blogsData.posts.forEach((post) => {
+          html += `<option value="${post.id}">${post.title}</option>`;
+        });
+        html += "</select>";
+        html += "</div>";
+
+        html += '<ul style="list-style: none; padding: 0;">';
+        blogsData.posts.forEach((post) => {
+          html += `
+          <li style="margin-bottom: 10px; padding: 10px; background: var(--input-bg); border-radius: 4px;">
+            <strong>${post.title}</strong> [${post.id}]
+            <div><small>${post.date}</small></div>
+            <div>${post.excerpt || ""}</div>
+            <div style="margin-top: 5px;">
+              ${post.tags
+                .map(
+                  (tag) =>
+                    `<span style="background: var(--secondary-color); color: var(--terminal-bg); padding: 2px 6px; border-radius: 3px; font-size: 0.8em; margin-right: 5px;">${tag}</span>`
+                )
+                .join("")}
+            </div>
+          </li>
+        `;
+        });
+        html += "</ul>";
+
+        blogsList.innerHTML = html;
+      }
+
+      // Initialize page
+      async function init() {
+        // Load projects and blogs lists
+        await displayProjects();
+        await displayBlogs();
+
+        // Setup event listeners
+        setupEventListeners();
+      }
+
+      // Setup event listeners
+      function setupEventListeners() {
+        // Projects
+        document
+          .getElementById("new-project-btn")
+          .addEventListener("click", createNewProject);
+        document
+          .getElementById("load-project-btn")
+          .addEventListener("click", loadSelectedProject);
+        document
+          .getElementById("preview-project-btn")
+          .addEventListener("click", previewProject);
+        document
+          .getElementById("save-project-btn")
+          .addEventListener("click", saveProject);
+        document
+          .getElementById("cancel-project-btn")
+          .addEventListener("click", cancelProject);
+        document
+          .getElementById("close-project-preview-btn")
+          .addEventListener("click", closeProjectPreview);
+        document
+          .getElementById("add-project-tag")
+          .addEventListener("click", addProjectTag);
+
+        // Add tag on Enter key
+        document
+          .getElementById("project-tags-input")
+          .addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addProjectTag();
+            }
+          });
+
+        // Blogs
+        document
+          .getElementById("new-blog-btn")
+          .addEventListener("click", createNewBlog);
+        document
+          .getElementById("load-blog-btn")
+          .addEventListener("click", loadSelectedBlog);
+        document
+          .getElementById("preview-blog-btn")
+          .addEventListener("click", previewBlog);
+        document
+          .getElementById("save-blog-btn")
+          .addEventListener("click", saveBlog);
+        document
+          .getElementById("cancel-blog-btn")
+          .addEventListener("click", cancelBlog);
+        document
+          .getElementById("close-blog-preview-btn")
+          .addEventListener("click", closeBlogPreview);
+        document
+          .getElementById("add-blog-tag")
+          .addEventListener("click", addBlogTag);
+
+        // Add tag on Enter key
+        document
+          .getElementById("blog-tags-input")
+          .addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addBlogTag();
+            }
+          });
+
+        // Editor toolbar buttons
+        document
+          .querySelectorAll(".editor-toolbar button")
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              const format = button.dataset.format;
+              const targetId =
+                button.closest(".tab-content").id === "projects-tab"
+                  ? "project-content"
+                  : "blog-content";
+              const textarea = document.getElementById(targetId);
+
+              const start = textarea.selectionStart;
+              const end = textarea.selectionEnd;
+              const selectedText = textarea.value.substring(start, end);
+              let replacement = "";
+
+              switch (format) {
+                case "h2":
+                  replacement = `<h2>${selectedText || "Heading 2"}</h2>`;
+                  break;
+                case "h3":
+                  replacement = `<h3>${selectedText || "Heading 3"}</h3>`;
+                  break;
+                case "p":
+                  replacement = `<p>${selectedText || "Paragraph text"}</p>`;
+                  break;
+                case "strong":
+                  replacement = `<strong>${
+                    selectedText || "Bold text"
+                  }</strong>`;
+                  break;
+                case "em":
+                  replacement = `<em>${selectedText || "Italic text"}</em>`;
+                  break;
+                case "ul":
+                  replacement = `<ul>\n  <li>${
+                    selectedText || "List item"
+                  }</li>\n</ul>`;
+                  break;
+                case "ol":
+                  replacement = `<ol>\n  <li>${
+                    selectedText || "List item"
+                  }</li>\n</ol>`;
+                  break;
+                case "li":
+                  replacement = `<li>${selectedText || "List item"}</li>`;
+                  break;
+                case "a":
+                  const url = prompt("Enter URL:", "https://");
+                  if (url) {
+                    replacement = `<a href="${url}">${selectedText || url}</a>`;
+                  } else {
+                    return;
+                  }
+                  break;
+                case "code":
+                  replacement = `<code>${selectedText || "Code"}</code>`;
+                  break;
+              }
+
+              textarea.focus();
+              document.execCommand("insertText", false, replacement);
+
+              // Fallback for browsers that don't support execCommand
+              if (
+                textarea.value.substring(start, start + replacement.length) !==
+                replacement
+              ) {
+                const value = textarea.value;
+                textarea.value =
+                  value.substring(0, start) +
+                  replacement +
+                  value.substring(end);
+              }
+            });
+          });
+      }
+
+      // Project Functions
+      function createNewProject() {
+        // Reset form
+        projectForm.reset();
+        document.getElementById("project-tags-container").innerHTML = "";
+        document.getElementById("project-filename").textContent =
+          "new-project.json";
+
+        // Set today's date
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("project-date").value = today;
+
+        // Show form
+        projectFormContainer.style.display = "block";
+        document.getElementById("project-preview-container").style.display =
+          "none";
+      }
+
+      async function loadSelectedProject() {
+        const select = document.getElementById("project-select");
+        if (!select) {
+          showNotification("No projects available to load", true);
+          return;
+        }
+
+        const projectId = select.value;
+        if (!projectId) {
+          showNotification("Please select a project to load", true);
+          return;
+        }
+
+        // Get project metadata
+        const projectsData = await loadProjects();
+        const projectMeta = projectsData.projects.find(
+          (p) => p.id === projectId
+        );
+
+        if (!projectMeta) {
+          showNotification(
+            `Project with ID ${projectId} not found in projects.json`,
+            true
+          );
+          return;
+        }
+
+        // Get project content
+        const projectContent = await loadProject(projectId);
+
+        if (!projectContent) {
+          showNotification(
+            `Could not load content for project ${projectId}`,
+            true
+          );
+          return;
+        }
+
+        // Fill the form
+        document.getElementById("project-id").value = projectMeta.id;
+        document.getElementById(
+          "project-filename"
+        ).textContent = `${projectMeta.id}.json`;
+        document.getElementById("project-title").value = projectMeta.title;
+        document.getElementById("project-description").value =
+          projectMeta.description;
+        document.getElementById("project-featured").checked =
+          projectMeta.featured || false;
+
+        // Fill tags
+        const tagsContainer = document.getElementById("project-tags-container");
+        tagsContainer.innerHTML = "";
+        projectMeta.tags.forEach((tag) => {
+          addTagElement(tag, "project");
+        });
+
+        // Fill content fields
+        if (projectContent.date) {
+          document.getElementById("project-date").value = formatDateForInput(
+            projectContent.date
+          );
+        }
+
+        if (projectContent.github) {
+          document.getElementById("project-github").value =
+            projectContent.github;
+        }
+
+        if (projectContent.live) {
+          document.getElementById("project-live").value = projectContent.live;
+        }
+
+        document.getElementById("project-content").value =
+          projectContent.content || "";
+
+        // Show form
+        projectFormContainer.style.display = "block";
+        document.getElementById("project-preview-container").style.display =
+          "none";
+
+        showNotification(`Loaded project: ${projectMeta.title}`);
+      }
+
+      function formatDateForInput(dateString) {
+        // Try to parse the date string
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+          // If parsing fails, return the original string
+          return dateString;
+        }
+
+        // Format as YYYY-MM-DD for input[type="date"]
+        return date.toISOString().split("T")[0];
+      }
+
+      function addProjectTag() {
+        const input = document.getElementById("project-tags-input");
+        const tag = input.value.trim();
+
+        if (tag) {
+          addTagElement(tag, "project");
+          input.value = "";
+        }
+      }
+
+      function addTagElement(tag, type) {
+        const container = document.getElementById(`${type}-tags-container`);
+
+        // Check if tag already exists
+        const existingTags = container.querySelectorAll(".tag-text");
+        for (const existingTag of existingTags) {
+          if (existingTag.textContent === tag) {
+            return; // Don't add duplicate tags
+          }
+        }
+
+        const tagElement = document.createElement("div");
+        tagElement.className = "tag";
+
+        const tagText = document.createElement("span");
+        tagText.className = "tag-text";
+        tagText.textContent = tag;
+
+        const removeButton = document.createElement("span");
+        removeButton.className = "tag-remove";
+        removeButton.textContent = "×";
+        removeButton.addEventListener("click", () => {
+          container.removeChild(tagElement);
+        });
+
+        tagElement.appendChild(tagText);
+        tagElement.appendChild(removeButton);
+        container.appendChild(tagElement);
+      }
+
+      function getProjectTags() {
+        const tags = [];
+        document
+          .querySelectorAll("#project-tags-container .tag-text")
+          .forEach((tag) => {
+            tags.push(tag.textContent);
+          });
+        return tags;
+      }
+
+      function previewProject() {
+        // Get form data
+        const id = document.getElementById("project-id").value.trim();
+        const title = document.getElementById("project-title").value.trim();
+        const description = document
+          .getElementById("project-description")
+          .value.trim();
+        const featured = document.getElementById("project-featured").checked;
+        const tags = getProjectTags();
+        const date = document.getElementById("project-date").value;
+        const github = document.getElementById("project-github").value.trim();
+        const live = document.getElementById("project-live").value.trim();
+        const content = document.getElementById("project-content").value.trim();
+
+        // Validate required fields
+        if (
+          !id ||
+          !title ||
+          !description ||
+          tags.length === 0 ||
+          !date ||
+          !content
+        ) {
+          showNotification("Please fill all required fields", true);
+          return;
+        }
+
+        // Create metadata object (for projects.json)
+        const metadata = {
+          id,
+          title,
+          description,
+          featured,
+          tags,
+        };
+
+        // Create full content object (for projects/[id].json)
+        const projectData = {
+          id,
+          title,
+          description,
+          date,
+          tags,
+        };
+
+        // Add optional fields
+        if (github) projectData.github = github;
+        if (live) projectData.live = live;
+
+        // Add content
+        projectData.content = content;
+
+        // Display preview
+        document.getElementById("project-meta-preview").textContent =
+          JSON.stringify(metadata, null, 2);
+        document.getElementById("project-content-preview").textContent =
+          JSON.stringify(projectData, null, 2);
+
+        // Show preview container
+        document.getElementById("project-preview-container").style.display =
+          "block";
+      }
+
+      function saveProject() {
+        // First preview to validate
+        previewProject();
+
+        // Check if preview is displayed (validation passed)
+        if (
+          document.getElementById("project-preview-container").style.display !==
+          "block"
+        ) {
+          return;
+        }
+
+        // Get the JSON data
+        const metadataJson = document.getElementById(
+          "project-meta-preview"
+        ).textContent;
+        const contentJson = document.getElementById(
+          "project-content-preview"
+        ).textContent;
+
+        // Parse metadata to get ID
+        const metadata = JSON.parse(metadataJson);
+        const id = metadata.id;
+
+        // Download metadata updates for projects.json
+        downloadProjectsMetadata(metadata);
+
+        // Download individual project file
+        downloadFile(`${id}.json`, contentJson);
+
+        showNotification(`Generated JSON files for project: ${metadata.title}`);
+      }
+
+      async function downloadProjectsMetadata(newProject) {
+        try {
+          // Load current projects
+          const projectsData = await loadProjects();
+
+          if (!projectsData) {
+            // If we couldn't load existing data, create a new projects structure
+            const newData = {
+              projects: [newProject],
+            };
+            downloadFile("projects.json", JSON.stringify(newData, null, 2));
+            return;
+          }
+
+          // Check if this project already exists
+          const existingIndex = projectsData.projects.findIndex(
+            (p) => p.id === newProject.id
+          );
+
+          if (existingIndex !== -1) {
+            // Update existing project
+            projectsData.projects[existingIndex] = newProject;
+          } else {
+            // Add new project
+            projectsData.projects.push(newProject);
+          }
+
+          // Download updated projects.json
+          downloadFile("projects.json", JSON.stringify(projectsData, null, 2));
+        } catch (error) {
+          console.error("Error updating projects metadata:", error);
+          showNotification("Error updating projects metadata", true);
+        }
+      }
+
+      function cancelProject() {
+        projectFormContainer.style.display = "none";
+        document.getElementById("project-preview-container").style.display =
+          "none";
+      }
+
+      function closeProjectPreview() {
+        document.getElementById("project-preview-container").style.display =
+          "none";
+      }
+
+      // Blog Functions
+      function createNewBlog() {
+        // Reset form
+        blogForm.reset();
+        document.getElementById("blog-tags-container").innerHTML = "";
+        document.getElementById("blog-filename").textContent =
+          "new-blog-post.json";
+
+        // Set today's date
+        const today = new Date();
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        document.getElementById("blog-date").value = today.toLocaleDateString(
+          "en-US",
+          options
+        );
+
+        // Show form
+        blogFormContainer.style.display = "block";
+        document.getElementById("blog-preview-container").style.display =
+          "none";
+      }
+
+      async function loadSelectedBlog() {
+        const select = document.getElementById("blog-select");
+        if (!select) {
+          showNotification("No blog posts available to load", true);
+          return;
+        }
+
+        const blogId = select.value;
+        if (!blogId) {
+          showNotification("Please select a blog post to load", true);
+          return;
+        }
+
+        // Get blog metadata
+        const blogsData = await loadBlogs();
+        const blogMeta = blogsData.posts.find((p) => p.id === blogId);
+
+        if (!blogMeta) {
+          showNotification(
+            `Blog with ID ${blogId} not found in blogs.json`,
+            true
+          );
+          return;
+        }
+
+        // Get blog content
+        const blogContent = await loadBlog(blogId);
+
+        if (!blogContent) {
+          showNotification(`Could not load content for blog ${blogId}`, true);
+          return;
+        }
+
+        // Fill the form
+        document.getElementById("blog-id").value = blogMeta.id;
+        document.getElementById(
+          "blog-filename"
+        ).textContent = `${blogMeta.id}.json`;
+        document.getElementById("blog-title").value = blogMeta.title;
+        document.getElementById("blog-date").value = blogMeta.date;
+        document.getElementById("blog-author").value = blogMeta.author || "";
+        document.getElementById("blog-excerpt").value = blogMeta.excerpt || "";
+
+        // Fill tags
+        const tagsContainer = document.getElementById("blog-tags-container");
+        tagsContainer.innerHTML = "";
+        blogMeta.tags.forEach((tag) => {
+          addTagElement(tag, "blog");
+        });
+
+        // Fill content field
+        document.getElementById("blog-content").value =
+          blogContent.content || "";
+
+        // Show form
+        blogFormContainer.style.display = "block";
+        document.getElementById("blog-preview-container").style.display =
+          "none";
+
+        showNotification(`Loaded blog post: ${blogMeta.title}`);
+      }
+
+      function addBlogTag() {
+        const input = document.getElementById("blog-tags-input");
+        const tag = input.value.trim();
+
+        if (tag) {
+          addTagElement(tag, "blog");
+          input.value = "";
+        }
+      }
+
+      function getBlogTags() {
+        const tags = [];
+        document
+          .querySelectorAll("#blog-tags-container .tag-text")
+          .forEach((tag) => {
+            tags.push(tag.textContent);
+          });
+        return tags;
+      }
+
+      function previewBlog() {
+        // Get form data
+        const id = document.getElementById("blog-id").value.trim();
+        const title = document.getElementById("blog-title").value.trim();
+        const date = document.getElementById("blog-date").value.trim();
+        const author = document.getElementById("blog-author").value.trim();
+        const excerpt = document.getElementById("blog-excerpt").value.trim();
+        const tags = getBlogTags();
+        const content = document.getElementById("blog-content").value.trim();
+
+        // Validate required fields
+        if (
+          !id ||
+          !title ||
+          !date ||
+          !author ||
+          !excerpt ||
+          tags.length === 0 ||
+          !content
+        ) {
+          showNotification("Please fill all required fields", true);
+          return;
+        }
+
+        // Create metadata object (for blogs.json)
+        const metadata = {
+          id,
+          title,
+          date,
+          author,
+          excerpt,
+          tags,
+        };
+
+        // Create full content object (for blogs/[id].json)
+        const blogData = {
+          id,
+          title,
+          date,
+          author,
+          tags,
+          content,
+        };
+
+        // Display preview
+        document.getElementById("blog-meta-preview").textContent =
+          JSON.stringify(metadata, null, 2);
+        document.getElementById("blog-content-preview").textContent =
+          JSON.stringify(blogData, null, 2);
+
+        // Show preview container
+        document.getElementById("blog-preview-container").style.display =
+          "block";
+      }
+
+      function saveBlog() {
+        // First preview to validate
+        previewBlog();
+
+        // Check if preview is displayed (validation passed)
+        if (
+          document.getElementById("blog-preview-container").style.display !==
+          "block"
+        ) {
+          return;
+        }
+
+        // Get the JSON data
+        const metadataJson =
+          document.getElementById("blog-meta-preview").textContent;
+        const contentJson = document.getElementById(
+          "blog-content-preview"
+        ).textContent;
+
+        // Parse metadata to get ID
+        const metadata = JSON.parse(metadataJson);
+        const id = metadata.id;
+
+        // Download metadata updates for blogs.json
+        downloadBlogsMetadata(metadata);
+
+        // Download individual blog file
+        downloadFile(`${id}.json`, contentJson);
+
+        showNotification(
+          `Generated JSON files for blog post: ${metadata.title}`
+        );
+      }
+
+      async function downloadBlogsMetadata(newBlog) {
+        try {
+          // Load current blogs
+          const blogsData = await loadBlogs();
+
+          if (!blogsData) {
+            // If we couldn't load existing data, create a new blogs structure
+            const newData = {
+              posts: [newBlog],
+            };
+            downloadFile("blogs.json", JSON.stringify(newData, null, 2));
+            return;
+          }
+
+          // Check if this blog already exists
+          const existingIndex = blogsData.posts.findIndex(
+            (p) => p.id === newBlog.id
+          );
+
+          if (existingIndex !== -1) {
+            // Update existing blog
+            blogsData.posts[existingIndex] = newBlog;
+          } else {
+            // Add new blog
+            blogsData.posts.push(newBlog);
+          }
+
+          // Download updated blogs.json
+          downloadFile("blogs.json", JSON.stringify(blogsData, null, 2));
+        } catch (error) {
+          console.error("Error updating blogs metadata:", error);
+          showNotification("Error updating blogs metadata", true);
+        }
+      }
+
+      function downloadFile(filename, content) {
+        const blob = new Blob([content], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      function cancelBlog() {
+        blogFormContainer.style.display = "none";
+        document.getElementById("blog-preview-container").style.display =
+          "none";
+      }
+
+      function closeBlogPreview() {
+        document.getElementById("blog-preview-container").style.display =
+          "none";
+      }
+
+      // Initialize the page
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>

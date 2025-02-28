@@ -219,8 +219,35 @@ function getUrlParam(param) {
   return urlParams.get(param);
 }
 
+// Cache for storing loaded data
+const dataCache = {
+  projectsMetadata: null,
+  blogMetadata: null,
+  projects: {},
+  blogs: {},
+};
+
 // Enhanced JSON loading with better error handling and console logging
 async function loadJsonData(filename) {
+  if (filename === "projects" && dataCache.projectsMetadata) {
+    return dataCache.projectsMetadata;
+  }
+  if (filename === "blogs" && dataCache.blogMetadata) {
+    return dataCache.blogMetadata;
+  }
+  if (
+    filename.startsWith("projects/") &&
+    dataCache.projects[filename.split("/")[1]]
+  ) {
+    return dataCache.projects[filename.split("/")[1]];
+  }
+  if (
+    filename.startsWith("blogs/") &&
+    dataCache.blogs[filename.split("/")[1]]
+  ) {
+    return dataCache.blogs[filename.split("/")[1]];
+  }
+
   console.log(`$ curl -s https://api.portfolio.local/data/${filename}.json`);
 
   try {
@@ -236,6 +263,18 @@ async function loadJsonData(filename) {
     const data = await response.json();
     console.log(`$ jq . data/${filename}.json | head -3`);
     console.log(`{...}`); // Simulating partial output of jq
+
+    // Cache the data
+    if (filename === "projects") {
+      dataCache.projectsMetadata = data;
+    } else if (filename === "blogs") {
+      dataCache.blogMetadata = data;
+    } else if (filename.startsWith("projects/")) {
+      dataCache.projects[filename.split("/")[1]] = data;
+    } else if (filename.startsWith("blogs/")) {
+      dataCache.blogs[filename.split("/")[1]] = data;
+    }
+
     return data;
   } catch (error) {
     console.error(
