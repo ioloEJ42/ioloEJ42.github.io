@@ -14,6 +14,26 @@
       "description": "A Python-based security tool for real-time file system monitoring with cryptographic verification and comprehensive reporting.",
       "featured": true,
       "tags": ["Python", "Security", "Watchdog", "SQLite", "PDF Reporting"]
+    },
+    {
+      "id": "ascii-art-generator",
+      "title": "ASCII Art Generator",
+      "description": "An interactive web application for creating, customizing, and exporting ASCII art with multiple shapes, patterns, and export options.",
+      "featured": true,
+      "tags": ["React", "TypeScript", "Tailwind CSS", "Vite", "Interactive"]
+    },
+    {
+      "id": "all-sorts",
+      "title": "All-Sorts",
+      "description": "An advanced algorithm visualization platform showcasing 15+ sorting algorithms through real-time, interactive visualizations.",
+      "featured": true,
+      "tags": [
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Algorithms",
+        "Interactive"
+      ]
     }
   ]
 }
