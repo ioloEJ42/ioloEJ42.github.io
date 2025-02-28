@@ -3,243 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CONTENT_MANAGER_ | PORTFOLIO_</title>
-    <link
-      rel="shortcut icon"
-      href="../img/shortcuticon.png"
-      type="image/x-icon"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>Portfolio Content Editor</title>
     <style>
-      :root {
-        --bg-color: #1e1e1e;
-        --terminal-bg: #282a36;
-        --text-color: #f8f8f2;
-        --accent-color: #50fa7b;
-        --secondary-color: #bd93f9;
-        --danger-color: #ff5555;
-        --warning-color: #f1fa8c;
-        --info-color: #8be9fd;
-        --border-color: #44475a;
-        --input-bg: #21222c;
-      }
-
+      /* Minimal styling for maximum efficiency */
       body {
-        font-family: "JetBrains Mono", monospace;
-        background-color: var(--bg-color);
-        color: var(--text-color);
+        font-family: system-ui, -apple-system, sans-serif;
         margin: 0;
-        padding: 0;
-        line-height: 1.6;
-      }
-
-      .container {
+        padding: 20px;
+        line-height: 1.5;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px;
+        color: #333;
       }
 
       header {
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 15px;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
       }
 
-      h1,
-      h2,
-      h3 {
-        color: var(--accent-color);
-      }
-
-      nav {
+      .tabs {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
         margin-bottom: 20px;
       }
 
-      .nav-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: var(--accent-color);
-      }
-
-      .nav-links {
-        display: flex;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .nav-links li {
-        margin-left: 20px;
-      }
-
-      .nav-links a {
-        color: var(--text-color);
-        text-decoration: none;
-        transition: color 0.3s;
-      }
-
-      .nav-links a:hover,
-      .nav-links .active a {
-        color: var(--accent-color);
-      }
-
-      .terminal-window {
-        background-color: var(--terminal-bg);
-        border-radius: 6px;
-        overflow: hidden;
-        margin-bottom: 30px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      }
-
-      .terminal-header {
-        background-color: var(--border-color);
-        padding: 10px 15px;
-        display: flex;
-        align-items: center;
-      }
-
-      .terminal-title {
-        color: var(--text-color);
-        font-size: 0.9rem;
-        flex-grow: 1;
-        text-align: center;
-      }
-
-      .terminal-buttons {
-        display: flex;
-        margin-right: 10px;
-      }
-
-      .terminal-button {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        margin-right: 8px;
-      }
-
-      .terminal-button.close {
-        background-color: #ff5f56;
-      }
-
-      .terminal-button.minimize {
-        background-color: #ffbd2e;
-      }
-
-      .terminal-button.maximize {
-        background-color: #27c93f;
-      }
-
-      .terminal-body {
-        padding: 20px;
-        min-height: 300px;
-      }
-
-      .terminal-line {
-        display: flex;
-        margin-bottom: 10px;
-      }
-
-      .terminal-prompt {
-        color: var(--accent-color);
-        margin-right: 10px;
-        white-space: nowrap;
-      }
-
-      .terminal-command {
-        color: var(--text-color);
-      }
-
-      .terminal-output {
-        margin-bottom: 20px;
-        padding-left: 10px;
-      }
-
-      .form-group {
-        margin-bottom: 20px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 5px;
-        color: var(--info-color);
-      }
-
-      input,
-      textarea,
-      select {
-        width: 100%;
-        padding: 10px;
-        background-color: var(--input-bg);
-        border: 1px solid var(--border-color);
-        color: var(--text-color);
-        font-family: "JetBrains Mono", monospace;
-        border-radius: 4px;
-      }
-
-      textarea {
-        min-height: 200px;
-        resize: vertical;
-      }
-
-      button {
-        background-color: var(--accent-color);
-        color: var(--bg-color);
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
+      .tab {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: #f5f5f5;
         cursor: pointer;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 500;
-        transition: opacity 0.3s;
+        margin-right: 5px;
       }
 
-      button:hover {
-        opacity: 0.9;
-      }
-
-      .btn-secondary {
-        background-color: var(--secondary-color);
-      }
-
-      .btn-danger {
-        background-color: var(--danger-color);
-      }
-
-      .btn-warning {
-        background-color: var(--warning-color);
-        color: var(--terminal-bg);
-      }
-
-      .btn-group {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-      }
-
-      .tab-nav {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-
-      .tab-button {
-        background-color: var(--input-bg);
-        color: var(--text-color);
-        border: 1px solid var(--border-color);
-        padding: 10px 15px;
-        cursor: pointer;
-      }
-
-      .tab-button.active {
-        background-color: var(--accent-color);
-        color: var(--terminal-bg);
-        border-color: var(--accent-color);
+      .tab.active {
+        background: #1a73e8;
+        color: white;
+        border-color: #1a73e8;
       }
 
       .tab-content {
@@ -250,61 +49,103 @@
         display: block;
       }
 
-      .loading {
-        color: var(--warning-color);
+      h1,
+      h2,
+      h3 {
+        margin-top: 0;
       }
 
-      .error {
-        color: var(--danger-color);
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-family: inherit;
       }
 
-      .success {
-        color: var(--accent-color);
-      }
-
-      .checkbox-label {
-        display: flex;
-        align-items: center;
+      button {
+        padding: 8px 16px;
+        background: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 4px;
         cursor: pointer;
+        margin-right: 10px;
       }
 
-      .checkbox-label input[type="checkbox"] {
-        width: auto;
-        margin-right: 10px;
+      button.secondary {
+        background: #f5f5f5;
+        color: #333;
+        border: 1px solid #ccc;
+      }
+
+      button.danger {
+        background: #d93025;
+      }
+
+      textarea {
+        min-height: 200px;
+      }
+
+      .form-section {
+        margin-bottom: 20px;
       }
 
       .tags-container {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
+        gap: 5px;
+        margin-top: 5px;
       }
 
       .tag {
-        background-color: var(--secondary-color);
-        color: var(--terminal-bg);
-        padding: 5px 10px;
+        background: #e8f0fe;
+        border: 1px solid #aec9ff;
         border-radius: 4px;
+        padding: 2px 8px;
         display: flex;
         align-items: center;
       }
 
       .tag-remove {
-        margin-left: 8px;
+        margin-left: 5px;
         cursor: pointer;
+        color: #666;
       }
 
-      .preview-container {
-        background-color: var(--input-bg);
-        border: 1px solid var(--border-color);
+      .preview {
+        border: 1px solid #ddd;
         padding: 15px;
+        margin-top: 20px;
         border-radius: 4px;
-        margin-top: 15px;
+        background: #f9f9f9;
+        overflow-x: auto;
       }
 
-      .json-preview {
-        white-space: pre-wrap;
-        overflow-x: auto;
+      .toolbar {
+        background: #f5f5f5;
+        padding: 5px;
+        margin-bottom: 0;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        border-radius: 4px 4px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .toolbar button {
+        margin: 0;
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+
+      .editor-container {
+        margin-bottom: 20px;
       }
 
       .notification {
@@ -312,8 +153,8 @@
         bottom: 20px;
         right: 20px;
         padding: 15px 20px;
-        background-color: var(--accent-color);
-        color: var(--terminal-bg);
+        background: #323232;
+        color: white;
         border-radius: 4px;
         opacity: 0;
         transition: opacity 0.3s;
@@ -325,486 +166,372 @@
       }
 
       .notification.error {
-        background-color: var(--danger-color);
+        background: #d93025;
       }
 
-      /* Editor Toolbar */
-      .editor-toolbar {
+      .list-container {
+        margin-bottom: 20px;
+      }
+
+      .list-item {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+
+      .tags {
         display: flex;
-        gap: 5px;
-        margin-bottom: 5px;
         flex-wrap: wrap;
-        background-color: var(--terminal-bg);
-        padding: 5px;
-        border: 1px solid var(--border-color);
-        border-bottom: none;
-        border-radius: 4px 4px 0 0;
+        gap: 5px;
+        margin-top: 5px;
       }
 
-      .editor-toolbar button {
-        background-color: var(--input-bg);
-        color: var(--text-color);
-        padding: 5px 10px;
-        font-size: 0.8rem;
+      .tag-pill {
+        background: #e8f0fe;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
       }
 
-      .editor-container {
-        border: 1px solid var(--border-color);
-        border-radius: 0 0 4px 4px;
+      .form-group {
+        margin-bottom: 15px;
       }
 
-      .blink-cursor::after {
-        content: "|";
-        animation: blink 1s infinite;
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
       }
 
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0;
-        }
+      small {
+        color: #666;
+        display: block;
+        margin-top: 2px;
       }
 
-      /* Responsive adjustments */
-      @media (max-width: 768px) {
-        .container {
-          padding: 10px;
-        }
+      .btn-group {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+      }
+
+      pre {
+        white-space: pre-wrap;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <header>
-        <nav>
-          <div class="nav-title">PORTFOLIO_ | CONTENT_MANAGER_</div>
-          <ul class="nav-links">
-            <li><a href="index.html">$ HOME</a></li>
-            <li><a href="projects.html">$ PROJECTS</a></li>
-            <li><a href="blogs.html">$ BLOGS</a></li>
-            <li><a href="crud.html" class="active">$ MANAGE</a></li>
-          </ul>
-        </nav>
-      </header>
+    <header>
+      <h1>Portfolio Content Editor</h1>
+      <p>Create and edit content for your portfolio site</p>
+    </header>
 
-      <main>
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <div class="terminal-buttons">
-              <div class="terminal-button close"></div>
-              <div class="terminal-button minimize"></div>
-              <div class="terminal-button maximize"></div>
+    <div class="tabs">
+      <div class="tab active" data-tab="projects">Projects</div>
+      <div class="tab" data-tab="blogs">Blogs</div>
+    </div>
+
+    <!-- Projects Tab -->
+    <div id="projects-tab" class="tab-content active">
+      <div id="projects-list" class="list-container">
+        <p id="projects-loading">Loading projects...</p>
+      </div>
+
+      <div class="btn-group">
+        <button id="new-project-btn">New Project</button>
+        <button id="load-project-btn" class="secondary">
+          Load Selected Project
+        </button>
+      </div>
+
+      <div id="project-form-container" style="display: none">
+        <h2 id="project-form-title">New Project</h2>
+
+        <form id="project-form">
+          <div class="form-section">
+            <h3>Metadata (projects.json)</h3>
+
+            <div class="form-group">
+              <label for="project-id">Project ID</label>
+              <input
+                type="text"
+                id="project-id"
+                required
+                placeholder="project-name-slug"
+              />
+              <small
+                >Use lowercase letters, numbers and hyphens only. This will be
+                used in URLs.</small
+              >
             </div>
-            <div class="terminal-title">user@portfolio:~/content-manager</div>
+
+            <div class="form-group">
+              <label for="project-title">Title</label>
+              <input
+                type="text"
+                id="project-title"
+                required
+                placeholder="Project Title"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="project-description">Short Description</label>
+              <textarea
+                id="project-description"
+                required
+                placeholder="A brief description for project listings"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="project-featured" />
+                Featured Project (shown on homepage)
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="project-tags-input">Tags</label>
+              <div style="display: flex; gap: 10px">
+                <input
+                  type="text"
+                  id="project-tags-input"
+                  placeholder="Add tag and press Enter"
+                />
+                <button type="button" id="add-project-tag" class="secondary">
+                  Add
+                </button>
+              </div>
+              <div id="project-tags-container" class="tags-container"></div>
+            </div>
           </div>
-          <div class="terminal-body">
-            <div class="terminal-line">
-              <div class="terminal-prompt">
-                <span class="terminal-user">user</span>@<span
-                  class="terminal-host"
-                  >portfolio</span
-                >:<span class="terminal-path">~/content-manager</span>$
-              </div>
-              <div class="terminal-command">./content-manager.sh</div>
-            </div>
-            <div class="terminal-output">
-              <p>Terminal-themed content management system initialized.</p>
-              <p>Choose a content type to manage:</p>
+
+          <div class="form-section">
+            <h3>Content (projects/[id].json)</h3>
+
+            <div class="form-group">
+              <label for="project-date">Date</label>
+              <input type="date" id="project-date" required />
             </div>
 
-            <div class="tab-nav">
-              <button class="tab-button active" data-tab="projects">
-                Projects
-              </button>
-              <button class="tab-button" data-tab="blogs">Blog Posts</button>
+            <div class="form-group">
+              <label for="project-github">GitHub URL (optional)</label>
+              <input
+                type="url"
+                id="project-github"
+                placeholder="https://github.com/username/repo"
+              />
             </div>
 
-            <!-- Projects Tab -->
-            <div id="projects-tab" class="tab-content active">
-              <div class="terminal-line">
-                <div class="terminal-prompt">
-                  <span class="terminal-user">user</span>@<span
-                    class="terminal-host"
-                    >portfolio</span
-                  >:<span class="terminal-path">~/content-manager</span>$
-                </div>
-                <div class="terminal-command">cat projects.json | jq</div>
-              </div>
-              <div class="terminal-output">
-                <div id="projects-list-container">
-                  <p class="loading">
-                    Loading projects...<span class="blink-cursor"></span>
-                  </p>
-                </div>
-
-                <div class="btn-group">
-                  <button id="new-project-btn">+ New Project</button>
-                  <button id="load-project-btn" class="btn-secondary">
-                    Load Selected Project
-                  </button>
-                </div>
-              </div>
-
-              <div id="project-form-container" style="display: none">
-                <div class="terminal-line">
-                  <div class="terminal-prompt">
-                    <span class="terminal-user">user</span>@<span
-                      class="terminal-host"
-                      >portfolio</span
-                    >:<span class="terminal-path">~/content-manager</span>$
-                  </div>
-                  <div class="terminal-command">
-                    vim <span id="project-filename">new-project.json</span>
-                  </div>
-                </div>
-
-                <form id="project-form">
-                  <h3>Metadata (projects.json)</h3>
-                  <div class="form-group">
-                    <label for="project-id">Project ID (used in URL)</label>
-                    <input
-                      type="text"
-                      id="project-id"
-                      required
-                      placeholder="project-name-slug"
-                    />
-                    <small style="color: var(--info-color)"
-                      >Use lowercase letters, numbers and hyphens only</small
-                    >
-                  </div>
-
-                  <div class="form-group">
-                    <label for="project-title">Title</label>
-                    <input
-                      type="text"
-                      id="project-title"
-                      required
-                      placeholder="Project Title"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="project-description">Short Description</label>
-                    <textarea
-                      id="project-description"
-                      required
-                      placeholder="A brief description for project listings"
-                      rows="3"
-                    ></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="project-featured">
-                      <input type="checkbox" id="project-featured" />
-                      Featured Project (shown on homepage)
-                    </label>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="project-tags-input">Tags</label>
-                    <div style="display: flex; gap: 10px">
-                      <input
-                        type="text"
-                        id="project-tags-input"
-                        placeholder="Add tag and press Enter"
-                      />
-                      <button
-                        type="button"
-                        id="add-project-tag"
-                        class="btn-secondary"
-                      >
-                        Add
-                      </button>
-                    </div>
-                    <div
-                      id="project-tags-container"
-                      class="tags-container"
-                    ></div>
-                  </div>
-
-                  <h3>Full Content (projects/[id].json)</h3>
-
-                  <div class="form-group">
-                    <label for="project-date">Date</label>
-                    <input type="date" id="project-date" required />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="project-github">GitHub URL (optional)</label>
-                    <input
-                      type="url"
-                      id="project-github"
-                      placeholder="https://github.com/username/repo"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="project-live">Live Demo URL (optional)</label>
-                    <input
-                      type="url"
-                      id="project-live"
-                      placeholder="https://example.com"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="project-content">Full HTML Content</label>
-                    <div class="editor-toolbar">
-                      <button type="button" data-format="h2">H2</button>
-                      <button type="button" data-format="h3">H3</button>
-                      <button type="button" data-format="p">P</button>
-                      <button type="button" data-format="strong">Bold</button>
-                      <button type="button" data-format="em">Italic</button>
-                      <button type="button" data-format="ul">List</button>
-                      <button type="button" data-format="ol">
-                        Numbered List
-                      </button>
-                      <button type="button" data-format="li">List Item</button>
-                      <button type="button" data-format="a">Link</button>
-                      <button type="button" data-format="code">Code</button>
-                    </div>
-                    <div class="editor-container">
-                      <textarea
-                        id="project-content"
-                        required
-                        placeholder="<p>Project full description with HTML formatting</p>"
-                      ></textarea>
-                    </div>
-                  </div>
-
-                  <div class="btn-group">
-                    <button
-                      type="button"
-                      id="preview-project-btn"
-                      class="btn-secondary"
-                    >
-                      Preview JSON
-                    </button>
-                    <button type="button" id="save-project-btn">
-                      Generate & Download JSON Files
-                    </button>
-                    <button
-                      type="button"
-                      id="cancel-project-btn"
-                      class="btn-danger"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-
-                <div
-                  id="project-preview-container"
-                  class="preview-container"
-                  style="display: none"
-                >
-                  <h3>JSON Preview</h3>
-                  <h4>projects.json entry:</h4>
-                  <pre id="project-meta-preview" class="json-preview"></pre>
-
-                  <h4>projects/[id].json file:</h4>
-                  <pre id="project-content-preview" class="json-preview"></pre>
-
-                  <button
-                    type="button"
-                    id="close-project-preview-btn"
-                    class="btn-secondary"
-                  >
-                    Close Preview
-                  </button>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="project-live">Live Demo URL (optional)</label>
+              <input
+                type="url"
+                id="project-live"
+                placeholder="https://example.com"
+              />
             </div>
 
-            <!-- Blogs Tab -->
-            <div id="blogs-tab" class="tab-content">
-              <div class="terminal-line">
-                <div class="terminal-prompt">
-                  <span class="terminal-user">user</span>@<span
-                    class="terminal-host"
-                    >portfolio</span
-                  >:<span class="terminal-path">~/content-manager</span>$
+            <div class="form-group">
+              <label for="project-content">Full HTML Content</label>
+              <div class="editor-container">
+                <div class="toolbar">
+                  <button type="button" data-format="h2">H2</button>
+                  <button type="button" data-format="h3">H3</button>
+                  <button type="button" data-format="p">P</button>
+                  <button type="button" data-format="strong">Bold</button>
+                  <button type="button" data-format="em">Italic</button>
+                  <button type="button" data-format="ul">List</button>
+                  <button type="button" data-format="ol">Numbered List</button>
+                  <button type="button" data-format="li">List Item</button>
+                  <button type="button" data-format="a">Link</button>
+                  <button type="button" data-format="code">Code</button>
                 </div>
-                <div class="terminal-command">cat blogs.json | jq</div>
-              </div>
-              <div class="terminal-output">
-                <div id="blogs-list-container">
-                  <p class="loading">
-                    Loading blog posts...<span class="blink-cursor"></span>
-                  </p>
-                </div>
-
-                <div class="btn-group">
-                  <button id="new-blog-btn">+ New Blog Post</button>
-                  <button id="load-blog-btn" class="btn-secondary">
-                    Load Selected Post
-                  </button>
-                </div>
-              </div>
-
-              <div id="blog-form-container" style="display: none">
-                <div class="terminal-line">
-                  <div class="terminal-prompt">
-                    <span class="terminal-user">user</span>@<span
-                      class="terminal-host"
-                      >portfolio</span
-                    >:<span class="terminal-path">~/content-manager</span>$
-                  </div>
-                  <div class="terminal-command">
-                    vim <span id="blog-filename">new-blog-post.json</span>
-                  </div>
-                </div>
-
-                <form id="blog-form">
-                  <h3>Metadata (blogs.json)</h3>
-                  <div class="form-group">
-                    <label for="blog-id">Blog Post ID (used in URL)</label>
-                    <input
-                      type="text"
-                      id="blog-id"
-                      required
-                      placeholder="blog-post-slug"
-                    />
-                    <small style="color: var(--info-color)"
-                      >Use lowercase letters, numbers and hyphens only</small
-                    >
-                  </div>
-
-                  <div class="form-group">
-                    <label for="blog-title">Title</label>
-                    <input
-                      type="text"
-                      id="blog-title"
-                      required
-                      placeholder="Blog Post Title"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="blog-date">Date</label>
-                    <input
-                      type="text"
-                      id="blog-date"
-                      required
-                      placeholder="February 28, 2025"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="blog-author">Author</label>
-                    <input
-                      type="text"
-                      id="blog-author"
-                      required
-                      placeholder="Your Name"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="blog-excerpt">Excerpt</label>
-                    <textarea
-                      id="blog-excerpt"
-                      required
-                      placeholder="A brief excerpt for blog listings"
-                      rows="3"
-                    ></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="blog-tags-input">Tags</label>
-                    <div style="display: flex; gap: 10px">
-                      <input
-                        type="text"
-                        id="blog-tags-input"
-                        placeholder="Add tag and press Enter"
-                      />
-                      <button
-                        type="button"
-                        id="add-blog-tag"
-                        class="btn-secondary"
-                      >
-                        Add
-                      </button>
-                    </div>
-                    <div id="blog-tags-container" class="tags-container"></div>
-                  </div>
-
-                  <h3>Full Content (blogs/[id].json)</h3>
-
-                  <div class="form-group">
-                    <label for="blog-content">Full HTML Content</label>
-                    <div class="editor-toolbar">
-                      <button type="button" data-format="h2">H2</button>
-                      <button type="button" data-format="h3">H3</button>
-                      <button type="button" data-format="p">P</button>
-                      <button type="button" data-format="strong">Bold</button>
-                      <button type="button" data-format="em">Italic</button>
-                      <button type="button" data-format="ul">List</button>
-                      <button type="button" data-format="ol">
-                        Numbered List
-                      </button>
-                      <button type="button" data-format="li">List Item</button>
-                      <button type="button" data-format="a">Link</button>
-                      <button type="button" data-format="code">Code</button>
-                    </div>
-                    <div class="editor-container">
-                      <textarea
-                        id="blog-content"
-                        required
-                        placeholder="<p>Blog post full content with HTML formatting</p>"
-                      ></textarea>
-                    </div>
-                  </div>
-
-                  <div class="btn-group">
-                    <button
-                      type="button"
-                      id="preview-blog-btn"
-                      class="btn-secondary"
-                    >
-                      Preview JSON
-                    </button>
-                    <button type="button" id="save-blog-btn">
-                      Generate & Download JSON Files
-                    </button>
-                    <button
-                      type="button"
-                      id="cancel-blog-btn"
-                      class="btn-danger"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-
-                <div
-                  id="blog-preview-container"
-                  class="preview-container"
-                  style="display: none"
-                >
-                  <h3>JSON Preview</h3>
-                  <h4>blogs.json entry:</h4>
-                  <pre id="blog-meta-preview" class="json-preview"></pre>
-
-                  <h4>blogs/[id].json file:</h4>
-                  <pre id="blog-content-preview" class="json-preview"></pre>
-
-                  <button
-                    type="button"
-                    id="close-blog-preview-btn"
-                    class="btn-secondary"
-                  >
-                    Close Preview
-                  </button>
-                </div>
+                <textarea
+                  id="project-content"
+                  required
+                  placeholder="<p>Project full description with HTML formatting</p>"
+                ></textarea>
               </div>
             </div>
+          </div>
+
+          <div class="btn-group">
+            <button type="button" id="preview-project-btn" class="secondary">
+              Preview JSON
+            </button>
+            <button type="button" id="save-project-btn">
+              Generate & Download JSON Files
+            </button>
+            <button type="button" id="cancel-project-btn" class="danger">
+              Cancel
+            </button>
+          </div>
+        </form>
+
+        <div id="project-preview" class="preview" style="display: none">
+          <h3>JSON Preview</h3>
+          <h4>projects.json entry:</h4>
+          <pre id="project-meta-preview"></pre>
+
+          <h4>projects/[id].json file:</h4>
+          <pre id="project-content-preview"></pre>
+
+          <div class="btn-group">
+            <button id="close-project-preview-btn" class="secondary">
+              Close Preview
+            </button>
           </div>
         </div>
-      </main>
+      </div>
+    </div>
+
+    <!-- Blogs Tab -->
+    <div id="blogs-tab" class="tab-content">
+      <div id="blogs-list" class="list-container">
+        <p id="blogs-loading">Loading blog posts...</p>
+      </div>
+
+      <div class="btn-group">
+        <button id="new-blog-btn">New Blog Post</button>
+        <button id="load-blog-btn" class="secondary">Load Selected Post</button>
+      </div>
+
+      <div id="blog-form-container" style="display: none">
+        <h2 id="blog-form-title">New Blog Post</h2>
+
+        <form id="blog-form">
+          <div class="form-section">
+            <h3>Metadata (blogs.json)</h3>
+
+            <div class="form-group">
+              <label for="blog-id">Blog Post ID</label>
+              <input
+                type="text"
+                id="blog-id"
+                required
+                placeholder="blog-post-slug"
+              />
+              <small
+                >Use lowercase letters, numbers and hyphens only. This will be
+                used in URLs.</small
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="blog-title">Title</label>
+              <input
+                type="text"
+                id="blog-title"
+                required
+                placeholder="Blog Post Title"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="blog-date">Date</label>
+              <input
+                type="text"
+                id="blog-date"
+                required
+                placeholder="February 28, 2025"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="blog-author">Author</label>
+              <input
+                type="text"
+                id="blog-author"
+                required
+                placeholder="Your Name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="blog-excerpt">Excerpt</label>
+              <textarea
+                id="blog-excerpt"
+                required
+                placeholder="A brief excerpt for blog listings"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="blog-tags-input">Tags</label>
+              <div style="display: flex; gap: 10px">
+                <input
+                  type="text"
+                  id="blog-tags-input"
+                  placeholder="Add tag and press Enter"
+                />
+                <button type="button" id="add-blog-tag" class="secondary">
+                  Add
+                </button>
+              </div>
+              <div id="blog-tags-container" class="tags-container"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Content (blogs/[id].json)</h3>
+
+            <div class="form-group">
+              <label for="blog-content">Full HTML Content</label>
+              <div class="editor-container">
+                <div class="toolbar">
+                  <button type="button" data-format="h2">H2</button>
+                  <button type="button" data-format="h3">H3</button>
+                  <button type="button" data-format="p">P</button>
+                  <button type="button" data-format="strong">Bold</button>
+                  <button type="button" data-format="em">Italic</button>
+                  <button type="button" data-format="ul">List</button>
+                  <button type="button" data-format="ol">Numbered List</button>
+                  <button type="button" data-format="li">List Item</button>
+                  <button type="button" data-format="a">Link</button>
+                  <button type="button" data-format="code">Code</button>
+                </div>
+                <textarea
+                  id="blog-content"
+                  required
+                  placeholder="<p>Blog post full content with HTML formatting</p>"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button type="button" id="preview-blog-btn" class="secondary">
+              Preview JSON
+            </button>
+            <button type="button" id="save-blog-btn">
+              Generate & Download JSON Files
+            </button>
+            <button type="button" id="cancel-blog-btn" class="danger">
+              Cancel
+            </button>
+          </div>
+        </form>
+
+        <div id="blog-preview" class="preview" style="display: none">
+          <h3>JSON Preview</h3>
+          <h4>blogs.json entry:</h4>
+          <pre id="blog-meta-preview"></pre>
+
+          <h4>blogs/[id].json file:</h4>
+          <pre id="blog-content-preview"></pre>
+
+          <div class="btn-group">
+            <button id="close-blog-preview-btn" class="secondary">
+              Close Preview
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="notification" class="notification"></div>
@@ -819,8 +546,8 @@
       };
 
       // DOM Elements
-      const projectsList = document.getElementById("projects-list-container");
-      const blogsList = document.getElementById("blogs-list-container");
+      const projectsList = document.getElementById("projects-list");
+      const blogsList = document.getElementById("blogs-list");
       const projectForm = document.getElementById("project-form");
       const blogForm = document.getElementById("blog-form");
       const projectFormContainer = document.getElementById(
@@ -830,20 +557,20 @@
       const notification = document.getElementById("notification");
 
       // Tab Switching
-      document.querySelectorAll(".tab-button").forEach((button) => {
-        button.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
           // Update tab buttons
           document
-            .querySelectorAll(".tab-button")
-            .forEach((btn) => btn.classList.remove("active"));
-          button.classList.add("active");
+            .querySelectorAll(".tab")
+            .forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
 
           // Show the corresponding tab content
           document
             .querySelectorAll(".tab-content")
-            .forEach((tab) => tab.classList.remove("active"));
+            .forEach((content) => content.classList.remove("active"));
           document
-            .getElementById(`${button.dataset.tab}-tab`)
+            .getElementById(`${tab.dataset.tab}-tab`)
             .classList.add("active");
         });
       });
@@ -935,8 +662,7 @@
 
       // Display projects list
       async function displayProjects() {
-        projectsList.innerHTML =
-          '<p class="loading">Loading projects...<span class="blink-cursor"></span></p>';
+        projectsList.innerHTML = "<p>Loading projects...</p>";
 
         const projectsData = await loadProjects();
 
@@ -949,40 +675,36 @@
           return;
         }
 
-        let html = '<div style="margin-bottom: 15px;">';
-        html += '<select id="project-select">';
+        let html = '<select id="project-select" style="margin-bottom: 15px;">';
         projectsData.projects.forEach((project) => {
           html += `<option value="${project.id}">${project.title}</option>`;
         });
         html += "</select>";
-        html += "</div>";
 
-        html += '<ul style="list-style: none; padding: 0;">';
+        html += "<div>";
         projectsData.projects.forEach((project) => {
           html += `
-          <li style="margin-bottom: 10px; padding: 10px; background: var(--input-bg); border-radius: 4px;">
-            <strong>${project.title}</strong> [${project.id}]
-            <div>${project.description}</div>
-            <div style="margin-top: 5px;">
+          <div class="list-item">
+            <h3>${project.title}</h3>
+            <p><strong>ID:</strong> ${project.id}</p>
+            <p>${project.description}</p>
+            <div class="tags">
               ${project.tags
-                .map(
-                  (tag) =>
-                    `<span style="background: var(--secondary-color); color: var(--terminal-bg); padding: 2px 6px; border-radius: 3px; font-size: 0.8em; margin-right: 5px;">${tag}</span>`
-                )
+                .map((tag) => `<span class="tag-pill">${tag}</span>`)
                 .join("")}
             </div>
-          </li>
+            ${project.featured ? "<p><strong>✓ Featured</strong></p>" : ""}
+          </div>
         `;
         });
-        html += "</ul>";
+        html += "</div>";
 
         projectsList.innerHTML = html;
       }
 
       // Display blogs list
       async function displayBlogs() {
-        blogsList.innerHTML =
-          '<p class="loading">Loading blog posts...<span class="blink-cursor"></span></p>';
+        blogsList.innerHTML = "<p>Loading blog posts...</p>";
 
         const blogsData = await loadBlogs();
 
@@ -991,33 +713,29 @@
           return;
         }
 
-        let html = '<div style="margin-bottom: 15px;">';
-        html += '<select id="blog-select">';
+        let html = '<select id="blog-select" style="margin-bottom: 15px;">';
         blogsData.posts.forEach((post) => {
           html += `<option value="${post.id}">${post.title}</option>`;
         });
         html += "</select>";
-        html += "</div>";
 
-        html += '<ul style="list-style: none; padding: 0;">';
+        html += "<div>";
         blogsData.posts.forEach((post) => {
           html += `
-          <li style="margin-bottom: 10px; padding: 10px; background: var(--input-bg); border-radius: 4px;">
-            <strong>${post.title}</strong> [${post.id}]
-            <div><small>${post.date}</small></div>
-            <div>${post.excerpt || ""}</div>
-            <div style="margin-top: 5px;">
+          <div class="list-item">
+            <h3>${post.title}</h3>
+            <p><strong>ID:</strong> ${post.id}</p>
+            <p><strong>Date:</strong> ${post.date}</p>
+            <p>${post.excerpt || ""}</p>
+            <div class="tags">
               ${post.tags
-                .map(
-                  (tag) =>
-                    `<span style="background: var(--secondary-color); color: var(--terminal-bg); padding: 2px 6px; border-radius: 3px; font-size: 0.8em; margin-right: 5px;">${tag}</span>`
-                )
+                .map((tag) => `<span class="tag-pill">${tag}</span>`)
                 .join("")}
             </div>
-          </li>
+          </div>
         `;
         });
-        html += "</ul>";
+        html += "</div>";
 
         blogsList.innerHTML = html;
       }
@@ -1101,82 +819,76 @@
           });
 
         // Editor toolbar buttons
-        document
-          .querySelectorAll(".editor-toolbar button")
-          .forEach((button) => {
-            button.addEventListener("click", () => {
-              const format = button.dataset.format;
-              const targetId =
-                button.closest(".tab-content").id === "projects-tab"
-                  ? "project-content"
-                  : "blog-content";
-              const textarea = document.getElementById(targetId);
+        document.querySelectorAll(".toolbar button").forEach((button) => {
+          button.addEventListener("click", () => {
+            const format = button.dataset.format;
+            const targetId =
+              button.closest(".tab-content").id === "projects-tab"
+                ? "project-content"
+                : "blog-content";
+            const textarea = document.getElementById(targetId);
 
-              const start = textarea.selectionStart;
-              const end = textarea.selectionEnd;
-              const selectedText = textarea.value.substring(start, end);
-              let replacement = "";
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            let replacement = "";
 
-              switch (format) {
-                case "h2":
-                  replacement = `<h2>${selectedText || "Heading 2"}</h2>`;
-                  break;
-                case "h3":
-                  replacement = `<h3>${selectedText || "Heading 3"}</h3>`;
-                  break;
-                case "p":
-                  replacement = `<p>${selectedText || "Paragraph text"}</p>`;
-                  break;
-                case "strong":
-                  replacement = `<strong>${
-                    selectedText || "Bold text"
-                  }</strong>`;
-                  break;
-                case "em":
-                  replacement = `<em>${selectedText || "Italic text"}</em>`;
-                  break;
-                case "ul":
-                  replacement = `<ul>\n  <li>${
-                    selectedText || "List item"
-                  }</li>\n</ul>`;
-                  break;
-                case "ol":
-                  replacement = `<ol>\n  <li>${
-                    selectedText || "List item"
-                  }</li>\n</ol>`;
-                  break;
-                case "li":
-                  replacement = `<li>${selectedText || "List item"}</li>`;
-                  break;
-                case "a":
-                  const url = prompt("Enter URL:", "https://");
-                  if (url) {
-                    replacement = `<a href="${url}">${selectedText || url}</a>`;
-                  } else {
-                    return;
-                  }
-                  break;
-                case "code":
-                  replacement = `<code>${selectedText || "Code"}</code>`;
-                  break;
-              }
+            switch (format) {
+              case "h2":
+                replacement = `<h2>${selectedText || "Heading 2"}</h2>`;
+                break;
+              case "h3":
+                replacement = `<h3>${selectedText || "Heading 3"}</h3>`;
+                break;
+              case "p":
+                replacement = `<p>${selectedText || "Paragraph text"}</p>`;
+                break;
+              case "strong":
+                replacement = `<strong>${selectedText || "Bold text"}</strong>`;
+                break;
+              case "em":
+                replacement = `<em>${selectedText || "Italic text"}</em>`;
+                break;
+              case "ul":
+                replacement = `<ul>\n  <li>${
+                  selectedText || "List item"
+                }</li>\n</ul>`;
+                break;
+              case "ol":
+                replacement = `<ol>\n  <li>${
+                  selectedText || "List item"
+                }</li>\n</ol>`;
+                break;
+              case "li":
+                replacement = `<li>${selectedText || "List item"}</li>`;
+                break;
+              case "a":
+                const url = prompt("Enter URL:", "https://");
+                if (url) {
+                  replacement = `<a href="${url}">${selectedText || url}</a>`;
+                } else {
+                  return;
+                }
+                break;
+              case "code":
+                replacement = `<code>${selectedText || "Code"}</code>`;
+                break;
+            }
 
-              textarea.focus();
-              document.execCommand("insertText", false, replacement);
+            textarea.focus();
+            document.execCommand("insertText", false, replacement);
 
-              // Fallback for browsers that don't support execCommand
-              if (
-                textarea.value.substring(start, start + replacement.length) !==
-                replacement
-              ) {
-                const value = textarea.value;
-                textarea.value =
-                  value.substring(0, start) +
-                  replacement +
-                  value.substring(end);
-              }
-            });
+            // Fallback for browsers that don't support execCommand
+            if (
+              textarea.value.substring(start, start + replacement.length) !==
+              replacement
+            ) {
+              const value = textarea.value;
+              textarea.value =
+                value.substring(0, start) + replacement + value.substring(end);
+            }
           });
+        });
       }
 
       // Project Functions
@@ -1184,8 +896,8 @@
         // Reset form
         projectForm.reset();
         document.getElementById("project-tags-container").innerHTML = "";
-        document.getElementById("project-filename").textContent =
-          "new-project.json";
+        document.getElementById("project-form-title").textContent =
+          "New Project";
 
         // Set today's date
         const today = new Date().toISOString().split("T")[0];
@@ -1193,7 +905,9 @@
 
         // Show form
         projectFormContainer.style.display = "block";
-        document.getElementById("project-preview-container").style.display =
+        document.getElementById("project-preview").style.display = "none";
+        projectsList.style.display = "none";
+        document.querySelector("#projects-tab .btn-group").style.display =
           "none";
       }
 
@@ -1236,10 +950,10 @@
         }
 
         // Fill the form
-        document.getElementById("project-id").value = projectMeta.id;
         document.getElementById(
-          "project-filename"
-        ).textContent = `${projectMeta.id}.json`;
+          "project-form-title"
+        ).textContent = `Edit Project: ${projectMeta.title}`;
+        document.getElementById("project-id").value = projectMeta.id;
         document.getElementById("project-title").value = projectMeta.title;
         document.getElementById("project-description").value =
           projectMeta.description;
@@ -1274,7 +988,9 @@
 
         // Show form
         projectFormContainer.style.display = "block";
-        document.getElementById("project-preview-container").style.display =
+        document.getElementById("project-preview").style.display = "none";
+        projectsList.style.display = "none";
+        document.querySelector("#projects-tab .btn-group").style.display =
           "none";
 
         showNotification(`Loaded project: ${projectMeta.title}`);
@@ -1344,7 +1060,7 @@
 
       function previewProject() {
         // Get form data
-        const id = document.getElementById("project-id").value.trim();
+        const id = document.getElementById("project -id").value.trim();
         const title = document.getElementById("project-title").value.trim();
         const description = document
           .getElementById("project-description")
@@ -1401,8 +1117,7 @@
           JSON.stringify(projectData, null, 2);
 
         // Show preview container
-        document.getElementById("project-preview-container").style.display =
-          "block";
+        document.getElementById("project-preview").style.display = "block";
       }
 
       function saveProject() {
@@ -1411,8 +1126,7 @@
 
         // Check if preview is displayed (validation passed)
         if (
-          document.getElementById("project-preview-container").style.display !==
-          "block"
+          document.getElementById("project-preview").style.display !== "block"
         ) {
           return;
         }
@@ -1475,13 +1189,13 @@
 
       function cancelProject() {
         projectFormContainer.style.display = "none";
-        document.getElementById("project-preview-container").style.display =
-          "none";
+        projectsList.style.display = "block";
+        document.querySelector("#projects-tab .btn-group").style.display =
+          "flex";
       }
 
       function closeProjectPreview() {
-        document.getElementById("project-preview-container").style.display =
-          "none";
+        document.getElementById("project-preview").style.display = "none";
       }
 
       // Blog Functions
@@ -1489,8 +1203,8 @@
         // Reset form
         blogForm.reset();
         document.getElementById("blog-tags-container").innerHTML = "";
-        document.getElementById("blog-filename").textContent =
-          "new-blog-post.json";
+        document.getElementById("blog-form-title").textContent =
+          "New Blog Post";
 
         // Set today's date
         const today = new Date();
@@ -1502,8 +1216,9 @@
 
         // Show form
         blogFormContainer.style.display = "block";
-        document.getElementById("blog-preview-container").style.display =
-          "none";
+        document.getElementById("blog-preview").style.display = "none";
+        blogsList.style.display = "none";
+        document.querySelector("#blogs-tab .btn-group").style.display = "none";
       }
 
       async function loadSelectedBlog() {
@@ -1540,10 +1255,10 @@
         }
 
         // Fill the form
-        document.getElementById("blog-id").value = blogMeta.id;
         document.getElementById(
-          "blog-filename"
-        ).textContent = `${blogMeta.id}.json`;
+          "blog-form-title"
+        ).textContent = `Edit Blog Post: ${blogMeta.title}`;
+        document.getElementById("blog-id").value = blogMeta.id;
         document.getElementById("blog-title").value = blogMeta.title;
         document.getElementById("blog-date").value = blogMeta.date;
         document.getElementById("blog-author").value = blogMeta.author || "";
@@ -1562,8 +1277,9 @@
 
         // Show form
         blogFormContainer.style.display = "block";
-        document.getElementById("blog-preview-container").style.display =
-          "none";
+        document.getElementById("blog-preview").style.display = "none";
+        blogsList.style.display = "none";
+        document.querySelector("#blogs-tab .btn-group").style.display = "none";
 
         showNotification(`Loaded blog post: ${blogMeta.title}`);
       }
@@ -1639,8 +1355,7 @@
           JSON.stringify(blogData, null, 2);
 
         // Show preview container
-        document.getElementById("blog-preview-container").style.display =
-          "block";
+        document.getElementById("blog-preview").style.display = "block";
       }
 
       function saveBlog() {
@@ -1648,10 +1363,7 @@
         previewBlog();
 
         // Check if preview is displayed (validation passed)
-        if (
-          document.getElementById("blog-preview-container").style.display !==
-          "block"
-        ) {
+        if (document.getElementById("blog-preview").style.display !== "block") {
           return;
         }
 
@@ -1726,13 +1438,12 @@
 
       function cancelBlog() {
         blogFormContainer.style.display = "none";
-        document.getElementById("blog-preview-container").style.display =
-          "none";
+        blogsList.style.display = "block";
+        document.querySelector("#blogs-tab .btn-group").style.display = "flex";
       }
 
       function closeBlogPreview() {
-        document.getElementById("blog-preview-container").style.display =
-          "none";
+        document.getElementById("blog-preview").style.display = "none";
       }
 
       // Initialize the page
