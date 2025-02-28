@@ -7,6 +7,13 @@
       "featured": true,
       "tags": ["HTML", "CSS", "JavaScript"],
       "thumbnail": "dashboard-thumb.png"
+    },
+    {
+      "id": "file-integrity-monitor",
+      "title": "File Integrity Monitor",
+      "description": "A Python-based security tool for real-time file system monitoring with cryptographic verification and comprehensive reporting.",
+      "featured": true,
+      "tags": ["Python", "Security", "Watchdog", "SQLite", "PDF Reporting"]
     }
   ]
 }
