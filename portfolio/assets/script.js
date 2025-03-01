@@ -416,65 +416,83 @@ async function loadBlogsContent() {
 // Project detail page
 async function loadProjectDetail() {
   const projectId = getUrlParam("id");
-  if (!projectId) {
-    window.location.href = "projects.html";
+if (!projectId) {
+  window.location.href = "projects.html";
+  return;
+}
+
+console.log(`$ loading project ${projectId}...`);
+const contentContainer = document.getElementById("project-content");
+const projectDirectory = document.getElementById("project-directory");
+const projectPath = document.getElementById("project-path");
+const projectPathCursor = document.querySelector(".project-path-cursor");
+const titleEl = document.getElementById("project-title");
+const tagsEl = document.getElementById("project-tags");
+const descriptionEl = document.getElementById("project-description");
+const linksEl = document.getElementById("project-links");
+
+if (contentContainer) {
+  // First load projects metadata
+  const projectsData = await loadJsonData("projects");
+  if (!projectsData || !projectsData.projects) {
+    contentContainer.innerHTML =
+      "<p>cat: README.md: No such file or directory</p>";
     return;
   }
 
-  console.log(`$ loading project ${projectId}...`);
-  const contentContainer = document.getElementById("project-content");
-  const projectDirectory = document.getElementById("project-directory");
-  const projectPath = document.getElementById("project-path");
-  const projectPathCursor = document.querySelector(".project-path-cursor");
-  const titleEl = document.getElementById("project-title");
-  const tagsEl = document.getElementById("project-tags");
-  const descriptionEl = document.getElementById("project-description");
-
-  if (contentContainer) {
-    // First load projects metadata
-    const projectsData = await loadJsonData("projects");
-    if (!projectsData || !projectsData.projects) {
-      contentContainer.innerHTML =
-        "<p>cat: README.md: No such file or directory</p>";
-      return;
-    }
-
-    const projectMeta = projectsData.projects.find((p) => p.id === projectId);
-    if (!projectMeta) {
-      contentContainer.innerHTML =
-        "<p>cd: no such directory: " + projectId + "</p>";
-      return;
-    }
-
-    // Update project directory and path
-    if (projectDirectory) projectDirectory.textContent = projectMeta.id;
-    if (projectPath) projectPath.textContent = projectMeta.id;
-    if (projectPathCursor) projectPathCursor.textContent = projectMeta.id;
-
-    // Update page title and project metadata
-    if (titleEl) titleEl.textContent = projectMeta.title;
-    if (tagsEl) {
-      tagsEl.innerHTML = projectMeta.tags
-        .map((tag) => `<span class="project-tag">${tag}</span>`)
-        .join("");
-    }
-    if (descriptionEl) descriptionEl.textContent = projectMeta.description;
-
-    // Now load the full project content
-    const projectContent = await loadJsonData(`projects/${projectId}`);
-    if (projectContent) {
-      // Simulate loading time but shorter
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      contentContainer.innerHTML = projectContent.content;
-
-      // Update document title
-      document.title = `${projectContent.title} | PORTFOLIO_`;
-    } else {
-      contentContainer.innerHTML =
-        "<p>cat: README.md: No such file or directory</p>";
-    }
+  const projectMeta = projectsData.projects.find((p) => p.id === projectId);
+  if (!projectMeta) {
+    contentContainer.innerHTML =
+      "<p>cd: no such directory: " + projectId + "</p>";
+    return;
   }
-  console.log(`$ project ${projectId} loaded`);
+
+  // Update project directory and path
+  if (projectDirectory) projectDirectory.textContent = projectMeta.id;
+  if (projectPath) projectPath.textContent = projectMeta.id;
+  if (projectPathCursor) projectPathCursor.textContent = projectMeta.id;
+
+  // Update page title and project metadata
+  if (titleEl) titleEl.textContent = projectMeta.title;
+  if (tagsEl) {
+    tagsEl.innerHTML = projectMeta.tags
+      .map((tag) => `<span class="project-tag">${tag}</span>`)
+      .join("");
+  }
+  if (descriptionEl) descriptionEl.textContent = projectMeta.description;
+
+  // Now load the full project content
+  const projectContent = await loadJsonData(`projects/${projectId}`);
+  if (projectContent) {
+    // Simulate loading time but shorter
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    contentContainer.innerHTML = projectContent.content;
+
+    // Add links if they exist and are not "N/A"
+    if (linksEl) {
+      let linksHTML = '';
+      
+      // Check if live link exists and is not "N/A" (case-insensitive)
+      if (projectContent.live && !/^n\/?a$/i.test(projectContent.live.trim())) {
+        linksHTML += `<a href="${projectContent.live}" target="_blank" class="demo-link">Live Demo</a>`;
+      }
+      
+      // Check if github link exists and is not "N/A" (case-insensitive)
+      if (projectContent.github && !/^n\/?a$/i.test(projectContent.github.trim())) {
+        linksHTML += `<a href="${projectContent.github}" target="_blank" class="repo-link">GitHub Repo</a>`;
+      }
+      
+      linksEl.innerHTML = linksHTML;
+    }
+
+    // Update document title
+    document.title = `${projectContent.title} | PORTFOLIO_`;
+  } else {
+    contentContainer.innerHTML =
+      "<p>cat: README.md: No such file or directory</p>";
+  }
+}
+console.log(`$ project ${projectId} loaded`);
 }
 
 // Blog detail page
