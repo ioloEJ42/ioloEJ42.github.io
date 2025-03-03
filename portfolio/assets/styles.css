@@ -787,3 +787,106 @@ textarea.form-input {
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+/* Add this to the end of your styles.css file */
+
+/* Interactive Terminal Styles */
+.interactive-terminal {
+  height: 500px;
+  overflow-y: auto;
+  padding-bottom: 60px; /* Space for input */
+  position: relative;
+  background-color: var(--terminal-bg);
+}
+
+/* Term Output & Input Styling */
+.term-output {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.term-output p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.term-output p:not(:last-child) {
+  margin-bottom: 2px !important;
+}
+
+.term-input-line {
+  display: flex;
+  position: relative;
+  margin-top: 10px;
+}
+
+.term-input-prompt {
+  color: var(--terminal-prompt-color);
+  display: flex;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.term-input {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.95rem;
+  width: 100%;
+  padding: 0;
+  outline: none;
+}
+
+.term-input:focus {
+  outline: none;
+}
+
+/* Command Syntax Highlighting */
+.command-name {
+  color: var(--color-light-green);
+}
+
+.command-param {
+  color: var(--color-light-cyan);
+}
+
+.command-flag {
+  color: var(--color-yellow);
+}
+
+.error-text {
+  color: var(--color-light-red);
+}
+
+.success-text {
+  color: var(--color-light-green);
+}
+
+/* Neofetch Output Styling */
+.neofetch-output {
+  font-family: monospace;
+  white-space: pre;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+.neofetch-output .command-name {
+  color: var(--color-light-cyan);
+  font-weight: bold;
+}
+
+/* Section Title Styling */
+.section-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title h2 {
+  margin-bottom: 0.5rem;
+}
+
+.section-title p {
+  opacity: 0.8;
+}
