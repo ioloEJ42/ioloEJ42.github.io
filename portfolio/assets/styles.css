@@ -25,7 +25,7 @@
   --border-color: var(--color-grey);
   --grid-color: rgba(255, 255, 255, 0.03);
   --hover-color: rgba(255, 255, 255, 0.05);
-  --code-bg: rgba(128, 128, 128, 0.1);
+  --code-bg: rgba(128, 128, 128, 0.2);
   --terminal-bg: var(--color-black);
   --terminal-header-bg: var(--color-grey);
   --terminal-prompt-color: var(--color-light-green);
@@ -107,10 +107,6 @@ a {
   color: var(--text-color);
   text-decoration: none;
   transition: color 0.2s;
-}
-
-a:hover {
-  color: var(--accent-color);
 }
 
 .terminal-output a {
@@ -501,7 +497,7 @@ textarea.form-input {
 /* Terminal effect for links */
 .read-more {
   font-weight: 500;
-  color: var(--accent-color);
+  color: var(--color-grey);
 }
 
 /* Blinking cursor effect for certain elements */

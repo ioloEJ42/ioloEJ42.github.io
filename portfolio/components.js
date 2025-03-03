@@ -107,7 +107,7 @@ const Components = {
     return `
       <div class="project-card">
         <div class="project-listing">
-          <span class="directory">drwxr-xr-x</span> 2 user portfolio 4096 ${date} <span class="directory">${
+          <span class="text-file">drwxr-xr-x</span> 2 user portfolio 4096 ${date} <span class="directory">${
       project.id
     }/</span>
         </div>
