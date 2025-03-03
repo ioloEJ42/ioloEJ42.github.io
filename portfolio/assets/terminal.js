@@ -4,11 +4,6 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Update last login time
-  document.getElementById("last-login-time").textContent =
-    new Date().toUTCString();
-
-  // Initialize the terminal environment
   const terminal = new TerminalEmulator("terminal", "term-input");
   terminal.init();
 });

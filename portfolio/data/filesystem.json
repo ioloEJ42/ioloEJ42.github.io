@@ -37,8 +37,5 @@
         }
       }
     }
-  },
-  "etc": {
-    "motd": "Welcome to the Portfolio Terminal!\nType 'help' to see available commands.\n\nThis terminal emulator allows you to explore the portfolio using Linux-style commands.\nNavigate to ~/projects to see development projects.\nNavigate to ~/blogs to read articles."
   }
 }
