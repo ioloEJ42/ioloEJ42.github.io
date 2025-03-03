@@ -567,6 +567,42 @@ class TerminalEmulator {
   processCommand(command) {
     if (command.trim() === "") return;
 
+    // Handle command chaining with &&
+    if (command.includes("&&")) {
+      const commands = command
+        .split("&&")
+        .map((cmd) => cmd.trim())
+        .filter((cmd) => cmd);
+
+      // Add the full command to history
+      this.history.unshift(command);
+      this.historyIndex = -1;
+      this.commandsRun++;
+
+      // Display the full command
+      this.write(this.getPrompt() + " " + command, "term-command");
+
+      // Execute each command in sequence
+      for (const cmd of commands) {
+        // Skip displaying the prompt for subsequent commands
+        if (cmd !== commands[0]) {
+          this.write(`Executing: ${cmd}`, "term-info");
+        }
+
+        // Process each command individually
+        const parts = this.parseCommand(cmd);
+        const cmdName = parts.command;
+        const args = parts.args;
+
+        // Execute command
+        this.executeCommand(cmdName, args);
+      }
+
+      // Add a new input line and exit early
+      this.createNewInputLine();
+      return;
+    }
+
     // Add command to history
     this.history.unshift(command);
     this.historyIndex = -1;
@@ -591,6 +627,28 @@ class TerminalEmulator {
     const cmd = parts.command;
     const args = parts.args;
 
+    // Execute the command
+    this.executeCommand(cmd, args);
+
+    // Add a new input line
+    this.createNewInputLine();
+  }
+
+  /**
+   * Strip HTML tags from text
+   * @param {string} html - Text with HTML tags
+   * @returns {string} - Plain text
+   */
+  stripHtml(html) {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  }
+
+  /**
+   * Execute a specific command with its arguments
+   */
+  executeCommand(cmd, args) {
     // Check for aliases
     if (this.aliases[cmd]) {
       // Replace the command with its alias
@@ -612,9 +670,6 @@ class TerminalEmulator {
     } else if (cmd) {
       this.write(`command not found: ${cmd}`, "error-text");
     }
-
-    // Add a new input line
-    this.createNewInputLine();
   }
 
   /**
@@ -1193,9 +1248,18 @@ class TerminalEmulator {
 
     const pattern = args[0];
     const files = args.slice(1);
-    const regex = new RegExp(pattern, "gi");
+
+    let regex;
+    try {
+      regex = new RegExp(pattern, "gi");
+    } catch (e) {
+      this.write(`Invalid regex pattern: ${e.message}`, "error-text");
+      return;
+    }
+
     let matchFound = false;
 
+    // Process files
     for (const file of files) {
       // Handle wildcards in filenames
       if (file.includes("*")) {
@@ -1268,6 +1332,17 @@ class TerminalEmulator {
     }
 
     return false;
+  }
+
+  /**
+   * Strip HTML tags from text
+   * @param {string} html - Text with HTML tags
+   * @returns {string} - Plain text
+   */
+  stripHtml(html) {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
   }
 
   /**
