@@ -30,13 +30,121 @@ class TerminalEmulator {
 
   async initFileSystem() {
     try {
-      // Load file system data
-      const response = await fetch("data/filesystem.json");
-      if (!response.ok) {
-        throw new Error(`Failed to load filesystem: ${response.status}`);
+      // First, load the basic filesystem structure
+      const fsResponse = await fetch("data/filesystem.json");
+      if (!fsResponse.ok) {
+        throw new Error(`Failed to load filesystem: ${fsResponse.status}`);
       }
 
-      this.fileSystem = await response.json();
+      // Start with the base filesystem that contains system directories and basic structure
+      this.fileSystem = await fsResponse.json();
+
+      // Now load actual projects and blogs data
+      try {
+        // Load projects
+        const projectsResponse = await fetch("data/projects.json");
+        if (projectsResponse.ok) {
+          const projectsData = await projectsResponse.json();
+
+          // Initialize projects directory if it doesn't exist
+          if (!this.fileSystem.home.user.projects) {
+            this.fileSystem.home.user.projects = {};
+          }
+
+          // Add each project to the filesystem
+          if (projectsData.projects && Array.isArray(projectsData.projects)) {
+            for (const project of projectsData.projects) {
+              this.fileSystem.home.user.projects[project.id] = {
+                "README.md": `# ${project.title}\n\n${
+                  project.description
+                }\n\n## Tags\n\n${project.tags.join(", ")}`,
+              };
+
+              // Try to load detailed project data
+              try {
+                const projectDetailResponse = await fetch(
+                  `data/projects/${project.id}.json`
+                );
+                if (projectDetailResponse.ok) {
+                  const projectDetail = await projectDetailResponse.json();
+                  if (projectDetail.content) {
+                    // Convert HTML content to a plain text representation for the terminal
+                    const textContent = this.htmlToText(projectDetail.content);
+                    this.fileSystem.home.user.projects[project.id][
+                      "details.txt"
+                    ] = textContent;
+                  }
+
+                  // Add links file if project has links
+                  if (projectDetail.github || projectDetail.live) {
+                    let linksContent = "# Project Links\n\n";
+                    if (projectDetail.github)
+                      linksContent += `* GitHub: ${projectDetail.github}\n`;
+                    if (projectDetail.live)
+                      linksContent += `* Live Demo: ${projectDetail.live}\n`;
+                    this.fileSystem.home.user.projects[project.id][
+                      "links.txt"
+                    ] = linksContent;
+                  }
+                }
+              } catch (error) {
+                console.warn(
+                  `Could not load detailed data for project ${project.id}:`,
+                  error
+                );
+              }
+            }
+          }
+        }
+
+        // Load blogs
+        const blogsResponse = await fetch("data/blogs.json");
+        if (blogsResponse.ok) {
+          const blogsData = await blogsResponse.json();
+
+          // Initialize blogs directory if it doesn't exist
+          if (!this.fileSystem.home.user.blogs) {
+            this.fileSystem.home.user.blogs = {};
+          }
+
+          // Add each blog to the filesystem
+          if (blogsData.posts && Array.isArray(blogsData.posts)) {
+            for (const blog of blogsData.posts) {
+              // Create a directory for each blog
+              this.fileSystem.home.user.blogs[blog.id] = {
+                "post.md": `# ${blog.title}\n\nDate: ${blog.date}\n\n${
+                  blog.excerpt || ""
+                }`,
+              };
+
+              // Try to load detailed blog content
+              try {
+                const blogDetailResponse = await fetch(
+                  `data/blogs/${blog.id}.json`
+                );
+                if (blogDetailResponse.ok) {
+                  const blogDetail = await blogDetailResponse.json();
+                  if (blogDetail.content) {
+                    // Convert HTML content to a plain text representation for the terminal
+                    const textContent = this.htmlToText(blogDetail.content);
+                    this.fileSystem.home.user.blogs[blog.id][
+                      "full-content.md"
+                    ] = textContent;
+                  }
+                }
+              } catch (error) {
+                console.warn(
+                  `Could not load detailed data for blog ${blog.id}:`,
+                  error
+                );
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.warn("Error loading dynamic content:", error);
+        // Continue with the basic filesystem if dynamic content fails to load
+      }
 
       // Initialize command bindings
       this.initCommands();
@@ -50,10 +158,44 @@ class TerminalEmulator {
       this.fileSystem = this.createDefaultFileSystem();
       this.initCommands();
       this.write(
-        "Warning: Failed to load custom filesystem. Using default.",
+        "Warning: Failed to load filesystem. Using default.",
         "error-text"
       );
     }
+  }
+
+  // Helper function to convert HTML content to plain text for terminal display
+  htmlToText(html) {
+    // Create a temporary div to hold the HTML
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    // Process headers
+    const headers = tempDiv.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    headers.forEach((header) => {
+      const level = parseInt(header.tagName.charAt(1));
+      const prefix = "#".repeat(level) + " ";
+      header.textContent = prefix + header.textContent + "\n";
+    });
+
+    // Process links
+    const links = tempDiv.querySelectorAll("a");
+    links.forEach((link) => {
+      link.textContent = `${link.textContent} [${link.href}]`;
+    });
+
+    // Process lists
+    const listItems = tempDiv.querySelectorAll("li");
+    listItems.forEach((item) => {
+      item.textContent = "* " + item.textContent;
+    });
+
+    // Extract text and preserve some line breaks
+    return tempDiv.textContent
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n")
+      .replace(/<\/div>/gi, "\n")
+      .replace(/<\/li>/gi, "\n");
   }
 
   createDefaultFileSystem() {
