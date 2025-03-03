@@ -41,6 +41,13 @@
       "description": "A real-time password strength assessment tool with visual indicators, pattern detection, and custom recommendations.",
       "featured": true,
       "tags": ["HTML", "CSS", "JavaScript", "Security", "Frontend"]
+    },
+    {
+      "id": "steganography-dissertation",
+      "title": "Undergraduate Dissertation: Integrative Approaches to Digital Steganography",
+      "description": "A comprehensive educational platform exploring seven steganography techniques with LSB implementation, a recommendation system, and quality assessment tools.",
+      "featured": true,
+      "tags": ["Python", "React", "Tailwind CSS", "Steganography", "Cybersecurity", "Educational"]
     }
   ]
 }

@@ -1,20 +1,15 @@
 {
   "name": "Iolo Evans Jones",
-  "title": "Cybersecurity Student",
-  "bio": "<p>I'm a developer focused on creating minimal, efficient digital solutions. My work emphasizes performance, accessibility, and thoughtful design principles.</p><p>With a background in computer science and a passion for clean code, I build web applications that prioritize user experience while maintaining technical excellence.</p>",
-  "contact": {
-    "email": "ioloejcareers@gmail.com",
-    "github": "https://github.com/ioloEJ42",
-    "linkedin": "https://www.linkedin.com/in/iolo-jones/"
-  },
+  "title": "Cybersecurity Specialist & Developer",
+  "bio": "<p>I'm a cybersecurity specialist with a strong programming background, currently pursuing a master's degree in Cybersecurity With Technology (NCSC accredited) at Cardiff University. My work combines security principles with efficient development practices.</p><br><p>Having achieved a 1st class honors in Computer Science, I'm now focused on SOC analysis, security automation, and penetration testing. I'm actively developing my skills on TryHackMe (top 10%) while creating tools that enhance digital security.</p>",
   "skills": [
-    "HTML/CSS",
-    "JavaScript",
-    "TypeScript",
+    "Python",
+    "JavaScript/TypeScript",
     "React",
-    "Node.js",
-    "UI/UX Design",
-    "Performance Optimization",
-    "Accessibility"
+    "Tailwind CSS",
+    "Bash Scripting",
+    "Security Analysis",
+    "Digital Forensics",
+    "Network Security"
   ]
 }

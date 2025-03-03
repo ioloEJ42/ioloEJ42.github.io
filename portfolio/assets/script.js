@@ -468,22 +468,24 @@ if (contentContainer) {
     await new Promise((resolve) => setTimeout(resolve, 300));
     contentContainer.innerHTML = projectContent.content;
 
-    // Add links if they exist and are not "N/A"
-    if (linksEl) {
-      let linksHTML = '';
-      
-      // Check if live link exists and is not "N/A" (case-insensitive)
-      if (projectContent.live && !/^n\/?a$/i.test(projectContent.live.trim())) {
-        linksHTML += `<a href="${projectContent.live}" target="_blank" class="demo-link">Live Demo</a>`;
-      }
-      
-      // Check if github link exists and is not "N/A" (case-insensitive)
-      if (projectContent.github && !/^n\/?a$/i.test(projectContent.github.trim())) {
-        linksHTML += `<a href="${projectContent.github}" target="_blank" class="repo-link">GitHub Repo</a>`;
-      }
-      
-      linksEl.innerHTML = linksHTML;
+  // Add links if they exist and are not "N/A"
+  if (linksEl) {
+    let linksHTML = '';
+    
+    // Check if live link exists and is not "N/A" (case-insensitive)
+    if (projectContent.live && !/^n\/?a$/i.test(projectContent.live.trim())) {
+      linksHTML += `<a href="${projectContent.live}" target="_blank" class="demo-link">Live Demo</a>`;
     }
+    
+    // Check if github link exists and is not "N/A" (case-insensitive)
+    if (projectContent.github && !/^n\/?a$/i.test(projectContent.github.trim())) {
+      // Only add margin-left if there's also a live demo link
+      const marginClass = linksHTML.length > 0 ? " github-with-margin" : "";
+      linksHTML += `<a href="${projectContent.github}" target="_blank" class="repo-link${marginClass}">GitHub Repo</a>`;
+    }
+    
+    linksEl.innerHTML = linksHTML;
+  }
 
     // Update document title
     document.title = `${projectContent.title} | PORTFOLIO_`;
