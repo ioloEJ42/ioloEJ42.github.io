@@ -5,7 +5,7 @@
       "projects": {
         "minimal-dashboard": {
           "README.md": "# Minimal Dashboard\n\nA minimalist browser dashboard with search functionality and customizable links.\n\n## Features\n\n* Search functionality with multiple engine options\n* Customizable link groups\n* Real-time clock\n* Minimal UI with grid background\n* Zero dependencies\n\n## Technical Details\n\nThe dashboard is built using vanilla HTML, CSS, and JavaScript with no frameworks or build tools. This ensures minimal loading times and excellent performance across all devices.",
-          "index.html": "<!DOCTYPE html>\n<html>\n  <head>\n    <title>DASHBOARD_</title>\n    <link rel=\"shortcut icon\" href=\"img/shortcuticon.png\" type=\"image/x-icon\" />\n    <!-- Additional code truncated for brevity -->\n  </head>\n  <body>\n    <!-- Content truncated -->\n  </body>\n</html>",
+          "index.html": "<!DOCTYPE html>\n<html>\n  <head>\n    <title>DASHBOARD_</title>\n    <link rel=\"icon\" href=\"img/shortcuticon.png\" type=\"image/svg+xml\" />\n    <!-- Additional code truncated for brevity -->\n  </head>\n  <body>\n    <!-- Content truncated -->\n  </body>\n</html>",
           "index.css": "/* Dashboard CSS styles */\n:root {\n  --pure-white: #ffffff;\n  --pure-black: #000000;\n  --dot-size: 2px;\n  --dot-space: 22px;\n}\n/* Additional styles truncated for brevity */",
           "index.js": "// Dashboard JavaScript functionality\n// Code truncated for brevity"
         },

@@ -30,7 +30,6 @@
             <li class="${
               activePage === "contact" ? "active" : ""
             }"><a href="contact.html">$ CONTACT</a></li>
-            <li><a href="../">$ DASHBOARD</a></li>
           </ul>
         </nav>
       `;

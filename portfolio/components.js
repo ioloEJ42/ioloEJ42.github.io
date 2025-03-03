@@ -1,11 +1,4 @@
-/**
- * Terminal-themed component system for portfolio site
- * Creates realistic Linux terminal windows
- */
-
-// Components registry
 const Components = {
-  // Navbar component - Updated to include Terminal link
   Navbar: (activePage = "") => {
     return `
       <nav>
@@ -26,7 +19,6 @@ const Components = {
           <li class="${
             activePage === "contact" ? "active" : ""
           }"><a href="contact.html">$ CONTACT</a></li>
-          <li><a href="../">$ DASHBOARD</a></li>
         </ul>
       </nav>
     `;
