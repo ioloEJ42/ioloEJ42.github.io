@@ -500,6 +500,10 @@ textarea.form-input {
   color: var(--color-grey);
 }
 
+.read-more:hover {
+  color: var(--color-high-white);
+}
+
 /* Blinking cursor effect for certain elements */
 .blink-cursor::after {
   content: "_";
