@@ -4,16 +4,261 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>404: Not Found | PORTFOLIO_</title>
-    <link rel="icon" href="/portfolio/images/logo.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./portfolio/assets/styles.css" />
+    <link rel="icon" href="/images/logo.svg" type="image/svg+xml" />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Inline critical CSS to ensure the page always works -->
+    <style>
+      :root {
+        /* Terminal colors */
+        --color-black: rgb(0, 0, 0);
+        --color-light-red: rgb(255, 0, 0);
+        --color-light-green: rgb(0, 255, 0);
+        --color-yellow: rgb(255, 255, 0);
+        --color-light-blue: rgb(0, 0, 255);
+        --color-light-cyan: rgb(0, 255, 255);
+        --color-grey: rgb(128, 128, 128);
+        --color-high-white: rgb(255, 255, 255);
+        --color-white: rgb(192, 192, 192);
+
+        /* Theme variables */
+        --bg-color: var(--color-black);
+        --text-color: var(--color-white);
+        --accent-color: var(--color-light-green);
+        --border-color: var(--color-grey);
+        --grid-color: rgba(255, 255, 255, 0.03);
+        --terminal-bg: var(--color-black);
+        --terminal-prompt-color: var(--color-light-green);
+        --terminal-user-color: var(--color-light-cyan);
+        --terminal-host-color: var(--color-light-cyan);
+        --terminal-path-color: var(--color-light-blue);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        font-size: 16px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* Grid background */
+      .grid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-size: 50px 50px;
+        background-image: linear-gradient(
+            to right,
+            var(--grid-color) 1px,
+            transparent 1px
+          ),
+          linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+      }
+
+      /* Typography */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: 600;
+        margin-bottom: 0.5em;
+        letter-spacing: 0.5px;
+      }
+
+      p {
+        margin: 0 0 1rem;
+      }
+
+      a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Terminal-specific styles */
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem 0;
+      }
+
+      .terminal-window {
+        background-color: var(--terminal-bg);
+        border: 1px solid var(--border-color);
+        margin-bottom: 2rem;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      .terminal-header {
+        background-color: var(--color-grey);
+        padding: 8px 10px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .terminal-buttons {
+        display: flex;
+        gap: 5px;
+        margin-right: 10px;
+      }
+
+      .terminal-button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: block;
+      }
+
+      .terminal-button.close {
+        background-color: #ff5f56;
+      }
+
+      .terminal-button.minimize {
+        background-color: #ffbd2e;
+      }
+
+      .terminal-button.maximize {
+        background-color: #27c93f;
+      }
+
+      .terminal-title {
+        flex: 1;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--color-black);
+      }
+
+      .terminal-body {
+        padding: 1rem;
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      .terminal-line {
+        display: flex;
+        margin-bottom: 0.5rem;
+        word-break: break-word;
+      }
+
+      .terminal-prompt {
+        color: var(--terminal-prompt-color);
+        margin-right: 0.5rem;
+        display: flex;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+
+      .terminal-user {
+        color: var(--terminal-user-color);
+      }
+
+      .terminal-host {
+        color: var(--terminal-host-color);
+      }
+
+      .terminal-path {
+        color: var(--terminal-path-color);
+      }
+
+      .terminal-command {
+        color: var(--text-color);
+        flex: 1;
+      }
+
+      .terminal-output {
+        padding-left: 0;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+
+      .terminal-output p {
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .terminal-output p:not(:last-child) {
+        margin-bottom: 0.1rem;
+      }
+
+      pre {
+        font-family: "JetBrains Mono", monospace;
+        margin: 1rem 0;
+      }
+
+      .error-text {
+        color: var(--color-light-red);
+        font-weight: bold;
+      }
+
+      /* Blinking cursor */
+      .blink-cursor::after {
+        content: "_";
+        animation: blink 1s step-end infinite;
+      }
+
+      @keyframes blink {
+        from,
+        to {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* Footer */
+      footer {
+        padding: 2rem 0;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+        font-size: 0.9rem;
+        opacity: 0.7;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .terminal-body {
+          padding: 0.8rem;
+        }
+
+        pre {
+          font-size: 0.8rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="grid"></div>
-    <header></header>
     <main>
       <div class="terminal-window">
         <div class="terminal-header">
@@ -69,22 +314,20 @@
           <div class="terminal-output">
             <p>Try navigating back to a known location:</p>
             <p>
-              <a href="index.html" style="color: var(--color-light-green)"
-                >$ cd /home</a
-              >
+              <a href="/" style="color: var(--color-light-green)">$ cd /home</a>
             </p>
             <p>
-              <a href="projects.html" style="color: var(--color-light-green)"
+              <a href="/projects.html" style="color: var(--color-light-green)"
                 >$ cd /projects</a
               >
             </p>
             <p>
-              <a href="blogs.html" style="color: var(--color-light-green)"
+              <a href="/blogs.html" style="color: var(--color-light-green)"
                 >$ cd /blogs</a
               >
             </p>
             <p>
-              <a href="contact.html" style="color: var(--color-light-green)"
+              <a href="/contact.html" style="color: var(--color-light-green)"
                 >$ cd /contact</a
               >
             </p>
@@ -104,7 +347,20 @@
         </div>
       </div>
     </main>
-    <footer></footer>
-    <script src="./assets/script.js"></script>
+    <footer>
+      <p>
+        &copy;
+        <script>
+          document.write(new Date().getFullYear());
+        </script>
+        Iolo Evans Jones | $ echo "Built with HTML, CSS, JS"
+      </p>
+    </footer>
+
+    <!-- Simple script for blinking cursor animation -->
+    <script>
+      // No need for external script references
+      // Just a simple self-contained page
+    </script>
   </body>
 </html>
