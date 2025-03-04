@@ -302,67 +302,6 @@ async function loadHomeContent() {
       "<p>$ cat: bio.txt: No such file or directory</p>";
   }
 
-  // Load featured projects
-  const projectsContainer = document.getElementById("featured-projects");
-  if (projectsContainer) {
-    const projectsData = await loadJsonData("projects");
-    if (projectsData && projectsData.projects) {
-      console.log("$ filtering featured projects...");
-      
-      // Sort featured projects by date, newest first
-      const featuredProjects = projectsData.projects
-        .filter((p) => p.featured)
-        .sort((a, b) => {
-          const dateA = new Date(a.date || 0);
-          const dateB = new Date(b.date || 0);
-          return dateB - dateA; // Descending order (newest first)
-        })
-        .slice(0, 3);
-
-      if (featuredProjects.length > 0) {
-        // Add a short delay to simulate loading
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        projectsContainer.innerHTML = featuredProjects
-          .map((project) => Components.ProjectCard(project))
-          .join("");
-      } else {
-        projectsContainer.innerHTML = "<p>No featured projects found</p>";
-      }
-    } else {
-      projectsContainer.innerHTML = "<p>$ grep: No matches found</p>";
-    }
-  }
-
-  // Load recent blog posts - they should already be sorted by date in the JSON
-  const postsContainer = document.getElementById("recent-posts");
-  if (postsContainer) {
-    const blogsData = await loadJsonData("blogs");
-    if (blogsData && blogsData.posts) {
-      console.log("$ fetching recent posts...");
-      
-      // Sort blog posts by date, newest first
-      const recentPosts = [...blogsData.posts]
-        .sort((a, b) => {
-          const dateA = new Date(a.date || 0);
-          const dateB = new Date(b.date || 0);
-          return dateB - dateA; // Descending order (newest first)
-        })
-        .slice(0, 3);
-
-      if (recentPosts.length > 0) {
-        // Add a short delay to simulate loading
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        postsContainer.innerHTML = recentPosts
-          .map((post) => Components.BlogPostItem(post))
-          .join("");
-      } else {
-        postsContainer.innerHTML = "<p>No blog posts found</p>";
-      }
-    } else {
-      postsContainer.innerHTML = "<p>$ find: No such file or directory</p>";
-    }
-  }
-
   console.log("$ home content loaded");
 }
 
