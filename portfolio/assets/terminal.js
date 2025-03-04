@@ -4,11 +4,6 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Update last login time
-  document.getElementById("last-login-time").textContent =
-    new Date().toUTCString();
-
-  // Initialize the terminal environment
   const terminal = new TerminalEmulator("terminal", "term-input");
   terminal.init();
 });
@@ -23,41 +18,242 @@ class TerminalEmulator {
     this.commandsRun = 0;
     this.fileSystem = null;
     this.aliases = {};
-
-    // Initialize file system
-    this.initFileSystem();
+    this.isInitialized = false;
   }
 
+  /**
+   * Initialize the terminal
+   */
+  async init() {
+    // Set up event listeners
+    this.input.addEventListener("keydown", this.handleKeyDown.bind(this));
+
+    // Add click event to focus input when terminal is clicked
+    this.terminal.addEventListener("click", () => {
+      this.input.focus();
+    });
+
+    // Initialize the file system first
+    await this.initFileSystem();
+
+    // Then initialize commands
+    this.initCommands();
+
+    // Display welcome message
+    if (this.fileSystem && this.fileSystem.etc && this.fileSystem.etc.motd) {
+      this.write(this.fileSystem.etc.motd, "success-text");
+    }
+
+    // Set focus to input
+    this.input.focus();
+
+    this.isInitialized = true;
+  }
+
+  /**
+   * Load the file system
+   */
   async initFileSystem() {
     try {
-      // Load file system data
-      const response = await fetch("data/filesystem.json");
-      if (!response.ok) {
-        throw new Error(`Failed to load filesystem: ${response.status}`);
+      // Load the filesystem structure
+      const fsResponse = await fetch("data/filesystem.json");
+      if (!fsResponse.ok) {
+        throw new Error(`Failed to load filesystem: ${fsResponse.status}`);
       }
 
-      this.fileSystem = await response.json();
+      this.fileSystem = await fsResponse.json();
+      await this.loadDynamicContent();
 
-      // Initialize command bindings
-      this.initCommands();
-
-      // Add welcome message referencing filesystem's motd
-      if (this.fileSystem && this.fileSystem.etc && this.fileSystem.etc.motd) {
-        this.write(this.fileSystem.etc.motd, "success-text");
-      }
+      return true;
     } catch (error) {
       console.error("Error initializing file system:", error);
       this.fileSystem = this.createDefaultFileSystem();
-      this.initCommands();
       this.write(
-        "Warning: Failed to load custom filesystem. Using default.",
+        "Warning: Failed to load filesystem. Using default.",
         "error-text"
+      );
+
+      return false;
+    }
+  }
+
+  /**
+   * Load dynamic content (projects and blogs)
+   */
+  async loadDynamicContent() {
+    try {
+      await this.loadProjects();
+      await this.loadBlogs();
+    } catch (error) {
+      console.warn("Error loading dynamic content:", error);
+    }
+  }
+
+  /**
+   * Load projects data
+   */
+  async loadProjects() {
+    try {
+      const projectsResponse = await fetch("data/projects.json");
+      if (!projectsResponse.ok) return;
+
+      const projectsData = await projectsResponse.json();
+
+      // Initialize projects directory if it doesn't exist
+      if (!this.fileSystem.home.user.projects) {
+        this.fileSystem.home.user.projects = {};
+      }
+
+      // Add each project to the filesystem
+      if (projectsData.projects && Array.isArray(projectsData.projects)) {
+        for (const project of projectsData.projects) {
+          this.fileSystem.home.user.projects[project.id] = {
+            "README.md": `# ${project.title}\n\n${
+              project.description
+            }\n\n## Tags\n\n${project.tags.join(", ")}`,
+          };
+
+          // Try to load detailed project data
+          await this.loadProjectDetails(project.id);
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to load projects:", error);
+    }
+  }
+
+  /**
+   * Load details for a specific project
+   */
+  async loadProjectDetails(projectId) {
+    try {
+      const projectDetailResponse = await fetch(
+        `data/projects/${projectId}.json`
+      );
+      if (!projectDetailResponse.ok) return;
+
+      const projectDetail = await projectDetailResponse.json();
+
+      if (projectDetail.content) {
+        // Convert HTML content to a plain text representation for the terminal
+        const textContent = this.htmlToText(projectDetail.content);
+        this.fileSystem.home.user.projects[projectId]["details.txt"] =
+          textContent;
+      }
+
+      // Add links file if project has links
+      if (projectDetail.github || projectDetail.live) {
+        let linksContent = "# Project Links\n\n";
+        if (projectDetail.github)
+          linksContent += `* GitHub: ${projectDetail.github}\n`;
+        if (projectDetail.live)
+          linksContent += `* Live Demo: ${projectDetail.live}\n`;
+        this.fileSystem.home.user.projects[projectId]["links.txt"] =
+          linksContent;
+      }
+    } catch (error) {
+      console.warn(
+        `Could not load detailed data for project ${projectId}:`,
+        error
       );
     }
   }
 
+  /**
+   * Load blogs data
+   */
+  async loadBlogs() {
+    try {
+      const blogsResponse = await fetch("data/blogs.json");
+      if (!blogsResponse.ok) return;
+
+      const blogsData = await blogsResponse.json();
+
+      // Initialize blogs directory if it doesn't exist
+      if (!this.fileSystem.home.user.blogs) {
+        this.fileSystem.home.user.blogs = {};
+      }
+
+      // Add each blog to the filesystem
+      if (blogsData.posts && Array.isArray(blogsData.posts)) {
+        for (const blog of blogsData.posts) {
+          // Create a directory for each blog
+          this.fileSystem.home.user.blogs[blog.id] = {
+            "post.md": `# ${blog.title}\n\nDate: ${blog.date}\n\n${
+              blog.excerpt || ""
+            }`,
+          };
+
+          // Try to load detailed blog content
+          await this.loadBlogDetails(blog.id);
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to load blogs:", error);
+    }
+  }
+
+  /**
+   * Load details for a specific blog
+   */
+  async loadBlogDetails(blogId) {
+    try {
+      const blogDetailResponse = await fetch(`data/blogs/${blogId}.json`);
+      if (!blogDetailResponse.ok) return;
+
+      const blogDetail = await blogDetailResponse.json();
+
+      if (blogDetail.content) {
+        // Convert HTML content to a plain text representation for the terminal
+        const textContent = this.htmlToText(blogDetail.content);
+        this.fileSystem.home.user.blogs[blogId]["full-content.md"] =
+          textContent;
+      }
+    } catch (error) {
+      console.warn(`Could not load detailed data for blog ${blogId}:`, error);
+    }
+  }
+
+  /**
+   * Convert HTML content to plain text for terminal display
+   */
+  htmlToText(html) {
+    // Create a temporary div to hold the HTML
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    // Process headers
+    const headers = tempDiv.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    headers.forEach((header) => {
+      const level = parseInt(header.tagName.charAt(1));
+      const prefix = "#".repeat(level) + " ";
+      header.textContent = prefix + header.textContent + "\n";
+    });
+
+    // Process links
+    const links = tempDiv.querySelectorAll("a");
+    links.forEach((link) => {
+      link.textContent = `${link.textContent} [${link.href}]`;
+    });
+
+    // Process lists
+    const listItems = tempDiv.querySelectorAll("li");
+    listItems.forEach((item) => {
+      item.textContent = "* " + item.textContent;
+    });
+
+    // Extract text and preserve some line breaks
+    return tempDiv.textContent
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n")
+      .replace(/<\/div>/gi, "\n")
+      .replace(/<\/li>/gi, "\n");
+  }
+
+  /**
+   * Create a default file system structure if JSON fails to load
+   */
   createDefaultFileSystem() {
-    // Default file system structure if JSON fails to load
     return {
       home: {
         user: {
@@ -101,21 +297,10 @@ class TerminalEmulator {
     };
   }
 
-  init() {
-    // Set up event listeners
-    this.input.addEventListener("keydown", this.handleKeyDown.bind(this));
-
-    // Set focus to input
-    this.input.focus();
-
-    // Add click event to focus input when terminal is clicked
-    this.terminal.addEventListener("click", () => {
-      this.input.focus();
-    });
-  }
-
+  /**
+   * Initialize command bindings
+   */
   initCommands() {
-    // Define available commands
     this.commands = {
       neofetch: this.cmdNeofetch.bind(this),
       theme: this.cmdTheme.bind(this),
@@ -135,99 +320,79 @@ class TerminalEmulator {
     };
   }
 
+  /**
+   * Handle keyboard input
+   */
   handleKeyDown(event) {
-    if (event.key === "Enter") {
-      // Process command
-      const command = this.input.value.trim();
-      this.processCommand(command);
+    if (!this.isInitialized) return;
 
-      // Reset input
-      this.input.value = "";
+    switch (event.key) {
+      case "Enter":
+        // Process command
+        const command = this.input.value.trim();
+        this.processCommand(command);
 
-      // Prevent default behavior
-      event.preventDefault();
-    } else if (event.key === "ArrowUp") {
-      // Navigate command history (previous)
-      if (
-        this.history.length > 0 &&
-        this.historyIndex < this.history.length - 1
-      ) {
-        this.historyIndex++;
-        this.input.value = this.history[this.historyIndex];
-
-        // Move cursor to end of input
-        setTimeout(() => {
-          this.input.selectionStart = this.input.selectionEnd =
-            this.input.value.length;
-        }, 0);
-      }
-
-      event.preventDefault();
-    } else if (event.key === "ArrowDown") {
-      // Navigate command history (next)
-      if (this.historyIndex > 0) {
-        this.historyIndex--;
-        this.input.value = this.history[this.historyIndex];
-      } else if (this.historyIndex === 0) {
-        this.historyIndex = -1;
+        // Reset input
         this.input.value = "";
-      }
+        event.preventDefault();
+        break;
 
-      event.preventDefault();
-    } else if (event.key === "Tab") {
-      // Tab completion
-      event.preventDefault();
-      this.tabComplete();
+      case "ArrowUp":
+        // Navigate command history (previous)
+        if (
+          this.history.length > 0 &&
+          this.historyIndex < this.history.length - 1
+        ) {
+          this.historyIndex++;
+          this.input.value = this.history[this.historyIndex];
+
+          // Move cursor to end of input
+          setTimeout(() => {
+            this.input.selectionStart = this.input.selectionEnd =
+              this.input.value.length;
+          }, 0);
+        }
+        event.preventDefault();
+        break;
+
+      case "ArrowDown":
+        // Navigate command history (next)
+        if (this.historyIndex > 0) {
+          this.historyIndex--;
+          this.input.value = this.history[this.historyIndex];
+        } else if (this.historyIndex === 0) {
+          this.historyIndex = -1;
+          this.input.value = "";
+        }
+        event.preventDefault();
+        break;
+
+      case "Tab":
+        // Tab completion
+        event.preventDefault();
+        this.tabComplete();
+        break;
+
+      default:
+        // Regular key press - no special handling
+        break;
     }
   }
 
+  /**
+   * Handle tab completion
+   */
   tabComplete() {
     const commandText = this.input.value.trim();
+    if (!commandText) return; // No autocomplete on empty input
+
     const parts = this.parseCommand(commandText);
     const cmd = parts.command;
     const args = parts.args;
 
-    // No autocomplete on empty input
-    if (!commandText) return;
-
-    // Command completion
+    // Command completion (if no args or space at the end)
     if (!args.length && !commandText.endsWith(" ")) {
-      const availableCommands = Object.keys(this.commands);
-      const matchingCommands = availableCommands.filter((c) =>
-        c.startsWith(cmd)
-      );
-
-      if (matchingCommands.length === 1) {
-        this.input.value = `${matchingCommands[0]} `;
-      } else if (matchingCommands.length > 1) {
-        // Show possible completions with descriptions
-        this.write(this.getPrompt() + " " + commandText, "term-command");
-
-        const commandDescriptions = {
-          neofetch: "Display system information with ASCII art",
-          ls: "List directory contents",
-          cd: "Change the current directory",
-          pwd: "Print current directory",
-          cat: "Concatenate and display file contents",
-          echo: "Display a line of text",
-          clear: "Clear the terminal screen",
-          help: "Display this help message",
-          find: "Search for files in a directory hierarchy",
-          grep: "Search for patterns in files",
-          head: "Display first lines of a file",
-          tail: "Display last lines of a file",
-          theme: "Change terminal color theme",
-        };
-
-        const formattedCommands = matchingCommands.map(
-          (cmd) =>
-            `<span class="command-name">${cmd}</span> - ${
-              commandDescriptions[cmd] || "No description"
-            }`
-        );
-
-        this.write(formattedCommands.join("\n"));
-      }
+      this.completeCommand(cmd);
       return;
     }
 
@@ -237,106 +402,206 @@ class TerminalEmulator {
       args[args.length - 1].startsWith("-") &&
       !args[args.length - 1].includes(" ")
     ) {
-      const commandFlags = {
-        ls: {
-          "-a": "Show all files (including hidden)",
-          "-l": "Use a long listing format",
-          "-la": "Long format, show all files",
-          "--all": "Show all files (including hidden)",
-        },
-        find: {
-          "-name": "Pattern to match files",
-          "-type": "Type of file (f for files, d for directories)",
-        },
-        grep: {
-          "-i": "Ignore case distinctions",
-          "-v": "Select non-matching lines",
-          "-n": "Print line number with output lines",
-        },
-        head: {
-          "-n": "Print the first n lines",
-        },
-        tail: {
-          "-n": "Print the last n lines",
-        },
-      };
-
-      const currentFlag = args[args.length - 1];
-      if (commandFlags[cmd]) {
-        const matchingFlags = Object.keys(commandFlags[cmd]).filter((flag) =>
-          flag.startsWith(currentFlag)
-        );
-
-        if (matchingFlags.length === 1) {
-          // Replace the current flag with the completed one
-          args[args.length - 1] = matchingFlags[0];
-          this.input.value = `${cmd} ${args.join(" ")} `;
-        } else if (matchingFlags.length > 1) {
-          // Show possible flag completions with descriptions
-          this.write(this.getPrompt() + " " + commandText, "term-command");
-
-          const formattedFlags = matchingFlags.map(
-            (flag) =>
-              `<span class="command-flag">${flag}</span> - ${commandFlags[cmd][flag]}`
-          );
-
-          this.write(formattedFlags.join("\n"));
-        }
-        return;
-      }
+      this.completeFlag(cmd, args);
+      return;
     }
 
-    // Path completion (keep your existing code)
+    // Path completion
     if (cmd === "cd" || cmd === "cat" || cmd === "ls" || cmd === "find") {
-      const lastArg = args.length > 0 ? args[args.length - 1] : "";
-      const directoryPath = this.getParentDir(lastArg || ".");
-      const dirObj = this.getFileSystemObject(directoryPath);
+      this.completePath(cmd, args);
+    }
+  }
 
-      if (!dirObj || typeof dirObj !== "object") return;
+  /**
+   * Complete a command name
+   */
+  completeCommand(cmd) {
+    const availableCommands = Object.keys(this.commands);
+    const matchingCommands = availableCommands.filter((c) => c.startsWith(cmd));
 
-      // Get basename for matching
-      const basename = this.getFileName(lastArg);
-      const matchingItems = Object.keys(dirObj).filter((item) =>
-        item.startsWith(basename)
+    if (matchingCommands.length === 1) {
+      this.input.value = `${matchingCommands[0]} `;
+    } else if (matchingCommands.length > 1) {
+      // Show possible completions with descriptions
+      this.write(this.getPrompt() + " " + cmd, "term-command");
+
+      const commandDescriptions = {
+        neofetch: "Display system information with ASCII art",
+        ls: "List directory contents",
+        cd: "Change the current directory",
+        pwd: "Print current directory",
+        cat: "Concatenate and display file contents",
+        echo: "Display a line of text",
+        clear: "Clear the terminal screen",
+        help: "Display this help message",
+        find: "Search for files in a directory hierarchy",
+        grep: "Search for patterns in files",
+        head: "Display first lines of a file",
+        tail: "Display last lines of a file",
+        theme: "Change terminal color theme",
+        history: "Display command history",
+        alias: "Define or display aliases for commands",
+      };
+
+      const formattedCommands = matchingCommands.map(
+        (cmd) =>
+          `<span class="command-name">${cmd}</span> - ${
+            commandDescriptions[cmd] || "No description"
+          }`
       );
 
-      if (matchingItems.length === 1) {
-        // Single match - autocomplete
-        const completePath = lastArg.includes("/")
-          ? lastArg.substring(0, lastArg.lastIndexOf("/") + 1) +
-            matchingItems[0]
-          : matchingItems[0];
+      this.write(formattedCommands.join("\n"));
+    }
+  }
 
-        // Check if it's a directory, add trailing slash
-        if (typeof dirObj[matchingItems[0]] === "object") {
-          this.input.value = `${cmd} ${completePath}/`;
-        } else {
-          this.input.value = `${cmd} ${completePath}`;
-        }
-      } else if (matchingItems.length > 1) {
-        // Multiple matches - show options
-        this.write(this.getPrompt() + " " + commandText, "term-command");
+  /**
+   * Complete a flag for a command
+   */
+  completeFlag(cmd, args) {
+    const commandFlags = {
+      ls: {
+        "-a": "Show all files (including hidden)",
+        "-l": "Use a long listing format",
+        "-la": "Long format, show all files",
+        "--all": "Show all files (including hidden)",
+      },
+      find: {
+        "-name": "Pattern to match files",
+        "-type": "Type of file (f for files, d for directories)",
+      },
+      grep: {
+        "-i": "Ignore case distinctions",
+        "-v": "Select non-matching lines",
+        "-n": "Print line number with output lines",
+      },
+      head: {
+        "-n": "Print the first n lines",
+      },
+      tail: {
+        "-n": "Print the last n lines",
+      },
+    };
 
-        // Format the output to show directories and files differently
-        const formattedItems = matchingItems.map((item) => {
-          if (typeof dirObj[item] === "object") {
-            return `<span class="directory">${item}/</span>`;
-          } else if (item.endsWith(".md") || item.endsWith(".txt")) {
-            return `<span class="text-file">${item}</span>`;
-          } else if (item.endsWith(".exe") || item.endsWith(".sh")) {
-            return `<span class="executable">${item}</span>`;
-          } else {
-            return item;
-          }
-        });
+    const currentFlag = args[args.length - 1];
+    if (commandFlags[cmd]) {
+      const matchingFlags = Object.keys(commandFlags[cmd]).filter((flag) =>
+        flag.startsWith(currentFlag)
+      );
 
-        this.write(formattedItems.join("  "));
+      if (matchingFlags.length === 1) {
+        // Replace the current flag with the completed one
+        args[args.length - 1] = matchingFlags[0];
+        this.input.value = `${cmd} ${args.join(" ")} `;
+      } else if (matchingFlags.length > 1) {
+        // Show possible flag completions with descriptions
+        this.write(
+          this.getPrompt() + " " + this.input.value.trim(),
+          "term-command"
+        );
+
+        const formattedFlags = matchingFlags.map(
+          (flag) =>
+            `<span class="command-flag">${flag}</span> - ${commandFlags[cmd][flag]}`
+        );
+
+        this.write(formattedFlags.join("\n"));
       }
     }
   }
 
+  /**
+   * Complete a file/directory path
+   */
+  completePath(cmd, args) {
+    const lastArg = args.length > 0 ? args[args.length - 1] : "";
+    const directoryPath = this.getParentDir(lastArg || ".");
+    const dirObj = this.getFileSystemObject(directoryPath);
+
+    if (!dirObj || typeof dirObj !== "object") return;
+
+    // Get basename for matching
+    const basename = this.getFileName(lastArg);
+    const matchingItems = Object.keys(dirObj).filter((item) =>
+      item.startsWith(basename)
+    );
+
+    if (matchingItems.length === 1) {
+      // Single match - autocomplete
+      const completePath = lastArg.includes("/")
+        ? lastArg.substring(0, lastArg.lastIndexOf("/") + 1) + matchingItems[0]
+        : matchingItems[0];
+
+      // Check if it's a directory, add trailing slash
+      if (typeof dirObj[matchingItems[0]] === "object") {
+        this.input.value = `${cmd} ${completePath}/`;
+      } else {
+        this.input.value = `${cmd} ${completePath}`;
+      }
+    } else if (matchingItems.length > 1) {
+      // Multiple matches - show options
+      this.write(
+        this.getPrompt() + " " + this.input.value.trim(),
+        "term-command"
+      );
+
+      // Format the output to show directories and files differently
+      const formattedItems = matchingItems.map((item) => {
+        if (typeof dirObj[item] === "object") {
+          return `<span class="directory">${item}/</span>`;
+        } else if (item.endsWith(".md") || item.endsWith(".txt")) {
+          return `<span class="text-file">${item}</span>`;
+        } else if (item.endsWith(".exe") || item.endsWith(".sh")) {
+          return `<span class="executable">${item}</span>`;
+        } else {
+          return item;
+        }
+      });
+
+      this.write(formattedItems.join("  "));
+    }
+  }
+
+  /**
+   * Process a command
+   */
   processCommand(command) {
     if (command.trim() === "") return;
+
+    // Handle command chaining with &&
+    if (command.includes("&&")) {
+      const commands = command
+        .split("&&")
+        .map((cmd) => cmd.trim())
+        .filter((cmd) => cmd);
+
+      // Add the full command to history
+      this.history.unshift(command);
+      this.historyIndex = -1;
+      this.commandsRun++;
+
+      // Display the full command
+      this.write(this.getPrompt() + " " + command, "term-command");
+
+      // Execute each command in sequence
+      for (const cmd of commands) {
+        // Skip displaying the prompt for subsequent commands
+        if (cmd !== commands[0]) {
+          this.write(`Executing: ${cmd}`, "term-info");
+        }
+
+        // Process each command individually
+        const parts = this.parseCommand(cmd);
+        const cmdName = parts.command;
+        const args = parts.args;
+
+        // Execute command
+        this.executeCommand(cmdName, args);
+      }
+
+      // Add a new input line and exit early
+      this.createNewInputLine();
+      return;
+    }
 
     // Add command to history
     this.history.unshift(command);
@@ -362,6 +627,28 @@ class TerminalEmulator {
     const cmd = parts.command;
     const args = parts.args;
 
+    // Execute the command
+    this.executeCommand(cmd, args);
+
+    // Add a new input line
+    this.createNewInputLine();
+  }
+
+  /**
+   * Strip HTML tags from text
+   * @param {string} html - Text with HTML tags
+   * @returns {string} - Plain text
+   */
+  stripHtml(html) {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  }
+
+  /**
+   * Execute a specific command with its arguments
+   */
+  executeCommand(cmd, args) {
     // Check for aliases
     if (this.aliases[cmd]) {
       // Replace the command with its alias
@@ -383,13 +670,12 @@ class TerminalEmulator {
     } else if (cmd) {
       this.write(`command not found: ${cmd}`, "error-text");
     }
-
-    // Add a new input line
-    this.createNewInputLine();
   }
 
+  /**
+   * Parse a command string into command and arguments
+   */
   parseCommand(commandStr) {
-    // Advanced command parsing (handles quotes and spaces)
     const parts = [];
     let current = "";
     let inQuotes = false;
@@ -420,11 +706,17 @@ class TerminalEmulator {
     };
   }
 
+  /**
+   * Get the command prompt string
+   */
   getPrompt() {
     const pathDisplay = this.currentDir.replace("/home/user", "~");
     return `<span class="terminal-user">user</span>@<span class="terminal-host">portfolio</span>:<span class="terminal-path">${pathDisplay}</span>$`;
   }
 
+  /**
+   * Write output to the terminal
+   */
   write(text, className = "") {
     const output = document.createElement("div");
     output.className = "term-output";
@@ -439,6 +731,9 @@ class TerminalEmulator {
     this.terminal.scrollTop = this.terminal.scrollHeight;
   }
 
+  /**
+   * Create a new input line
+   */
   createNewInputLine() {
     // Remove current input line
     const currentInputLine = this.terminal.querySelector(".term-input-line");
@@ -450,10 +745,10 @@ class TerminalEmulator {
     const newInputLine = document.createElement("div");
     newInputLine.className = "term-input-line";
     newInputLine.innerHTML = `
-        <div class="term-input-prompt">
-          ${this.getPrompt()}
-        </div>
-      `;
+      <div class="term-input-prompt">
+        ${this.getPrompt()}
+      </div>
+    `;
 
     // Create new input element
     const newInput = document.createElement("input");
@@ -482,7 +777,9 @@ class TerminalEmulator {
     this.terminal.scrollTop = this.terminal.scrollHeight;
   }
 
-  // Resolve a path (handling relative paths, .., etc.)
+  /**
+   * Resolve a path (handling relative paths, .., etc.)
+   */
   resolvePath(path) {
     if (!path) return this.currentDir;
 
@@ -501,6 +798,9 @@ class TerminalEmulator {
     return this.normalizePath(`${this.currentDir}/${path}`);
   }
 
+  /**
+   * Normalize a path (handle . and ..)
+   */
   normalizePath(path) {
     // Split path into segments
     const segments = path.split("/").filter((segment) => segment !== "");
@@ -523,7 +823,9 @@ class TerminalEmulator {
     return "/" + result.join("/");
   }
 
-  // Get an object from the file system based on path
+  /**
+   * Get an object from the file system based on path
+   */
   getFileSystemObject(path) {
     const normalizedPath = this.resolvePath(path);
     const segments = normalizedPath
@@ -544,19 +846,25 @@ class TerminalEmulator {
     return current;
   }
 
-  // Check if a path exists and is a directory
+  /**
+   * Check if a path exists and is a directory
+   */
   isDirectory(path) {
     const obj = this.getFileSystemObject(path);
     return obj !== null && typeof obj === "object";
   }
 
-  // Check if a path exists and is a file
+  /**
+   * Check if a path exists and is a file
+   */
   isFile(path) {
     const obj = this.getFileSystemObject(path);
     return obj !== null && typeof obj !== "object";
   }
 
-  // Get parent directory of a path
+  /**
+   * Get parent directory of a path
+   */
   getParentDir(path) {
     const normalizedPath = this.resolvePath(path);
     const segments = normalizedPath
@@ -569,7 +877,9 @@ class TerminalEmulator {
     return "/" + segments.join("/");
   }
 
-  // Get filename from a path
+  /**
+   * Get filename from a path
+   */
   getFileName(path) {
     const normalizedPath = this.resolvePath(path);
     const segments = normalizedPath
@@ -581,7 +891,11 @@ class TerminalEmulator {
     return segments[segments.length - 1];
   }
 
-  // Command implementations
+  /* ==== COMMAND IMPLEMENTATIONS ==== */
+
+  /**
+   * List directory contents
+   */
   cmdLs(args) {
     // Parse arguments
     let path = ".";
@@ -678,6 +992,9 @@ class TerminalEmulator {
     this.write(output || "Directory is empty");
   }
 
+  /**
+   * Change directory
+   */
   cmdCd(args) {
     if (args.length === 0 || args[0] === "~") {
       // cd to home directory
@@ -694,10 +1011,16 @@ class TerminalEmulator {
     }
   }
 
+  /**
+   * Print working directory
+   */
   cmdPwd(args) {
     this.write(this.currentDir);
   }
 
+  /**
+   * Concatenate and display file contents
+   */
   cmdCat(args) {
     if (args.length === 0) {
       this.write("Usage: cat [file...]", "term-info");
@@ -707,6 +1030,8 @@ class TerminalEmulator {
     for (const arg of args) {
       const targetPath = this.resolvePath(arg);
       const obj = this.getFileSystemObject(targetPath);
+
+      // heres the other half:
 
       if (obj === null) {
         this.write(`cat: ${arg}: No such file or directory`, "error-text");
@@ -730,6 +1055,9 @@ class TerminalEmulator {
     }
   }
 
+  /**
+   * Echo text to terminal
+   */
   cmdEcho(args) {
     // Handle special variables
     const text = args
@@ -741,6 +1069,9 @@ class TerminalEmulator {
     this.write(text);
   }
 
+  /**
+   * Clear the terminal
+   */
   cmdClear(args) {
     // Clear all output
     const outputElements = this.terminal.querySelectorAll(".term-output");
@@ -750,6 +1081,9 @@ class TerminalEmulator {
     this.createNewInputLine();
   }
 
+  /**
+   * Display help information
+   */
   cmdHelp(args) {
     const commandHelp = {
       neofetch: "Display system information with ASCII art and color blocks",
@@ -780,28 +1114,29 @@ class TerminalEmulator {
         this.write(`No help available for '${cmd}'`, "error-text");
       }
     } else {
-      let output = "Available commands:\n\n";
+      // For the general help command with no args, ensure we properly format the output
+      // with explicit div elements to force proper line breaks
+      let output = "<div>Available commands:</div><div>&nbsp;</div>";
 
+      // Create a div for each command to ensure proper line breaks
       for (const cmd in commandHelp) {
-        output +=
-          `<span class="command-name">${cmd}</span>`.padEnd(15) +
-          " - " +
-          `${commandHelp[cmd]}\n`;
+        output += `<div><span class="command-name">${cmd}</span> - ${commandHelp[cmd]}</div>`;
       }
 
-      output += "\nSpecial features:\n";
+      // Add special features section with explicit line breaks
+      output += "<div>&nbsp;</div><div>Special features:</div>";
       output +=
-        '• <span class="command-name">!!</span> - Repeat the last command\n';
+        '<div>• <span class="command-name">!!</span> - Repeat the last command</div>';
       output +=
-        '• <span class="command-name">Tab</span> - Auto-complete commands, flags, and paths\n';
+        '<div>• <span class="command-name">Tab</span> - Auto-complete commands, flags, and paths</div>';
       output +=
-        '• <span class="command-name">Arrow Up/Down</span> - Navigate command history\n';
+        '<div>• <span class="command-name">Arrow Up/Down</span> - Navigate command history</div>';
       output +=
-        "• Command aliases can be defined with <span class=\"command-name\">alias name='command'</span>\n";
+        "<div>• Command aliases can be defined with <span class=\"command-name\">alias name='command'</span></div>";
       output +=
-        '• Multiple themes available with <span class="command-name">theme</span> command\n';
+        '<div>• Multiple themes available with <span class="command-name">theme</span> command</div>';
       output +=
-        '\nUse <span class="command-name">help [command]</span> for more information about a specific command.';
+        '<div>&nbsp;</div><div>Use <span class="command-name">help [command]</span> for more information about a specific command.</div>';
 
       this.write(output);
     }
@@ -865,6 +1200,9 @@ class TerminalEmulator {
     }
   }
 
+  /**
+   * Find files recursively
+   */
   findRecursive(path, pattern, typeFilter = null, relativeTo = null) {
     if (!relativeTo) relativeTo = path;
 
@@ -898,6 +1236,9 @@ class TerminalEmulator {
     return results;
   }
 
+  /**
+   * Search for patterns in files
+   */
   cmdGrep(args) {
     if (args.length < 2) {
       this.write("Usage: grep [pattern] [file...]", "term-info");
@@ -907,9 +1248,18 @@ class TerminalEmulator {
 
     const pattern = args[0];
     const files = args.slice(1);
-    const regex = new RegExp(pattern, "gi");
+
+    let regex;
+    try {
+      regex = new RegExp(pattern, "gi");
+    } catch (e) {
+      this.write(`Invalid regex pattern: ${e.message}`, "error-text");
+      return;
+    }
+
     let matchFound = false;
 
+    // Process files
     for (const file of files) {
       // Handle wildcards in filenames
       if (file.includes("*")) {
@@ -930,15 +1280,15 @@ class TerminalEmulator {
         for (const match of matchingFiles) {
           if (typeof dirObj[match] !== "object") {
             const filePath = dir === "/" ? `/${match}` : `${dir}/${match}`;
-            this.grepFile(filePath, regex);
-            matchFound = true;
+            const foundMatch = this.grepFile(filePath, regex);
+            matchFound = matchFound || foundMatch;
           }
         }
       } else {
         // Process regular files
         const targetPath = this.resolvePath(file);
-        this.grepFile(targetPath, regex);
-        matchFound = true;
+        const foundMatch = this.grepFile(targetPath, regex);
+        matchFound = matchFound || foundMatch;
       }
     }
 
@@ -947,6 +1297,9 @@ class TerminalEmulator {
     }
   }
 
+  /**
+   * Search for pattern in a specific file
+   */
   grepFile(filePath, regex) {
     const obj = this.getFileSystemObject(filePath);
 
@@ -981,6 +1334,20 @@ class TerminalEmulator {
     return false;
   }
 
+  /**
+   * Strip HTML tags from text
+   * @param {string} html - Text with HTML tags
+   * @returns {string} - Plain text
+   */
+  stripHtml(html) {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  }
+
+  /**
+   * Display first lines of a file
+   */
   cmdHead(args) {
     if (args.length === 0) {
       this.write("Usage: head [options] [file]", "term-info");
@@ -1023,6 +1390,9 @@ class TerminalEmulator {
     }
   }
 
+  /**
+   * Display last lines of a file
+   */
   cmdTail(args) {
     if (args.length === 0) {
       this.write("Usage: tail [options] [file]", "term-info");
@@ -1065,8 +1435,11 @@ class TerminalEmulator {
     }
   }
 
+  /**
+   * Display system information with ASCII art
+   */
   cmdNeofetch(args) {
-    // ASCII art for Linux penguin (keep your existing ASCII art)
+    // ASCII art for Linux penguin
     const asciiArt = `
           *nnnn*                      
         dGGGGMMb     ,"""""""""""""".
@@ -1141,7 +1514,9 @@ class TerminalEmulator {
     this.write(output, "neofetch-output");
   }
 
-  // Helper method to get uptime for neofetch
+  /**
+   * Helper method to get uptime for neofetch
+   */
   getUptime() {
     // Generate a random but realistic uptime
     const hours = Math.floor(Math.random() * 24);
@@ -1154,6 +1529,10 @@ class TerminalEmulator {
       return `${hours} hours, ${mins} mins`;
     }
   }
+
+  /**
+   * Change terminal color theme
+   */
   cmdTheme(args) {
     const availableThemes = {
       dracula: {
@@ -1230,6 +1609,10 @@ class TerminalEmulator {
       );
     }
   }
+
+  /**
+   * Display command history
+   */
   cmdHistory(args) {
     if (this.history.length === 0) {
       this.write("No commands in history", "term-info");
@@ -1261,6 +1644,10 @@ class TerminalEmulator {
 
     this.write(output);
   }
+
+  /**
+   * Define or display aliases for commands
+   */
   cmdAlias(args) {
     if (args.length === 0) {
       // Display all aliases
