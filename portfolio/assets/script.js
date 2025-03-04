@@ -13,7 +13,14 @@
     Navbar: (activePage = "") => {
       return `
         <nav>
-          <div class="nav-title">PORTFOLIO_</div>
+          <div class="nav-container">
+            <div class="nav-title">PORTFOLIO_</div>
+            <div class="hamburger-menu">
+              <div class="bar1"></div>
+              <div class="bar2"></div>
+              <div class="bar3"></div>
+            </div>
+          </div>
           <ul class="nav-links">
             <li class="${
               activePage === "home" ? "active" : ""
@@ -316,14 +323,13 @@ async function loadProjectsContent() {
     const projectsData = await loadJsonData("projects");
     if (projectsData && projectsData.projects) {
       if (projectsData.projects.length > 0) {
-        
         // Sort projects by date, newest first
         const sortedProjects = [...projectsData.projects].sort((a, b) => {
           const dateA = new Date(a.date || 0);
           const dateB = new Date(b.date || 0);
           return dateB - dateA; // Descending order (newest first)
         });
-        
+
         let output = "";
         // Add ls -la style header
         output += "<p>total " + sortedProjects.length + "</p>";
@@ -355,14 +361,13 @@ async function loadBlogsContent() {
     const blogsData = await loadJsonData("blogs");
     if (blogsData && blogsData.posts) {
       if (blogsData.posts.length > 0) {
-        
         // Sort blog posts by date, newest first
         const sortedPosts = [...blogsData.posts].sort((a, b) => {
           const dateA = new Date(a.date || 0);
           const dateB = new Date(b.date || 0);
           return dateB - dateA; // Descending order (newest first)
         });
-        
+
         let output = "";
         // Add find command style output
         output += "<div class='posts-list'>";
@@ -385,85 +390,91 @@ async function loadBlogsContent() {
 // Project detail page
 async function loadProjectDetail() {
   const projectId = getUrlParam("id");
-if (!projectId) {
-  window.location.href = "projects.html";
-  return;
-}
-
-console.log(`$ loading project ${projectId}...`);
-const contentContainer = document.getElementById("project-content");
-const projectDirectory = document.getElementById("project-directory");
-const projectPath = document.getElementById("project-path");
-const projectPathCursor = document.querySelector(".project-path-cursor");
-const titleEl = document.getElementById("project-title");
-const tagsEl = document.getElementById("project-tags");
-const descriptionEl = document.getElementById("project-description");
-const linksEl = document.getElementById("project-links");
-
-if (contentContainer) {
-  // First load projects metadata
-  const projectsData = await loadJsonData("projects");
-  if (!projectsData || !projectsData.projects) {
-    contentContainer.innerHTML =
-      "<p>cat: README.md: No such file or directory</p>";
+  if (!projectId) {
+    window.location.href = "projects.html";
     return;
   }
 
-  const projectMeta = projectsData.projects.find((p) => p.id === projectId);
-  if (!projectMeta) {
-    contentContainer.innerHTML =
-      "<p>cd: no such directory: " + projectId + "</p>";
-    return;
-  }
+  console.log(`$ loading project ${projectId}...`);
+  const contentContainer = document.getElementById("project-content");
+  const projectDirectory = document.getElementById("project-directory");
+  const projectPath = document.getElementById("project-path");
+  const projectPathCursor = document.querySelector(".project-path-cursor");
+  const titleEl = document.getElementById("project-title");
+  const tagsEl = document.getElementById("project-tags");
+  const descriptionEl = document.getElementById("project-description");
+  const linksEl = document.getElementById("project-links");
 
-  // Update project directory and path
-  if (projectDirectory) projectDirectory.textContent = projectMeta.id;
-  if (projectPath) projectPath.textContent = projectMeta.id;
-  if (projectPathCursor) projectPathCursor.textContent = projectMeta.id;
-
-  // Update page title and project metadata
-  if (titleEl) titleEl.textContent = projectMeta.title;
-  if (tagsEl) {
-    tagsEl.innerHTML = projectMeta.tags
-      .map((tag) => `<span class="project-tag">${tag}</span>`)
-      .join("");
-  }
-  if (descriptionEl) descriptionEl.textContent = projectMeta.description;
-
-  // Now load the full project content
-  const projectContent = await loadJsonData(`projects/${projectId}`);
-  if (projectContent) {
-    // Simulate loading time but shorter
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    contentContainer.innerHTML = projectContent.content;
-
-  // Add links if they exist and are not "N/A"
-  if (linksEl) {
-    let linksHTML = '';
-    
-    // Check if live link exists and is not "N/A" (case-insensitive)
-    if (projectContent.live && !/^n\/?a$/i.test(projectContent.live.trim())) {
-      linksHTML += `<a href="${projectContent.live}" target="_blank" class="demo-link">Live Demo</a>`;
+  if (contentContainer) {
+    // First load projects metadata
+    const projectsData = await loadJsonData("projects");
+    if (!projectsData || !projectsData.projects) {
+      contentContainer.innerHTML =
+        "<p>cat: README.md: No such file or directory</p>";
+      return;
     }
-    
-    // Check if github link exists and is not "N/A" (case-insensitive)
-    if (projectContent.github && !/^n\/?a$/i.test(projectContent.github.trim())) {
-      // Only add margin-left if there's also a live demo link
-      const marginClass = linksHTML.length > 0 ? " github-with-margin" : "";
-      linksHTML += `<a href="${projectContent.github}" target="_blank" class="repo-link${marginClass}">GitHub Repo</a>`;
-    }
-    
-    linksEl.innerHTML = linksHTML;
-  }
 
-    // Update document title
-    document.title = `${projectContent.title} | PORTFOLIO_`;
-  } else {
-    contentContainer.innerHTML =
-      "<p>cat: README.md: No such file or directory</p>";
+    const projectMeta = projectsData.projects.find((p) => p.id === projectId);
+    if (!projectMeta) {
+      contentContainer.innerHTML =
+        "<p>cd: no such directory: " + projectId + "</p>";
+      return;
+    }
+
+    // Update project directory and path
+    if (projectDirectory) projectDirectory.textContent = projectMeta.id;
+    if (projectPath) projectPath.textContent = projectMeta.id;
+    if (projectPathCursor) projectPathCursor.textContent = projectMeta.id;
+
+    // Update page title and project metadata
+    if (titleEl) titleEl.textContent = projectMeta.title;
+    if (tagsEl) {
+      tagsEl.innerHTML = projectMeta.tags
+        .map((tag) => `<span class="project-tag">${tag}</span>`)
+        .join("");
+    }
+    if (descriptionEl) descriptionEl.textContent = projectMeta.description;
+
+    // Now load the full project content
+    const projectContent = await loadJsonData(`projects/${projectId}`);
+    if (projectContent) {
+      // Simulate loading time but shorter
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      contentContainer.innerHTML = projectContent.content;
+
+      // Add links if they exist and are not "N/A"
+      if (linksEl) {
+        let linksHTML = "";
+
+        // Check if live link exists and is not "N/A" (case-insensitive)
+        if (
+          projectContent.live &&
+          !/^n\/?a$/i.test(projectContent.live.trim())
+        ) {
+          linksHTML += `<a href="${projectContent.live}" target="_blank" class="demo-link">Live Demo</a>`;
+        }
+
+        // Check if github link exists and is not "N/A" (case-insensitive)
+        if (
+          projectContent.github &&
+          !/^n\/?a$/i.test(projectContent.github.trim())
+        ) {
+          // Only add margin-left if there's also a live demo link
+          const marginClass = linksHTML.length > 0 ? " github-with-margin" : "";
+          linksHTML += `<a href="${projectContent.github}" target="_blank" class="repo-link${marginClass}">GitHub Repo</a>`;
+        }
+
+        linksEl.innerHTML = linksHTML;
+      }
+
+      // Update document title
+      document.title = `${projectContent.title} | PORTFOLIO_`;
+    } else {
+      contentContainer.innerHTML =
+        "<p>cat: README.md: No such file or directory</p>";
+    }
   }
-}
-console.log(`$ project ${projectId} loaded`);
+  console.log(`$ project ${projectId} loaded`);
 }
 
 // Blog detail page
@@ -541,14 +552,6 @@ function simulateCommandTyping() {
     simulateTyping(cmd, text, Math.floor(Math.random() * 15) + 15);
   });
 }
-
-// Add these effects after page loads
-window.addEventListener("load", () => {
-  console.log("$ initializing terminal effects...");
-  addBlinkingCursors();
-  simulateCommandTyping();
-  console.log("$ terminal ready");
-});
 
 // GitHub Profile Data Fetcher
 async function fetchGitHubProfile() {
@@ -647,4 +650,15 @@ window.addEventListener("load", () => {
 
   // Add this line to call the GitHub API fetch
   fetchGitHubProfile();
+
+  // Hamburger menu functionality
+  const hamburger = document.querySelector(".hamburger-menu");
+  const navLinks = document.querySelector(".nav-links");
+
+  if (hamburger) {
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("change");
+      navLinks.classList.toggle("show");
+    });
+  }
 });

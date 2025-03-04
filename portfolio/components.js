@@ -2,7 +2,14 @@ const Components = {
   Navbar: (activePage = "") => {
     return `
       <nav>
-        <div class="nav-title">PORTFOLIO_</div>
+        <div class="nav-container">
+          <div class="nav-title">PORTFOLIO_</div>
+          <div class="hamburger-menu">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+          </div>
+        </div>
         <ul class="nav-links">
           <li class="${
             activePage === "home" ? "active" : ""
@@ -104,18 +111,18 @@ const Components = {
   // Helper function to parse dates consistently
   parseDate: (dateString) => {
     if (!dateString) return new Date(0); // Default to epoch if no date
-    
+
     // If already a Date object
     if (dateString instanceof Date) return dateString;
-    
+
     // Try to parse the date
     const parsedDate = new Date(dateString);
-    
+
     // Check if parsing worked
     if (!isNaN(parsedDate.getTime())) {
       return parsedDate;
     }
-    
+
     // Fallback to current date if parsing failed
     console.error(`Failed to parse date: ${dateString}`);
     return new Date();
@@ -125,12 +132,12 @@ const Components = {
   ProjectCard: (project) => {
     // Format the date if it exists, otherwise use current date as fallback
     let formattedDate = new Date().toISOString().split("T")[0]; // Fallback
-    
+
     if (project.date) {
       // Check if date is in ISO format (YYYY-MM-DD)
       if (/^\d{4}-\d{2}-\d{2}$/.test(project.date)) {
         formattedDate = project.date;
-      } 
+      }
       // Handle other date formats if needed (e.g., "February 20, 2025")
       else {
         try {
@@ -143,7 +150,7 @@ const Components = {
         }
       }
     }
-    
+
     return `
       <div class="project-card">
         <div class="project-listing">
@@ -192,12 +199,12 @@ const Components = {
   BlogPostItem: (post) => {
     // Format the date properly
     let fileDate = post.date;
-    
+
     // Replace spaces with underscores and convert to lowercase for filename-like format
-    if (typeof fileDate === 'string') {
+    if (typeof fileDate === "string") {
       fileDate = fileDate.replace(/\s/g, "_").toLowerCase();
     }
-    
+
     return `
       <div class="post-item">
         <div class="post-listing">

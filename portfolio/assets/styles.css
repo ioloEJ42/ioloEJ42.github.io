@@ -889,3 +889,74 @@ textarea.form-input {
 .section-title p {
   opacity: 0.8;
 }
+
+/* Hamburger Menu Styles */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.hamburger-menu {
+  display: none;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.bar1,
+.bar2,
+.bar3 {
+  width: 25px;
+  height: 3px;
+  background-color: var(--accent-color);
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+/* Hamburger animation to X */
+.change .bar1 {
+  transform: translate(0, 8px) rotate(-45deg);
+}
+
+.change .bar2 {
+  opacity: 0;
+}
+
+.change .bar3 {
+  transform: translate(0, -8px) rotate(45deg);
+}
+
+/* Media query for mobile devices */
+@media screen and (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    margin-top: 0;
+  }
+
+  .nav-links.show {
+    max-height: 300px; /* Adjust based on your menu height */
+  }
+
+  .nav-links li {
+    margin: 0.75rem 0;
+    margin-left: 0; /* Override the default margin-left */
+  }
+
+  .nav-links li:first-child {
+    margin-top: 1rem;
+  }
+}
