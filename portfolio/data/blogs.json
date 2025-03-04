@@ -1,11 +1,11 @@
 {
   "posts": [
     {
-      "id": "minimalism-in-web-design",
-      "title": "The Power of Minimalism in Web Design",
-      "date": "February 20, 2025",
-      "excerpt": "Exploring how minimalist principles can enhance user experience, improve performance, and create more accessible websites.",
-      "tags": ["Design", "Performance", "UX"]
+      "id": "welcome-to-my-blog",
+      "title": "Welcome to My Blog Page!",
+      "date": "March 4, 2025",
+      "excerpt": "An introduction to my blog where I'll be sharing insights on software development, cybersecurity, and my personal projects including the interactive terminal.",
+      "tags": ["Introduction", "Personal", "Development"]
     }
   ]
 }

@@ -3,6 +3,7 @@
     {
       "id": "minimal-dashboard",
       "title": "Minimal Dashboard",
+      "date": "2024-08-15",
       "description": "A minimalist browser dashboard with search functionality and customizable links.",
       "featured": true,
       "tags": ["HTML", "CSS", "JavaScript"],
@@ -11,6 +12,7 @@
     {
       "id": "file-integrity-monitor",
       "title": "File Integrity Monitor",
+      "date": "2024-08-15",
       "description": "A Python-based security tool for real-time file system monitoring with cryptographic verification and comprehensive reporting.",
       "featured": true,
       "tags": ["Python", "Security", "Watchdog", "SQLite", "PDF Reporting"]
@@ -18,6 +20,7 @@
     {
       "id": "ascii-art-generator",
       "title": "ASCII Art Generator",
+      "date": "2024-08-15",
       "description": "An interactive web application for creating, customizing, and exporting ASCII art with multiple shapes, patterns, and export options.",
       "featured": true,
       "tags": ["React", "TypeScript", "Tailwind CSS", "Vite", "Interactive"]
@@ -25,6 +28,7 @@
     {
       "id": "all-sorts",
       "title": "All-Sorts",
+      "date": "2024-08-15",
       "description": "An advanced algorithm visualization platform showcasing 15+ sorting algorithms through real-time, interactive visualizations.",
       "featured": true,
       "tags": [
@@ -38,6 +42,7 @@
     {
       "id": "password-strength-analyser",
       "title": "Password Strength Analyser",
+      "date": "2025-03-01",
       "description": "A real-time password strength assessment tool with visual indicators, pattern detection, and custom recommendations.",
       "featured": true,
       "tags": ["HTML", "CSS", "JavaScript", "Security", "Frontend"]
@@ -45,6 +50,7 @@
     {
       "id": "steganography-dissertation",
       "title": "Undergraduate Dissertation: Integrative Approaches to Digital Steganography",
+      "date": "2024-05-01",
       "description": "A comprehensive educational platform exploring seven steganography techniques with LSB implementation, a recommendation system, and quality assessment tools.",
       "featured": true,
       "tags": ["Python", "React", "Tailwind CSS", "Steganography", "Cybersecurity", "Educational"]

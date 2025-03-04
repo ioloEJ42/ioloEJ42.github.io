@@ -103,11 +103,31 @@ const Components = {
 
   // Project card component - Linux file listing style
   ProjectCard: (project) => {
-    const date = new Date().toISOString().split("T")[0];
+    // Format the date if it exists, otherwise use current date as fallback
+    let formattedDate = new Date().toISOString().split("T")[0]; // Fallback
+    
+    if (project.date) {
+      // Check if date is in ISO format (YYYY-MM-DD)
+      if (/^\d{4}-\d{2}-\d{2}$/.test(project.date)) {
+        formattedDate = project.date;
+      } 
+      // Handle other date formats if needed (e.g., "February 20, 2025")
+      else {
+        try {
+          const parsedDate = new Date(project.date);
+          if (!isNaN(parsedDate)) {
+            formattedDate = parsedDate.toISOString().split("T")[0];
+          }
+        } catch (e) {
+          console.error(`Error parsing date for project ${project.id}:`, e);
+        }
+      }
+    }
+    
     return `
       <div class="project-card">
         <div class="project-listing">
-          <span class="text-file">drwxr-xr-x</span> 2 user portfolio 4096 ${date} <span class="directory">${
+          <span class="text-file">drwxr-xr-x</span> 2 user portfolio 4096 ${formattedDate} <span class="directory">${
       project.id
     }/</span>
         </div>
@@ -150,7 +170,14 @@ const Components = {
 
   // Blog post item component - Linux file view style
   BlogPostItem: (post) => {
-    const fileDate = post.date.replace(/\s/g, "_").toLowerCase();
+    // Format the date properly
+    let fileDate = post.date;
+    
+    // Replace spaces with underscores and convert to lowercase for filename-like format
+    if (typeof fileDate === 'string') {
+      fileDate = fileDate.replace(/\s/g, "_").toLowerCase();
+    }
+    
     return `
       <div class="post-item">
         <div class="post-listing">
