@@ -308,8 +308,15 @@ async function loadHomeContent() {
     const projectsData = await loadJsonData("projects");
     if (projectsData && projectsData.projects) {
       console.log("$ filtering featured projects...");
+      
+      // Sort featured projects by date, newest first
       const featuredProjects = projectsData.projects
         .filter((p) => p.featured)
+        .sort((a, b) => {
+          const dateA = new Date(a.date || 0);
+          const dateB = new Date(b.date || 0);
+          return dateB - dateA; // Descending order (newest first)
+        })
         .slice(0, 3);
 
       if (featuredProjects.length > 0) {
@@ -326,13 +333,21 @@ async function loadHomeContent() {
     }
   }
 
-  // Load recent blog posts
+  // Load recent blog posts - they should already be sorted by date in the JSON
   const postsContainer = document.getElementById("recent-posts");
   if (postsContainer) {
     const blogsData = await loadJsonData("blogs");
     if (blogsData && blogsData.posts) {
       console.log("$ fetching recent posts...");
-      const recentPosts = blogsData.posts.slice(0, 3);
+      
+      // Sort blog posts by date, newest first
+      const recentPosts = [...blogsData.posts]
+        .sort((a, b) => {
+          const dateA = new Date(a.date || 0);
+          const dateB = new Date(b.date || 0);
+          return dateB - dateA; // Descending order (newest first)
+        })
+        .slice(0, 3);
 
       if (recentPosts.length > 0) {
         // Add a short delay to simulate loading
@@ -362,11 +377,19 @@ async function loadProjectsContent() {
     const projectsData = await loadJsonData("projects");
     if (projectsData && projectsData.projects) {
       if (projectsData.projects.length > 0) {
+        
+        // Sort projects by date, newest first
+        const sortedProjects = [...projectsData.projects].sort((a, b) => {
+          const dateA = new Date(a.date || 0);
+          const dateB = new Date(b.date || 0);
+          return dateB - dateA; // Descending order (newest first)
+        });
+        
         let output = "";
         // Add ls -la style header
-        output += "<p>total " + projectsData.projects.length + "</p>";
+        output += "<p>total " + sortedProjects.length + "</p>";
         output += "<div class='projects-grid'>";
-        output += projectsData.projects
+        output += sortedProjects
           .map((project) => Components.ProjectCard(project))
           .join("");
         output += "</div>";
@@ -393,10 +416,18 @@ async function loadBlogsContent() {
     const blogsData = await loadJsonData("blogs");
     if (blogsData && blogsData.posts) {
       if (blogsData.posts.length > 0) {
+        
+        // Sort blog posts by date, newest first
+        const sortedPosts = [...blogsData.posts].sort((a, b) => {
+          const dateA = new Date(a.date || 0);
+          const dateB = new Date(b.date || 0);
+          return dateB - dateA; // Descending order (newest first)
+        });
+        
         let output = "";
         // Add find command style output
         output += "<div class='posts-list'>";
-        output += blogsData.posts
+        output += sortedPosts
           .map((post) => Components.BlogPostItem(post))
           .join("");
         output += "</div>";

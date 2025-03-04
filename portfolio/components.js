@@ -101,6 +101,26 @@ const Components = {
     `;
   },
 
+  // Helper function to parse dates consistently
+  parseDate: (dateString) => {
+    if (!dateString) return new Date(0); // Default to epoch if no date
+    
+    // If already a Date object
+    if (dateString instanceof Date) return dateString;
+    
+    // Try to parse the date
+    const parsedDate = new Date(dateString);
+    
+    // Check if parsing worked
+    if (!isNaN(parsedDate.getTime())) {
+      return parsedDate;
+    }
+    
+    // Fallback to current date if parsing failed
+    console.error(`Failed to parse date: ${dateString}`);
+    return new Date();
+  },
+
   // Project card component - Linux file listing style
   ProjectCard: (project) => {
     // Format the date if it exists, otherwise use current date as fallback
