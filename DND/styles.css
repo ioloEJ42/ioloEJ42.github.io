@@ -254,14 +254,10 @@ label {
 
 /* Proficiency Box Styling */
 .proficiency-box {
-  min-width: 16px;
-  height: 16px;
-  border: 2px solid var(--border-color);
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: var(--input-bg);
-  margin-right: 4px;
-  flex-shrink: 0;
+  min-width: 12px; /* Reduced from 16px */
+  height: 12px; /* Reduced from 16px */
+  border: 1px solid var(--border-color); /* Thinner border */
+  margin-right: 3px; /* Reduced from 4px */
 }
 
 .proficiency-box[data-state="proficient"] {
@@ -293,13 +289,20 @@ label {
   margin-bottom: 20px;
   background-color: rgba(0, 0, 0, 0.1);
 }
+.skills {
+  padding: 10px; /* Reduced from 15px */
+}
+.skill {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px; /* Reduced from 8px */
+  font-size: 0.85rem; /* Smaller font size */
+}
 
 .saving-throws h3,
 .skills h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  text-align: center;
+  margin-bottom: 8px; /* Reduced from 15px */
+  font-size: 1rem; /* Smaller header */
 }
 
 /* Container styling for saves and skills */
@@ -307,7 +310,8 @@ label {
 .skill {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 3px; /* Reduced from 8px */
+  font-size: 0.85rem; /* Smaller font size */
 }
 
 .save .proficiency-box,
@@ -318,20 +322,22 @@ label {
 .save-value,
 .skill-value {
   text-align: center;
-  padding: 5px 8px;
+  padding: 2px 4px; /* Reduced padding */
+  width: 45px; /* Fixed width */
   border: 1px solid var(--border-color);
   border-radius: 3px;
   background-color: var(--input-bg);
   color: var(--text-color);
-  font-size: 0.9rem;
-  margin-right: 10px;
+  font-size: 0.85rem;
+  margin-right: 5px; /* Reduced from 10px */
 }
 
 .save label,
 .skill label {
   margin-bottom: 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Smaller font size */
   flex-grow: 1;
+  white-space: nowrap; /* Prevent wrapping */
 }
 
 /* Input fields sizing */
@@ -361,10 +367,10 @@ label {
   width: 60px;
 }
 
-/* Skill list layout */
 .skill-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 10px;
 }
 
 /* Two-column layout for skills on wider screens */

@@ -1,4 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Skill name mapping for abbreviated labels
+  const skillMapping = {
+    acr: "acrobatics",
+    ani: "animal-handling",
+    arc: "arcana",
+    ath: "athletics",
+    dec: "deception",
+    his: "history",
+    ins: "insight",
+    int: "intimidation",
+    inv: "investigation",
+    med: "medicine",
+    nat: "nature",
+    per: "perception",
+    perf: "performance",
+    pers: "persuasion",
+    rel: "religion",
+    soh: "sleight-of-hand",
+    ste: "stealth",
+    sur: "survival",
+  };
+
   // Proficiency box toggling
   document.addEventListener("click", function (event) {
     if (event.target.classList.contains("proficiency-box")) {
@@ -233,17 +255,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
           for (const skillElement of skillElements) {
             const label = skillElement.querySelector("label");
-            if (
-              label &&
-              label.textContent
-                .toLowerCase()
-                .startsWith(skillName.replace(/-/g, " "))
-            ) {
-              const box = skillElement.querySelector(".proficiency-box");
-              if (box) {
-                box.setAttribute("data-state", value);
+            if (label) {
+              const abbr = label.textContent.split(" ")[0].toLowerCase();
+              if (skillMapping[abbr] === skillName) {
+                const box = skillElement.querySelector(".proficiency-box");
+                if (box) {
+                  box.setAttribute("data-state", value);
+                }
+                break;
               }
-              break;
             }
           }
         } else if (key.startsWith("skill-") && key.endsWith("-value")) {
@@ -252,17 +272,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
           for (const skillElement of skillElements) {
             const label = skillElement.querySelector("label");
-            if (
-              label &&
-              label.textContent
-                .toLowerCase()
-                .startsWith(skillName.replace(/-/g, " "))
-            ) {
-              const input = skillElement.querySelector(".skill-value");
-              if (input) {
-                input.value = value;
+            if (label) {
+              const abbr = label.textContent.split(" ")[0].toLowerCase();
+              if (skillMapping[abbr] === skillName) {
+                const input = skillElement.querySelector(".skill-value");
+                if (input) {
+                  input.value = value;
+                }
+                break;
               }
-              break;
             }
           }
         }
@@ -378,15 +396,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const isSkill = parent.classList.contains("skill");
       const isSave = parent.classList.contains("save");
 
-      let name = label.textContent
-        .replace(/\s+\(.+\)$/, "") // Remove ability in parentheses for skills
-        .toLowerCase()
-        .replace(/\s+/g, "-");
-
-      // Add type prefix for proper identification
-      const prefix = isSkill ? "skill-" : isSave ? "save-" : "";
-
-      formData[`${prefix}${name}-proficiency`] = box.getAttribute("data-state");
+      if (isSkill) {
+        // Extract abbreviation
+        const abbr = label.textContent.split(" ")[0].toLowerCase();
+        if (skillMapping[abbr]) {
+          formData[`skill-${skillMapping[abbr]}-proficiency`] =
+            box.getAttribute("data-state");
+        }
+      } else if (isSave) {
+        let name = label.textContent.toLowerCase();
+        formData[`save-${name}-proficiency`] = box.getAttribute("data-state");
+      }
     });
 
     // Skill and save values
@@ -398,15 +418,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const isSkill = parent.classList.contains("skill");
       const isSave = parent.classList.contains("save");
 
-      let name = label.textContent
-        .replace(/\s+\(.+\)$/, "") // Remove ability in parentheses for skills
-        .toLowerCase()
-        .replace(/\s+/g, "-");
-
-      // Add type prefix for proper identification
-      const prefix = isSkill ? "skill-" : isSave ? "save-" : "";
-
-      formData[`${prefix}${name}-value`] = input.value;
+      if (isSkill) {
+        // Extract abbreviation (first part before space)
+        const abbr = label.textContent.split(" ")[0].toLowerCase();
+        if (skillMapping[abbr]) {
+          formData[`skill-${skillMapping[abbr]}-value`] = input.value;
+        }
+      } else if (isSave) {
+        let name = label.textContent.toLowerCase();
+        formData[`save-${name}-value`] = input.value;
+      }
     });
 
     // Contenteditable elements
@@ -582,5 +603,48 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("character-name").value !==
       editedData["character-name"]
     );
+  }
+});
+
+// Add this to your script.js file to handle ability score calculations
+
+// Function to calculate ability modifier from score
+function calculateModifier(score) {
+  return Math.floor((score - 10) / 2);
+}
+
+// Format modifier with + or - prefix
+function formatModifier(modifier) {
+  return modifier >= 0 ? `+${modifier}` : `${modifier}`;
+}
+
+// Add event listeners to all ability score inputs
+document.addEventListener("DOMContentLoaded", function () {
+  // Get all ability score inputs
+  const abilityScoreInputs = document.querySelectorAll(".ability-score");
+
+  // Set up event listeners for each input
+  abilityScoreInputs.forEach((input) => {
+    // Initial calculation when page loads
+    updateModifier(input);
+
+    // Listen for input changes
+    input.addEventListener("input", function () {
+      updateModifier(this);
+    });
+  });
+
+  // Function to update the modifier based on the ability score
+  function updateModifier(input) {
+    const abilityId = input.id;
+    const modifierId = abilityId.replace("score", "mod");
+    const modifierElement = document.getElementById(modifierId);
+
+    // Get the score value (default to 10 if empty or not a number)
+    const scoreValue = parseInt(input.value) || 10;
+
+    // Calculate and display the modifier
+    const modifier = calculateModifier(scoreValue);
+    modifierElement.textContent = formatModifier(modifier);
   }
 });
