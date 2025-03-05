@@ -1,0 +1,123 @@
+{
+  "character-name": "Tharion Nightwhisper",
+  "character-class": "Wizard 8",
+  "character-race": "High Elf",
+  "character-background": "Sage",
+
+  "str-score": "10",
+  "dex-score": "16",
+  "con-score": "14",
+  "int-score": "20",
+  "wis-score": "12",
+  "cha-score": "8",
+
+  "armor-class": "13",
+  "initiative": "3",
+  "speed": "30 ft",
+  "current-hp": "46",
+  "max-hp": "54",
+  "hit-dice": "8d6",
+
+  "str-save-prof": false,
+  "dex-save-prof": false,
+  "con-save-prof": true,
+  "int-save-prof": true,
+  "wis-save-prof": true,
+  "cha-save-prof": false,
+
+  "save-strength-proficiency": "none",
+  "save-strength-value": "+0",
+  "save-dexterity-proficiency": "none",
+  "save-dexterity-value": "+3",
+  "save-constitution-proficiency": "proficient",
+  "save-constitution-value": "+6",
+  "save-intelligence-proficiency": "proficient",
+  "save-intelligence-value": "+9",
+  "save-wisdom-proficiency": "proficient",
+  "save-wisdom-value": "+5",
+  "save-charisma-proficiency": "none",
+  "save-charisma-value": "-1",
+
+  "skill-acrobatics-proficiency": "proficient",
+  "skill-acrobatics-value": "+5",
+  "skill-animal-handling-proficiency": "none",
+  "skill-animal-handling-value": "+1",
+  "skill-arcana-proficiency": "expert",
+  "skill-arcana-value": "+9",
+  "skill-athletics-proficiency": "none",
+  "skill-athletics-value": "+0",
+  "skill-deception-proficiency": "none",
+  "skill-deception-value": "-1",
+  "skill-history-proficiency": "proficient",
+  "skill-history-value": "+8",
+  "skill-insight-proficiency": "none",
+  "skill-insight-value": "+1",
+  "skill-intimidation-proficiency": "none",
+  "skill-intimidation-value": "-1",
+  "skill-investigation-proficiency": "proficient",
+  "skill-investigation-value": "+8",
+  "skill-medicine-proficiency": "none",
+  "skill-medicine-value": "+1",
+  "skill-nature-proficiency": "none",
+  "skill-nature-value": "+5",
+  "skill-perception-proficiency": "proficient",
+  "skill-perception-value": "+5",
+  "skill-performance-proficiency": "none",
+  "skill-performance-value": "-1",
+  "skill-persuasion-proficiency": "none",
+  "skill-persuasion-value": "-1",
+  "skill-religion-proficiency": "proficient",
+  "skill-religion-value": "+8",
+  "skill-sleight-of-hand-proficiency": "none",
+  "skill-sleight-of-hand-value": "+3",
+  "skill-stealth-proficiency": "none",
+  "skill-stealth-value": "+3",
+  "skill-survival-proficiency": "none",
+  "skill-survival-value": "+1",
+
+  "weapons-table": [
+    ["Quarterstaff", "+4", "1d6+0 bludgeoning"],
+    ["Dagger", "+7", "1d4+3 piercing"],
+    ["Fire Bolt", "+9", "2d10 fire"]
+  ],
+
+  "inventory": "<p><strong>Currency:</strong> 235 gp, 17 sp, 9 cp</p><p><strong>Arcane Focus:</strong> Crystal Orb</p><p><strong>Adventuring Gear:</strong></p><ul><li>Backpack</li><li>Bedroll</li><li>5 days of rations</li><li>Waterskin</li><li>Spellbook</li><li>Component pouch</li><li>Scholar's pack</li><li>Fine clothes</li><li>10 sheets of parchment</li><li>Quill and ink</li></ul><p><strong>Magic Items:</strong></p><ul><li>Wand of the War Mage (+1)</li><li>Pearl of Power</li><li>Ring of Protection</li><li>Cloak of Elvenkind</li></ul>",
+
+  "features": "<h3>Racial Traits</h3><p><strong>Darkvision:</strong> 60 feet</p><p><strong>Fey Ancestry:</strong> Advantage on saving throws against being charmed, and magic can't put you to sleep</p><p><strong>Trance:</strong> 4 hours of meditation instead of 8 hours of sleep</p><p><strong>Keen Senses:</strong> Proficiency in Perception</p><p><strong>Cantrip:</strong> Minor Illusion</p><h3>Wizard Features</h3><p><strong>Arcane Recovery:</strong> Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level equal to or less than half your wizard level (rounded up).</p><p><strong>Arcane Tradition - School of Evocation:</strong></p><ul><li><strong>Evocation Savant:</strong> Gold and time to copy an evocation spell into your spellbook is halved.</li><li><strong>Sculpt Spells:</strong> When you cast an evocation spell that affects other creatures that you can see, you can choose a number of them equal to 1 + the spell's level. The chosen creatures automatically succeed on their saving throws against the spell, and they take no damage if they would normally take half damage on a successful save.</li><li><strong>Potent Cantrip:</strong> Your damaging cantrips affect even creatures that avoid the brunt of the effect. When a creature succeeds on a saving throw against your cantrip, the creature takes half the cantrip's damage (if any) but suffers no additional effect from the cantrip.</li></ul>",
+
+  "spellcasting-class": "Wizard",
+  "spellcasting-ability": "int",
+  "spell-save-dc": "17",
+  "spell-attack-bonus": "9",
+
+  "slots-used-1": "2",
+  "slots-total-1": "4",
+  "slots-used-2": "1",
+  "slots-total-2": "3",
+  "slots-used-3": "0",
+  "slots-total-3": "3",
+  "slots-used-4": "1",
+  "slots-total-4": "2",
+
+  "cantrips": "<ul><li><strong>Fire Bolt:</strong> 120 ft, 2d10 fire damage</li><li><strong>Minor Illusion:</strong> Create sound or image of an object</li><li><strong>Mage Hand:</strong> Spectral hand that can manipulate objects</li><li><strong>Prestidigitation:</strong> Simple magical effects</li><li><strong>Ray of Frost:</strong> 60 ft, 2d8 cold damage, -10 ft speed</li></ul>",
+
+  "level-1-spells": "<ul><li><strong>Magic Missile:</strong> 3 darts, 1d4+1 force damage each</li><li><strong>Shield:</strong> Reaction, +5 AC until next turn</li><li><strong>Mage Armor:</strong> 13 + Dex modifier AC for 8 hours</li><li><strong>Find Familiar:</strong> Summon a familiar</li><li><strong>Identify:</strong> Identify magical properties</li><li><strong>Detect Magic:</strong> Sense magic within 30 feet</li></ul>",
+
+  "level-2-spells": "<ul><li><strong>Misty Step:</strong> Bonus action, teleport up to 30 feet</li><li><strong>Scorching Ray:</strong> 3 rays, 2d6 fire damage each</li><li><strong>Web:</strong> Difficult terrain, restrained condition</li><li><strong>Invisibility:</strong> Target becomes invisible</li></ul>",
+
+  "level-3-spells": "<ul><li><strong>Fireball:</strong> 20-foot radius, 8d6 fire damage</li><li><strong>Counterspell:</strong> Reaction, attempt to stop spellcasting</li><li><strong>Fly:</strong> Target gains flying speed of 60 feet</li><li><strong>Haste:</strong> Double speed, +2 AC, extra action</li></ul>",
+
+  "level-4-spells": "<ul><li><strong>Polymorph:</strong> Transform creature into a new form</li><li><strong>Wall of Fire:</strong> 60-foot long wall, 5d8 fire damage</li><li><strong>Dimension Door:</strong> Teleport up to 500 feet</li></ul>",
+
+  "appearance-notes": "<p>Tharion has pale skin with a slight bluish tint, typical of some high elves. His hair is silver with streaks of dark blue, usually kept in a loose ponytail. His eyes are a striking violet, and they seem to glow faintly when he casts spells.</p><p>He stands 6'1\" tall with a slender build. He typically wears practical robes in deep blue colors with silver embroidery depicting arcane symbols. His hands bear small burn scars from early experiments with evocation magic.</p><p>Tharion carries an ornate quarterstaff made of dark wood with silver inlays, which doubles as his walking stick. A crystal orb hangs at his belt, which he uses as his arcane focus.</p>",
+
+  "background-content": "<p>Tharion was born to a family of scholars in the elven city of Silvergrove. From an early age, he showed a remarkable aptitude for magic, particularly evocation spells.</p><p>He spent decades studying in the great libraries of his homeland before setting out to explore the world. His insatiable curiosity about the nature of magical energy led him to travel extensively, documenting various magical phenomena and collecting rare arcane texts.</p><p>Five years ago, Tharion narrowly escaped a catastrophic magical accident caused by an inexperienced apprentice at an arcane academy. The incident left several wizards dead and convinced Tharion that proper magical education was essential. Since then, he has dedicated himself to collecting dangerous magical knowledge to ensure it doesn't fall into the wrong hands.</p><p>Recently, rumors of an ancient evocation grimoire have drawn him to the frontier lands, where he now seeks companions to help him in his search.</p>",
+
+  "personality-content": "<p>Tharion is methodical, precise, and sometimes painfully literal. He approaches problems with logic and reason, often failing to understand emotional responses.</p><p>He has little patience for those who misuse magic or fail to respect its power. Despite his serious demeanor, he has a dry wit that occasionally surfaces in moments of calm.</p><p>Tharion values knowledge above all else and will go to great lengths to preserve rare books or magical artifacts, sometimes at risk to himself or others.</p>",
+
+  "ideals-content": "<p>Knowledge should be preserved and protected, but dangerous secrets must be kept from those who would misuse them.</p><p>Magic is neither good nor evil - it is a tool whose nature depends entirely on the wielder.</p><p>The greatest responsibility of the powerful is to use their power wisely.</p>",
+
+  "bonds-content": "<p>I will recover the lost arcane texts of the Silvergrove Library, scattered during the Great Scattering.</p><p>The professor who taught me evocation magic was killed by his own spell. I seek to perfect the spell he was working on to honor his memory.</p><p>I owe a debt to the family that sheltered me after the arcane accident, and I send them gold whenever I can.</p>",
+
+  "flaws-content": "<p>I sometimes become so focused on magical theory that I lose track of immediate dangers.</p><p>I'm dismissive of those who don't understand or appreciate magic.</p><p>I have an intense fear of magical fires getting out of control due to past trauma.</p><p>I struggle to keep secrets when the knowledge could advance magical understanding.</p>"
+}

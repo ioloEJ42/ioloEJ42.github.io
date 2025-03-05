@@ -1,0 +1,494 @@
+/* Base Styles */
+:root {
+  --primary-color: #7b2cbf;
+  --secondary-color: #5a189a;
+  --accent-color: #9d4edd;
+  --text-color: #333;
+  --background-color: #fff;
+  --border-color: #ccc;
+  --input-bg: #f9f9f9;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --container-bg: #ffffff;
+  --header-bg: #f5f5f5;
+}
+
+/* Dark Theme */
+body.dark-theme {
+  --primary-color: #9d4edd;
+  --secondary-color: #7b2cbf;
+  --accent-color: #c77dff;
+  --text-color: #e0e0e0;
+  --background-color: #1a1a1a;
+  --border-color: #444;
+  --input-bg: #2d2d2d;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  --container-bg: #2a2a2a;
+  --header-bg: #333;
+}
+
+/* Parchment Theme */
+body.parchment-theme {
+  --primary-color: #8b4513;
+  --secondary-color: #a0522d;
+  --accent-color: #cd853f;
+  --text-color: #3e2723;
+  --background-color: #f8f0dd;
+  --border-color: #b3a395;
+  --input-bg: #fff8e1;
+  --box-shadow: 0 2px 5px rgba(139, 69, 19, 0.2);
+  --container-bg: #f5e9c7;
+  --header-bg: #e6d5b0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: var(--container-bg);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+/* Top Controls Styles */
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: var(--header-bg);
+  border-radius: 5px;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+select,
+button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Tab Navigation Styles */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px 4px 0 0;
+  color: var(--text-color);
+  cursor: pointer;
+  margin-right: 5px;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.tab-button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Tab Content Styles */
+.tab-content {
+  display: none;
+  padding: 20px;
+  border-radius: 0 0 4px 4px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Form Elements */
+input[type="text"],
+input[type="number"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+/* Remove spinner buttons from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+/* Character Header */
+.character-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+/* Main Content Layout */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.abilities-section {
+  grid-column: span 2;
+}
+
+.skills-saves-section {
+  grid-column: 1;
+}
+
+.equipment-section,
+.features-section {
+  grid-column: 2;
+}
+
+/* Ability Scores Section */
+.abilities {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ability {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.ability-score {
+  font-size: 1.5rem;
+  width: 60px;
+  text-align: center;
+}
+
+.ability-modifier {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 5px;
+  padding: 5px 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Combat Stats */
+.combat-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Proficiency Box Styling */
+.proficiency-box {
+  min-width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--input-bg);
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+.proficiency-box[data-state="proficient"] {
+  background-color: var(--primary-color);
+}
+
+.proficiency-box[data-state="expert"] {
+  background-color: var(--accent-color);
+  position: relative;
+}
+
+.proficiency-box[data-state="expert"]::after {
+  content: "E";
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* Saving Throws and Skills Styling */
+.saving-throws,
+.skills {
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.saving-throws h3,
+.skills h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* Container styling for saves and skills */
+.save,
+.skill {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.save .proficiency-box,
+.skill .proficiency-box {
+  margin-right: 10px;
+}
+
+.save-value,
+.skill-value {
+  text-align: center;
+  padding: 5px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  margin-right: 10px;
+}
+
+.save label,
+.skill label {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  flex-grow: 1;
+}
+
+/* Input fields sizing */
+#initiative,
+#speed,
+#current-hp,
+#max-hp,
+#armor-class {
+  width: 45px;
+  text-align: center;
+  padding: 2px 3px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+/* Specific adjustments for HP fields */
+#current-hp,
+#max-hp {
+  width: 55px;
+}
+
+/* Specific adjustments for speed field */
+#speed {
+  width: 60px;
+}
+
+/* Skill list layout */
+.skill-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Two-column layout for skills on wider screens */
+@media (min-width: 500px) {
+  .skill-list {
+    column-count: 2;
+    column-gap: 20px;
+  }
+}
+
+/* Three-column layout for skills on even wider screens */
+@media (min-width: 768px) {
+  .skill-list {
+    column-count: 3;
+    column-gap: 20px;
+  }
+}
+
+/* Weapons and Equipment */
+.weapons table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.weapons th,
+.weapons td {
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  text-align: left;
+}
+
+.weapons th {
+  background-color: var(--header-bg);
+}
+
+/* Resizable Containers */
+.resizable-container {
+  min-height: 150px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  overflow: auto;
+  resize: vertical;
+  margin-bottom: 20px;
+}
+
+/* Contenteditable Styling */
+[contenteditable="true"] {
+  outline: none;
+  padding: 10px;
+  min-height: 100px;
+  background-color: var(--input-bg);
+}
+
+[contenteditable="true"]:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(123, 44, 191, 0.2);
+}
+
+/* Spells Tab Styling */
+.spellcasting-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.spell-slots {
+  margin-bottom: 20px;
+}
+
+.spell-slot-level {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.spell-slot-level label {
+  width: 80px;
+  margin-bottom: 0;
+}
+
+.spell-slot-level input {
+  width: 50px;
+  text-align: center;
+  margin: 0 5px;
+}
+
+/* Personal Tab Styling */
+.character-image {
+  width: 200px;
+  height: 200px;
+  border: 2px dashed var(--border-color);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#image-placeholder {
+  text-align: center;
+}
+
+#character-portrait {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .abilities-section {
+    grid-column: 1;
+  }
+
+  .skills-saves-section,
+  .equipment-section,
+  .features-section {
+    grid-column: 1;
+  }
+}

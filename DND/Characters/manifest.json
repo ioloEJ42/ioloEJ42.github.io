@@ -1,0 +1,22 @@
+{
+  "characters": [
+    {
+      "name": "Tharion Nightwhisper",
+      "filename": "Tharion_Nightwhisper.json",
+      "class": "Wizard 8",
+      "race": "High Elf"
+    },
+    {
+      "name": "Bruenor Battlehammer",
+      "filename": "Bruenor_Battlehammer.json",
+      "class": "Fighter 5",
+      "race": "Mountain Dwarf"
+    },
+    {
+      "name": "Seraphina Moonshadow",
+      "filename": "Seraphina_Moonshadow.json",
+      "class": "Druid 6",
+      "race": "Wood Elf"
+    }
+  ]
+}

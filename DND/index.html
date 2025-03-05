@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DnD Character Sheet</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Character Selection and Theme Options -->
+      <div class="top-controls">
+        <div class="control-group">
+          <label for="character-select">Character:</label>
+          <select id="character-select">
+            <option value="">-- Select Character --</option>
+            <option value="import">Import Character...</option>
+            <!-- Will be populated via JS -->
+          </select>
+          <button id="save-button">Save Character</button>
+          <button id="new-character">New Character</button>
+          <input
+            type="file"
+            id="import-file"
+            accept=".json"
+            style="display: none"
+          />
+        </div>
+        <div class="control-group">
+          <label for="theme-select">Theme:</label>
+          <select id="theme-select">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="parchment">Parchment</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tabs">
+        <button class="tab-button active" data-tab="main">Character</button>
+        <button class="tab-button" data-tab="spells">Spells</button>
+        <button class="tab-button" data-tab="personal">Personal</button>
+      </div>
+
+      <!-- Main Tab Content -->
+      <div id="main" class="tab-content active">
+        <div class="character-header">
+          <div class="input-group">
+            <label for="character-name">Character Name</label>
+            <input type="text" id="character-name" name="character-name" />
+          </div>
+          <div class="input-group">
+            <label for="character-class">Class & Level</label>
+            <input type="text" id="character-class" name="character-class" />
+          </div>
+          <div class="input-group">
+            <label for="character-race">Race</label>
+            <input type="text" id="character-race" name="character-race" />
+          </div>
+          <div class="input-group">
+            <label for="character-background">Background</label>
+            <input
+              type="text"
+              id="character-background"
+              name="character-background"
+            />
+          </div>
+        </div>
+
+        <div class="main-content">
+          <div class="abilities-section">
+            <div class="abilities">
+              <div class="ability">
+                <label>Strength</label>
+                <input
+                  type="number"
+                  class="ability-score"
+                  id="str-score"
+                  min="1"
+                  max="30"
+                />
+                <div class="ability-modifier" id="str-mod">+0</div>
+              </div>
+              <div class="ability">
+                <label>Dexterity</label>
+                <input
+                  type="number"
+                  class="ability-score"
+                  id="dex-score"
+                  min="1"
+                  max="30"
+                />
+                <div class="ability-modifier" id="dex-mod">+0</div>
+              </div>
+              <div class="ability">
+                <label>Constitution</label>
+                <input
+                  type="number"
+                  class="ability-score"
+                  id="con-score"
+                  min="1"
+                  max="30"
+                />
+                <div class="ability-modifier" id="con-mod">+0</div>
+              </div>
+              <div class="ability">
+                <label>Intelligence</label>
+                <input
+                  type="number"
+                  class="ability-score"
+                  id="int-score"
+                  min="1"
+                  max="30"
+                />
+                <div class="ability-modifier" id="int-mod">+0</div>
+              </div>
+              <div class="ability">
+                <label>Wisdom</label>
+                <input
+                  type="number"
+                  class="ability-score"
+                  id="wis-score"
+                  min="1"
+                  max="30"
+                />
+                <div class="ability-modifier" id="wis-mod">+0</div>
+              </div>
+              <div class="ability">
+                <label>Charisma</label>
+                <input
+                  type="number"
+                  class="ability-score"
+                  id="cha-score"
+                  min="1"
+                  max="30"
+                />
+                <div class="ability-modifier" id="cha-mod">+0</div>
+              </div>
+            </div>
+
+            <div class="combat-stats">
+              <div class="stat-box">
+                <label>Armor Class</label>
+                <input type="number" id="armor-class" />
+              </div>
+              <div class="stat-box">
+                <label>Initiative</label>
+                <input type="number" id="initiative" />
+              </div>
+              <div class="stat-box">
+                <label>Speed</label>
+                <input type="text" id="speed" />
+              </div>
+              <div class="stat-box">
+                <label>Hit Points</label>
+                <input type="number" id="current-hp" />
+                <span>/</span>
+                <input type="number" id="max-hp" />
+              </div>
+              <div class="stat-box">
+                <label>Hit Dice</label>
+                <input type="text" id="hit-dice" />
+              </div>
+            </div>
+          </div>
+
+          <div class="skills-saves-section">
+            <div class="saving-throws">
+              <h3>Saving Throws</h3>
+              <div class="save">
+                <div class="proficiency-box" data-state="none"></div>
+                <input type="text" class="save-value" />
+                <label>Strength</label>
+              </div>
+              <div class="save">
+                <div class="proficiency-box" data-state="none"></div>
+                <input type="text" class="save-value" />
+                <label>Dexterity</label>
+              </div>
+              <div class="save">
+                <div class="proficiency-box" data-state="none"></div>
+                <input type="text" class="save-value" />
+                <label>Constitution</label>
+              </div>
+              <div class="save">
+                <div class="proficiency-box" data-state="none"></div>
+                <input type="text" class="save-value" />
+                <label>Intelligence</label>
+              </div>
+              <div class="save">
+                <div class="proficiency-box" data-state="none"></div>
+                <input type="text" class="save-value" />
+                <label>Wisdom</label>
+              </div>
+              <div class="save">
+                <div class="proficiency-box" data-state="none"></div>
+                <input type="text" class="save-value" />
+                <label>Charisma</label>
+              </div>
+            </div>
+
+            <div class="skills">
+              <h3>Skills</h3>
+              <div class="skill-list">
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Acrobatics (Dex)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Animal Handling (Wis)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Arcana (Int)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Athletics (Str)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Deception (Cha)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>History (Int)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Insight (Wis)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Intimidation (Cha)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Investigation (Int)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Medicine (Wis)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Nature (Int)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Perception (Wis)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Performance (Cha)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Persuasion (Cha)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Religion (Int)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Sleight of Hand (Dex)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Stealth (Dex)</label>
+                </div>
+                <div class="skill">
+                  <div class="proficiency-box" data-state="none"></div>
+                  <input type="text" class="skill-value" />
+                  <label>Survival (Wis)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="equipment-section">
+            <h3>Weapons & Attacks</h3>
+            <div class="weapons resizable-container">
+              <table id="weapons-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Attack Bonus</th>
+                    <th>Damage/Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button id="add-weapon">+ Add Weapon</button>
+            </div>
+
+            <div class="features-section">
+              <h3>Features & Traits</h3>
+              <div class="features resizable-container" contenteditable="true">
+                <!-- Editable features section -->
+              </div>
+            </div>
+            <h3>Equipment & Inventory</h3>
+            <div class="inventory resizable-container" contenteditable="true">
+              <!-- Editable inventory section -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spells Tab Content -->
+      <div id="spells" class="tab-content">
+        <div class="spellcasting-info">
+          <div class="input-group">
+            <label for="spellcasting-class">Spellcasting Class</label>
+            <input type="text" id="spellcasting-class" />
+          </div>
+          <div class="input-group">
+            <label for="spellcasting-ability">Spellcasting Ability</label>
+            <select id="spellcasting-ability">
+              <option value="int">Intelligence</option>
+              <option value="wis">Wisdom</option>
+              <option value="cha">Charisma</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="spell-save-dc">Spell Save DC</label>
+            <input type="number" id="spell-save-dc" />
+          </div>
+          <div class="input-group">
+            <label for="spell-attack-bonus">Spell Attack Bonus</label>
+            <input type="number" id="spell-attack-bonus" />
+          </div>
+        </div>
+
+        <div class="spell-slots">
+          <h3>Spell Slots</h3>
+          <!-- Spell slot tracker for each level -->
+          <div class="spell-slot-level">
+            <label>Level 1:</label>
+            <input type="number" id="slots-used-1" min="0" class="slot-used" />
+            /
+            <input
+              type="number"
+              id="slots-total-1"
+              min="0"
+              class="slot-total"
+            />
+          </div>
+          <!-- Repeat for other spell levels -->
+        </div>
+
+        <div class="spell-list">
+          <h3>Cantrips</h3>
+          <div
+            class="spell-level resizable-container"
+            contenteditable="true"
+            id="cantrips"
+          >
+            <!-- Editable cantrips list -->
+          </div>
+
+          <h3>1st Level Spells</h3>
+          <div
+            class="spell-level resizable-container"
+            contenteditable="true"
+            id="level-1-spells"
+          >
+            <!-- Editable 1st level spell list -->
+          </div>
+
+          <!-- Repeat for other spell levels -->
+        </div>
+      </div>
+
+      <!-- Personal Tab Content -->
+      <div id="personal" class="tab-content">
+        <div class="personal-details">
+          <div class="character-appearance">
+            <h3>Character Appearance</h3>
+            <div class="character-image">
+              <div id="image-placeholder">
+                <label for="upload-image">Upload Image</label>
+                <input
+                  type="file"
+                  id="upload-image"
+                  accept="image/*"
+                  style="display: none"
+                />
+              </div>
+              <img id="character-portrait" style="display: none" />
+            </div>
+            <div
+              class="appearance-notes resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable appearance description -->
+            </div>
+          </div>
+
+          <div class="character-background">
+            <h3>Character Background</h3>
+            <div
+              class="background-content resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable background story -->
+            </div>
+          </div>
+
+          <div class="personality">
+            <h3>Personality Traits</h3>
+            <div
+              class="personality-content resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable personality traits -->
+            </div>
+          </div>
+
+          <div class="ideals">
+            <h3>Ideals</h3>
+            <div
+              class="ideals-content resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable ideals -->
+            </div>
+          </div>
+
+          <div class="bonds">
+            <h3>Bonds</h3>
+            <div
+              class="bonds-content resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable bonds -->
+            </div>
+          </div>
+
+          <div class="flaws">
+            <h3>Flaws</h3>
+            <div
+              class="flaws-content resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable flaws -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
