@@ -26,21 +26,52 @@
             style="display: none"
           />
         </div>
+
+        <div class="tabs">
+          <button class="tab-button active" data-tab="main">Character</button>
+          <button class="tab-button" data-tab="spells">Spells</button>
+          <button class="tab-button" data-tab="personal">Personal</button>
+        </div>
+
         <div class="control-group">
           <label for="theme-select">Theme:</label>
           <select id="theme-select">
             <option value="light">Light</option>
             <option value="dark">Dark</option>
             <option value="parchment">Parchment</option>
+            <!-- Class Themes -->
+            <optgroup label="Class Themes">
+              <option value="wizard">Wizard</option>
+              <option value="barbarian">Barbarian</option>
+              <option value="bard">Bard</option>
+              <option value="cleric">Cleric</option>
+              <option value="druid">Druid</option>
+              <option value="fighter">Fighter</option>
+              <option value="monk">Monk</option>
+              <option value="paladin">Paladin</option>
+              <option value="ranger">Ranger</option>
+              <option value="rogue">Rogue</option>
+              <option value="sorcerer">Sorcerer</option>
+              <option value="warlock">Warlock</option>
+              <option value="artificer">Artificer</option>
+              <option value="bloodhunter">Blood Hunter</option>
+            </optgroup>
+            <!-- Special Themes -->
+            <optgroup label="Special Themes">
+              <option value="cyberpunk">Cyberpunk</option>
+              <option value="ethereal">Ethereal</option>
+              <option value="infernal">Infernal</option>
+              <option value="nature">Nature</option>
+              <option value="vampire">Vampire</option>
+              <option value="desert">Desert</option>
+              <option value="winter">Winter</option>
+              <option value="halloween">Halloween</option>
+              <option value="celestial">Celestial</option>
+              <option value="retro">Retro</option>
+              <option value="pirate">Pirate</option>
+            </optgroup>
           </select>
         </div>
-      </div>
-
-      <!-- Tab Navigation -->
-      <div class="tabs">
-        <button class="tab-button active" data-tab="main">Character</button>
-        <button class="tab-button" data-tab="spells">Spells</button>
-        <button class="tab-button" data-tab="personal">Personal</button>
       </div>
 
       <!-- Main Tab Content -->
@@ -152,11 +183,16 @@
                 <label>Speed</label>
                 <input type="text" id="speed" />
               </div>
-              <div class="stat-box">
+              <div class="stat-box hp-container">
                 <label>Hit Points</label>
-                <input type="number" id="current-hp" />
-                <span>/</span>
-                <input type="number" id="max-hp" />
+                <div class="hp-tracker">
+                  <input type="number" id="current-hp" class="hp-current" />
+                  <span class="hp-separator">/</span>
+                  <input type="number" id="max-hp" class="hp-max" />
+                </div>
+                <div class="hp-bar-container">
+                  <div class="hp-bar" id="hp-bar"></div>
+                </div>
               </div>
               <div class="stat-box">
                 <label>Hit Dice</label>
@@ -300,45 +336,50 @@
 
           <div class="equipment-section">
             <h3>Weapons & Attacks</h3>
-            <div class="weapons resizable-container">
-              <table id="weapons-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Attack Bonus</th>
-                    <th>Damage/Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                  </tr>
-                  <tr>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                  </tr>
-                  <tr>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                  </tr>
-                </tbody>
-              </table>
-              <button id="add-weapon">+ Add Weapon</button>
+            <div id="weapons-container">
+              <div class="weapons resizable-container">
+                <table id="weapons-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Attack Bonus</th>
+                      <th>Damage/Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td contenteditable="true"></td>
+                      <td contenteditable="true"></td>
+                      <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                      <td contenteditable="true"></td>
+                      <td contenteditable="true"></td>
+                      <td contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                      <td contenteditable="true"></td>
+                      <td contenteditable="true"></td>
+                      <td contenteditable="true"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button id="add-weapon">Add Weapon</button>
+              </div>
             </div>
 
-            <div class="features-section">
-              <h3>Features & Traits</h3>
+            <h3>Features & Traits</h3>
+            <div id="features-container" class="collapsible-content">
               <div class="features resizable-container" contenteditable="true">
                 <!-- Editable features section -->
               </div>
             </div>
+
             <h3>Equipment & Inventory</h3>
-            <div class="inventory resizable-container" contenteditable="true">
-              <!-- Editable inventory section -->
+            <div id="inventory-container" class="collapsible-content">
+              <div class="inventory resizable-container" contenteditable="true">
+                <!-- Editable inventory section -->
+              </div>
             </div>
           </div>
         </div>
@@ -346,66 +387,290 @@
 
       <!-- Spells Tab Content -->
       <div id="spells" class="tab-content">
-        <div class="spellcasting-info">
-          <div class="input-group">
-            <label for="spellcasting-class">Spellcasting Class</label>
-            <input type="text" id="spellcasting-class" />
+        <div class="spell-header">
+          <div class="spellcasting-info">
+            <div class="input-group">
+              <label for="spellcasting-class">Spellcasting Class</label>
+              <input type="text" id="spellcasting-class" />
+            </div>
+            <div class="input-group">
+              <label for="spellcasting-ability">Ability</label>
+              <select id="spellcasting-ability">
+                <option value="int">Intelligence</option>
+                <option value="wis">Wisdom</option>
+                <option value="cha">Charisma</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="spell-save-dc">Spell Save DC</label>
+              <input type="number" id="spell-save-dc" />
+            </div>
+            <div class="input-group">
+              <label for="spell-attack-bonus">Attack Bonus</label>
+              <input type="number" id="spell-attack-bonus" />
+            </div>
           </div>
-          <div class="input-group">
-            <label for="spellcasting-ability">Spellcasting Ability</label>
-            <select id="spellcasting-ability">
-              <option value="int">Intelligence</option>
-              <option value="wis">Wisdom</option>
-              <option value="cha">Charisma</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label for="spell-save-dc">Spell Save DC</label>
-            <input type="number" id="spell-save-dc" />
-          </div>
-          <div class="input-group">
-            <label for="spell-attack-bonus">Spell Attack Bonus</label>
-            <input type="number" id="spell-attack-bonus" />
+
+          <div class="spell-slots">
+            <h3>Spell Slots</h3>
+            <!-- Spell slot tracker for each level -->
+            <div class="spell-slot-level">
+              <label>Level 1:</label>
+              <input
+                type="number"
+                id="slots-used-1"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-1"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 2:</label>
+              <input
+                type="number"
+                id="slots-used-2"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-2"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 3:</label>
+              <input
+                type="number"
+                id="slots-used-3"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-3"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 4:</label>
+              <input
+                type="number"
+                id="slots-used-4"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-4"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 5:</label>
+              <input
+                type="number"
+                id="slots-used-5"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-5"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 6:</label>
+              <input
+                type="number"
+                id="slots-used-6"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-6"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 7:</label>
+              <input
+                type="number"
+                id="slots-used-7"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-7"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 8:</label>
+              <input
+                type="number"
+                id="slots-used-8"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-8"
+                min="0"
+                class="slot-total"
+              />
+            </div>
+            <div class="spell-slot-level">
+              <label>Level 9:</label>
+              <input
+                type="number"
+                id="slots-used-9"
+                min="0"
+                class="slot-used"
+              />
+              /
+              <input
+                type="number"
+                id="slots-total-9"
+                min="0"
+                class="slot-total"
+              />
+            </div>
           </div>
         </div>
 
-        <div class="spell-slots">
-          <h3>Spell Slots</h3>
-          <!-- Spell slot tracker for each level -->
-          <div class="spell-slot-level">
-            <label>Level 1:</label>
-            <input type="number" id="slots-used-1" min="0" class="slot-used" />
-            /
-            <input
-              type="number"
-              id="slots-total-1"
-              min="0"
-              class="slot-total"
-            />
-          </div>
-          <!-- Repeat for other spell levels -->
-        </div>
-
-        <div class="spell-list">
-          <h3>Cantrips</h3>
-          <div
-            class="spell-level resizable-container"
-            contenteditable="true"
-            id="cantrips"
-          >
-            <!-- Editable cantrips list -->
+        <div class="spell-content">
+          <div class="spell-list">
+            <h3>Cantrips</h3>
+            <div
+              id="cantrips-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable cantrips list -->
+            </div>
           </div>
 
-          <h3>1st Level Spells</h3>
-          <div
-            class="spell-level resizable-container"
-            contenteditable="true"
-            id="level-1-spells"
-          >
-            <!-- Editable 1st level spell list -->
+          <div class="spell-list">
+            <h3>1st Level</h3>
+            <div
+              id="level-1-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 1st level spell list -->
+            </div>
           </div>
 
-          <!-- Repeat for other spell levels -->
+          <div class="spell-list">
+            <h3>2nd Level</h3>
+            <div
+              id="level-2-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 2nd level spell list -->
+            </div>
+          </div>
+
+          <div class="spell-list">
+            <h3>3rd Level</h3>
+            <div
+              id="level-3-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 3rd level spell list -->
+            </div>
+          </div>
+
+          <div class="spell-list">
+            <h3>4th Level</h3>
+            <div
+              id="level-4-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 4th level spell list -->
+            </div>
+          </div>
+
+          <div class="spell-list">
+            <h3>5th Level</h3>
+            <div
+              id="level-5-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 5th level spell list -->
+            </div>
+          </div>
+
+          <div class="spell-list">
+            <h3>6th Level</h3>
+            <div
+              id="level-6-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 6th level spell list -->
+            </div>
+          </div>
+
+          <div class="spell-list">
+            <h3>7th Level</h3>
+            <div
+              id="level-7-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 7th level spell list -->
+            </div>
+          </div>
+
+          <div class="spell-list">
+            <h3>8th Level</h3>
+            <div
+              id="level-8-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 8th level spell list -->
+            </div>
+          </div>
+
+          <div class="spell-list">
+            <h3>9th Level</h3>
+            <div
+              id="level-9-spells-container"
+              class="spell-level resizable-container"
+              contenteditable="true"
+            >
+              <!-- Editable 9th level spell list -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -413,7 +678,6 @@
       <div id="personal" class="tab-content">
         <div class="personal-details">
           <div class="character-appearance">
-            <h3>Character Appearance</h3>
             <div class="character-image">
               <div id="image-placeholder">
                 <label for="upload-image">Upload Image</label>

@@ -21,6 +21,115 @@ document.addEventListener("DOMContentLoaded", function () {
     sur: "survival",
   };
 
+  // Function to calculate ability modifier from score
+  function calculateModifier(score) {
+    return Math.floor((score - 10) / 2);
+  }
+
+  // Format modifier with + or - prefix
+  function formatModifier(modifier) {
+    return modifier >= 0 ? `+${modifier}` : `${modifier}`;
+  }
+
+  // Set up ability score modifier calculations
+  const abilityScoreInputs = document.querySelectorAll(".ability-score");
+
+  // Set up event listeners for each ability score input
+  abilityScoreInputs.forEach((input) => {
+    // Initial calculation when page loads
+    updateModifier(input);
+
+    // Listen for input changes
+    input.addEventListener("input", function () {
+      updateModifier(this);
+    });
+  });
+
+  // Function to update the modifier based on the ability score
+  function updateModifier(input) {
+    const abilityId = input.id;
+    const modifierId = abilityId.replace("score", "mod");
+    const modifierElement = document.getElementById(modifierId);
+
+    // Get the score value (default to 10 if empty or not a number)
+    const scoreValue = parseInt(input.value) || 10;
+
+    // Calculate and display the modifier
+    const modifier = calculateModifier(scoreValue);
+    modifierElement.textContent = formatModifier(modifier);
+  }
+
+  // Set up HP bar functionality if elements exist
+  const currentHPInput = document.getElementById("current-hp");
+  const maxHPInput = document.getElementById("max-hp");
+
+  if (currentHPInput && maxHPInput) {
+    // Check if HP bar exists, create it if not
+    let hpContainer = document.querySelector(".hp-container");
+    if (!hpContainer) {
+      // Convert the stat-box to hp-container
+      hpContainer = document.querySelector(".stat-box:has(#current-hp)");
+      if (hpContainer) {
+        hpContainer.classList.add("hp-container");
+
+        // Create the HP bar container and bar
+        const hpBarContainer = document.createElement("div");
+        hpBarContainer.className = "hp-bar-container";
+
+        const hpBar = document.createElement("div");
+        hpBar.className = "hp-bar";
+        hpBar.id = "hp-bar";
+
+        hpBarContainer.appendChild(hpBar);
+        hpContainer.appendChild(hpBarContainer);
+      }
+    }
+
+    // Initial update of HP bar
+    updateHPBar();
+
+    // Add event listeners for HP changes
+    currentHPInput.addEventListener("input", updateHPBar);
+    maxHPInput.addEventListener("input", updateHPBar);
+  }
+
+  // Function to update the HP bar
+  function updateHPBar() {
+    const hpBar = document.getElementById("hp-bar");
+    if (!hpBar) return;
+
+    const currentHP =
+      parseInt(document.getElementById("current-hp").value) || 0;
+    const maxHP = parseInt(document.getElementById("max-hp").value) || 1;
+    const percentage = Math.min(100, Math.max(0, (currentHP / maxHP) * 100));
+
+    hpBar.style.width = percentage + "%";
+
+    // Change color based on health percentage
+    if (percentage <= 25) {
+      hpBar.style.backgroundColor = "var(--danger-color)"; // Red for low health
+    } else if (percentage <= 50) {
+      hpBar.style.backgroundColor = "var(--warning-color)"; // Orange for medium health
+    } else {
+      hpBar.style.backgroundColor = "var(--success-color)"; // Green for good health
+    }
+  }
+
+  // Add tooltips to proficiency boxes
+  const proficiencyBoxes = document.querySelectorAll(".proficiency-box");
+
+  proficiencyBoxes.forEach((box) => {
+    // Make it a tooltip container
+    box.classList.add("tooltip");
+
+    // Create tooltip text element
+    const tooltip = document.createElement("span");
+    tooltip.className = "tooltiptext";
+    tooltip.textContent = "Click to toggle: none → proficient → expert";
+
+    box.appendChild(tooltip);
+  });
+
   // Proficiency box toggling
   document.addEventListener("click", function (event) {
     if (event.target.classList.contains("proficiency-box")) {
@@ -55,14 +164,67 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Theme switching
+  // Theme switching
   const themeSelect = document.getElementById("theme-select");
   themeSelect.addEventListener("change", function () {
     const theme = this.value;
     document.body.className = ""; // Remove all theme classes
+
+    // Apply the selected theme class
     if (theme === "dark") {
       document.body.classList.add("dark-theme");
     } else if (theme === "parchment") {
       document.body.classList.add("parchment-theme");
+    } else if (theme === "wizard") {
+      document.body.classList.add("wizard-theme");
+    } else if (theme === "barbarian") {
+      document.body.classList.add("barbarian-theme");
+    } else if (theme === "bard") {
+      document.body.classList.add("bard-theme");
+    } else if (theme === "cleric") {
+      document.body.classList.add("cleric-theme");
+    } else if (theme === "druid") {
+      document.body.classList.add("druid-theme");
+    } else if (theme === "fighter") {
+      document.body.classList.add("fighter-theme");
+    } else if (theme === "monk") {
+      document.body.classList.add("monk-theme");
+    } else if (theme === "paladin") {
+      document.body.classList.add("paladin-theme");
+    } else if (theme === "ranger") {
+      document.body.classList.add("ranger-theme");
+    } else if (theme === "rogue") {
+      document.body.classList.add("rogue-theme");
+    } else if (theme === "sorcerer") {
+      document.body.classList.add("sorcerer-theme");
+    } else if (theme === "warlock") {
+      document.body.classList.add("warlock-theme");
+    } else if (theme === "artificer") {
+      document.body.classList.add("artificer-theme");
+    } else if (theme === "bloodhunter") {
+      document.body.classList.add("bloodhunter-theme");
+    } else if (theme === "cyberpunk") {
+      document.body.classList.add("cyberpunk-theme");
+    } else if (theme === "ethereal") {
+      document.body.classList.add("ethereal-theme");
+    } else if (theme === "infernal") {
+      document.body.classList.add("infernal-theme");
+    } else if (theme === "nature") {
+      document.body.classList.add("nature-theme");
+    } else if (theme === "vampire") {
+      document.body.classList.add("vampire-theme");
+    } else if (theme === "desert") {
+      document.body.classList.add("desert-theme");
+    } else if (theme === "winter") {
+      document.body.classList.add("winter-theme");
+    } else if (theme === "halloween") {
+      document.body.classList.add("halloween-theme");
+    } else if (theme === "celestial") {
+      document.body.classList.add("celestial-theme");
+    } else if (theme === "retro") {
+      document.body.classList.add("retro-theme");
+    } else if (theme === "pirate") {
+      document.body.classList.add("pirate-theme");
     }
     // light theme is default, no class needed
 
@@ -205,6 +367,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    // Show loading state
+    document.body.classList.add("loading");
+
     // Confirm before loading if there are unsaved changes
     if (hasUnsavedChanges()) {
       if (
@@ -212,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ) {
         // Reset select to previous value
         this.value = currentCharacter || "";
+        document.body.classList.remove("loading");
         return;
       }
     }
@@ -232,10 +398,14 @@ document.addEventListener("DOMContentLoaded", function () {
         // Store current character info
         currentCharacter = filename;
         editedData = characterData;
+
+        // Remove loading state
+        document.body.classList.remove("loading");
       })
       .catch((error) => {
         console.error("Error loading character:", error);
         alert(`Error loading character: ${error.message}`);
+        document.body.classList.remove("loading");
       });
   }
 
@@ -324,6 +494,11 @@ document.addEventListener("DOMContentLoaded", function () {
           element.checked = value;
         } else {
           element.value = value;
+
+          // If this is an ability score, update the modifier
+          if (element.classList.contains("ability-score")) {
+            updateModifier(element);
+          }
         }
       } else if (element.hasAttribute("contenteditable")) {
         element.innerHTML = value;
@@ -357,6 +532,11 @@ document.addEventListener("DOMContentLoaded", function () {
       characterPortrait.src = characterData["character-image"];
       characterPortrait.style.display = "block";
       document.getElementById("image-placeholder").style.display = "none";
+    }
+
+    // Update HP bar if it exists
+    if (document.getElementById("hp-bar")) {
+      updateHPBar();
     }
   }
 
@@ -458,11 +638,24 @@ document.addEventListener("DOMContentLoaded", function () {
       formData["character-image"] = characterPortrait.src;
     }
 
-    // Download JSON file
-    downloadCharacterFile(formData);
+    // Show saving animation
+    const saveButton = document.getElementById("save-button");
+    const originalText = saveButton.textContent;
+    saveButton.textContent = "Saving...";
+    saveButton.disabled = true;
 
-    // Update edited data
-    editedData = formData;
+    // Simulate a delay for saving (remove in production)
+    setTimeout(() => {
+      // Download JSON file
+      downloadCharacterFile(formData);
+
+      // Update edited data
+      editedData = formData;
+
+      // Reset button
+      saveButton.textContent = originalText;
+      saveButton.disabled = false;
+    }, 500);
   }
 
   // Download character as JSON file
@@ -545,6 +738,11 @@ document.addEventListener("DOMContentLoaded", function () {
       .querySelectorAll('input[type="text"], input[type="number"]')
       .forEach((input) => {
         input.value = "";
+
+        // If this is an ability score, update the modifier
+        if (input.classList.contains("ability-score")) {
+          updateModifier(input);
+        }
       });
 
     // Uncheck checkboxes
@@ -583,6 +781,11 @@ document.addEventListener("DOMContentLoaded", function () {
         cell.setAttribute("contenteditable", "true");
       }
     }
+
+    // Update HP bar if it exists
+    if (document.getElementById("hp-bar")) {
+      updateHPBar();
+    }
   }
 
   // Function to check for unsaved changes
@@ -604,47 +807,15 @@ document.addEventListener("DOMContentLoaded", function () {
       editedData["character-name"]
     );
   }
-});
 
-// Add this to your script.js file to handle ability score calculations
-
-// Function to calculate ability modifier from score
-function calculateModifier(score) {
-  return Math.floor((score - 10) / 2);
-}
-
-// Format modifier with + or - prefix
-function formatModifier(modifier) {
-  return modifier >= 0 ? `+${modifier}` : `${modifier}`;
-}
-
-// Add event listeners to all ability score inputs
-document.addEventListener("DOMContentLoaded", function () {
-  // Get all ability score inputs
-  const abilityScoreInputs = document.querySelectorAll(".ability-score");
-
-  // Set up event listeners for each input
-  abilityScoreInputs.forEach((input) => {
-    // Initial calculation when page loads
-    updateModifier(input);
-
-    // Listen for input changes
-    input.addEventListener("input", function () {
-      updateModifier(this);
-    });
+  // Add a function to save the current character before the window is closed
+  window.addEventListener("beforeunload", function (e) {
+    if (hasUnsavedChanges()) {
+      // Standard approach to show confirmation dialog
+      const confirmationMessage =
+        "You have unsaved changes. Are you sure you want to leave?";
+      (e || window.event).returnValue = confirmationMessage;
+      return confirmationMessage;
+    }
   });
-
-  // Function to update the modifier based on the ability score
-  function updateModifier(input) {
-    const abilityId = input.id;
-    const modifierId = abilityId.replace("score", "mod");
-    const modifierElement = document.getElementById(modifierId);
-
-    // Get the score value (default to 10 if empty or not a number)
-    const scoreValue = parseInt(input.value) || 10;
-
-    // Calculate and display the modifier
-    const modifier = calculateModifier(scoreValue);
-    modifierElement.textContent = formatModifier(modifier);
-  }
 });
