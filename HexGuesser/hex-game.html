@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HexGuesser - Terminal Edition</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="grid"></div>
+    <header>
+      <nav>
+        <div class="nav-title">HexGuesser</div>
+        <ul class="nav-links">
+          <li class="active"><a href="#" id="daily-button">Daily</a></li>
+          <li><a href="#" id="random-button">Play Random</a></li>
+          <li><a href="#" id="how-to-play">How to Play</a></li>
+          <li><a href="#" id="learn-button">Learn</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-title">hexcodle.terminal</div>
+        </div>
+
+        <div class="terminal-body">
+          <div class="game-container">
+            <div class="color-display" id="color-display"></div>
+
+            <div class="guesses-container">
+              <div class="terminal-line">
+                <span class="terminal-prompt">
+                  <span class="terminal-user">user</span>
+                  <span>@</span>
+                  <span class="terminal-host">hexguesser</span>
+                  <span>:</span>
+                  <span class="terminal-path">~</span>
+                  <span>$</span>
+                </span>
+                <span class="terminal-command">./guess-hex</span>
+              </div>
+
+              <div class="terminal-output">
+                <p>
+                  Welcome to HexCodle! Try to guess the hex color displayed
+                  above.
+                </p>
+                <p>You have 6 attempts to guess the correct hex code.</p>
+                <p class="blink-cursor">
+                  Type your guess (e.g., #FF5733) and press Enter...
+                </p>
+              </div>
+
+              <div id="guesses-list" class="guesses-list"></div>
+
+              <div class="term-input-line">
+                <span class="term-input-prompt">
+                  <span class="terminal-user">user</span>
+                  <span>@</span>
+                  <span class="terminal-host">hexcodle</span>
+                  <span>:</span>
+                  <span class="terminal-path">~</span>
+                  <span>$</span>
+                </span>
+                <input
+                  type="text"
+                  id="guess-input"
+                  class="term-input"
+                  placeholder="#RRGGBB"
+                  maxlength="7"
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for how to play -->
+      <div id="how-to-play-modal" class="modal">
+        <div class="modal-content terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-title">how-to-play.txt</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="terminal-prompt">
+                <span class="terminal-user">user</span>
+                <span>@</span>
+                <span class="terminal-host">hexcodle</span>
+                <span>:</span>
+                <span class="terminal-path">~</span>
+                <span>$</span>
+              </span>
+              <span class="terminal-command">cat how-to-play.txt</span>
+            </div>
+            <div class="terminal-output">
+              <h3>How to Play HexCodle</h3>
+              <p>1. A random color is displayed at the top of the terminal.</p>
+              <p>2. Your goal is to guess the exact hex code of this color.</p>
+              <p>3. Enter your guess in the format #RRGGBB (e.g., #FF5733).</p>
+              <p>4. After each guess, you'll receive feedback:</p>
+              <ul>
+                <li>🟩 - The digit is correct and in the right position</li>
+                <li>🟨 - The digit is correct but in the wrong position</li>
+                <li>⬛ - The digit is incorrect</li>
+              </ul>
+              <p>5. You have 6 attempts to guess correctly.</p>
+              <p>6. You can play the daily challenge or random colors!</p>
+            </div>
+            <button class="button close-modal">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for learn about hex colors -->
+      <div id="learn-modal" class="modal">
+        <div class="modal-content terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-title">hex-colors.txt</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="terminal-prompt">
+                <span class="terminal-user">user</span>
+                <span>@</span>
+                <span class="terminal-host">hexguesser</span>
+                <span>:</span>
+                <span class="terminal-path">~</span>
+                <span>$</span>
+              </span>
+              <span class="terminal-command">cat hex-colors.txt</span>
+            </div>
+            <div class="terminal-output">
+              <h3>Understanding Hex Colors</h3>
+              <p>
+                Hex colors are a way to represent colors in web development and
+                design using hexadecimal notation.
+              </p>
+
+              <h4>Hex Color Format</h4>
+              <p>
+                A hex color code starts with a # symbol followed by 6 digits:
+              </p>
+              <p><span class="code-example">#RRGGBB</span></p>
+              <p>Where:</p>
+              <ul>
+                <li>
+                  <span class="code-highlight">RR</span> represents the red
+                  component (00-FF)
+                </li>
+                <li>
+                  <span class="code-highlight">GG</span> represents the green
+                  component (00-FF)
+                </li>
+                <li>
+                  <span class="code-highlight">BB</span> represents the blue
+                  component (00-FF)
+                </li>
+              </ul>
+
+              <h4>Hexadecimal System</h4>
+              <p>
+                Hexadecimal is a base-16 number system using digits 0-9 and
+                letters A-F:
+              </p>
+              <ul>
+                <li>0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F</li>
+                <li>A = 10, B = 11, C = 12, D = 13, E = 14, F = 15</li>
+              </ul>
+
+              <h4>Common Examples</h4>
+              <p>
+                <span class="code-example">#000000</span> = Black (no color)
+              </p>
+              <p>
+                <span class="code-example">#FFFFFF</span> = White (full
+                intensity of all colors)
+              </p>
+              <p>
+                <span class="code-example">#FF0000</span> = Red (full red, no
+                green, no blue)
+              </p>
+              <p>
+                <span class="code-example">#00FF00</span> = Green (no red, full
+                green, no blue)
+              </p>
+              <p>
+                <span class="code-example">#0000FF</span> = Blue (no red, no
+                green, full blue)
+              </p>
+              <p>
+                <span class="code-example">#FFFF00</span> = Yellow (full red,
+                full green, no blue)
+              </p>
+              <p>
+                <span class="code-example">#FF00FF</span> = Magenta (full red,
+                no green, full blue)
+              </p>
+              <p>
+                <span class="code-example">#00FFFF</span> = Cyan (no red, full
+                green, full blue)
+              </p>
+
+              <h4>Color Mixing</h4>
+              <p>
+                By adjusting the values of R, G, and B components, you can
+                create millions of different colors:
+              </p>
+              <p>
+                <span class="code-example">#FFA500</span> = Orange (high red,
+                medium green, no blue)
+              </p>
+              <p>
+                <span class="code-example">#800080</span> = Purple (medium red,
+                no green, medium blue)
+              </p>
+              <p>
+                <span class="code-example">#A52A2A</span> = Brown (medium red,
+                low green, low blue)
+              </p>
+              <p>
+                <span class="code-example">#808080</span> = Gray (medium values
+                of all colors)
+              </p>
+
+              <h4>Brightness</h4>
+              <p>Higher values make colors brighter:</p>
+              <p><span class="code-example">#FF0000</span> = Bright red</p>
+              <p><span class="code-example">#880000</span> = Medium red</p>
+              <p><span class="code-example">#220000</span> = Dark red</p>
+
+              <h4>Color Approximation Tips</h4>
+              <p>When guessing colors:</p>
+              <ul>
+                <li>
+                  Look for the dominant hue first (which component is strongest)
+                </li>
+                <li>Estimate brightness (high, medium, or low values)</li>
+                <li>
+                  For neutral colors, look for similar values in all components
+                </li>
+                <li>Practice comparing known colors to their hex values</li>
+              </ul>
+            </div>
+            <button class="button close-modal">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for game result -->
+      <div id="result-modal" class="modal">
+        <div class="modal-content terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-title">game-result.log</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="terminal-prompt">
+                <span class="terminal-user">user</span>
+                <span>@</span>
+                <span class="terminal-host">hexcodle</span>
+                <span>:</span>
+                <span class="terminal-path">~</span>
+                <span>$</span>
+              </span>
+              <span class="terminal-command">cat game-result.log</span>
+            </div>
+            <div class="terminal-output">
+              <h3 id="result-title">Game Over</h3>
+              <p id="result-message"></p>
+              <div class="color-result">
+                <div class="color-swatch" id="result-color"></div>
+                <div class="color-code" id="result-color-code"></div>
+              </div>
+              <div class="share-container">
+                <p>Share your result:</p>
+                <div class="share-result" id="share-result"></div>
+                <button class="button" id="copy-result">
+                  Copy to Clipboard
+                </button>
+              </div>
+            </div>
+            <button class="button close-modal-restart">Play Again</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        HexGuesser Terminal Edition &copy; <span id="current-year"></span> | A
+        game about guessing hex color codes
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
