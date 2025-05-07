@@ -1,24 +1,26 @@
-/* Base styles with classic terminal colors */
+/* ==========================================================================
+   Base Styles & Variables
+   ========================================================================== */
 :root {
   /* Traditional terminal 16-color palette */
-  --color-black: rgb(0, 0, 0); /* Color_0 */
-  --color-light-red: rgb(255, 0, 0); /* Color_1 */
-  --color-light-green: rgb(0, 255, 0); /* Color_2 */
-  --color-yellow: rgb(255, 255, 0); /* Color_3 */
-  --color-light-blue: rgb(0, 0, 255); /* Color_4 */
-  --color-light-magenta: rgb(255, 0, 255); /* Color_5 */
-  --color-light-cyan: rgb(0, 255, 255); /* Color_6 */
-  --color-high-white: rgb(255, 255, 255); /* Color_7 */
-  --color-grey: rgb(128, 128, 128); /* Color_8 */
-  --color-red: rgb(128, 0, 0); /* Color_9 */
-  --color-green: rgb(0, 128, 0); /* Color_10 */
-  --color-brown: rgb(128, 128, 0); /* Color_11 */
-  --color-blue: rgb(0, 0, 128); /* Color_12 */
-  --color-magenta: rgb(128, 0, 128); /* Color_13 */
-  --color-cyan: rgb(0, 128, 128); /* Color_14 */
-  --color-white: rgb(192, 192, 192); /* Color_15 */
+  --color-black: rgb(0, 0, 0);
+  --color-light-red: rgb(255, 0, 0);
+  --color-light-green: rgb(0, 255, 0);
+  --color-yellow: rgb(255, 255, 0);
+  --color-light-blue: rgb(0, 0, 255);
+  --color-light-magenta: rgb(255, 0, 255);
+  --color-light-cyan: rgb(0, 255, 255);
+  --color-high-white: rgb(255, 255, 255);
+  --color-grey: rgb(128, 128, 128);
+  --color-red: rgb(128, 0, 0);
+  --color-green: rgb(0, 128, 0);
+  --color-brown: rgb(128, 128, 0);
+  --color-blue: rgb(0, 0, 128);
+  --color-magenta: rgb(128, 0, 128);
+  --color-cyan: rgb(0, 128, 128);
+  --color-white: rgb(192, 192, 192);
 
-  /* Theme variables mapped to terminal colors */
+  /* Theme variables */
   --bg-color: var(--color-black);
   --text-color: var(--color-white);
   --accent-color: var(--color-light-green);
@@ -34,13 +36,13 @@
   --terminal-path-color: var(--color-light-blue);
 }
 
+/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* JetBrains Mono font import */
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 
 body {
@@ -58,7 +60,9 @@ body {
   font-family: "JetBrains Mono", monospace;
 }
 
-/* Grid background - very subtle */
+/* ==========================================================================
+   Layout & Grid
+   ========================================================================== */
 .grid {
   position: fixed;
   top: 0;
@@ -67,21 +71,19 @@ body {
   height: 100%;
   z-index: -1;
   background-size: 50px 50px;
-  background-image: linear-gradient(
-      to right,
-      var(--grid-color) 1px,
-      transparent 1px
-    ),
+  background-image: 
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
 }
 
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+main {
+  flex: 1;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   margin-bottom: 0.5em;
   letter-spacing: 0.5px;
@@ -103,6 +105,9 @@ p {
   margin: 0 0 1rem;
 }
 
+/* ==========================================================================
+   Links & Navigation
+   ========================================================================== */
 a {
   color: var(--text-color);
   text-decoration: none;
@@ -114,37 +119,12 @@ a {
   transition: all 0.2s ease;
 }
 
-/* Different colors for different link types */
-.terminal-output a[href^="mailto:"] {
-  color: var(--color-light-cyan);
-}
+.terminal-output a[href^="mailto:"] { color: var(--color-light-cyan); }
+.terminal-output a[href*="github"] { color: var(--color-light-green); }
+.terminal-output a[href*="linkedin"] { color: var(--color-light-blue); }
+.terminal-output a[href*="twitter"] { color: var(--color-light-magenta); }
 
-.terminal-output a[href*="github"] {
-  color: var(--color-light-green);
-}
-
-.terminal-output a[href*="linkedin"] {
-  color: var(--color-light-blue);
-}
-
-.terminal-output a[href*="twitter"] {
-  color: var(--color-light-magenta);
-}
-
-/* Project and blog links */
-.project-title a,
-.post-title a {
-  color: var(--accent-color);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-
-.project-title a:hover,
-.post-title a:hover {
-  border-bottom: 1px solid var(--accent-color);
-}
-
-/* Navigation styled as terminal */
+/* Navigation */
 header {
   padding: 1rem 0;
 }
@@ -155,6 +135,13 @@ nav {
   align-items: center;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 1rem;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .nav-title {
@@ -178,12 +165,9 @@ nav {
   color: var(--accent-color);
 }
 
-/* Main content */
-main {
-  flex: 1;
-}
-
-/* Terminal Window - Classic Linux Style */
+/* ==========================================================================
+   Terminal Components
+   ========================================================================== */
 .terminal-window {
   background-color: var(--terminal-bg);
   border: 1px solid var(--border-color);
@@ -198,10 +182,6 @@ main {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
-}
-
-.terminal-buttons {
-  display: none; /* Hide macOS style buttons for classic Linux look */
 }
 
 .terminal-title {
@@ -220,7 +200,6 @@ main {
   font-size: 0.95rem;
 }
 
-/* Terminal prompt - Linux style */
 .terminal-line {
   display: flex;
   margin-bottom: 0.5rem;
@@ -235,17 +214,9 @@ main {
   white-space: nowrap;
 }
 
-.terminal-user {
-  color: var(--terminal-user-color);
-}
-
-.terminal-host {
-  color: var(--terminal-host-color);
-}
-
-.terminal-path {
-  color: var(--terminal-path-color);
-}
+.terminal-user { color: var(--terminal-user-color); }
+.terminal-host { color: var(--terminal-host-color); }
+.terminal-path { color: var(--terminal-path-color); }
 
 .terminal-command {
   color: var(--text-color);
@@ -258,6 +229,7 @@ main {
   margin-bottom: 1rem;
   color: var(--text-color);
 }
+
 .terminal-output p {
   margin: 0;
   line-height: 1.2;
@@ -267,7 +239,9 @@ main {
   margin-bottom: 0.1rem;
 }
 
-/* Projects grid as output of ls command */
+/* ==========================================================================
+   Projects & Blog Components
+   ========================================================================== */
 .projects-grid {
   display: flex;
   flex-direction: column;
@@ -301,7 +275,7 @@ main {
   border-radius: 3px;
 }
 
-/* Blog posts list as output of cat command */
+/* Blog Posts */
 .posts-list {
   margin-top: 0.5rem;
 }
@@ -332,72 +306,12 @@ main {
   margin-bottom: 1rem;
 }
 
-/* Loading indicator */
-.loading {
-  padding: 1rem 0;
-  text-align: left;
-  font-style: italic;
-  opacity: 0.7;
-}
-
-/* SSH loading animation */
-.ssh-loading {
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
-
-.ssh-loading p {
-  margin-bottom: 0.3rem;
-}
-
-/* Footer */
-footer {
-  padding: 2rem 0;
-  border-top: 1px solid var(--border-color);
-  text-align: center;
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
-
-/* Blog and project detail pages */
-.blog-post,
-.project-detail {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.blog-header,
-.project-header {
-  margin-bottom: 2rem;
-}
-
-.blog-date {
-  opacity: 0.7;
-  margin-bottom: 1rem;
-}
-
-.blog-content,
-.project-content {
-  line-height: 1.8;
-}
-
-.blog-content p,
-.project-content p {
-  margin-bottom: 1.5rem;
-}
-
-.blog-content img,
-.project-content img {
-  max-width: 100%;
-  margin: 2rem 0;
-  border: 1px solid var(--border-color);
-}
-
-/* Code blocks - Linux terminal style */
-pre,
-code {
+/* ==========================================================================
+   Code & Syntax Highlighting
+   ========================================================================== */
+pre, code {
   background-color: var(--code-bg);
-  border-radius: 0; /* More Linux-like */
+  border-radius: 0;
   font-family: "JetBrains Mono", monospace;
 }
 
@@ -418,7 +332,9 @@ pre code {
   background-color: transparent;
 }
 
-/* Contact page */
+/* ==========================================================================
+   Forms & Interactive Elements
+   ========================================================================== */
 .contact-form {
   max-width: 600px;
 }
@@ -470,239 +386,13 @@ textarea.form-input {
   color: var(--accent-color);
 }
 
-/* Contact page styles */
-.contact-section {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 3rem;
-  margin-top: 2rem;
-}
-
-.contact-options {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.contact-option h3 {
-  margin-bottom: 0.5rem;
-  color: var(--terminal-prompt-color);
-}
-
-.success-message {
-  padding: 2rem 0;
-  line-height: 1.8;
-}
-
-/* Terminal effect for links */
-.read-more {
-  font-weight: 500;
-  color: var(--color-grey);
-}
-
-.read-more:hover {
-  color: var(--color-high-white);
-}
-
-/* Blinking cursor effect for certain elements */
-.blink-cursor::after {
-  content: "_";
-  animation: blink 1s step-end infinite;
-}
-
-.loading {
-  position: relative;
-}
-
-.loading::after {
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin-left: 8px;
-  border-radius: 50%;
-  background: var(--terminal-prompt-color);
-  animation: loading-pulse 1.5s infinite ease-in-out;
-}
-
-@keyframes loading-pulse {
-  0%,
-  100% {
-    opacity: 0.2;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes blink {
-  from,
-  to {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Simulated typing effect */
-.typing {
-  overflow: hidden;
-  white-space: nowrap;
-  animation: typing 3.5s steps(40, end);
-}
-
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-/* Classic Linux Directory Colors */
-.directory {
-  color: var(--color-light-blue); /* Light blue for directories */
-}
-
-.executable {
-  color: var(--color-light-green); /* Light green for executables */
-}
-
-.text-file {
-  color: var(--color-high-white); /* High white for text files */
-}
-
-.image-file {
-  color: var(--color-light-magenta); /* Light magenta for images */
-}
-
-.symlink {
-  color: var(--color-light-cyan); /* Light cyan for symlinks */
-}
-
-/* Default ls colors for various file types */
-.file-archive {
-  color: var(--color-red); /* Red for archives */
-}
-
-.file-media {
-  color: var(--color-light-magenta); /* Light magenta for media */
-}
-
-.file-config {
-  color: var(--color-brown); /* Brown for config files */
-}
-
-.file-temp {
-  color: var(--color-grey); /* Grey for temp files */
-}
-
-/* System files and directories */
-.system-dir {
-  color: var(--color-blue); /* Blue for system directories */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav-links {
-    margin-top: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .contact-section {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .terminal-window {
-    max-width: 100%;
-    overflow-x: auto;
-  }
-}
-
-.tryhackme-badge {
-  margin: 0.5rem 0;
-
-  background-color: var(--terminal-bg);
-  border-radius: 3px;
-  overflow: hidden;
-  max-width: 100%;
-}
-
-/* GitHub Profile Styling */
+/* ==========================================================================
+   GitHub Profile Styles
+   ========================================================================== */
 .github-profile {
   font-family: "JetBrains Mono", monospace;
 }
 
-.terminal-green {
-  color: var(--terminal-prompt-color);
-}
-
-.terminal-section-header {
-  color: var(--accent-color);
-  margin-top: 0.8rem;
-  margin-bottom: 0.3rem;
-}
-
-.github-repos {
-  list-style-type: none;
-  padding-left: 1rem;
-}
-
-.github-repos li {
-  margin-bottom: 0.5rem;
-}
-
-.repo-name a {
-  color: var(--color-light-cyan);
-  text-decoration: none;
-}
-
-.repo-name a:hover {
-  text-decoration: underline;
-}
-
-.repo-description {
-  color: var(--text-color);
-}
-
-.repo-language {
-  color: var(--color-light-magenta);
-  margin-left: 0.5rem;
-}
-
-/* Loading indicator styling */
-.loading {
-  position: relative;
-  color: var(--text-color);
-  opacity: 0.8;
-}
-
-.loading::after {
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin-left: 8px;
-  border-radius: 50%;
-  background: var(--terminal-prompt-color);
-  animation: loading-pulse 1.5s infinite ease-in-out;
-}
-
-#github-profile {
-  margin-top: -20px; /* Adjust this value as needed */
-}
-
-/* GitHub Profile Grid Layout */
 .github-profile-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -719,7 +409,11 @@ textarea.form-input {
   padding-left: 0.5rem;
 }
 
-/* Adjust repo items to fit the column */
+.github-repos {
+  list-style-type: none;
+  padding-left: 1rem;
+}
+
 .github-repos li {
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
@@ -728,6 +422,15 @@ textarea.form-input {
 
 .github-repos li:last-child {
   border-bottom: none;
+}
+
+.repo-name a {
+  color: var(--color-light-cyan);
+  text-decoration: none;
+}
+
+.repo-name a:hover {
+  text-decoration: underline;
 }
 
 .repo-description {
@@ -742,8 +445,77 @@ textarea.form-input {
   margin-left: 0.5rem;
 }
 
-/* Media query for smaller screens */
-@media (max-width: 768px) {
+/* ==========================================================================
+   Animations & Effects
+   ========================================================================== */
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes loading-pulse {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.blink-cursor::after {
+  content: "_";
+  animation: blink 1s step-end infinite;
+}
+
+.typing {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    margin-top: 0;
+  }
+
+  .nav-links.show {
+    max-height: 300px;
+  }
+
+  .nav-links li {
+    margin: 0.75rem 0;
+    margin-left: 0;
+  }
+
+  .nav-links li:first-child {
+    margin-top: 1rem;
+  }
+
+  .contact-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
   .github-profile-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -760,204 +532,27 @@ textarea.form-input {
     padding-left: 0;
   }
 }
-#github-profile.loading::after {
-  display: none;
-}
 
-/* Optional: You might also want to adjust the style of the loading text */
-#github-profile.loading {
-  font-style: normal;
-  opacity: 0.9;
-}
-
-.github-with-margin {
-  margin-left: 15px;
-}
-
-.demo-link {
-  text-decoration: underline;
-}
-.repo-link {
-  text-decoration: underline;
-}
-.repo-link.github-with-margin {
-  margin-left: 15px;
-}
-.project-links {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-/* Add this to the end of your styles.css file */
-
-/* Interactive Terminal Styles */
-.interactive-terminal {
-  height: 500px;
-  overflow-y: auto;
-  padding-bottom: 60px; /* Space for input */
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+.loading {
   position: relative;
-  background-color: var(--terminal-bg);
-}
-
-/* Term Output & Input Styling */
-.term-output {
-  white-space: normal;
-  word-break: break-word;
-}
-
-.term-output p {
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1.2 !important;
-}
-
-.term-output p:not(:last-child) {
-  margin-bottom: 2px !important;
-}
-
-.term-input-line {
-  display: flex;
-  position: relative;
-  margin-top: 10px;
-}
-
-.term-input-prompt {
-  color: var(--terminal-prompt-color);
-  display: flex;
-  margin-right: 8px;
-  white-space: nowrap;
-}
-
-.term-input {
-  background: transparent;
-  border: none;
   color: var(--text-color);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.95rem;
-  width: 100%;
-  padding: 0;
-  outline: none;
-}
-
-.term-input:focus {
-  outline: none;
-}
-
-/* Command Syntax Highlighting */
-.command-name {
-  color: var(--color-light-green);
-}
-
-.command-param {
-  color: var(--color-light-cyan);
-}
-
-.command-flag {
-  color: var(--color-yellow);
-}
-
-.error-text {
-  color: var(--color-light-red);
-}
-
-.success-text {
-  color: var(--color-light-green);
-}
-
-/* Neofetch Output Styling */
-.neofetch-output {
-  font-family: monospace;
-  white-space: pre;
-  line-height: 1.2;
-  color: var(--text-color);
-}
-
-.neofetch-output .command-name {
-  color: var(--color-light-cyan);
-  font-weight: bold;
-}
-
-/* Section Title Styling */
-.section-title {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.section-title h2 {
-  margin-bottom: 0.5rem;
-}
-
-.section-title p {
   opacity: 0.8;
 }
 
-/* Hamburger Menu Styles */
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+.loading::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--terminal-prompt-color);
+  animation: loading-pulse 1.5s infinite ease-in-out;
 }
 
-.hamburger-menu {
-  display: none;
-  cursor: pointer;
-  z-index: 100;
-}
-
-.bar1,
-.bar2,
-.bar3 {
-  width: 25px;
-  height: 3px;
-  background-color: var(--accent-color);
-  margin: 5px 0;
-  transition: 0.4s;
-}
-
-/* Hamburger animation to X */
-.change .bar1 {
-  transform: translate(0, 8px) rotate(-45deg);
-}
-
-.change .bar2 {
-  opacity: 0;
-}
-
-.change .bar3 {
-  transform: translate(0, -8px) rotate(45deg);
-}
-
-/* Media query for mobile devices */
-@media screen and (max-width: 768px) {
-  .hamburger-menu {
-    display: block;
-  }
-
-  nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    width: 100%;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out;
-    margin-top: 0;
-  }
-
-  .nav-links.show {
-    max-height: 300px; /* Adjust based on your menu height */
-  }
-
-  .nav-links li {
-    margin: 0.75rem 0;
-    margin-left: 0; /* Override the default margin-left */
-  }
-
-  .nav-links li:first-child {
-    margin-top: 1rem;
-  }
-}
+.error-text { color: var(--color-light-red); }
+.success-text { color: var(--color-light-green); }
+.terminal-green { color: var(--terminal-prompt-color); }
