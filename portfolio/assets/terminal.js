@@ -82,11 +82,35 @@ class TerminalEmulator {
    */
   async loadDynamicContent() {
     try {
+      // First load the base filesystem
       await this.loadProjects();
       await this.loadBlogs();
+
+      // Then set up periodic refresh
+      this.setupRefreshInterval();
     } catch (error) {
       console.warn("Error loading dynamic content:", error);
     }
+  }
+
+  setupRefreshInterval() {
+    // Check for filesystem updates every 5 minutes
+    setInterval(async () => {
+      try {
+        const response = await fetch("data/filesystem.json");
+        if (!response.ok) return;
+
+        const newFileSystem = await response.json();
+        
+        // Only update if the content has changed
+        if (JSON.stringify(newFileSystem) !== JSON.stringify(this.fileSystem)) {
+          console.log("Filesystem updated");
+          this.fileSystem = newFileSystem;
+        }
+      } catch (error) {
+        console.warn("Error refreshing filesystem:", error);
+      }
+    }, 5 * 60 * 1000); // 5 minutes
   }
 
   /**

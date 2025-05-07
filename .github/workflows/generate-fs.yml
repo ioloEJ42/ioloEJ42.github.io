@@ -1,0 +1,32 @@
+name: Generate Filesystem JSON
+
+on:
+  push:
+    branches:
+      - main  # or master, depending on your default branch
+    paths:
+      - 'portfolio/**'  # Only trigger when files in portfolio directory change
+
+jobs:
+  generate-fs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Generate filesystem.json
+        run: |
+          node portfolio/data/generate-fs.js
+        
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add portfolio/data/filesystem.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generate filesystem.json" && git push) 

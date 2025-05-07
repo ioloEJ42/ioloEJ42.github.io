@@ -423,8 +423,10 @@ pre code {
   max-width: 600px;
 }
 
+/* Form styling */
 .form-group {
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .form-label {
@@ -433,19 +435,34 @@ pre code {
   color: var(--terminal-prompt-color);
 }
 
+.form-label::before {
+  content: "$";
+  color: var(--terminal-prompt-color);
+  margin-right: 0.5rem;
+}
+
 .form-input {
   width: 100%;
-  background: var(--code-bg);
+  background: var(--terminal-bg);
   border: 1px solid var(--border-color);
   padding: 0.8rem;
+  padding-left: calc(0.8rem + 15px);
   color: var(--text-color);
   font-family: "JetBrains Mono", monospace;
   font-size: 1rem;
+  position: relative;
+}
+
+.form-input::before {
+  content: ">";
+  position: absolute;
+  left: 0.8rem;
+  color: var(--terminal-prompt-color);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: var(--accent-color);
+  border-color: var(--terminal-prompt-color);
 }
 
 textarea.form-input {
@@ -454,20 +471,33 @@ textarea.form-input {
 }
 
 .button {
-  background: transparent;
+  background: var(--terminal-bg);
   border: 1px solid var(--border-color);
-  color: var(--text-color);
+  color: var(--terminal-prompt-color);
   padding: 0.8rem 1.5rem;
   font-family: "JetBrains Mono", monospace;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.button:hover {
-  background-color: var(--code-bg);
-  border-color: var(--accent-color);
-  color: var(--accent-color);
+.button::before {
+  content: "$ ";
+  color: var(--terminal-prompt-color);
+}
+
+/* Success message styling */
+.success-message {
+  padding: 1rem;
+  background: var(--terminal-bg);
+  border: 1px solid var(--border-color);
+  color: var(--color-light-green);
+}
+
+.error-message {
+  padding: 1rem;
+  background: var(--terminal-bg);
+  border: 1px solid var(--border-color);
+  color: var(--color-light-red);
 }
 
 /* Contact page styles */
@@ -489,19 +519,24 @@ textarea.form-input {
   color: var(--terminal-prompt-color);
 }
 
-.success-message {
-  padding: 2rem 0;
-  line-height: 1.8;
-}
-
 /* Terminal effect for links */
 .read-more {
   font-weight: 500;
-  color: var(--color-grey);
+  color: var(--color-light-cyan);
+  position: relative;
 }
 
 .read-more:hover {
   color: var(--color-high-white);
+}
+
+/* Add a blinking cursor effect on hover */
+.read-more:hover::after {
+  content: "_";
+  display: inline-block;
+  color: var(--color-high-white);
+  animation: blink 1s step-end infinite;
+  margin-left: 4px;
 }
 
 /* Blinking cursor effect for certain elements */
@@ -565,7 +600,7 @@ textarea.form-input {
 
 /* Classic Linux Directory Colors */
 .directory {
-  color: var(--color-light-blue); /* Light blue for directories */
+  color: var(--color-light-cyan); /* Light blue for directories */
 }
 
 .executable {
@@ -897,27 +932,32 @@ textarea.form-input {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 0.5rem 0;
 }
 
 .hamburger-menu {
   display: none;
   cursor: pointer;
   z-index: 100;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--terminal-bg);
 }
 
 .bar1,
 .bar2,
 .bar3 {
-  width: 25px;
-  height: 3px;
-  background-color: var(--accent-color);
-  margin: 5px 0;
-  transition: 0.4s;
+  width: 20px;
+  height: 2px;
+  background-color: var(--terminal-prompt-color);
+  margin: 4px 0;
+  transition: 0.3s;
 }
 
-/* Hamburger animation to X */
+/* Hamburger animation to terminal prompt */
 .change .bar1 {
-  transform: translate(0, 8px) rotate(-45deg);
+  transform: translate(0, 6px) rotate(-45deg);
+  background-color: var(--color-light-red);
 }
 
 .change .bar2 {
@@ -925,7 +965,8 @@ textarea.form-input {
 }
 
 .change .bar3 {
-  transform: translate(0, -8px) rotate(45deg);
+  transform: translate(0, -6px) rotate(45deg);
+  background-color: var(--color-light-red);
 }
 
 /* Media query for mobile devices */
@@ -937,6 +978,9 @@ textarea.form-input {
   nav {
     flex-direction: column;
     align-items: flex-start;
+    background-color: var(--terminal-bg);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
   }
 
   .nav-links {
@@ -944,20 +988,36 @@ textarea.form-input {
     width: 100%;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease-out;
+    transition: max-height 0.3s ease-out;
     margin-top: 0;
+    background-color: var(--terminal-bg);
   }
 
   .nav-links.show {
-    max-height: 300px; /* Adjust based on your menu height */
+    max-height: 300px;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-color);
   }
 
   .nav-links li {
-    margin: 0.75rem 0;
-    margin-left: 0; /* Override the default margin-left */
+    margin: 0.5rem 0;
+    margin-left: 0;
+    padding: 0.25rem 0;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding-left: 1rem;
+  }
+
+  .nav-links li a::before {
+    content: "$";
+    color: var(--terminal-prompt-color);
+    margin-right: 0.5rem;
+    font-family: "JetBrains Mono", monospace;
   }
 
   .nav-links li:first-child {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 }
