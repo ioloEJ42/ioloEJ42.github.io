@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize all components and listeners
   initApp();
+  initQoLFeatures();
 });
 
 function initApp() {
@@ -266,8 +267,8 @@ function initApp() {
     }
     
     // Load features and inventory
-    setTextareaValue('features', data.features);
-    setTextareaValue('inventory', data.inventory);
+    setTextContent('features', data.features);
+    setTextContent('inventory', data.inventory);
     
     // Load spellcasting info
     setInputValue('spellcasting-class', data.spellcasting?.class);
@@ -282,9 +283,9 @@ function initApp() {
     }
     
     // Load spell lists
-    setTextareaValue('cantrips', data.spells?.cantrips);
+    setTextContent('cantrips', data.spells?.cantrips);
     for (let i = 1; i <= 9; i++) {
-      setTextareaValue(`level-${i}-spells`, data.spells?.[`level${i}`]);
+      setTextContent(`level-${i}-spells`, data.spells?.[`level${i}`]);
     }
     
     // Load personal info
@@ -297,12 +298,12 @@ function initApp() {
       imagePlaceholder.style.display = 'flex';
     }
     
-    setTextareaValue('appearance-notes', data.appearance);
-    setTextareaValue('background-content', data.personalBackground);
-    setTextareaValue('personality-traits', data.personalityTraits);
-    setTextareaValue('ideals', data.ideals);
-    setTextareaValue('bonds', data.bonds);
-    setTextareaValue('flaws', data.flaws);
+    setTextContent('appearance-notes', data.appearance);
+    setTextContent('background-content', data.personalBackground);
+    setTextContent('personality-traits', data.personalityTraits);
+    setTextContent('ideals', data.ideals);
+    setTextContent('bonds', data.bonds);
+    setTextContent('flaws', data.flaws);
     
     // Set theme if available
     if (data.theme && themeSelect) {
@@ -319,10 +320,14 @@ function initApp() {
     }
   }
 
-  function setTextareaValue(id, value) {
+  function setTextContent(id, value) {
     const element = document.getElementById(id);
     if (element && value !== undefined) {
-      element.value = value;
+      if (element.isContentEditable) {
+        element.innerHTML = value.replace(/\n/g, '<br>');
+      } else {
+        element.value = value;
+      }
     }
   }
 
@@ -405,8 +410,8 @@ function initApp() {
       skills: getSkillsData(),
       weapons: getWeaponsData(),
       
-      features: getTextareaValue('features'),
-      inventory: getTextareaValue('inventory'),
+      features: getTextContent('features'),
+      inventory: getTextContent('inventory'),
       
       spellcasting: {
         class: getInputValue('spellcasting-class'),
@@ -417,25 +422,25 @@ function initApp() {
       },
       
       spells: {
-        cantrips: getTextareaValue('cantrips'),
-        level1: getTextareaValue('level-1-spells'),
-        level2: getTextareaValue('level-2-spells'),
-        level3: getTextareaValue('level-3-spells'),
-        level4: getTextareaValue('level-4-spells'),
-        level5: getTextareaValue('level-5-spells'),
-        level6: getTextareaValue('level-6-spells'),
-        level7: getTextareaValue('level-7-spells'),
-        level8: getTextareaValue('level-8-spells'),
-        level9: getTextareaValue('level-9-spells')
+        cantrips: getTextContent('cantrips'),
+        level1: getTextContent('level-1-spells'),
+        level2: getTextContent('level-2-spells'),
+        level3: getTextContent('level-3-spells'),
+        level4: getTextContent('level-4-spells'),
+        level5: getTextContent('level-5-spells'),
+        level6: getTextContent('level-6-spells'),
+        level7: getTextContent('level-7-spells'),
+        level8: getTextContent('level-8-spells'),
+        level9: getTextContent('level-9-spells')
       },
       
       portrait: characterPortrait && characterPortrait.style.display !== 'none' ? characterPortrait.src : null,
-      appearance: getTextareaValue('appearance-notes'),
-      personalBackground: getTextareaValue('background-content'),
-      personalityTraits: getTextareaValue('personality-traits'),
-      ideals: getTextareaValue('ideals'),
-      bonds: getTextareaValue('bonds'),
-      flaws: getTextareaValue('flaws')
+      appearance: getTextContent('appearance-notes'),
+      personalBackground: getTextContent('background-content'),
+      personalityTraits: getTextContent('personality-traits'),
+      ideals: getTextContent('ideals'),
+      bonds: getTextContent('bonds'),
+      flaws: getTextContent('flaws')
     };
     
     return data;
@@ -447,9 +452,15 @@ function initApp() {
     return element ? element.value : '';
   }
 
-  function getTextareaValue(id) {
+  function getTextContent(id) {
     const element = document.getElementById(id);
-    return element ? element.value : '';
+    if (!element) return '';
+    
+    if (element.isContentEditable) {
+      return element.innerHTML.replace(/<br>/g, '\n').replace(/<[^>]*>/g, ''); // Basic strip HTML tags
+    } else {
+      return element.value || '';
+    }
   }
 
   function getSavingThrowsData() {
@@ -627,12 +638,13 @@ function initApp() {
       hpBar.style.width = `${percentage}%`;
       
       // Change color based on HP percentage
+      hpBar.classList.remove('high', 'medium', 'low');
       if (percentage <= 25) {
-        hpBar.style.backgroundColor = '#f44336'; // Red for low HP
+        hpBar.classList.add('low');
       } else if (percentage <= 50) {
-        hpBar.style.backgroundColor = '#ff9800'; // Orange for medium HP
+        hpBar.classList.add('medium');
       } else {
-        hpBar.style.backgroundColor = ''; // Default color for high HP
+        hpBar.classList.add('high');
       }
     }
   }
@@ -672,4 +684,116 @@ function initApp() {
       return message;
     }
   });
+
+  // Fix by adding a compatibility function for setTextareaValue
+  function setTextareaValue(id, value) {
+    setTextContent(id, value);
+  }
+
+  // Add getHTMLContent for rich content preservation
+  function getHTMLContent(id) {
+    const element = document.getElementById(id);
+    if (!element || !element.isContentEditable) return '';
+    return element.innerHTML;
+  }
+
+  // QoL improvement - Add tabbing between inputs in ability scores
+  function setupAbilityScoreTabbing() {
+    const abilityScores = document.querySelectorAll('.ability-score');
+    const abilityMods = document.querySelectorAll('.ability-modifier');
+    
+    // Automatically focus the next input when tabbing through ability scores
+    abilityScores.forEach((score, index) => {
+      score.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab' && !e.shiftKey) {
+          // Focus the corresponding modifier
+          if (abilityMods[index]) {
+            e.preventDefault();
+            abilityMods[index].focus();
+          }
+        }
+      });
+    });
+    
+    // Auto-calculate modifiers based on scores
+    abilityScores.forEach((score, index) => {
+      score.addEventListener('input', () => {
+        if (abilityMods[index]) {
+          const scoreVal = parseInt(score.value) || 0;
+          const modifier = Math.floor((scoreVal - 10) / 2);
+          abilityMods[index].value = modifier >= 0 ? `+${modifier}` : modifier;
+        }
+      });
+    });
+  }
+
+  // QoL improvement - Double click to clear an input field
+  function setupDoubleClearInputs() {
+    const allInputs = document.querySelectorAll('input[type="text"]');
+    allInputs.forEach(input => {
+      input.addEventListener('dblclick', () => {
+        input.value = '';
+        input.focus();
+        // If it's a current HP input, update the HP bar
+        if (input.id === 'current-hp') {
+          updateHpBar();
+        }
+      });
+    });
+  }
+
+  // QoL improvement - Rich text basic formatting
+  function setupRichTextFormatting() {
+    const richTextEditors = document.querySelectorAll('.rich-text-editor');
+    
+    richTextEditors.forEach(editor => {
+      // Handle paste to strip formatting
+      editor.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+      
+      // Track changes
+      editor.addEventListener('input', () => {
+        unsavedChanges = true;
+      });
+    });
+  }
+
+  // QoL improvement - Toggle sections visibility to save space
+  function setupCollapsibleSections() {
+    const sectionHeaders = document.querySelectorAll('.equipment-section h3, .spell-level-section h3');
+    
+    sectionHeaders.forEach(header => {
+      header.style.cursor = 'pointer';
+      
+      // Add a small indicator
+      const indicator = document.createElement('span');
+      indicator.innerHTML = ' ▼';
+      indicator.style.fontSize = '0.7em';
+      header.appendChild(indicator);
+      
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        if (content) {
+          if (content.style.display === 'none') {
+            content.style.display = '';
+            indicator.innerHTML = ' ▼';
+          } else {
+            content.style.display = 'none';
+            indicator.innerHTML = ' ►';
+          }
+        }
+      });
+    });
+  }
+
+  // Initialize additional QoL features
+  function initQoLFeatures() {
+    setupAbilityScoreTabbing();
+    setupDoubleClearInputs();
+    setupRichTextFormatting();
+    setupCollapsibleSections();
+  }
 }

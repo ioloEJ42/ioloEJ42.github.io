@@ -11,8 +11,8 @@
   --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --padding: 1rem;
-  --border-radius: 0.5rem;
+  --padding: 0.5rem;
+  --border-radius: 0.25rem;
   --transition: all 0.3s ease;
 }
 
@@ -91,15 +91,12 @@ input, select, textarea, button {
 
 /* Button Styles */
 .primary-btn, .secondary-btn, .outline-btn {
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   border-radius: var(--border-radius);
   cursor: pointer;
   font-weight: 500;
   transition: var(--transition);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  font-size: 0.9rem;
 }
 
 .primary-btn {
@@ -141,9 +138,10 @@ input, select, textarea, button {
 
 /* Main Container */
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.25rem;
   background-color: var(--bg-color);
 }
 
@@ -152,13 +150,13 @@ input, select, textarea, button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  padding: 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .control-group {
@@ -174,17 +172,18 @@ input, select, textarea, button {
 /* Tabs */
 .tabs {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .tab-button {
-  padding: 0.5rem 1rem;
+  padding: 0.15rem 0.5rem;
   background-color: transparent;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: var(--transition);
   font-weight: 500;
+  font-size: 0.85rem;
 }
 
 .tab-button.active {
@@ -203,10 +202,10 @@ input, select, textarea, button {
 /* Character Header */
 .character-header {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
@@ -214,18 +213,19 @@ input, select, textarea, button {
 
 .input-group {
   flex: 1;
-  min-width: 200px;
+  min-width: 130px;
 }
 
 .input-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   font-weight: 500;
+  font-size: 0.8rem;
 }
 
 .input-group input, .input-group select {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.25rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--card-bg);
@@ -242,47 +242,52 @@ input, select, textarea, button {
 .main-content {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 /* Abilities Section */
 .abilities-section {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 1rem;
+  grid-template-columns: 3fr 2fr;
+  gap: 0.5rem;
 }
 
 .abilities {
   background-color: var(--card-bg);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .ability {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.25rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   text-align: center;
+  flex: 1;
+  min-width: 60px;
+  max-width: 80px;
 }
 
 .ability label {
   font-weight: 600;
   margin-bottom: 0.25rem;
+  font-size: 0.75rem;
 }
 
 .ability-score {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--card-bg);
@@ -290,71 +295,50 @@ input, select, textarea, button {
 }
 
 .ability-modifier {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1rem;
   border: 1px solid var(--border-color);
   border-radius: 50%;
   background-color: var(--card-bg);
   color: var(--primary-color);
   font-weight: bold;
+  margin: 0 auto;
+  text-align: center;
 }
 
-/* Combat Stats */
-.combat-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+/* HP Section */
+.hp-section {
   background-color: var(--card-bg);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
-}
-
-.stat-box {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  text-align: center;
 }
 
-.stat-box label {
+.hp-label {
   font-weight: 600;
-}
-
-.stat-box input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  font-size: 0.75rem;
   text-align: center;
-  background-color: var(--card-bg);
-  color: var(--dark-text);
-}
-
-.hp-container {
-  grid-column: span 2;
+  margin-bottom: 0.25rem;
 }
 
 .hp-tracker {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   width: 100%;
 }
 
 .hp-current, .hp-max {
   width: 40%;
   text-align: center;
-  padding: 0.5rem;
+  padding: 0.25rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--card-bg);
@@ -362,7 +346,7 @@ input, select, textarea, button {
 }
 
 .hp-separator {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--dark-text);
   margin: 0 0.25rem;
@@ -370,7 +354,7 @@ input, select, textarea, button {
 
 .hp-bar-container {
   width: 100%;
-  height: 0.75rem;
+  height: 0.5rem;
   background-color: #e0e0e0;
   border-radius: 1rem;
   overflow: hidden;
@@ -380,86 +364,164 @@ input, select, textarea, button {
   height: 100%;
   background-color: var(--primary-color);
   width: 100%;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.hp-bar.high {
+  background-color: var(--primary-color);
+}
+
+.hp-bar.medium {
+  background-color: var(--accent-color);
+}
+
+.hp-bar.low {
+  background-color: #f44336;
+}
+
+/* Combat Stats */
+.combat-stats {
+  background-color: var(--card-bg);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.stat-box label {
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.stat-box input {
+  width: 100%;
+  padding: 0.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+  background-color: var(--card-bg);
+  color: var(--dark-text);
+  font-size: 0.9rem;
+}
+
+.stat-box.armor-class input, 
+.stat-box.initiative input {
+  width: 2rem;
 }
 
 /* Skills & Saves Section */
 .skills-saves-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: 250px 1fr;
+  gap: 0.5rem;
 }
 
 .saving-throws, .skills {
   background-color: var(--card-bg);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
 }
 
 .saving-throws h3, .skills h3 {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   text-align: center;
   color: var(--primary-color);
+  font-size: 0.9rem;
 }
 
 .save, .skill {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding: 0.25rem;
+  margin-bottom: 0.25rem;
+  padding: 0.15rem;
   border-bottom: 1px solid var(--border-color);
 }
 
 .proficiency-check {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   cursor: pointer;
   accent-color: var(--primary-color);
+  flex-shrink: 0;
+  opacity: 0.8;
+  transition: var(--transition);
 }
 
 .save-value, .skill-value {
-  width: 3rem;
+  width: 2rem;
   text-align: center;
-  padding: 0.25rem;
+  padding: 0.15rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--card-bg);
   color: var(--dark-text);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.save label, .skill label {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .skill-list {
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  max-height: none;
+  overflow-y: visible;
 }
 
 /* Equipment Section */
 .equipment-section {
   background-color: var(--card-bg);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
 }
 
 .equipment-section h3 {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   color: var(--primary-color);
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.equipment-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 }
 
 .weapons table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
 }
 
 .weapons th, .weapons td {
-  padding: 0.75rem;
+  padding: 0.15rem;
   border: 1px solid var(--border-color);
   text-align: left;
+  font-size: 0.8rem;
 }
 
 .weapons th {
@@ -469,113 +531,129 @@ input, select, textarea, button {
 
 .weapons input {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background-color: var(--card-bg);
-  color: var(--dark-text);
-}
-
-#add-weapon {
-  margin-top: 0.5rem;
-}
-
-.features-text, .inventory-text {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background-color: var(--card-bg);
-  color: var(--dark-text);
-  resize: vertical;
-  min-height: 150px;
-}
-
-/* Spells Tab */
-.spell-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.spellcasting-info, .spell-slots {
-  background-color: var(--card-bg);
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-}
-
-.spell-slots h3 {
-  margin-bottom: 1rem;
-  color: var(--primary-color);
-  text-align: center;
-}
-
-.spell-slot-level {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.spell-slot-level label {
-  width: 80px;
-  font-weight: 500;
-}
-
-.slot-used, .slot-total {
-  width: 2.5rem;
-  text-align: center;
   padding: 0.25rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--card-bg);
   color: var(--dark-text);
+  font-size: 0.8rem;
 }
 
-.spell-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+#add-weapon {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.35rem;
 }
 
-.spell-level-section {
-  background-color: var(--card-bg);
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  margin-bottom: 1rem;
-}
-
-.spell-level-section h3 {
-  color: var(--primary-color);
-  margin-bottom: 0.75rem;
-  text-align: center;
-}
-
-.spell-text {
+.features-text, .inventory-text {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--card-bg);
   color: var(--dark-text);
   resize: vertical;
+  min-height: 100px;
+  font-size: 0.8rem;
+}
+
+/* Spell Tab */
+.spell-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.spellcasting-info, .spell-slots {
+  background-color: var(--card-bg);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.spell-slots h3 {
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.spell-slots-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem;
+}
+
+.spell-slot-level {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.spell-slot-level label {
+  width: 40px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.slot-used, .slot-total {
+  width: 1.5rem;
+  text-align: center;
+  padding: 0.15rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--card-bg);
+  color: var(--dark-text);
+  font-size: 0.8rem;
+}
+
+.spell-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 0.5rem;
+}
+
+.spell-level-section {
+  background-color: var(--card-bg);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 0.5rem;
+}
+
+.spell-level-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.25rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.spell-text {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--card-bg);
+  color: var(--dark-text);
+  resize: vertical;
+  min-height: 75px;
+  font-size: 0.8rem;
 }
 
 /* Personal Tab */
 .personal-details {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 .character-appearance {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 1rem;
+  grid-template-columns: 120px 1fr;
+  gap: 0.5rem;
   background-color: var(--card-bg);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
 }
@@ -583,7 +661,7 @@ input, select, textarea, button {
 .character-image {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 120px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -597,6 +675,7 @@ input, select, textarea, button {
   height: 100%;
   cursor: pointer;
   transition: var(--transition);
+  font-size: 0.8rem;
 }
 
 #image-placeholder:hover {
@@ -633,30 +712,67 @@ input, select, textarea, button {
 
 .character-traits {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
 }
 
 .trait-section {
   background-color: var(--card-bg);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
 }
 
 .trait-section h3 {
   color: var(--primary-color);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
 }
 
 .trait-text {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--card-bg);
   color: var(--dark-text);
   resize: vertical;
+  min-height: 75px;
+  font-size: 0.8rem;
+}
+
+/* Rich Text Area */
+.rich-text-editor {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--card-bg);
+  min-height: 80px;
+  width: 100%;
+  padding: 0.5rem;
+  color: var(--dark-text);
+  font-size: 0.8rem;
+  overflow-y: auto;
+}
+
+.rich-text-editor:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(126, 87, 194, 0.2);
+}
+
+.rich-text-editor:empty:before {
+  content: attr(data-placeholder);
+  color: #999;
+  font-style: italic;
+}
+
+.rich-text-editor p {
+  margin: 0.25rem 0;
+}
+
+.rich-text-editor ul, .rich-text-editor ol {
+  padding-left: 1.5rem;
+  margin: 0.25rem 0;
 }
 
 /* Responsive Design */
@@ -676,6 +792,22 @@ input, select, textarea, button {
   .character-appearance {
     grid-template-columns: 1fr;
   }
+  
+  .combat-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .hp-container {
+    grid-column: 1 / -1;
+  }
+  
+  .skill-list {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .spell-slots-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -687,11 +819,45 @@ input, select, textarea, button {
   .tabs {
     order: -1;
     justify-content: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   
   .control-group {
     justify-content: center;
+  }
+  
+  .skill-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .equipment-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .spell-slots-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .abilities {
+    flex-direction: column;
+  }
+  
+  .ability {
+    max-width: 100%;
+  }
+  
+  .combat-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .character-traits {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -865,4 +1031,40 @@ body.pirate-theme {
   --bg-color: #d7ccc8;
   --card-bg: #efebe9;
   --border-color: #bcaaa4;
+}
+
+/* QoL improvements */
+.ability:hover, .stat-box:hover, .save:hover, .skill:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+body.dark-theme .ability:hover, 
+body.dark-theme .stat-box:hover, 
+body.dark-theme .save:hover, 
+body.dark-theme .skill:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.proficiency-check:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.proficiency-check:checked {
+  opacity: 1;
+}
+
+.primary-btn:hover, .secondary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.outline-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Compact placeholders */
+::placeholder {
+  font-size: 0.8rem;
+  opacity: 0.6;
 }

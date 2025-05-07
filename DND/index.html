@@ -16,10 +16,10 @@
         <h1>D&D Character Sheet</h1>
         <div class="select-options">
           <button id="load-character-btn" class="primary-btn">
-            <span class="icon">📂</span> Load Character
+            Load Character
           </button>
           <button id="new-character-btn" class="secondary-btn">
-            <span class="icon">✨</span> New Character
+            New Character
           </button>
           <input type="file" id="character-file-input" accept=".json" style="display: none;" />
         </div>
@@ -32,17 +32,16 @@
       <div class="top-controls">
         <div class="control-group">
           <button id="back-btn" class="outline-btn">Back</button>
-          <button id="save-character-btn" class="primary-btn">Download Character</button>
+          <button id="save-character-btn" class="primary-btn">Download</button>
         </div>
 
         <div class="tabs">
           <button class="tab-button active" data-tab="main">Character</button>
           <button class="tab-button" data-tab="spells">Spells</button>
-          <button class="tab-button" data-tab="personal">Personal</button>
+          <button class="tab-button" data-tab="personal">Notes</button>
         </div>
 
         <div class="control-group">
-          <label for="theme-select">Theme:</label>
           <select id="theme-select">
             <option value="light">Light</option>
             <option value="dark">Dark</option>
@@ -138,34 +137,39 @@
               </div>
             </div>
 
-            <div class="combat-stats">
-              <div class="stat-box">
-                <label>Armor Class</label>
-                <input type="text" id="armor-class" />
+            <div class="hp-section">
+              <div class="hp-label">Hit Points</div>
+              <div class="hp-tracker">
+                <input type="text" id="current-hp" class="hp-current" placeholder="Current" />
+                <span class="hp-separator">/</span>
+                <input type="text" id="max-hp" class="hp-max" placeholder="Max" />
               </div>
-              <div class="stat-box">
-                <label>Initiative</label>
-                <input type="text" id="initiative" />
+              <div class="hp-bar-container">
+                <div class="hp-bar" id="hp-bar"></div>
               </div>
-              <div class="stat-box">
-                <label>Speed</label>
-                <input type="text" id="speed" />
-              </div>
-              <div class="stat-box hp-container">
-                <label>Hit Points</label>
-                <div class="hp-tracker">
-                  <input type="text" id="current-hp" class="hp-current" placeholder="Current" />
-                  <span class="hp-separator">/</span>
-                  <input type="text" id="max-hp" class="hp-max" placeholder="Max" />
-                </div>
-                <div class="hp-bar-container">
-                  <div class="hp-bar" id="hp-bar"></div>
-                </div>
-              </div>
-              <div class="stat-box">
-                <label>Hit Dice</label>
-                <input type="text" id="hit-dice" />
-              </div>
+            </div>
+          </div>
+
+          <div class="combat-stats">
+            <div class="stat-box armor-class">
+              <label>Armor Class</label>
+              <input type="text" id="armor-class" />
+            </div>
+            <div class="stat-box initiative">
+              <label>Initiative</label>
+              <input type="text" id="initiative" />
+            </div>
+            <div class="stat-box">
+              <label>Speed</label>
+              <input type="text" id="speed" />
+            </div>
+            <div class="stat-box">
+              <label>Hit Dice</label>
+              <input type="text" id="hit-dice" />
+            </div>
+            <div class="stat-box">
+              <label>Prof. Bonus</label>
+              <input type="text" id="prof-bonus" placeholder="+2" />
             </div>
           </div>
 
@@ -335,14 +339,20 @@
               </div>
             </div>
 
-            <h3>Features & Traits</h3>
-            <div id="features-container" class="collapsible-content">
-              <textarea id="features" class="features-text" rows="8" placeholder="Enter features and traits here..."></textarea>
-            </div>
+            <div class="equipment-content">
+              <div>
+                <h3>Features & Traits</h3>
+                <div id="features-container" class="collapsible-content">
+                  <div id="features" class="rich-text-editor" contenteditable="true" data-placeholder="Enter features and traits here..."></div>
+                </div>
+              </div>
 
-            <h3>Equipment & Inventory</h3>
-            <div id="inventory-container" class="collapsible-content">
-              <textarea id="inventory" class="inventory-text" rows="8" placeholder="Enter inventory items here..."></textarea>
+              <div>
+                <h3>Equipment & Inventory</h3>
+                <div id="inventory-container" class="collapsible-content">
+                  <div id="inventory" class="rich-text-editor" contenteditable="true" data-placeholder="Enter inventory items here..."></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -376,60 +386,61 @@
 
           <div class="spell-slots">
             <h3>Spell Slots</h3>
-            <!-- Simplified spell slot tracker for each level -->
-            <div class="spell-slot-level">
-              <label>Level 1:</label>
-              <input type="text" id="slots-used-1" class="slot-used" />
-              /
-              <input type="text" id="slots-total-1" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 2:</label>
-              <input type="text" id="slots-used-2" class="slot-used" />
-              /
-              <input type="text" id="slots-total-2" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 3:</label>
-              <input type="text" id="slots-used-3" class="slot-used" />
-              /
-              <input type="text" id="slots-total-3" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 4:</label>
-              <input type="text" id="slots-used-4" class="slot-used" />
-              /
-              <input type="text" id="slots-total-4" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 5:</label>
-              <input type="text" id="slots-used-5" class="slot-used" />
-              /
-              <input type="text" id="slots-total-5" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 6:</label>
-              <input type="text" id="slots-used-6" class="slot-used" />
-              /
-              <input type="text" id="slots-total-6" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 7:</label>
-              <input type="text" id="slots-used-7" class="slot-used" />
-              /
-              <input type="text" id="slots-total-7" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 8:</label>
-              <input type="text" id="slots-used-8" class="slot-used" />
-              /
-              <input type="text" id="slots-total-8" class="slot-total" />
-            </div>
-            <div class="spell-slot-level">
-              <label>Level 9:</label>
-              <input type="text" id="slots-used-9" class="slot-used" />
-              /
-              <input type="text" id="slots-total-9" class="slot-total" />
+            <div class="spell-slots-container">
+              <div class="spell-slot-level">
+                <label>1st:</label>
+                <input type="text" id="slots-used-1" class="slot-used" />
+                /
+                <input type="text" id="slots-total-1" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>2nd:</label>
+                <input type="text" id="slots-used-2" class="slot-used" />
+                /
+                <input type="text" id="slots-total-2" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>3rd:</label>
+                <input type="text" id="slots-used-3" class="slot-used" />
+                /
+                <input type="text" id="slots-total-3" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>4th:</label>
+                <input type="text" id="slots-used-4" class="slot-used" />
+                /
+                <input type="text" id="slots-total-4" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>5th:</label>
+                <input type="text" id="slots-used-5" class="slot-used" />
+                /
+                <input type="text" id="slots-total-5" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>6th:</label>
+                <input type="text" id="slots-used-6" class="slot-used" />
+                /
+                <input type="text" id="slots-total-6" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>7th:</label>
+                <input type="text" id="slots-used-7" class="slot-used" />
+                /
+                <input type="text" id="slots-total-7" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>8th:</label>
+                <input type="text" id="slots-used-8" class="slot-used" />
+                /
+                <input type="text" id="slots-total-8" class="slot-total" />
+              </div>
+              <div class="spell-slot-level">
+                <label>9th:</label>
+                <input type="text" id="slots-used-9" class="slot-used" />
+                /
+                <input type="text" id="slots-total-9" class="slot-total" />
+              </div>
             </div>
           </div>
         </div>
@@ -437,52 +448,52 @@
         <div class="spell-content">
           <div class="spell-level-section">
             <h3>Cantrips</h3>
-            <textarea id="cantrips" class="spell-text" rows="6" placeholder="Enter cantrips here..."></textarea>
+            <div id="cantrips" class="rich-text-editor" contenteditable="true" data-placeholder="Enter cantrips here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>1st Level</h3>
-            <textarea id="level-1-spells" class="spell-text" rows="6" placeholder="Enter 1st level spells here..."></textarea>
+            <div id="level-1-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 1st level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>2nd Level</h3>
-            <textarea id="level-2-spells" class="spell-text" rows="6" placeholder="Enter 2nd level spells here..."></textarea>
+            <div id="level-2-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 2nd level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>3rd Level</h3>
-            <textarea id="level-3-spells" class="spell-text" rows="6" placeholder="Enter 3rd level spells here..."></textarea>
+            <div id="level-3-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 3rd level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>4th Level</h3>
-            <textarea id="level-4-spells" class="spell-text" rows="6" placeholder="Enter 4th level spells here..."></textarea>
+            <div id="level-4-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 4th level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>5th Level</h3>
-            <textarea id="level-5-spells" class="spell-text" rows="6" placeholder="Enter 5th level spells here..."></textarea>
+            <div id="level-5-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 5th level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>6th Level</h3>
-            <textarea id="level-6-spells" class="spell-text" rows="6" placeholder="Enter 6th level spells here..."></textarea>
+            <div id="level-6-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 6th level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>7th Level</h3>
-            <textarea id="level-7-spells" class="spell-text" rows="6" placeholder="Enter 7th level spells here..."></textarea>
+            <div id="level-7-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 7th level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>8th Level</h3>
-            <textarea id="level-8-spells" class="spell-text" rows="6" placeholder="Enter 8th level spells here..."></textarea>
+            <div id="level-8-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 8th level spells here..."></div>
           </div>
 
           <div class="spell-level-section">
             <h3>9th Level</h3>
-            <textarea id="level-9-spells" class="spell-text" rows="6" placeholder="Enter 9th level spells here..."></textarea>
+            <div id="level-9-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 9th level spells here..."></div>
           </div>
         </div>
       </div>
@@ -498,33 +509,33 @@
               </div>
               <img id="character-portrait" style="display: none" />
             </div>
-            <textarea id="appearance-notes" class="appearance-text" rows="8" placeholder="Describe your character's appearance here..."></textarea>
+            <div id="appearance-notes" class="rich-text-editor" contenteditable="true" data-placeholder="Describe your character's appearance here..."></div>
           </div>
 
           <div class="character-background">
             <h3>Character Background</h3>
-            <textarea id="background-content" class="background-text" rows="8" placeholder="Describe your character's background here..."></textarea>
+            <div id="background-content" class="rich-text-editor" contenteditable="true" data-placeholder="Describe your character's background here..."></div>
           </div>
 
           <div class="character-traits">
             <div class="trait-section">
               <h3>Personality Traits</h3>
-              <textarea id="personality-traits" class="trait-text" rows="4" placeholder="Enter personality traits here..."></textarea>
+              <div id="personality-traits" class="rich-text-editor" contenteditable="true" data-placeholder="Enter personality traits here..."></div>
             </div>
 
             <div class="trait-section">
               <h3>Ideals</h3>
-              <textarea id="ideals" class="trait-text" rows="4" placeholder="Enter ideals here..."></textarea>
+              <div id="ideals" class="rich-text-editor" contenteditable="true" data-placeholder="Enter ideals here..."></div>
             </div>
 
             <div class="trait-section">
               <h3>Bonds</h3>
-              <textarea id="bonds" class="trait-text" rows="4" placeholder="Enter bonds here..."></textarea>
+              <div id="bonds" class="rich-text-editor" contenteditable="true" data-placeholder="Enter bonds here..."></div>
             </div>
 
             <div class="trait-section">
               <h3>Flaws</h3>
-              <textarea id="flaws" class="trait-text" rows="4" placeholder="Enter flaws here..."></textarea>
+              <div id="flaws" class="rich-text-editor" contenteditable="true" data-placeholder="Enter flaws here..."></div>
             </div>
           </div>
         </div>
