@@ -1021,3 +1021,23 @@ textarea.form-input {
     margin-top: 0.5rem;
   }
 }
+
+/* Terminal raw output */
+.raw-output {
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.raw-output .md-h1,
+.raw-output .md-h2,
+.raw-output .md-h3 {
+  color: var(--color-light-cyan);
+  display: block;
+}
+
+.raw-output .md-bullet,
+.raw-output .md-list {
+  color: var(--text-color);
+  display: block;
+}

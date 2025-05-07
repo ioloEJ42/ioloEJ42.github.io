@@ -1055,25 +1055,31 @@ class TerminalEmulator {
       const targetPath = this.resolvePath(arg);
       const obj = this.getFileSystemObject(targetPath);
 
-      // heres the other half:
-
       if (obj === null) {
         this.write(`cat: ${arg}: No such file or directory`, "error-text");
       } else if (typeof obj === "object") {
         this.write(`cat: ${arg}: Is a directory`, "error-text");
       } else {
-        // Format markdown for better display
+        // Escape HTML content to show raw file contents
+        const content = obj.toString();
+        const escapedContent = content
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+
+        // For markdown files, still add some basic formatting but keep HTML escaped
         if (arg.endsWith(".md")) {
-          const content = obj.toString();
-          let formattedContent = content
-            .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-            .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-            .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-            .replace(/^- (.+)$/gm, "• $1")
-            .replace(/^(\d+)\. (.+)$/gm, "$1. $2");
-          this.write(formattedContent);
+          let formattedContent = escapedContent
+            .replace(/^# (.+)$/gm, "<span class=\"md-h1\"># $1</span>")
+            .replace(/^## (.+)$/gm, "<span class=\"md-h2\">## $1</span>")
+            .replace(/^### (.+)$/gm, "<span class=\"md-h3\">### $1</span>")
+            .replace(/^- (.+)$/gm, "<span class=\"md-bullet\">- $1</span>")
+            .replace(/^(\d+)\. (.+)$/gm, "<span class=\"md-list\">$1. $2</span>");
+          this.write(formattedContent, "raw-output");
         } else {
-          this.write(obj);
+          this.write(escapedContent, "raw-output");
         }
       }
     }
