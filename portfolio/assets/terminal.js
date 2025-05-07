@@ -968,7 +968,8 @@ class TerminalEmulator {
 
     if (showDetails) {
       // Format similar to ls -l with proper alignment
-      const output = ["total " + items.length];
+      // Use proper <div> elements for each line
+      const output = [`<div>total ${items.length}</div>`];
       
       // Calculate padding for size column
       const maxSize = Math.max(...items.map(item => item.size.toString().length));
@@ -986,7 +987,7 @@ class TerminalEmulator {
           displayName = `<span class="executable">${item.name}</span>`;
         }
         
-        // Format with consistent spacing and explicit line breaks
+        // Format with consistent spacing and EXPLICIT div for each line
         const line = [
           permissions,
           "1",
@@ -997,15 +998,13 @@ class TerminalEmulator {
           displayName
         ].join("  ");
         
+        // Each line gets its own div to ensure line breaks
         output.push(`<div>${line}</div>`);
       }
       
       this.write(output.join(""));
     } else {
-      // For regular ls, create a multi-column layout with proper HTML formatting
-      const terminalWidth = 80; // Default width if actual width cannot be determined
-      
-      // Format each item based on its type
+      // For regular ls, we'll use a flex layout approach with wrapping
       const formattedItems = items.map(item => {
         let displayName = item.name;
         if (item.isDir) {
@@ -1015,16 +1014,13 @@ class TerminalEmulator {
         } else if (item.name.endsWith(".exe") || item.name.endsWith(".sh")) {
           displayName = `<span class="executable">${item.name}</span>`;
         }
-        return displayName;
+        
+        // Create a wrapper for each item with proper margin and padding
+        return `<div style="margin: 0 12px 4px 0; display: inline-block; min-width: 120px;">${displayName}</div>`;
       });
       
-      // Use inline-block spans with fixed widths to create a grid-like appearance
-      const output = formattedItems.map(item => 
-        `<span style="display: inline-block; min-width: 150px; margin-right: 10px;">${item}</span>`
-      ).join("");
-      
-      // Wrap the entire output in a div with white-space: pre-wrap to preserve whitespace
-      this.write(`<div style="white-space: pre-wrap;">${output}</div>`);
+      // Use a flex container to allow proper wrapping
+      this.write(`<div style="display: flex; flex-wrap: wrap;">${formattedItems.join("")}</div>`);
     }
   }
 
