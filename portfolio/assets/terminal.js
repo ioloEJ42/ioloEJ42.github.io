@@ -986,7 +986,7 @@ class TerminalEmulator {
           displayName = `<span class="executable">${item.name}</span>`;
         }
         
-        // Format with consistent spacing
+        // Format with consistent spacing and explicit line breaks
         const line = [
           permissions,
           "1",
@@ -997,10 +997,10 @@ class TerminalEmulator {
           displayName
         ].join("  ");
         
-        output.push(line);
+        output.push(`<div>${line}</div>`);
       }
       
-      this.write(output.join("\n"));
+      this.write(output.join(""));
     } else {
       // For regular ls, create a multi-column layout with proper HTML formatting
       const terminalWidth = 80; // Default width if actual width cannot be determined
