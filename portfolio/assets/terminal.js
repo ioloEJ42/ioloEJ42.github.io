@@ -956,90 +956,79 @@ class TerminalEmulator {
       // Format similar to ls -l
       output += "total " + Object.keys(obj).length + "\n";
 
-      for (const item in obj) {
-        if (!showHidden && item.startsWith(".")) continue;
-
-        const isDir = typeof obj[item] === "object";
-        const permissions = isDir ? "drwxr-xr-x" : "-rw-r--r--";
-        const owner = "user";
-        const group = "portfolio";
-        const size = isDir
-          ? 4096
-          : typeof obj[item] === "string"
-          ? obj[item].length
-          : 0;
-        const date = new Date().toLocaleString("default", {
-          month: "short",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
+      // Get all visible items first
+      const items = Object.entries(obj)
+        .filter(([name]) => showHidden || !name.startsWith("."))
+        .map(([name, content]) => {
+          const isDir = typeof content === "object";
+          return {
+            name,
+            isDir,
+            permissions: isDir ? "drwxr-xr-x" : "-rw-r--r--",
+            size: isDir ? 4096 : (typeof content === "string" ? content.length : 0),
+            date: new Date().toLocaleString("default", {
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit"
+            })
+          };
         });
 
-        output += `${permissions} 1 ${owner} ${group} ${size.toString().padStart(8)} ${date} `;
+      // Find the longest size for padding
+      const maxSizeLength = Math.max(...items.map(item => item.size.toString().length));
+
+      // Output each item
+      for (const item of items) {
+        output += `${item.permissions} 1 user portfolio ${item.size.toString().padStart(maxSizeLength)} ${item.date} `;
         
-        if (isDir) {
-          output += `<span class="directory">${item}/</span>`;
-        } else if (item.endsWith(".md") || item.endsWith(".txt")) {
-          output += `<span class="text-file">${item}</span>`;
-        } else if (item.endsWith(".exe") || item.endsWith(".sh")) {
-          output += `<span class="executable">${item}</span>`;
+        if (item.isDir) {
+          output += `<span class="directory">${item.name}/</span>`;
+        } else if (item.name.endsWith(".md") || item.name.endsWith(".txt")) {
+          output += `<span class="text-file">${item.name}</span>`;
+        } else if (item.name.endsWith(".exe") || item.name.endsWith(".sh")) {
+          output += `<span class="executable">${item.name}</span>`;
         } else {
-          output += item;
+          output += item.name;
         }
         output += "\n";
       }
     } else {
-      // Format as columns with line breaks
-      const items = [];
-      const maxWidth = 80; // Assume terminal width
-      let currentLine = "";
+      // Get all visible items first
+      const items = Object.entries(obj)
+        .filter(([name]) => showHidden || !name.startsWith("."))
+        .map(([name, content]) => {
+          const isDir = typeof content === "object";
+          let displayName = name + (isDir ? "/" : "");
+          
+          if (isDir) {
+            return `<span class="directory">${displayName}</span>`;
+          } else if (name.endsWith(".md") || name.endsWith(".txt")) {
+            return `<span class="text-file">${displayName}</span>`;
+          } else if (name.endsWith(".exe") || name.endsWith(".sh")) {
+            return `<span class="executable">${displayName}</span>`;
+          } else {
+            return displayName;
+          }
+        });
 
-      for (const item in obj) {
-        if (!showHidden && item.startsWith(".")) continue;
-
-        let formattedItem = "";
-        const isDir = typeof obj[item] === "object";
-        
-        if (isDir) {
-          formattedItem = `<span class="directory">${item}/</span>`;
-        } else if (item.endsWith(".md") || item.endsWith(".txt")) {
-          formattedItem = `<span class="text-file">${item}</span>`;
-        } else if (item.endsWith(".exe") || item.endsWith(".sh")) {
-          formattedItem = `<span class="executable">${item}</span>`;
-        } else if (
-          item.endsWith(".png") ||
-          item.endsWith(".jpg") ||
-          item.endsWith(".svg")
-        ) {
-          formattedItem = `<span class="image-file">${item}</span>`;
-        } else {
-          formattedItem = item;
-        }
-
-        // Add padding to align items
-        formattedItem = formattedItem.padEnd(20);
-
-        // Check if adding this item would exceed line width
-        if (currentLine.length + formattedItem.length > maxWidth) {
-          items.push(currentLine.trimEnd());
-          currentLine = "";
-        }
-        
-        currentLine += formattedItem;
-
-        // If current line is getting full, start a new line
-        if (currentLine.length >= maxWidth - 20) {
-          items.push(currentLine.trimEnd());
-          currentLine = "";
-        }
+      // Calculate number of columns based on longest item
+      const maxLength = Math.max(...items.map(item => item.replace(/<[^>]+>/g, "").length)) + 2;
+      const terminalWidth = 80;
+      const columns = Math.floor(terminalWidth / maxLength);
+      
+      // Organize items into rows
+      const rows = [];
+      for (let i = 0; i < items.length; i += columns) {
+        const row = items.slice(i, i + columns).map(item => {
+          // Remove HTML tags for length calculation
+          const plainItem = item.replace(/<[^>]+>/g, "");
+          return item + " ".repeat(maxLength - plainItem.length);
+        });
+        rows.push(row.join(""));
       }
-
-      // Add any remaining items
-      if (currentLine.trimEnd()) {
-        items.push(currentLine.trimEnd());
-      }
-
-      output = items.join("\n");
+      
+      output = rows.join("\n");
     }
 
     this.write(output || "Directory is empty");
