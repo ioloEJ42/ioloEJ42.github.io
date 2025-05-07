@@ -187,7 +187,6 @@ main {
 .terminal-window {
   background-color: var(--terminal-bg);
   border: 1px solid var(--border-color);
-  margin-bottom: 2rem;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
