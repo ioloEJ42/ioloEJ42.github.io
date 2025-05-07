@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HexGuesser</title>
+    <title>Hexathon</title>
     <link rel="stylesheet" href="styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   </head>
   <body>
     <div class="grid"></div>
     <header>
       <nav>
-        <div class="nav-title">HexGuesser</div>
-        <ul class="nav-links" style="margin-bottom: 0%">
+        <div class="nav-title">Hexathon</div>
+        <ul class="nav-links">
           <li class="active"><a href="#" id="daily-button">Daily</a></li>
           <li><a href="#" id="random-button">Play Random</a></li>
           <li><a href="#" id="how-to-play">How to Play</a></li>
@@ -25,60 +25,40 @@
     </header>
 
     <main>
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <div class="terminal-title">HexGuesser.terminal</div>
+      <div class="game-card">
+        <div class="game-header">
+          <h2>Guess the Hex Color</h2>
         </div>
 
-        <div class="terminal-body">
+        <div class="game-body">
           <div class="game-container">
             <div class="color-display" id="color-display"></div>
 
-            <div class="guesses-container">
-              <div class="terminal-line">
-                <span class="terminal-prompt">
-                  <span class="terminal-user">user</span>
-                  <span>@</span>
-                  <span class="terminal-host">hexguesser</span>
-                  <span>:</span>
-                  <span class="terminal-path">~</span>
-                  <span>$</span>
-                </span>
-                <span class="terminal-command">./guess-hex</span>
-              </div>
+            <div class="game-instructions">
+              <p>
+                Welcome to Hexathon! Try to guess the hex color displayed above.
+              </p>
+              <p>You have 6 attempts to guess the correct hex code.</p>
+              <p class="blink-cursor">
+                Type your guess (e.g., #FF5733) and press Enter...
+              </p>
+            </div>
 
-              <div class="terminal-output">
-                <p>
-                  Welcome to HexGuesser! Try to guess the hex color displayed
-                  above.
-                </p>
-                <p>You have 6 attempts to guess the correct hex code.</p>
-                <p class="blink-cursor">
-                  Type your guess (e.g., #FF5733) and press Enter...
-                </p>
-              </div>
+            <div id="guesses-list" class="guesses-list"></div>
 
-              <div id="guesses-list" class="guesses-list"></div>
-
-              <div class="term-input-line">
-                <span class="term-input-prompt">
-                  <span class="terminal-user">user</span>
-                  <span>@</span>
-                  <span class="terminal-host">HexGuesser</span>
-                  <span>:</span>
-                  <span class="terminal-path">~</span>
-                  <span>$</span>
-                </span>
-                <input
-                  type="text"
-                  id="guess-input"
-                  class="term-input"
-                  placeholder="#RRGGBB"
-                  maxlength="7"
-                  spellcheck="false"
-                  autocomplete="off"
-                />
-              </div>
+            <div class="input-container">
+              <input
+                type="text"
+                id="guess-input"
+                class="guess-input"
+                placeholder="#RRGGBB"
+                maxlength="7"
+                spellcheck="false"
+                autocomplete="off"
+              />
+              <button id="submit-guess" class="submit-btn">
+                <i class="fas fa-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -86,25 +66,17 @@
 
       <!-- Modal for how to play -->
       <div id="how-to-play-modal" class="modal">
-        <div class="modal-content terminal-window">
-          <div class="terminal-header">
-            <div class="terminal-title">how-to-play.txt</div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>How to Play</h3>
+            <button class="close-btn close-modal">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
-          <div class="terminal-body">
-            <div class="terminal-line">
-              <span class="terminal-prompt">
-                <span class="terminal-user">user</span>
-                <span>@</span>
-                <span class="terminal-host">HexGuesser</span>
-                <span>:</span>
-                <span class="terminal-path">~</span>
-                <span>$</span>
-              </span>
-              <span class="terminal-command">cat how-to-play.txt</span>
-            </div>
-            <div class="terminal-output">
-              <h3>How to Play HexGuesser</h3>
-              <p>1. A random color is displayed at the top of the terminal.</p>
+          <div class="modal-body">
+            <div class="instructions">
+              <h4>How to Play Hexathon</h4>
+              <p>1. A random color is displayed at the top of the game.</p>
               <p>2. Your goal is to guess the exact hex code of this color.</p>
               <p>3. Enter your guess in the format #RRGGBB (e.g., #FF5733).</p>
               <p>4. After each guess, you'll receive feedback:</p>
@@ -123,24 +95,16 @@
 
       <!-- Modal for learn about hex colors -->
       <div id="learn-modal" class="modal">
-        <div class="modal-content terminal-window">
-          <div class="terminal-header">
-            <div class="terminal-title">hex-colors.txt</div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Learn About Hex Colors</h3>
+            <button class="close-btn close-modal">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
-          <div class="terminal-body">
-            <div class="terminal-line">
-              <span class="terminal-prompt">
-                <span class="terminal-user">user</span>
-                <span>@</span>
-                <span class="terminal-host">hexguesser</span>
-                <span>:</span>
-                <span class="terminal-path">~</span>
-                <span>$</span>
-              </span>
-              <span class="terminal-command">cat hex-colors.txt</span>
-            </div>
-            <div class="terminal-output">
-              <h3>Understanding Hex Colors</h3>
+          <div class="modal-body">
+            <div class="instructions">
+              <h4>Understanding Hex Colors</h4>
               <p>
                 Hex colors are a way to represent colors in web development and
                 design using hexadecimal notation.
@@ -248,7 +212,6 @@
                 <li>
                   For neutral colors, look for similar values in all components
                 </li>
-                <li>Practice comparing known colors to their hex values</li>
               </ul>
             </div>
             <button class="button close-modal">Close</button>
@@ -258,36 +221,25 @@
 
       <!-- Modal for game result -->
       <div id="result-modal" class="modal">
-        <div class="modal-content terminal-window">
-          <div class="terminal-header">
-            <div class="terminal-title">game-result.log</div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="result-title">Game Result</h3>
+            <button class="close-btn close-modal-restart">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
-          <div class="terminal-body">
-            <div class="terminal-line">
-              <span class="terminal-prompt">
-                <span class="terminal-user">user</span>
-                <span>@</span>
-                <span class="terminal-host">HexGuesser</span>
-                <span>:</span>
-                <span class="terminal-path">~</span>
-                <span>$</span>
-              </span>
-              <span class="terminal-command">cat game-result.log</span>
+          <div class="modal-body">
+            <p id="result-message">Message goes here.</p>
+            <div class="color-result">
+              <div id="result-color" class="color-swatch"></div>
+              <div id="result-color-code" class="color-code">#RRGGBB</div>
             </div>
-            <div class="terminal-output">
-              <h3 id="result-title">Game Over</h3>
-              <p id="result-message"></p>
-              <div class="color-result">
-                <div class="color-swatch" id="result-color"></div>
-                <div class="color-code" id="result-color-code"></div>
-              </div>
-              <div class="share-container">
-                <p>Share your result:</p>
-                <div class="share-result" id="share-result"></div>
-                <button class="button" id="copy-result">
-                  Copy to Clipboard
-                </button>
-              </div>
+            <div class="share-container">
+              <p>Share your result:</p>
+              <div id="share-result" class="share-result"></div>
+              <button id="copy-result" class="button">
+                <i class="fas fa-copy"></i> Copy to Clipboard
+              </button>
             </div>
             <button class="button close-modal-restart">Play Again</button>
           </div>
@@ -296,10 +248,7 @@
     </main>
 
     <footer>
-      <p>
-        HexGuesser &copy; <span id="current-year"></span> | A game about
-        guessing hex color codes
-      </p>
+      <p>&copy; <span id="current-year">2023</span> Hexathon | A color guessing game</p>
     </footer>
 
     <script src="script.js"></script>

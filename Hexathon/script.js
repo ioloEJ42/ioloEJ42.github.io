@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // DOM elements
   const colorDisplay = document.getElementById("color-display");
   const guessInput = document.getElementById("guess-input");
+  const submitGuessBtn = document.getElementById("submit-guess");
   const guessesList = document.getElementById("guesses-list");
   const howToPlayLink = document.getElementById("how-to-play");
   const howToPlayModal = document.getElementById("how-to-play-modal");
@@ -27,16 +28,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const copyResultButton = document.getElementById("copy-result");
   const closeButtons = document.querySelectorAll(".close-modal");
   const closeRestartButtons = document.querySelectorAll(".close-modal-restart");
+  const gameInstructions = document.querySelector(".game-instructions");
 
   // Set current year in footer
-  document.getElementById("current-year").textContent =
-    new Date().getFullYear();
+  document.getElementById("current-year").textContent = new Date().getFullYear();
 
   // Initialize the game
   initGame("daily");
 
   // Add event listeners
   guessInput.addEventListener("keypress", handleGuessInput);
+  submitGuessBtn.addEventListener("click", handleSubmitButton);
   howToPlayLink.addEventListener("click", showHowToPlayModal);
   learnButton.addEventListener("click", showLearnModal);
   dailyButton.addEventListener("click", () => initGame("daily"));
@@ -125,36 +127,63 @@ document.addEventListener("DOMContentLoaded", () => {
     return `#${r}${g}${b}`.toUpperCase();
   }
 
+  // Function to handle submit button click
+  function handleSubmitButton() {
+    if (!gameOver) {
+      processGuessInput(guessInput.value);
+    }
+  }
+
   // Function to handle guess input
   function handleGuessInput(event) {
     if (event.key === "Enter" && !gameOver) {
-      const guess = guessInput.value.trim().toUpperCase();
-
-      // Validate input (must be a valid hex color code)
-      if (!/^#[0-9A-F]{6}$/.test(guess)) {
-        addTerminalOutput(
-          "Invalid hex code. Please use format #RRGGBB (e.g., #FF5733)."
-        );
-        guessInput.value = "";
-        return;
-      }
-
-      // Check if color has already been guessed
-      if (guessedColors.has(guess)) {
-        addTerminalOutput("You already guessed that color. Try another one.");
-        guessInput.value = "";
-        return;
-      }
-
-      // Add to guessed colors set
-      guessedColors.add(guess);
-
-      // Process the guess
-      processGuess(guess);
-
-      // Clear input field
-      guessInput.value = "";
+      processGuessInput(guessInput.value);
     }
+  }
+
+  // Function to process guess input
+  function processGuessInput(inputValue) {
+    const guess = inputValue.trim().toUpperCase();
+
+    // Validate input (must be a valid hex color code)
+    if (!/^#[0-9A-F]{6}$/.test(guess)) {
+      showMessage("Invalid hex code. Please use format #RRGGBB (e.g., #FF5733).");
+      guessInput.value = "";
+      return;
+    }
+
+    // Check if color has already been guessed
+    if (guessedColors.has(guess)) {
+      showMessage("You already guessed that color. Try another one.");
+      guessInput.value = "";
+      return;
+    }
+
+    // Add to guessed colors set
+    guessedColors.add(guess);
+
+    // Process the guess
+    processGuess(guess);
+
+    // Clear input field
+    guessInput.value = "";
+  }
+
+  // Function to show message in game instructions
+  function showMessage(text) {
+    const messageP = document.createElement("p");
+    messageP.textContent = text;
+    messageP.className = "message";
+
+    // Add to game instructions
+    gameInstructions.appendChild(messageP);
+
+    // Remove after delay
+    setTimeout(() => {
+      if (gameInstructions.contains(messageP)) {
+        gameInstructions.removeChild(messageP);
+      }
+    }, 3000);
   }
 
   // Function to process a guess
@@ -237,115 +266,98 @@ document.addEventListener("DOMContentLoaded", () => {
     guessesList.appendChild(guessItem);
   }
 
-  // Function to add text to the terminal output
-  function addTerminalOutput(text) {
-    const outputP = document.createElement("p");
-    outputP.textContent = text;
-
-    // Find the terminal output div
-    const terminalOutput = document.querySelector(".terminal-output");
-    terminalOutput.appendChild(outputP);
-  }
-
   // Function to end the game
   function endGame(won) {
     guessInput.disabled = true;
+    
+    if (won) {
+      showMessage(`Congratulations! You guessed the color in ${guessCount} ${guessCount === 1 ? 'try' : 'tries'}.`);
+    } else {
+      showMessage(`Game over. The color was ${targetColor}.`);
+    }
 
-    // Show result modal
-    showResultModal(won);
+    // Show result modal after a brief delay
+    setTimeout(() => {
+      showResultModal(won);
+    }, 1500);
   }
 
   // Function to show the result modal
   function showResultModal(won) {
-    resultTitle.textContent = won ? "Success!" : "Game Over";
+    resultTitle.textContent = won ? "Congratulations!" : "Game Over";
     resultMessage.textContent = won
-      ? `You guessed the color in ${guessCount} ${
-          guessCount === 1 ? "attempt" : "attempts"
-        }!`
-      : `The correct color was:`;
-
+      ? `You guessed the color in ${guessCount} ${guessCount === 1 ? 'try' : 'tries'}!`
+      : `The correct color was: ${targetColor}`;
+    
     resultColor.style.backgroundColor = targetColor;
     resultColorCode.textContent = targetColor;
-
+    
     // Generate share text
-    const shareText = generateShareText(won, guessCount);
-    shareResult.textContent = shareText;
-
+    shareResult.textContent = generateShareText(won, guessCount);
+    
     // Show modal
-    resultModal.style.display = "block";
+    resultModal.classList.add("active");
   }
 
   // Function to generate share text
   function generateShareText(won, guessCount) {
-    const today = new Date();
-    const dateStr = today.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-
-    let text = `HexGuesser ${dateStr}\n`;
-    if (gameMode === "daily") {
-      text += `Daily `;
-    } else {
-      text += `Random `;
-    }
-
+    const date = new Date();
+    const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    
+    let text = `Hexathon ${dateString} - ${gameMode.toUpperCase()}\n`;
+    
     if (won) {
-      text += `Solved in ${guessCount}/${maxGuesses} guesses\n\n`;
+      text += `Solved in ${guessCount}/6 tries\n`;
     } else {
-      text += `Failed to solve\n\n`;
+      text += `X/6 - Failed to guess ${targetColor}\n`;
     }
-
-    // Add emoji representation of guesses
-    const guessItems = document.querySelectorAll(".guess-feedback");
-    guessItems.forEach((item) => {
-      text += item.textContent + "\n";
+    
+    // Add guess pattern
+    const guessItems = document.querySelectorAll('.guess-feedback');
+    guessItems.forEach(item => {
+      text += item.textContent + '\n';
     });
-
+    
     return text;
   }
 
   // Function to copy result to clipboard
   function copyResultToClipboard() {
     const text = shareResult.textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      copyResultButton.textContent = "Copied!";
-      setTimeout(() => {
-        copyResultButton.textContent = "Copy to Clipboard";
-      }, 2000);
+    
+    navigator.clipboard.writeText(text).then(
+      () => {
+        copyResultButton.textContent = "Copied!";
+        setTimeout(() => {
+          copyResultButton.innerHTML = '<i class="fas fa-copy"></i> Copy to Clipboard';
+        }, 2000);
+      },
+      () => {
+        alert("Failed to copy result to clipboard");
+      }
+    );
+  }
+
+  // Function to show how to play modal
+  function showHowToPlayModal() {
+    howToPlayModal.classList.add("active");
+  }
+
+  // Function to show learn modal
+  function showLearnModal() {
+    learnModal.classList.add("active");
+  }
+
+  // Function to close modals
+  function closeModals() {
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.classList.remove("active");
     });
   }
 
-  // Functions to show/hide modals
-  function showHowToPlayModal() {
-    howToPlayModal.style.display = "block";
-  }
-
-  function showLearnModal() {
-    learnModal.style.display = "block";
-  }
-
-  function closeModals() {
-    howToPlayModal.style.display = "none";
-    learnModal.style.display = "none";
-    resultModal.style.display = "none";
-  }
-
-  // Function to restart the game
+  // Function to restart game
   function restartGame() {
     closeModals();
     initGame(gameMode);
   }
-
-  // Close modals if clicking outside the content
-  window.addEventListener("click", (event) => {
-    if (event.target === howToPlayModal) {
-      howToPlayModal.style.display = "none";
-    } else if (event.target === learnModal) {
-      learnModal.style.display = "none";
-    } else if (event.target === resultModal) {
-      resultModal.style.display = "none";
-    }
-  });
 });
