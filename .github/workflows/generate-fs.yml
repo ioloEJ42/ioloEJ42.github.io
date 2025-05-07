@@ -58,6 +58,16 @@ jobs:
         if: steps.check_changes.outputs.has_changes == 'true'
         run: sleep 10
 
+      # Setup Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'
+
   # Add a deployment job that depends on generate-fs
   deploy:
     needs: generate-fs
