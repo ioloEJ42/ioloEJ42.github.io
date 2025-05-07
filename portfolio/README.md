@@ -5,5 +5,7 @@ This is the portfolio section of my website. It features:
 - Project showcases
 - Blog posts
 - Interactive elements
+- Real filesystem integration
 
-The filesystem is automatically generated using    GitHub Actions.
+The filesystem is automatically generated using GitHub Actions.
+Last updated: Testing GitHub Action workflow.
