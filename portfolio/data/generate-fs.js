@@ -11,12 +11,23 @@ function isTextFile(filePath) {
     return textExtensions.includes(path.extname(filePath).toLowerCase());
 }
 
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 function readFileContent(filePath) {
     if (!isTextFile(filePath)) {
         return '[Binary File]';
     }
     try {
-        return fs.readFileSync(filePath, 'utf8');
+        const content = fs.readFileSync(filePath, 'utf8');
+        // Always escape HTML content when reading files
+        return escapeHtml(content);
     } catch (error) {
         console.warn(`Could not read file ${filePath}:`, error);
         return '[Error reading file]';
@@ -49,7 +60,7 @@ function generateFileSystem() {
     const fileSystem = buildFileSystem(ROOT_DIR);
 
     // Add some system files at the root level
-    fileSystem['.motd'] = 'Welcome to the Portfolio Terminal Interface\nType \'help\' to see available commands\n';
+    fileSystem['.motd'] = 'Welcome to the Portfolio Terminal Interface\n\nType \'help\' to see available commands\n';
     fileSystem['.issue'] = 'Portfolio Terminal v1.0.0\n';
 
     return fileSystem;
