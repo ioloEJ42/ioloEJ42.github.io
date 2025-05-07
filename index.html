@@ -1,154 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Iolo Evans Jones | GitHub Pages</title>
+    <title>DASHBOARD_</title>
     <link rel="icon" href="/portfolio/images/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="index.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/inter/3.19.3/inter.css"
     />
-    <style>
-      :root {
-        --color-black: rgb(0, 0, 0);
-        --color-white: rgb(192, 192, 192);
-        --color-light-green: rgb(0, 255, 0);
-        --color-grey: rgb(128, 128, 128);
-        --grid-color: rgba(255, 255, 255, 0.03);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        background-color: var(--color-black);
-        color: var(--color-white);
-        font-family: "JetBrains Mono", monospace;
-        line-height: 1.6;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .grid {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background-size: 50px 50px;
-        background-image: linear-gradient(
-            to right,
-            var(--grid-color) 1px,
-            transparent 1px
-          ),
-          linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-      }
-
-      h1 {
-        margin-bottom: 2rem;
-        text-align: center;
-      }
-
-      .sites-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
-      }
-
-      .site-card {
-        border: 1px solid var(--color-grey);
-        padding: 1.5rem;
-        border-radius: 4px;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-
-      .site-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      }
-
-      .site-card h2 {
-        margin-bottom: 1rem;
-        color: var(--color-light-green);
-      }
-
-      .site-card p {
-        margin-bottom: 1.5rem;
-        font-size: 0.9rem;
-      }
-
-      .site-card a {
-        display: inline-block;
-        background-color: transparent;
-        color: var(--color-light-green);
-        padding: 0.5rem 1rem;
-        text-decoration: none;
-        border: 1px solid var(--color-light-green);
-        transition: background-color 0.2s, color 0.2s;
-      }
-
-      .site-card a:hover {
-        background-color: var(--color-light-green);
-        color: var(--color-black);
-      }
-
-      footer {
-        margin-top: auto;
-        text-align: center;
-        padding-top: 2rem;
-        font-size: 0.8rem;
-        opacity: 0.7;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
   </head>
   <body>
+    <div class="noise"></div>
     <div class="grid"></div>
-    <h1>// IOLO EVANS JONES //</h1>
 
-    <div class="sites-container">
-      <div class="site-card">
-        <h2>Portfolio_</h2>
-        <p>My professional portfolio showcasing skills and projects.</p>
-        <a href="/portfolio/index.html">View Portfolio</a>
+    <main id="main-container">
+      <div id="main-content">
+        <div id="current-time">
+          <span id="current-time-text"></span>
+        </div>
+
+        <div id="search">
+          <div id="search-engine-cont">
+            <select
+              name="search-engine"
+              class="button"
+              id="search-engine-select"
+            >
+              <option value="ddg" selected="selected">DUCK_</option>
+              <option value="google">GOOGLE_</option>
+              <option value="bing">BING_</option>
+            </select>
+          </div>
+          <div id="search-input-cont">
+            <input id="search-input" placeholder="SEARCH_" autofocus />
+          </div>
+          <div id="search-button-cont">
+            <button class="button" id="search-button" onclick="doSearch()">
+              EXECUTE_
+            </button>
+          </div>
+        </div>
+
+        <div id="links">
+          <div class="link-group" id="general">
+            <ul>
+              <li class="link-group-title">GENERAL_</li>
+              <li>
+                <a href="https://en.wikipedia.org"
+                  ><span class="link-text">> WIKIPEDIA</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.gmail.com"
+                  ><span class="link-text">> GMAIL</span></a
+                >
+              </li>
+              <li>
+                <a href="https://wttr.in"
+                  ><span class="link-text">> WTTR.IN</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="link-group" id="dev">
+            <ul>
+              <li class="link-group-title">DEV_</li>
+              <li>
+                <a href="https://www.stackoverflow.com"
+                  ><span class="link-text">> STACK</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.github.com"
+                  ><span class="link-text">> GITHUB</span></a
+                >
+              </li>
+              <li>
+                <a href="https://developer.mozilla.org"
+                  ><span class="link-text">> MDN</span></a
+                >
+              </li>
+              <li>
+                <a href="https://leetcode.com"
+                  ><span class="link-text">> LeetCode</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="link-group" id="linux">
+            <ul>
+              <li class="link-group-title">LINUX_</li>
+              <li>
+                <a href="https://i3wm.org/"
+                  ><span class="link-text">> i3WM</span></a
+                >
+              </li>
+              <li>
+                <a href="https://help.ubuntu.com/"
+                  ><span class="link-text">> UBUNTU</span></a
+                >
+              </li>
+              <li>
+                <a href="https://manpages.ubuntu.com/"
+                  ><span class="link-text">> MANPAGES</span></a
+                >
+              </li>
+              <li>
+                <a href="https://packages.ubuntu.com/"
+                  ><span class="link-text">> PACKAGES</span></a
+                >
+              </li>
+              <li>
+                <a href="https://wiki.debian.org/"
+                  ><span class="link-text">> DEBIAN</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="link-group" id="sec">
+            <ul>
+              <li class="link-group-title">SEC_</li>
+              <li>
+                <a href="https://www.virustotal.com"
+                  ><span class="link-text">> VIRUSTOTAL</span></a
+                >
+              </li>
+              <li>
+                <a href="https://attack.mitre.org"
+                  ><span class="link-text">> MITRE</span></a
+                >
+              </li>
+              <li>
+                <a href="https://www.shodan.io"
+                  ><span class="link-text">> SHODAN</span></a
+                >
+              </li>
+              <li>
+                <a href="https://cve.mitre.org"
+                  ><span class="link-text">> CVE</span></a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
+      <button id="help-button" class="modal-button">?</button>
 
-      <div class="site-card">
-        <h2>Dashboard_</h2>
-        <p>A custom terminal-style dashboard with useful shortcuts.</p>
-        <a href="/dashboard/index.html">Open Dashboard</a>
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <button id="close-modal" class="modal-close">×</button>
+          <div class="modal-header">
+            <button class="nav-button" id="prev-page">←</button>
+            <span id="page-title">i3WM_</span>
+            <button class="nav-button" id="next-page">→</button>
+          </div>
+          <div id="modal-content" class="modal-body"></div>
+        </div>
       </div>
-
-      <div class="site-card">
-        <h2>Hexathon_</h2>
-        <p>Hexathon project site and information.</p>
-        <a href="/Hexathon/index.html">View Hexathon</a>
-      </div>
-
-      <div class="site-card">
-        <h2>DND_</h2>
-        <p>Dungeons and Dragons character tools and resources.</p>
-        <a href="/DND/index.html">Open DND Tools</a>
-      </div>
-    </div>
-
-    <footer>
-      <p>
-        &copy;
-        <script>
-          document.write(new Date().getFullYear());
-        </script>
-        Iolo Evans Jones
-      </p>
-    </footer>
+    </main>
   </body>
-</html>
+  <script src="index.js"></script>
+</html> 
