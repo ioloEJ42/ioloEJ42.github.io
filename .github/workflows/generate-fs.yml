@@ -1,19 +1,21 @@
-name: Generate Filesystem JSON
+name: Generate Filesystem JSON and Deploy
 
 on:
   push:
     branches:
-      - main  # or master, depending on your default branch
+      - main
     paths:
-      - 'portfolio/**'  # Only trigger when files in portfolio directory change
-      # Explicitly exclude the filesystem.json to prevent loops
+      - 'portfolio/**'
       - '!portfolio/data/filesystem.json'
 
 jobs:
   generate-fs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
     
-    # Add concurrency to cancel any running duplicate jobs
+    # Add concurrency to handle multiple pushes gracefully
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -21,6 +23,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -35,9 +39,9 @@ jobs:
         id: check_changes
         run: |
           if [[ -n "$(git status --porcelain portfolio/data/filesystem.json)" ]]; then
-            echo "::set-output name=has_changes::true"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=has_changes::false"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit and push if changed
@@ -46,5 +50,27 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add portfolio/data/filesystem.json
-          git commit -m "Auto-generate filesystem.json [skip ci]" 
-          git push 
+          git commit -m "Auto-generate filesystem.json"
+          git push
+
+      # Wait a moment to ensure the commit is processed
+      - name: Wait for commit to process
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: sleep 10
+
+  # Add a deployment job that depends on generate-fs
+  deploy:
+    needs: generate-fs
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 
