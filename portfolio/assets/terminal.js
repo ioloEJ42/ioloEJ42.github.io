@@ -959,12 +959,12 @@ class TerminalEmulator {
         const date = new Date().toLocaleString("default", {
           day: "2-digit",
           month: "short",
-          year: "numeric",
           hour: "2-digit",
           minute: "2-digit"
         });
         return { name, isDir, size, date };
-      });
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     if (showDetails) {
       // Format similar to ls -l with proper alignment
@@ -986,43 +986,61 @@ class TerminalEmulator {
           displayName = `<span class="executable">${item.name}</span>`;
         }
         
-        output.push(
-          `${permissions} 1 user portfolio ${sizeStr} ${item.date} ${displayName}`
-        );
+        // Format with consistent spacing
+        const line = [
+          permissions,
+          "1",
+          "user",
+          "portfolio",
+          sizeStr.padStart(8),
+          item.date.padEnd(12),
+          displayName
+        ].join("  ");
+        
+        output.push(line);
       }
       
       this.write(output.join("\n"));
     } else {
-      // Calculate column width based on longest item name
-      const maxLength = Math.max(...items.map(item => item.name.length)) + 2;
-      const terminalWidth = 80; // Assumed terminal width
-      const columns = Math.max(1, Math.floor(terminalWidth / maxLength));
-      
-      // Organize items into rows
-      const rows = [];
-      const sortedItems = items.sort((a, b) => a.name.localeCompare(b.name));
-      
-      for (let i = 0; i < sortedItems.length; i += columns) {
-        const row = [];
-        for (let j = 0; j < columns && i + j < sortedItems.length; j++) {
-          const item = sortedItems[i + j];
-          let displayName = item.name;
-          
-          if (item.isDir) {
-            displayName = `<span class="directory">${item.name}/</span>`;
-          } else if (item.name.endsWith(".md") || item.name.endsWith(".txt")) {
-            displayName = `<span class="text-file">${item.name}</span>`;
-          } else if (item.name.endsWith(".exe") || item.name.endsWith(".sh")) {
-            displayName = `<span class="executable">${item.name}</span>`;
-          }
-          
-          // Pad the display name
-          const plainName = item.name + (item.isDir ? "/" : "");
-          row.push(displayName + " ".repeat(maxLength - plainName.length));
+      // For regular ls, create a multi-column layout
+      const terminalWidth = 80;
+      const itemsWithDisplay = items.map(item => {
+        let displayName = item.name;
+        if (item.isDir) {
+          displayName = `<span class="directory">${item.name}/</span>`;
+        } else if (item.name.endsWith(".md") || item.name.endsWith(".txt")) {
+          displayName = `<span class="text-file">${item.name}</span>`;
+        } else if (item.name.endsWith(".exe") || item.name.endsWith(".sh")) {
+          displayName = `<span class="executable">${item.name}</span>`;
         }
-        rows.push(row.join(""));
+        const plainName = item.name + (item.isDir ? "/" : "");
+        return {
+          display: displayName,
+          width: plainName.length
+        };
+      });
+
+      // Calculate optimal column width and number of columns
+      const maxItemWidth = Math.max(...itemsWithDisplay.map(item => item.width));
+      const colWidth = maxItemWidth + 2; // Add 2 for spacing
+      const numCols = Math.max(1, Math.floor((terminalWidth + 2) / colWidth));
+      const numRows = Math.ceil(itemsWithDisplay.length / numCols);
+
+      // Create rows
+      const rows = [];
+      for (let row = 0; row < numRows; row++) {
+        const rowItems = [];
+        for (let col = 0; col < numCols; col++) {
+          const idx = col * numRows + row;
+          if (idx < itemsWithDisplay.length) {
+            const item = itemsWithDisplay[idx];
+            const padding = " ".repeat(colWidth - item.width);
+            rowItems.push(item.display + padding);
+          }
+        }
+        rows.push(rowItems.join(""));
       }
-      
+
       this.write(rows.join("\n") || "Directory is empty");
     }
   }
