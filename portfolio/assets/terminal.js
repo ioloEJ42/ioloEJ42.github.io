@@ -1002,9 +1002,11 @@ class TerminalEmulator {
       
       this.write(output.join("\n"));
     } else {
-      // For regular ls, create a multi-column layout
-      const terminalWidth = 80;
-      const itemsWithDisplay = items.map(item => {
+      // For regular ls, create a multi-column layout with proper HTML formatting
+      const terminalWidth = 80; // Default width if actual width cannot be determined
+      
+      // Format each item based on its type
+      const formattedItems = items.map(item => {
         let displayName = item.name;
         if (item.isDir) {
           displayName = `<span class="directory">${item.name}/</span>`;
@@ -1013,35 +1015,16 @@ class TerminalEmulator {
         } else if (item.name.endsWith(".exe") || item.name.endsWith(".sh")) {
           displayName = `<span class="executable">${item.name}</span>`;
         }
-        const plainName = item.name + (item.isDir ? "/" : "");
-        return {
-          display: displayName,
-          width: plainName.length
-        };
+        return displayName;
       });
-
-      // Calculate optimal column width and number of columns
-      const maxItemWidth = Math.max(...itemsWithDisplay.map(item => item.width));
-      const colWidth = maxItemWidth + 2; // Add 2 for spacing
-      const numCols = Math.max(1, Math.floor((terminalWidth + 2) / colWidth));
-      const numRows = Math.ceil(itemsWithDisplay.length / numCols);
-
-      // Create rows
-      const rows = [];
-      for (let row = 0; row < numRows; row++) {
-        const rowItems = [];
-        for (let col = 0; col < numCols; col++) {
-          const idx = col * numRows + row;
-          if (idx < itemsWithDisplay.length) {
-            const item = itemsWithDisplay[idx];
-            const padding = " ".repeat(colWidth - item.width);
-            rowItems.push(item.display + padding);
-          }
-        }
-        rows.push(rowItems.join(""));
-      }
-
-      this.write(rows.join("\n") || "Directory is empty");
+      
+      // Use inline-block spans with fixed widths to create a grid-like appearance
+      const output = formattedItems.map(item => 
+        `<span style="display: inline-block; min-width: 150px; margin-right: 10px;">${item}</span>`
+      ).join("");
+      
+      // Wrap the entire output in a div with white-space: pre-wrap to preserve whitespace
+      this.write(`<div style="white-space: pre-wrap;">${output}</div>`);
     }
   }
 
