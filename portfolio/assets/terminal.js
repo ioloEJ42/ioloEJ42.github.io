@@ -967,9 +967,8 @@ class TerminalEmulator {
       .sort((a, b) => a.name.localeCompare(b.name));
 
     if (showDetails) {
-      // Format similar to ls -l with proper alignment
-      // Use proper <div> elements for each line
-      const output = [`<div>total ${items.length}</div>`];
+      // Ultra-simplified approach - using plain text with <pre> tags
+      let output = `<pre>total ${items.length}\n`;
       
       // Calculate padding for size column
       const maxSize = Math.max(...items.map(item => item.size.toString().length));
@@ -987,22 +986,14 @@ class TerminalEmulator {
           displayName = `<span class="executable">${item.name}</span>`;
         }
         
-        // Format with consistent spacing and EXPLICIT div for each line
-        const line = [
-          permissions,
-          "1",
-          "user",
-          "portfolio",
-          sizeStr.padStart(8),
-          item.date.padEnd(12),
-          displayName
-        ].join("  ");
-        
-        // Each line gets its own div to ensure line breaks
-        output.push(`<div>${line}</div>`);
+        // Add each line with explicit newline character
+        output += `${permissions} 1 user portfolio ${sizeStr.padStart(8)} ${item.date.padEnd(12)} ${displayName}\n`;
       }
       
-      this.write(output.join(""));
+      // Close the pre tag
+      output += '</pre>';
+      
+      this.write(output);
     } else {
       // For regular ls, we'll use a flex layout approach with wrapping
       const formattedItems = items.map(item => {
