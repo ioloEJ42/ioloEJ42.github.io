@@ -45,17 +45,12 @@ function buildFileSystem(currentPath, relativePath = '') {
 }
 
 function generateFileSystem() {
-    const fileSystem = {
-        home: {
-            user: buildFileSystem(ROOT_DIR)
-        }
-    };
+    // Start directly with the portfolio directory as root
+    const fileSystem = buildFileSystem(ROOT_DIR);
 
-    // Add some system directories and files
-    fileSystem.etc = {
-        'motd': 'Welcome to the Portfolio Terminal Interface\nType \'help\' to see available commands\n',
-        'issue': 'Portfolio Terminal v1.0.0\n'
-    };
+    // Add some system files at the root level
+    fileSystem['.motd'] = 'Welcome to the Portfolio Terminal Interface\nType \'help\' to see available commands\n';
+    fileSystem['.issue'] = 'Portfolio Terminal v1.0.0\n';
 
     return fileSystem;
 }

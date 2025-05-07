@@ -12,7 +12,7 @@ class TerminalEmulator {
   constructor(terminalId, inputId) {
     this.terminal = document.getElementById(terminalId);
     this.input = document.getElementById(inputId);
-    this.currentDir = "/home/user";
+    this.currentDir = "/";
     this.history = [];
     this.historyIndex = -1;
     this.commandsRun = 0;
@@ -734,7 +734,7 @@ class TerminalEmulator {
    * Get the command prompt string
    */
   getPrompt() {
-    const pathDisplay = this.currentDir.replace("/home/user", "~");
+    const pathDisplay = this.currentDir === "/" ? "/portfolio" : "/portfolio" + this.currentDir;
     return `<span class="terminal-user">user</span>@<span class="terminal-host">portfolio</span>:<span class="terminal-path">${pathDisplay}</span>$`;
   }
 
