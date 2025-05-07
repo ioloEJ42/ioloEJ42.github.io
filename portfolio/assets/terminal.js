@@ -975,42 +975,71 @@ class TerminalEmulator {
           minute: "2-digit",
         });
 
+        output += `${permissions} 1 ${owner} ${group} ${size.toString().padStart(8)} ${date} `;
+        
         if (isDir) {
-          output += `${permissions} 2 ${owner} ${group} ${size
-            .toString()
-            .padStart(5)} ${date} <span class="directory">${item}/</span>\n`;
+          output += `<span class="directory">${item}/</span>`;
+        } else if (item.endsWith(".md") || item.endsWith(".txt")) {
+          output += `<span class="text-file">${item}</span>`;
+        } else if (item.endsWith(".exe") || item.endsWith(".sh")) {
+          output += `<span class="executable">${item}</span>`;
         } else {
-          output += `${permissions} 1 ${owner} ${group} ${size
-            .toString()
-            .padStart(5)} ${date} ${item}\n`;
+          output += item;
         }
+        output += "\n";
       }
     } else {
-      // Format as columns
+      // Format as columns with line breaks
       const items = [];
+      const maxWidth = 80; // Assume terminal width
+      let currentLine = "";
 
       for (const item in obj) {
         if (!showHidden && item.startsWith(".")) continue;
 
+        let formattedItem = "";
         const isDir = typeof obj[item] === "object";
+        
         if (isDir) {
-          items.push(`<span class="directory">${item}/</span>`);
+          formattedItem = `<span class="directory">${item}/</span>`;
         } else if (item.endsWith(".md") || item.endsWith(".txt")) {
-          items.push(`<span class="text-file">${item}</span>`);
+          formattedItem = `<span class="text-file">${item}</span>`;
         } else if (item.endsWith(".exe") || item.endsWith(".sh")) {
-          items.push(`<span class="executable">${item}</span>`);
+          formattedItem = `<span class="executable">${item}</span>`;
         } else if (
           item.endsWith(".png") ||
           item.endsWith(".jpg") ||
           item.endsWith(".svg")
         ) {
-          items.push(`<span class="image-file">${item}</span>`);
+          formattedItem = `<span class="image-file">${item}</span>`;
         } else {
-          items.push(item);
+          formattedItem = item;
+        }
+
+        // Add padding to align items
+        formattedItem = formattedItem.padEnd(20);
+
+        // Check if adding this item would exceed line width
+        if (currentLine.length + formattedItem.length > maxWidth) {
+          items.push(currentLine.trimEnd());
+          currentLine = "";
+        }
+        
+        currentLine += formattedItem;
+
+        // If current line is getting full, start a new line
+        if (currentLine.length >= maxWidth - 20) {
+          items.push(currentLine.trimEnd());
+          currentLine = "";
         }
       }
 
-      output = items.join("  ");
+      // Add any remaining items
+      if (currentLine.trimEnd()) {
+        items.push(currentLine.trimEnd());
+      }
+
+      output = items.join("\n");
     }
 
     this.write(output || "Directory is empty");
