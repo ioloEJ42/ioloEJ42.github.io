@@ -1,0 +1,391 @@
+:root {
+  --pure-white: #ffffff;
+  --pure-black: #000000;
+  --dot-size: 2px;
+  --dot-space: 22px;
+}
+
+/* Base styles */
+body {
+  background-color: var(--pure-black);
+  font-family: "Inter", monospace;
+  margin: 0;
+  min-height: 100vh;
+  color: var(--pure-white);
+  overflow-x: hidden;
+}
+
+/* Noise overlay */
+.noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  z-index: -2;
+  background: repeating-conic-gradient(
+    #000 0%,
+    transparent 0.00003%,
+    transparent 0.0003%,
+    transparent 0.003%
+  );
+  pointer-events: none;
+}
+
+/* Dot grid */
+.grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+    circle,
+    var(--pure-white) var(--dot-size),
+    transparent var(--dot-size)
+  );
+  background-size: var(--dot-space) var(--dot-space);
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Main container */
+#main-container {
+  margin: auto;
+  display: flex;
+  width: min(800px, 90%);
+  padding: min(15vw, 30px) 0;
+  box-sizing: border-box;
+  min-height: inherit;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+
+#main-content {
+  border: 2px solid var(--pure-white);
+  padding: min(10vw, 30px);
+  position: relative;
+  background: var(--pure-black);
+}
+
+/* Time */
+#current-time {
+  text-align: center;
+  font-size: min(15vw, 40px);
+  font-weight: bold;
+  margin-bottom: 30px;
+  font-family: monospace;
+}
+
+/* Search section */
+#search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid var(--pure-white);
+  box-sizing: border-box;
+  gap: 10px;
+  font-size: min(7vw, 14px);
+}
+
+.button {
+  background-color: var(--pure-black);
+  color: var(--pure-white);
+  border: 1px solid var(--pure-white);
+  padding: 8px 15px;
+  cursor: pointer;
+  font-family: monospace;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  background-color: var(--pure-white);
+  color: var(--pure-black);
+}
+
+#search-engine-select {
+  width: 100%;
+  appearance: none;
+}
+
+#search-input-cont {
+  flex: 1;
+}
+
+#search-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--pure-white);
+  color: var(--pure-white);
+  padding: 8px 0;
+  width: 100%;
+  font-family: monospace;
+  text-transform: uppercase;
+}
+
+#search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Links grid */
+#links {
+  display: grid;
+  font-size: min(7vw, 14px);
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top: 20px;
+}
+
+.link-group {
+  border: 1px solid var(--pure-white);
+  padding: 15px;
+}
+
+.link-group ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-group-title {
+  color: var(--pure-white);
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-family: monospace;
+  position: relative;
+}
+
+.link-group-title::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--pure-white);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+  color: var(--pure-white);
+  font-family: monospace;
+}
+
+/* Simple underline on hover */
+a:hover .link-text {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 650px) {
+  #search {
+    flex-direction: column;
+  }
+
+  #search-engine-cont,
+  #search-input-cont,
+  #search-button-cont {
+    width: 100%;
+  }
+
+  #links {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Modal button */
+.modal-button {
+  position: fixed;
+  right: 15px; /* reduced from 30px */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px; /* reduced from 40px */
+  height: 20px; /* reduced from 40px */
+  border-radius: 50%;
+  background: var(--pure-black);
+  color: var(--pure-white);
+  border: none; /* removed border */
+  font-family: monospace;
+  font-size: 12px; /* reduced from 20px */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 998;
+  opacity: 0.5; /* make it more subtle */
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--pure-black);
+  border: 2px solid var(--pure-white);
+  width: 80%;
+  height: 80%;
+  position: relative;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  font-family: monospace;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: var(--pure-black);
+  color: var(--pure-white);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+}
+
+/* Button hover effects */
+.modal-button:hover,
+.modal-button:hover {
+  opacity: 0.8;
+  background: var(--pure-black);
+  color: var(--pure-white);
+}
+
+#page-title {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.nav-button {
+  background: var(--pure-black);
+  color: var(--pure-white);
+  border: 1px solid var(--pure-white);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+}
+
+.nav-button:hover {
+  background: var(--pure-white);
+  color: var(--pure-black);
+}
+
+/* Modal content styling */
+.shortcuts-container {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(80vh - 100px);
+}
+
+.shortcut-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  font-family: monospace;
+  color: var(--pure-white);
+  text-transform: uppercase;
+}
+
+.shortcut-list {
+  display: grid;
+  gap: 10px;
+}
+
+.shortcut-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.shortcut-key {
+  color: var(--pure-white);
+  opacity: 0.8;
+}
+
+.shortcut-desc {
+  color: var(--pure-white);
+}
+
+/* Update modal content div */
+.modal-body {
+  height: calc(100% - 80px);
+  overflow-y: auto;
+}
+
+/* ======================Scrollbar settings=================== */
+/* Custom scrollbar styling */
+.modal-body::-webkit-scrollbar {
+  width: 8px; /* Narrow scrollbar */
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: var(--pure-black); /* Match modal background */
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--pure-white); /* Match theme color */
+  opacity: 0.5;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+/* Ensure modal body has proper height and scroll */
+.modal-body {
+  height: calc(100% - 100px); /* Adjust based on your header height */
+  overflow-y: auto;
+  padding-right: 20px; /* Prevent content from touching scrollbar */
+}
+
+/* Ensure shortcuts container fills space */
+.shortcuts-container {
+  height: 100%;
+  padding: 20px 0; /* Add some vertical padding */
+}

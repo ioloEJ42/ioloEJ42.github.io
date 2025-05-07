@@ -1,0 +1,101 @@
+{
+  "i3wm": {
+    "title": "i3WM_",
+    "sections": [
+      {
+        "name": "Basic Window Management",
+        "shortcuts": [
+          { "key": "$mod + Return", "desc": "Launch terminal with tmux" },
+          { "key": "$mod + q", "desc": "Kill (close) focused window" },
+          { "key": "$mod + d", "desc": "Launch dmenu program launcher" },
+          { "key": "$mod + f", "desc": "Toggle fullscreen mode" },
+          { "key": "$mod + Mouse", "desc": "Drag floating windows" }
+        ]
+      },
+      {
+        "name": "Window Focus",
+        "shortcuts": [
+          { "key": "$mod + j", "desc": "Focus left" },
+          { "key": "$mod + k", "desc": "Focus down" },
+          { "key": "$mod + l", "desc": "Focus up" },
+          { "key": "$mod + semicolon", "desc": "Focus right" },
+          { "key": "$mod + Left", "desc": "Focus left" },
+          { "key": "$mod + Down", "desc": "Focus down" },
+          { "key": "$mod + Up", "desc": "Focus up" },
+          { "key": "$mod + Right", "desc": "Focus right" },
+          { "key": "$mod + a", "desc": "Focus parent container" },
+          {
+            "key": "$mod + space",
+            "desc": "Toggle focus between tiling/floating windows"
+          }
+        ]
+      },
+      {
+        "name": "Window Movement",
+        "shortcuts": [
+          { "key": "$mod + Shift + j", "desc": "Move window left" },
+          { "key": "$mod + Shift + k", "desc": "Move window down" },
+          { "key": "$mod + Shift + l", "desc": "Move window up" },
+          { "key": "$mod + Shift + semicolon", "desc": "Move window right" },
+          { "key": "$mod + Shift + Left", "desc": "Move window left" },
+          { "key": "$mod + Shift + Down", "desc": "Move window down" },
+          { "key": "$mod + Shift + Up", "desc": "Move window up" },
+          { "key": "$mod + Shift + Right", "desc": "Move window right" }
+        ]
+      },
+      {
+        "name": "Layout Controls",
+        "shortcuts": [
+          { "key": "$mod + h", "desc": "Split horizontally" },
+          { "key": "$mod + v", "desc": "Split vertically" },
+          { "key": "$mod + s", "desc": "Layout stacking" },
+          { "key": "$mod + w", "desc": "Layout tabbed" },
+          { "key": "$mod + e", "desc": "Toggle split layout" },
+          { "key": "$mod + Shift + space", "desc": "Toggle floating mode" }
+        ]
+      },
+      {
+        "name": "Workspace Management",
+        "shortcuts": [
+          { "key": "$mod + (1-0)", "desc": "Switch to workspace 1-10" },
+          {
+            "key": "$mod + Shift + (1-0)",
+            "desc": "Move container to workspace 1-10"
+          }
+        ]
+      },
+      {
+        "name": "Resize Mode",
+        "shortcuts": [
+          { "key": "$mod + r", "desc": "Enter resize mode" },
+          { "key": "j", "desc": "Shrink width" },
+          { "key": "k", "desc": "Grow height" },
+          { "key": "l", "desc": "Shrink height" },
+          { "key": "semicolon", "desc": "Grow width" },
+          { "key": "Left", "desc": "Shrink width" },
+          { "key": "Down", "desc": "Grow height" },
+          { "key": "Up", "desc": "Shrink height" },
+          { "key": "Right", "desc": "Grow width" },
+          { "key": "Return/Escape/$mod + r", "desc": "Exit resize mode" }
+        ]
+      },
+      {
+        "name": "System Controls",
+        "shortcuts": [
+          { "key": "$mod + Shift + c", "desc": "Reload configuration" },
+          { "key": "$mod + Shift + r", "desc": "Restart i3" },
+          { "key": "$mod + Shift + e", "desc": "Exit i3" }
+        ]
+      },
+      {
+        "name": "Audio Controls",
+        "shortcuts": [
+          { "key": "XF86AudioRaiseVolume", "desc": "Increase volume by 10%" },
+          { "key": "XF86AudioLowerVolume", "desc": "Decrease volume by 10%" },
+          { "key": "XF86AudioMute", "desc": "Toggle audio mute" },
+          { "key": "XF86AudioMicMute", "desc": "Toggle microphone mute" }
+        ]
+      }
+    ]
+  }
+}
