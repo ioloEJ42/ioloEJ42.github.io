@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Content Editor</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="dark-mode">
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo-area">
+        <h1>Portfolio Editor</h1>
+      </div>
+      <div class="actions">
+        <button id="theme-toggle" class="icon-btn">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <h2>Content Types</h2>
+          <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="projects">Projects</button>
+            <button class="tab-btn" data-tab="blogs">Blog Posts</button>
+          </nav>
+        </div>
+
+        <div class="sidebar-section content-list" id="content-list">
+          <div class="section-header">
+            <h3 id="list-title">Projects</h3>
+            <button id="new-item-btn" class="primary-btn">
+              <i class="fas fa-plus"></i> New
+            </button>
+          </div>
+          <div id="items-container" class="items-container">
+            <div class="loading-indicator">Loading...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-area">
+        <div id="welcome-screen" class="welcome-screen">
+          <div class="welcome-content">
+            <i class="fas fa-edit welcome-icon"></i>
+            <h2>Welcome to the Portfolio Editor</h2>
+            <p>Select a content item from the sidebar or create a new one to get started.</p>
+          </div>
+        </div>
+
+        <div id="editor-container" class="editor-container" style="display: none;">
+          <div class="editor-header">
+            <h2 id="editor-title">New Item</h2>
+            <div class="editor-actions">
+              <button id="preview-btn" class="secondary-btn">
+                <i class="fas fa-eye"></i> Preview
+              </button>
+              <button id="save-btn" class="primary-btn">
+                <i class="fas fa-download"></i> Download
+              </button>
+              <button id="cancel-btn" class="outline-btn">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-content">
+            <div class="form-container">
+              <!-- Metadata Form Section -->
+              <div class="form-section">
+                <h3>Metadata</h3>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="item-id">ID</label>
+                    <input type="text" id="item-id" placeholder="e.g., my-project-name" required>
+                    <small>Use lowercase letters, numbers, and hyphens. This will be used in URLs.</small>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="item-title">Title</label>
+                    <input type="text" id="item-title" placeholder="Project/Blog Title" required>
+                  </div>
+                  
+                  <div class="form-group full-width">
+                    <label for="item-description">Short Description</label>
+                    <textarea id="item-description" rows="2" placeholder="Brief description for listings" required></textarea>
+                  </div>
+                  
+                  <div class="form-group" id="date-group">
+                    <label for="item-date">Date</label>
+                    <input type="date" id="item-date" required>
+                  </div>
+                  
+                  <div class="form-group" id="author-group" style="display: none;">
+                    <label for="item-author">Author</label>
+                    <input type="text" id="item-author" placeholder="Your Name">
+                  </div>
+                  
+                  <div class="form-group" id="featured-group">
+                    <div class="checkbox-container">
+                      <input type="checkbox" id="item-featured">
+                      <label for="item-featured">Featured Item</label>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group" id="github-group">
+                    <label for="item-github">GitHub URL</label>
+                    <input type="url" id="item-github" placeholder="https://github.com/username/repo">
+                  </div>
+                  
+                  <div class="form-group" id="live-group">
+                    <label for="item-live">Live Demo URL</label>
+                    <input type="url" id="item-live" placeholder="https://example.com">
+                  </div>
+                  
+                  <div class="form-group full-width">
+                    <label for="item-tags">Tags</label>
+                    <div class="tags-input-container">
+                      <input type="text" id="item-tags-input" placeholder="Add tag and press Enter">
+                      <button id="add-tag-btn" class="tag-add-btn">Add</button>
+                    </div>
+                    <div id="tags-container" class="tags-container"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Content Form Section -->
+              <div class="form-section">
+                <h3>Content</h3>
+                <div class="content-editor-container">
+                  <div class="editor-toolbar">
+                    <div class="editor-mode-toggle">
+                      <button class="editor-mode-btn active" data-mode="html">HTML</button>
+                      <button class="editor-mode-btn" data-mode="preview">Preview</button>
+                    </div>
+                    <div class="formatting-tools">
+                      <button type="button" class="tool-btn" data-format="h2" title="Heading 2">H2</button>
+                      <button type="button" class="tool-btn" data-format="h3" title="Heading 3">H3</button>
+                      <button type="button" class="tool-btn" data-format="p" title="Paragraph">P</button>
+                      <button type="button" class="tool-btn" data-format="strong" title="Bold">B</button>
+                      <button type="button" class="tool-btn" data-format="em" title="Italic">I</button>
+                      <button type="button" class="tool-btn" data-format="ul" title="Bullet List">
+                        <i class="fas fa-list-ul"></i>
+                      </button>
+                      <button type="button" class="tool-btn" data-format="ol" title="Numbered List">
+                        <i class="fas fa-list-ol"></i>
+                      </button>
+                      <button type="button" class="tool-btn" data-format="li" title="List Item">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <button type="button" class="tool-btn" data-format="a" title="Link">
+                        <i class="fas fa-link"></i>
+                      </button>
+                      <button type="button" class="tool-btn" data-format="code" title="Code">
+                        <i class="fas fa-code"></i>
+                      </button>
+                      <button type="button" class="tool-btn" data-format="pre" title="Code Block">
+                        <i class="fas fa-file-code"></i>
+                      </button>
+                      <button type="button" class="tool-btn" data-format="img" title="Image">
+                        <i class="fas fa-image"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="editor-content-area">
+                    <div id="html-editor" class="html-editor-view">
+                      <textarea id="content-html" placeholder="Enter HTML content here"></textarea>
+                    </div>
+                    <div id="preview-editor" class="preview-editor-view" style="display: none;">
+                      <div id="content-preview" class="content-preview"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="json-preview-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>JSON Preview</h3>
+        <button id="close-preview-modal" class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="tabs">
+          <button class="modal-tab active" data-target="metadata-preview">Metadata</button>
+          <button class="modal-tab" data-target="content-file-preview">Content File</button>
+        </div>
+        <div class="tab-content">
+          <div id="metadata-preview" class="code-preview active">
+            <pre id="metadata-json"></pre>
+          </div>
+          <div id="content-file-preview" class="code-preview">
+            <pre id="content-file-json"></pre>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="download-json-btn" class="primary-btn">
+            <i class="fas fa-download"></i> Download All
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notification" class="notification">
+    <div class="notification-content">
+      <i class="notification-icon fas fa-info-circle"></i>
+      <span id="notification-message">Message here</span>
+    </div>
+  </div>
+
+  <script src="editor.js"></script>
+</body>
+</html> 
