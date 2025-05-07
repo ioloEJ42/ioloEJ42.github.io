@@ -1,0 +1,239 @@
+{
+  "name": "Elrond Stormrider",
+  "class": "Wizard 5",
+  "race": "High Elf",
+  "background": "Sage",
+  "theme": "wizard",
+  
+  "abilities": {
+    "strength": {
+      "score": "8",
+      "modifier": "-1"
+    },
+    "dexterity": {
+      "score": "14",
+      "modifier": "+2"
+    },
+    "constitution": {
+      "score": "12",
+      "modifier": "+1"
+    },
+    "intelligence": {
+      "score": "18",
+      "modifier": "+4"
+    },
+    "wisdom": {
+      "score": "12",
+      "modifier": "+1"
+    },
+    "charisma": {
+      "score": "10",
+      "modifier": "+0"
+    }
+  },
+  
+  "combat": {
+    "armorClass": "12",
+    "initiative": "+2",
+    "speed": "30 ft",
+    "hp": {
+      "current": "28",
+      "max": "28"
+    },
+    "hitDice": "5d6"
+  },
+  
+  "savingThrows": {
+    "strength": {
+      "proficient": false,
+      "value": "-1"
+    },
+    "dexterity": {
+      "proficient": false,
+      "value": "+2"
+    },
+    "constitution": {
+      "proficient": false,
+      "value": "+1"
+    },
+    "intelligence": {
+      "proficient": true,
+      "value": "+7"
+    },
+    "wisdom": {
+      "proficient": true,
+      "value": "+4"
+    },
+    "charisma": {
+      "proficient": false,
+      "value": "+0"
+    }
+  },
+  
+  "skills": {
+    "acrobatics": {
+      "proficient": false,
+      "value": "+2"
+    },
+    "animalHandling": {
+      "proficient": false,
+      "value": "+1"
+    },
+    "arcana": {
+      "proficient": true,
+      "value": "+7"
+    },
+    "athletics": {
+      "proficient": false,
+      "value": "-1"
+    },
+    "deception": {
+      "proficient": false,
+      "value": "+0"
+    },
+    "history": {
+      "proficient": true,
+      "value": "+7"
+    },
+    "insight": {
+      "proficient": true,
+      "value": "+4"
+    },
+    "intimidation": {
+      "proficient": false,
+      "value": "+0"
+    },
+    "investigation": {
+      "proficient": true,
+      "value": "+7"
+    },
+    "medicine": {
+      "proficient": false,
+      "value": "+1"
+    },
+    "nature": {
+      "proficient": false,
+      "value": "+4"
+    },
+    "perception": {
+      "proficient": false,
+      "value": "+1"
+    },
+    "performance": {
+      "proficient": false,
+      "value": "+0"
+    },
+    "persuasion": {
+      "proficient": false,
+      "value": "+0"
+    },
+    "religion": {
+      "proficient": false,
+      "value": "+4"
+    },
+    "sleightOfHand": {
+      "proficient": false,
+      "value": "+2"
+    },
+    "stealth": {
+      "proficient": false,
+      "value": "+2"
+    },
+    "survival": {
+      "proficient": false,
+      "value": "+1"
+    }
+  },
+  
+  "weapons": [
+    {
+      "name": "Quarterstaff",
+      "attackBonus": "+2",
+      "damage": "1d6-1 bludgeoning"
+    },
+    {
+      "name": "Dagger",
+      "attackBonus": "+5",
+      "damage": "1d4+2 piercing"
+    },
+    {
+      "name": "Fire Bolt",
+      "attackBonus": "+7",
+      "damage": "2d10 fire"
+    }
+  ],
+  
+  "features": "Spellcasting: As a wizard, you can cast wizard spells.\n\nArcane Recovery: Once per day when you finish a short rest, you can recover a number of spell slots with a combined level that is equal to or less than half your wizard level (rounded up).\n\nArcane Tradition (School of Evocation): When you cast an evocation spell that forces other creatures to make a saving throw, you can protect some of those creatures from the spell's full force.\n\nSculpt Spells: When you cast an evocation spell that affects other creatures that you can see, you can choose a number of them equal to 1 + the spell's level. The chosen creatures automatically succeed on their saving throws against the spell, and they take no damage if they would normally take half damage from it.\n\nElf Traits:\n• Darkvision: 60 feet\n• Fey Ancestry: Advantage on saving throws against being charmed, and magic can't put you to sleep.\n• Trance: You don't need to sleep. Instead, you meditate deeply, remaining semiconscious, for 4 hours a day.\n• Cantrip: You know one cantrip of your choice from the wizard spell list.\n• Extra Language: You can speak, read, and write one extra language of your choice.",
+  
+  "inventory": "Spellbook\nComponent pouch\nQuarterstaff\nDagger\nScholar's pack\nArcane focus (crystal)\n15 gold pieces\nBackpack\nBedroll\nMess kit\nTinderbox\n10 torches\n10 days of rations\nWaterskin\n50 feet of hempen rope\nWizard's robes\nSmall crystal orb\nScroll of identify\nBook of arcane history\n2 potions of healing",
+  
+  "spellcasting": {
+    "class": "Wizard",
+    "ability": "int",
+    "saveDC": "15",
+    "attackBonus": "+7",
+    "slots": {
+      "1": {
+        "used": "1",
+        "total": "4"
+      },
+      "2": {
+        "used": "0",
+        "total": "3"
+      },
+      "3": {
+        "used": "0",
+        "total": "2"
+      },
+      "4": {
+        "used": "0",
+        "total": "0"
+      },
+      "5": {
+        "used": "0",
+        "total": "0"
+      },
+      "6": {
+        "used": "0",
+        "total": "0"
+      },
+      "7": {
+        "used": "0",
+        "total": "0"
+      },
+      "8": {
+        "used": "0",
+        "total": "0"
+      },
+      "9": {
+        "used": "0",
+        "total": "0"
+      }
+    }
+  },
+  
+  "spells": {
+    "cantrips": "Fire Bolt\nMage Hand\nPrestidigitation\nLight",
+    "level1": "Magic Missile\nShield\nMage Armor\nIdentify\nFind Familiar\nDetect Magic",
+    "level2": "Misty Step\nScorching Ray\nWeb",
+    "level3": "Fireball\nCounterspell",
+    "level4": "",
+    "level5": "",
+    "level6": "",
+    "level7": "",
+    "level8": "",
+    "level9": ""
+  },
+  
+  "appearance": "Elrond is a slender high elf with silver hair that reaches just past his shoulders. His eyes are a piercing blue that seem to hold centuries of wisdom despite his relatively young age for an elf. He typically dresses in deep blue robes adorned with silver embroidery depicting arcane symbols.",
+  
+  "personalBackground": "Elrond grew up in a hidden elven enclave dedicated to the study of arcane arts. From an early age, he showed a natural aptitude for magic, especially evocation spells. He left his home to broaden his knowledge, traveling to human cities to study in libraries and under different masters. His ultimate goal is to discover lost arcane knowledge and one day establish his own school of magic.",
+  
+  "personalityTraits": "I'm used to helping out those who aren't as smart as I am, and I patiently explain anything and everything to others. I've read every book in the world's greatest libraries—or I like to boast that I have.",
+  
+  "ideals": "Knowledge. The path to power and self-improvement is through knowledge.",
+  
+  "bonds": "I've been searching my whole life for the answer to a certain question. I sold my soul for knowledge. I hope to someday buy it back with my findings.",
+  
+  "flaws": "I am easily distracted by the promise of information. Most people scream and run when they see a demon. I stop and take notes on its anatomy."
+} 

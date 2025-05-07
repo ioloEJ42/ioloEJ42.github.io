@@ -5,26 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DnD Character Sheet</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="container">
-      <!-- Character Selection and Theme Options -->
+    <!-- Initial character selection screen -->
+    <div id="character-select-screen" class="character-select-screen">
+      <div class="select-container">
+        <h1>D&D Character Sheet</h1>
+        <div class="select-options">
+          <button id="load-character-btn" class="primary-btn">
+            <span class="icon">📂</span> Load Character
+          </button>
+          <button id="new-character-btn" class="secondary-btn">
+            <span class="icon">✨</span> New Character
+          </button>
+          <input type="file" id="character-file-input" accept=".json" style="display: none;" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Main character sheet (initially hidden) -->
+    <div id="character-sheet" class="container" style="display: none;">
+      <!-- Character Controls and Theme Options -->
       <div class="top-controls">
         <div class="control-group">
-          <label for="character-select">Character:</label>
-          <select id="character-select">
-            <option value="">-- Select Character --</option>
-            <option value="import">Import Character...</option>
-            <!-- Will be populated via JS -->
-          </select>
-          <button id="save-button">Save Character</button>
-          <button id="new-character">New Character</button>
-          <input
-            type="file"
-            id="import-file"
-            accept=".json"
-            style="display: none"
-          />
+          <button id="back-btn" class="outline-btn">Back</button>
+          <button id="save-character-btn" class="primary-btn">Download Character</button>
         </div>
 
         <div class="tabs">
@@ -91,11 +99,7 @@
           </div>
           <div class="input-group">
             <label for="character-background">Background</label>
-            <input
-              type="text"
-              id="character-background"
-              name="character-background"
-            />
+            <input type="text" id="character-background" name="character-background" />
           </div>
         </div>
 
@@ -104,80 +108,44 @@
             <div class="abilities">
               <div class="ability">
                 <label>Strength</label>
-                <input
-                  type="number"
-                  class="ability-score"
-                  id="str-score"
-                  min="1"
-                  max="30"
-                />
-                <div class="ability-modifier" id="str-mod">+0</div>
+                <input type="text" class="ability-score" id="str-score" />
+                <input type="text" class="ability-modifier" id="str-mod" placeholder="+0" />
               </div>
               <div class="ability">
                 <label>Dexterity</label>
-                <input
-                  type="number"
-                  class="ability-score"
-                  id="dex-score"
-                  min="1"
-                  max="30"
-                />
-                <div class="ability-modifier" id="dex-mod">+0</div>
+                <input type="text" class="ability-score" id="dex-score" />
+                <input type="text" class="ability-modifier" id="dex-mod" placeholder="+0" />
               </div>
               <div class="ability">
                 <label>Constitution</label>
-                <input
-                  type="number"
-                  class="ability-score"
-                  id="con-score"
-                  min="1"
-                  max="30"
-                />
-                <div class="ability-modifier" id="con-mod">+0</div>
+                <input type="text" class="ability-score" id="con-score" />
+                <input type="text" class="ability-modifier" id="con-mod" placeholder="+0" />
               </div>
               <div class="ability">
                 <label>Intelligence</label>
-                <input
-                  type="number"
-                  class="ability-score"
-                  id="int-score"
-                  min="1"
-                  max="30"
-                />
-                <div class="ability-modifier" id="int-mod">+0</div>
+                <input type="text" class="ability-score" id="int-score" />
+                <input type="text" class="ability-modifier" id="int-mod" placeholder="+0" />
               </div>
               <div class="ability">
                 <label>Wisdom</label>
-                <input
-                  type="number"
-                  class="ability-score"
-                  id="wis-score"
-                  min="1"
-                  max="30"
-                />
-                <div class="ability-modifier" id="wis-mod">+0</div>
+                <input type="text" class="ability-score" id="wis-score" />
+                <input type="text" class="ability-modifier" id="wis-mod" placeholder="+0" />
               </div>
               <div class="ability">
                 <label>Charisma</label>
-                <input
-                  type="number"
-                  class="ability-score"
-                  id="cha-score"
-                  min="1"
-                  max="30"
-                />
-                <div class="ability-modifier" id="cha-mod">+0</div>
+                <input type="text" class="ability-score" id="cha-score" />
+                <input type="text" class="ability-modifier" id="cha-mod" placeholder="+0" />
               </div>
             </div>
 
             <div class="combat-stats">
               <div class="stat-box">
                 <label>Armor Class</label>
-                <input type="number" id="armor-class" />
+                <input type="text" id="armor-class" />
               </div>
               <div class="stat-box">
                 <label>Initiative</label>
-                <input type="number" id="initiative" />
+                <input type="text" id="initiative" />
               </div>
               <div class="stat-box">
                 <label>Speed</label>
@@ -186,9 +154,9 @@
               <div class="stat-box hp-container">
                 <label>Hit Points</label>
                 <div class="hp-tracker">
-                  <input type="number" id="current-hp" class="hp-current" />
+                  <input type="text" id="current-hp" class="hp-current" placeholder="Current" />
                   <span class="hp-separator">/</span>
-                  <input type="number" id="max-hp" class="hp-max" />
+                  <input type="text" id="max-hp" class="hp-max" placeholder="Max" />
                 </div>
                 <div class="hp-bar-container">
                   <div class="hp-bar" id="hp-bar"></div>
@@ -205,33 +173,33 @@
             <div class="saving-throws">
               <h3>Saving Throws</h3>
               <div class="save">
-                <div class="proficiency-box" data-state="none"></div>
-                <input type="text" class="save-value" />
+                <input type="checkbox" class="proficiency-check" />
+                <input type="text" class="save-value" placeholder="+" />
                 <label>Strength</label>
               </div>
               <div class="save">
-                <div class="proficiency-box" data-state="none"></div>
-                <input type="text" class="save-value" />
+                <input type="checkbox" class="proficiency-check" />
+                <input type="text" class="save-value" placeholder="+" />
                 <label>Dexterity</label>
               </div>
               <div class="save">
-                <div class="proficiency-box" data-state="none"></div>
-                <input type="text" class="save-value" />
+                <input type="checkbox" class="proficiency-check" />
+                <input type="text" class="save-value" placeholder="+" />
                 <label>Constitution</label>
               </div>
               <div class="save">
-                <div class="proficiency-box" data-state="none"></div>
-                <input type="text" class="save-value" />
+                <input type="checkbox" class="proficiency-check" />
+                <input type="text" class="save-value" placeholder="+" />
                 <label>Intelligence</label>
               </div>
               <div class="save">
-                <div class="proficiency-box" data-state="none"></div>
-                <input type="text" class="save-value" />
+                <input type="checkbox" class="proficiency-check" />
+                <input type="text" class="save-value" placeholder="+" />
                 <label>Wisdom</label>
               </div>
               <div class="save">
-                <div class="proficiency-box" data-state="none"></div>
-                <input type="text" class="save-value" />
+                <input type="checkbox" class="proficiency-check" />
+                <input type="text" class="save-value" placeholder="+" />
                 <label>Charisma</label>
               </div>
             </div>
@@ -239,96 +207,95 @@
             <div class="skills">
               <h3>Skills</h3>
               <div class="skill-list">
-                <!-- Each skill is more compact -->
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Acr (Dex)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Acrobatics (Dex)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Ani (Wis)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Animal Handling (Wis)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Arc (Int)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Arcana (Int)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Ath (Str)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Athletics (Str)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Dec (Cha)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Deception (Cha)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>His (Int)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>History (Int)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Ins (Wis)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Insight (Wis)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Int (Cha)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Intimidation (Cha)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Inv (Int)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Investigation (Int)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Med (Wis)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Medicine (Wis)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Nat (Int)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Nature (Int)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Per (Wis)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Perception (Wis)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Perf (Cha)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Performance (Cha)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Pers (Cha)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Persuasion (Cha)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Rel (Int)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Religion (Int)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>SoH (Dex)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Sleight of Hand (Dex)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Ste (Dex)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Stealth (Dex)</label>
                 </div>
                 <div class="skill">
-                  <div class="proficiency-box" data-state="none"></div>
-                  <input type="text" class="skill-value" />
-                  <label>Sur (Wis)</label>
+                  <input type="checkbox" class="proficiency-check" />
+                  <input type="text" class="skill-value" placeholder="+" />
+                  <label>Survival (Wis)</label>
                 </div>
               </div>
             </div>
@@ -348,38 +315,34 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td contenteditable="true"></td>
-                      <td contenteditable="true"></td>
-                      <td contenteditable="true"></td>
+                      <td><input type="text" class="weapon-name" /></td>
+                      <td><input type="text" class="weapon-bonus" /></td>
+                      <td><input type="text" class="weapon-damage" /></td>
                     </tr>
                     <tr>
-                      <td contenteditable="true"></td>
-                      <td contenteditable="true"></td>
-                      <td contenteditable="true"></td>
+                      <td><input type="text" class="weapon-name" /></td>
+                      <td><input type="text" class="weapon-bonus" /></td>
+                      <td><input type="text" class="weapon-damage" /></td>
                     </tr>
                     <tr>
-                      <td contenteditable="true"></td>
-                      <td contenteditable="true"></td>
-                      <td contenteditable="true"></td>
+                      <td><input type="text" class="weapon-name" /></td>
+                      <td><input type="text" class="weapon-bonus" /></td>
+                      <td><input type="text" class="weapon-damage" /></td>
                     </tr>
                   </tbody>
                 </table>
-                <button id="add-weapon">Add Weapon</button>
+                <button id="add-weapon" class="secondary-btn">Add Weapon</button>
               </div>
             </div>
 
             <h3>Features & Traits</h3>
             <div id="features-container" class="collapsible-content">
-              <div class="features resizable-container" contenteditable="true">
-                <!-- Editable features section -->
-              </div>
+              <textarea id="features" class="features-text" rows="8" placeholder="Enter features and traits here..."></textarea>
             </div>
 
             <h3>Equipment & Inventory</h3>
             <div id="inventory-container" class="collapsible-content">
-              <div class="inventory resizable-container" contenteditable="true">
-                <!-- Editable inventory section -->
-              </div>
+              <textarea id="inventory" class="inventory-text" rows="8" placeholder="Enter inventory items here..."></textarea>
             </div>
           </div>
         </div>
@@ -403,273 +366,123 @@
             </div>
             <div class="input-group">
               <label for="spell-save-dc">Spell Save DC</label>
-              <input type="number" id="spell-save-dc" />
+              <input type="text" id="spell-save-dc" />
             </div>
             <div class="input-group">
               <label for="spell-attack-bonus">Attack Bonus</label>
-              <input type="number" id="spell-attack-bonus" />
+              <input type="text" id="spell-attack-bonus" />
             </div>
           </div>
 
           <div class="spell-slots">
             <h3>Spell Slots</h3>
-            <!-- Spell slot tracker for each level -->
+            <!-- Simplified spell slot tracker for each level -->
             <div class="spell-slot-level">
               <label>Level 1:</label>
-              <input
-                type="number"
-                id="slots-used-1"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-1" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-1"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-1" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 2:</label>
-              <input
-                type="number"
-                id="slots-used-2"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-2" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-2"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-2" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 3:</label>
-              <input
-                type="number"
-                id="slots-used-3"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-3" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-3"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-3" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 4:</label>
-              <input
-                type="number"
-                id="slots-used-4"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-4" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-4"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-4" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 5:</label>
-              <input
-                type="number"
-                id="slots-used-5"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-5" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-5"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-5" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 6:</label>
-              <input
-                type="number"
-                id="slots-used-6"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-6" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-6"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-6" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 7:</label>
-              <input
-                type="number"
-                id="slots-used-7"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-7" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-7"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-7" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 8:</label>
-              <input
-                type="number"
-                id="slots-used-8"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-8" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-8"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-8" class="slot-total" />
             </div>
             <div class="spell-slot-level">
               <label>Level 9:</label>
-              <input
-                type="number"
-                id="slots-used-9"
-                min="0"
-                class="slot-used"
-              />
+              <input type="text" id="slots-used-9" class="slot-used" />
               /
-              <input
-                type="number"
-                id="slots-total-9"
-                min="0"
-                class="slot-total"
-              />
+              <input type="text" id="slots-total-9" class="slot-total" />
             </div>
           </div>
         </div>
 
         <div class="spell-content">
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>Cantrips</h3>
-            <div
-              id="cantrips-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable cantrips list -->
-            </div>
+            <textarea id="cantrips" class="spell-text" rows="6" placeholder="Enter cantrips here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>1st Level</h3>
-            <div
-              id="level-1-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 1st level spell list -->
-            </div>
+            <textarea id="level-1-spells" class="spell-text" rows="6" placeholder="Enter 1st level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>2nd Level</h3>
-            <div
-              id="level-2-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 2nd level spell list -->
-            </div>
+            <textarea id="level-2-spells" class="spell-text" rows="6" placeholder="Enter 2nd level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>3rd Level</h3>
-            <div
-              id="level-3-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 3rd level spell list -->
-            </div>
+            <textarea id="level-3-spells" class="spell-text" rows="6" placeholder="Enter 3rd level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>4th Level</h3>
-            <div
-              id="level-4-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 4th level spell list -->
-            </div>
+            <textarea id="level-4-spells" class="spell-text" rows="6" placeholder="Enter 4th level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>5th Level</h3>
-            <div
-              id="level-5-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 5th level spell list -->
-            </div>
+            <textarea id="level-5-spells" class="spell-text" rows="6" placeholder="Enter 5th level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>6th Level</h3>
-            <div
-              id="level-6-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 6th level spell list -->
-            </div>
+            <textarea id="level-6-spells" class="spell-text" rows="6" placeholder="Enter 6th level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>7th Level</h3>
-            <div
-              id="level-7-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 7th level spell list -->
-            </div>
+            <textarea id="level-7-spells" class="spell-text" rows="6" placeholder="Enter 7th level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>8th Level</h3>
-            <div
-              id="level-8-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 8th level spell list -->
-            </div>
+            <textarea id="level-8-spells" class="spell-text" rows="6" placeholder="Enter 8th level spells here..."></textarea>
           </div>
 
-          <div class="spell-list">
+          <div class="spell-level-section">
             <h3>9th Level</h3>
-            <div
-              id="level-9-spells-container"
-              class="spell-level resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable 9th level spell list -->
-            </div>
+            <textarea id="level-9-spells" class="spell-text" rows="6" placeholder="Enter 9th level spells here..."></textarea>
           </div>
         </div>
       </div>
@@ -681,70 +494,37 @@
             <div class="character-image">
               <div id="image-placeholder">
                 <label for="upload-image">Upload Image</label>
-                <input
-                  type="file"
-                  id="upload-image"
-                  accept="image/*"
-                  style="display: none"
-                />
+                <input type="file" id="upload-image" accept="image/*" style="display: none" />
               </div>
               <img id="character-portrait" style="display: none" />
             </div>
-            <div
-              class="appearance-notes resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable appearance description -->
-            </div>
+            <textarea id="appearance-notes" class="appearance-text" rows="8" placeholder="Describe your character's appearance here..."></textarea>
           </div>
 
           <div class="character-background">
             <h3>Character Background</h3>
-            <div
-              class="background-content resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable background story -->
-            </div>
+            <textarea id="background-content" class="background-text" rows="8" placeholder="Describe your character's background here..."></textarea>
           </div>
 
-          <div class="personality">
-            <h3>Personality Traits</h3>
-            <div
-              class="personality-content resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable personality traits -->
+          <div class="character-traits">
+            <div class="trait-section">
+              <h3>Personality Traits</h3>
+              <textarea id="personality-traits" class="trait-text" rows="4" placeholder="Enter personality traits here..."></textarea>
             </div>
-          </div>
 
-          <div class="ideals">
-            <h3>Ideals</h3>
-            <div
-              class="ideals-content resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable ideals -->
+            <div class="trait-section">
+              <h3>Ideals</h3>
+              <textarea id="ideals" class="trait-text" rows="4" placeholder="Enter ideals here..."></textarea>
             </div>
-          </div>
 
-          <div class="bonds">
-            <h3>Bonds</h3>
-            <div
-              class="bonds-content resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable bonds -->
+            <div class="trait-section">
+              <h3>Bonds</h3>
+              <textarea id="bonds" class="trait-text" rows="4" placeholder="Enter bonds here..."></textarea>
             </div>
-          </div>
 
-          <div class="flaws">
-            <h3>Flaws</h3>
-            <div
-              class="flaws-content resizable-container"
-              contenteditable="true"
-            >
-              <!-- Editable flaws -->
+            <div class="trait-section">
+              <h3>Flaws</h3>
+              <textarea id="flaws" class="trait-text" rows="4" placeholder="Enter flaws here..."></textarea>
             </div>
           </div>
         </div>

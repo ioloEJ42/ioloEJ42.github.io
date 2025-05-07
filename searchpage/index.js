@@ -71,9 +71,9 @@ const modalContent = document.getElementById("modal-content");
 
 // Page configuration
 const pages = [
-  { title: "i3WM_", jsonFile: "/json/i3wm.json" },
-  { title: "TMUX_", jsonFile: "/json/tmux.json" },
-  { title: "NANO_", jsonFile: "/json/nano.json" },
+  { title: "i3WM_", jsonFile: "json/i3wm.json" },
+  { title: "TMUX_", jsonFile: "json/tmux.json" },
+  { title: "NANO_", jsonFile: "json/nano.json" },
 ];
 
 let currentPageIndex = 0;
