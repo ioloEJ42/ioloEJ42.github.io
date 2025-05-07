@@ -967,8 +967,8 @@ class TerminalEmulator {
       .sort((a, b) => a.name.localeCompare(b.name));
 
     if (showDetails) {
-      // Ultra-simplified approach - using plain text with <pre> tags
-      let output = `<pre>total ${items.length}\n`;
+      // Ultra-simplified approach - using plain text with <pre> tags but with custom class
+      let output = `<pre class="terminal-ls-output">total ${items.length}\n`;
       
       // Calculate padding for size column
       const maxSize = Math.max(...items.map(item => item.size.toString().length));

@@ -1041,3 +1041,14 @@ textarea.form-input {
   color: var(--text-color);
   display: block;
 }
+
+/* Add this to ensure the ls -l output has no background or border */
+.terminal-ls-output {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: "JetBrains Mono", monospace;
+  white-space: pre;
+  overflow-x: auto;
+}
