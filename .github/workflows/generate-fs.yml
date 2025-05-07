@@ -6,10 +6,17 @@ on:
       - main  # or master, depending on your default branch
     paths:
       - 'portfolio/**'  # Only trigger when files in portfolio directory change
+      # Explicitly exclude the filesystem.json to prevent loops
+      - '!portfolio/data/filesystem.json'
 
 jobs:
   generate-fs:
     runs-on: ubuntu-latest
+    
+    # Add concurrency to cancel any running duplicate jobs
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     
     steps:
       - name: Checkout repository
@@ -24,9 +31,20 @@ jobs:
         run: |
           node portfolio/data/generate-fs.js
         
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -n "$(git status --porcelain portfolio/data/filesystem.json)" ]]; then
+            echo "::set-output name=has_changes::true"
+          else
+            echo "::set-output name=has_changes::false"
+          fi
+
       - name: Commit and push if changed
+        if: steps.check_changes.outputs.has_changes == 'true'
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add portfolio/data/filesystem.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generate filesystem.json" && git push) 
+          git commit -m "Auto-generate filesystem.json [skip ci]" 
+          git push 
