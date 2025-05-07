@@ -6,4 +6,4 @@ This is the portfolio section of my website. It features:
 - Blog posts
 - Interactive elements
 
-The filesystem is automatically generated using GitHub Actions. 
+The filesystem is automatically generated using    GitHub Actions.
