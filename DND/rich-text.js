@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Clone toolbar template
     const toolbar = toolbarTemplate.querySelector('.rich-text-toolbar').cloneNode(true);
     
+    // Hide toolbar by default (only show when editor is focused)
+    toolbar.classList.add('toolbar-hidden');
+    
     // Insert toolbar before editor
     editor.parentNode.insertBefore(container, editor);
     container.appendChild(toolbar);
@@ -87,7 +90,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update button states when editor is focused
     editor.addEventListener('keyup', updateToolbar);
     editor.addEventListener('mouseup', updateToolbar);
-    editor.addEventListener('focus', updateToolbar);
+    
+    // Show toolbar on focus
+    editor.addEventListener('focus', () => {
+      // Show toolbar
+      toolbar.classList.remove('toolbar-hidden');
+      // Update button states
+      updateToolbar();
+    });
+    
+    // Hide toolbar on blur
+    editor.addEventListener('blur', (e) => {
+      // Only hide if not clicking on the toolbar itself
+      // This prevents the toolbar from disappearing when clicking its buttons
+      if (!toolbar.contains(e.relatedTarget)) {
+        // Small delay to ensure button click is processed
+        setTimeout(() => {
+          // Double check we're not interacting with the toolbar
+          if (!toolbar.contains(document.activeElement)) {
+            toolbar.classList.add('toolbar-hidden');
+          }
+        }, 100);
+      }
+    });
     
     function updateToolbar() {
       buttons.forEach(button => {
