@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add JSZip for folder download -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- Rich text functionality -->
@@ -17,7 +17,7 @@
     <!-- Initial character selection screen -->
     <div id="character-select-screen" class="character-select-screen">
       <div class="select-container">
-        <h1>D&D Character Sheet</h1>
+        <h1 class="medieval-title">D&D Character Sheet</h1>
         <div class="select-options">
           <div class="upload-options">
             <button id="load-character-btn" class="primary-btn">Load Character</button>
@@ -65,6 +65,7 @@
 
         <div class="control-group">
           <select id="theme-select" aria-label="Select theme">
+            <option value="medieval">Medieval</option>
             <option value="light">Light</option>
             <option value="dark">Dark</option>
             <option value="parchment">Parchment</option>
@@ -200,31 +201,37 @@
               <h3>Saving Throws</h3>
               <div class="save">
                 <input type="checkbox" class="proficiency-check" />
+                <span class="skill-tooltip">Not Proficient</span>
                 <input type="text" class="save-value" placeholder="+" />
                 <label>Strength</label>
               </div>
               <div class="save">
                 <input type="checkbox" class="proficiency-check" />
+                <span class="skill-tooltip">Not Proficient</span>
                 <input type="text" class="save-value" placeholder="+" />
                 <label>Dexterity</label>
               </div>
               <div class="save">
                 <input type="checkbox" class="proficiency-check" />
+                <span class="skill-tooltip">Not Proficient</span>
                 <input type="text" class="save-value" placeholder="+" />
                 <label>Constitution</label>
               </div>
               <div class="save">
                 <input type="checkbox" class="proficiency-check" />
+                <span class="skill-tooltip">Not Proficient</span>
                 <input type="text" class="save-value" placeholder="+" />
                 <label>Intelligence</label>
               </div>
               <div class="save">
                 <input type="checkbox" class="proficiency-check" />
+                <span class="skill-tooltip">Not Proficient</span>
                 <input type="text" class="save-value" placeholder="+" />
                 <label>Wisdom</label>
               </div>
               <div class="save">
                 <input type="checkbox" class="proficiency-check" />
+                <span class="skill-tooltip">Not Proficient</span>
                 <input type="text" class="save-value" placeholder="+" />
                 <label>Charisma</label>
               </div>
@@ -235,91 +242,109 @@
               <div class="skill-list">
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Acrobatics (Dex)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Animal Handling (Wis)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Arcana (Int)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Athletics (Str)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Deception (Cha)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>History (Int)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Insight (Wis)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Intimidation (Cha)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Investigation (Int)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Medicine (Wis)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Nature (Int)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Perception (Wis)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Performance (Cha)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Persuasion (Cha)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Religion (Int)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Sleight of Hand (Dex)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Stealth (Dex)</label>
                 </div>
                 <div class="skill">
                   <input type="checkbox" class="proficiency-check" />
+                  <span class="skill-tooltip">Not Proficient</span>
                   <input type="text" class="skill-value" placeholder="+" />
                   <label>Survival (Wis)</label>
                 </div>

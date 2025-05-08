@@ -16,6 +16,56 @@
   --transition: all 0.3s ease;
 }
 
+/* Medieval Theme (Default) */
+body {
+  --primary-color: #8B4513; /* SaddleBrown */
+  --secondary-color: #A0522D; /* Sienna */
+  --accent-color: #B8860B; /* DarkGoldenrod */
+  --light-text: #3A1E00;
+  --dark-text: #3A1E00;
+  --border-color: #8B4513;
+  --bg-color: #F5F1E3;
+  --card-bg: #EDE5D0;
+  --shadow: 0 4px 8px rgba(46, 26, 0, 0.15);
+  --font-main: 'EB Garamond', 'Palatino Linotype', Georgia, serif;
+  --border-radius: 0.1rem;
+  
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+  color: var(--dark-text);
+  line-height: 1.6;
+  transition: var(--transition);
+  position: relative;
+}
+
+/* Medieval Theme Decorative Elements */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="15" viewBox="0 0 100 15"><path d="M0,10 Q10,5 20,10 T40,10 T60,10 T80,10 T100,10 V0 H0 Z" fill="%238B4513"/></svg>');
+  background-repeat: repeat-x;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="15" viewBox="0 0 100 15"><path d="M0,5 Q10,10 20,5 T40,5 T60,5 T80,5 T100,5 V15 H0 Z" fill="%238B4513"/></svg>');
+  background-repeat: repeat-x;
+  z-index: 1000;
+  transform: rotate(180deg);
+}
+
 /* Dark Theme */
 body.dark-theme {
   --bg-color: #121212;
@@ -23,6 +73,12 @@ body.dark-theme {
   --light-text: #e0e0e0;
   --dark-text: #e0e0e0;
   --border-color: #424242;
+  background-image: none;
+}
+
+body.dark-theme::before,
+body.dark-theme::after {
+  display: none;
 }
 
 /* Parchment Theme */
@@ -33,6 +89,7 @@ body.parchment-theme {
   --dark-text: #4b3621;
   --border-color: #c1a778;
   --shadow: 0 4px 8px rgba(75, 54, 33, 0.1);
+  background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
 }
 
 * {
@@ -66,6 +123,8 @@ input, select, textarea, button {
   align-items: center;
   min-height: 100vh;
   background-color: var(--bg-color);
+  background-image: inherit;
+  position: relative;
 }
 
 .select-container {
@@ -76,11 +135,56 @@ input, select, textarea, button {
   max-width: 500px;
   box-shadow: var(--shadow);
   text-align: center;
+  border: 2px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Medieval decorative elements */
+.select-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20"><path d="M0,0 L5,5 L10,0 L15,5 L20,0 L25,5 L30,0 L35,5 L40,0 L40,20 L0,20 Z" fill="%238B4513" fill-opacity="0.2"/></svg>');
+  background-repeat: repeat-x;
+  opacity: 0.7;
+}
+
+.select-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20"><path d="M0,20 L5,15 L10,20 L15,15 L20,20 L25,15 L30,20 L35,15 L40,20 L40,0 L0,0 Z" fill="%238B4513" fill-opacity="0.2"/></svg>');
+  background-repeat: repeat-x;
+  opacity: 0.7;
 }
 
 .select-container h1 {
   margin-bottom: 2rem;
   color: var(--primary-color);
+  font-family: 'EB Garamond', Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 2.2rem;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.select-container h1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 1px;
+  background: var(--primary-color);
 }
 
 .select-options {
@@ -89,20 +193,25 @@ input, select, textarea, button {
   gap: 1rem;
 }
 
-/* Button Styles */
+/* Button Styles - Medieval theme */
 .primary-btn, .secondary-btn, .outline-btn {
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;
   font-weight: 500;
   transition: var(--transition);
   font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
 }
 
 .primary-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
+  border: 1px solid #6a330e;
 }
 
 .primary-btn:hover {
@@ -114,6 +223,7 @@ input, select, textarea, button {
   background-color: var(--secondary-color);
   color: white;
   border: none;
+  border: 1px solid #854321;
 }
 
 .secondary-btn:hover {
@@ -141,8 +251,9 @@ input, select, textarea, button {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 0.25rem;
+  padding: 0.5rem;
   background-color: var(--bg-color);
+  background-image: inherit;
 }
 
 /* Top Controls */
@@ -157,6 +268,7 @@ input, select, textarea, button {
   box-shadow: var(--shadow);
   flex-wrap: wrap;
   gap: 0.5rem;
+  border: 1px solid var(--border-color);
 }
 
 .control-group {
@@ -209,6 +321,10 @@ input, select, textarea, button {
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .input-group {
@@ -250,6 +366,7 @@ input, select, textarea, button {
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 0.5rem;
+  position: relative;
 }
 
 .abilities {
@@ -274,6 +391,9 @@ input, select, textarea, button {
   flex: 1;
   min-width: 60px;
   max-width: 80px;
+  background-color: rgba(237, 229, 208, 0.6);
+  position: relative;
+  z-index: 2;
 }
 
 .ability label {
@@ -364,19 +484,20 @@ input, select, textarea, button {
   height: 100%;
   background-color: var(--primary-color);
   width: 100%;
-  transition: width 0.3s ease, background-color 0.3s ease;
+  transition: width 0.3s ease;
+  border-radius: 2px;
 }
 
 .hp-bar.high {
-  background-color: var(--primary-color);
+  background-color: #2e7d32;  /* Green */
 }
 
 .hp-bar.medium {
-  background-color: var(--accent-color);
+  background-color: #f9a825;  /* Amber */
 }
 
 .hp-bar.low {
-  background-color: #f44336;
+  background-color: #c62828;  /* Red */
 }
 
 /* Combat Stats */
@@ -450,16 +571,95 @@ input, select, textarea, button {
   margin-bottom: 0.25rem;
   padding: 0.15rem;
   border-bottom: 1px solid var(--border-color);
+  position: relative;
 }
 
+/* Custom tristate proficiency checkbox styling */
 .proficiency-check {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   width: 1rem;
   height: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  margin-right: 0.25rem;
   cursor: pointer;
-  accent-color: var(--primary-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  transition: all 0.2s ease;
   opacity: 0.8;
-  transition: var(--transition);
+  box-sizing: border-box;
+  outline: none;
+  background-color: transparent;
+}
+
+.proficiency-check:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+/* Specific styling for each state */
+.proficiency-check[data-state="none"] {
+  background-color: transparent;
+}
+
+.proficiency-check[data-state="proficient"] {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  opacity: 1;
+}
+
+.proficiency-check[data-state="expertise"] {
+  background-color: #B8860B; /* DarkGoldenrod */
+  border-color: #B8860B;
+  opacity: 1;
+}
+
+.proficiency-check[data-state="expertise"]::after {
+  content: '★';
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.6rem;
+  line-height: 1;
+}
+
+/* Medieval theme expertise checkbox */
+body.medieval-theme .proficiency-check[data-state="proficient"] {
+  background-color: #8B4513; /* SaddleBrown */
+  border-color: #8B4513;
+}
+
+body.medieval-theme .proficiency-check[data-state="expertise"] {
+  background-color: #DAA520; /* GoldenRod */
+  border-color: #B8860B; /* DarkGoldenrod */
+}
+
+.skill-tooltip {
+  position: absolute;
+  left: -5px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  z-index: 10;
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  top: -25px;
+}
+
+.proficiency-check:hover + .skill-tooltip {
+  opacity: 1;
 }
 
 .save-value, .skill-value {
@@ -1050,10 +1250,6 @@ body.dark-theme .skill:hover {
   transform: scale(1.1);
 }
 
-.proficiency-check:checked {
-  opacity: 1;
-}
-
 .primary-btn:hover, .secondary-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -1251,4 +1447,465 @@ body.dark-theme .skill:hover {
 
 body.dark-theme .upload-option:hover {
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Medieval specific elements */
+.abilities-section::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23A0522D" /><circle cx="50" cy="50" r="35" fill="%23CD853F" /><path d="M50,20 L55,35 L70,35 L60,45 L65,60 L50,50 L35,60 L40,45 L30,35 L45,35 Z" fill="%238B4513"/></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: 1;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.ability {
+  border: 1px solid var(--border-color);
+  background-color: rgba(237, 229, 208, 0.6);
+  position: relative;
+  z-index: 2;
+}
+
+.character-header {
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.hp-bar {
+  transition: width 0.3s ease;
+  border-radius: 2px;
+  height: 100%;
+  background-color: var(--primary-color);
+}
+
+.hp-bar.high {
+  background-color: #2e7d32;  /* Green */
+}
+
+.hp-bar.medium {
+  background-color: #f9a825;  /* Amber */
+}
+
+.hp-bar.low {
+  background-color: #c62828;  /* Red */
+}
+
+/* Medieval theme styling for equipment and features */
+.equipment-section, 
+.features-section,
+.saving-throws, 
+.skills,
+.spell-slots,
+.spell-level-section {
+  border: 1px solid var(--border-color);
+  background-color: rgba(237, 229, 208, 0.6);
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
+}
+
+/* Add decorative corners to sections */
+.equipment-section::before,
+.features-section::before,
+.saving-throws::before,
+.skills::before,
+.spell-slots::before,
+.spell-level-section::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 15px;
+  height: 15px;
+  border-top: 2px solid var(--border-color);
+  border-left: 2px solid var(--border-color);
+  border-radius: 2px 0 0 0;
+}
+
+.equipment-section::after,
+.features-section::after,
+.saving-throws::after,
+.skills::after,
+.spell-slots::after,
+.spell-level-section::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  border-bottom: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
+  border-radius: 0 0 2px 0;
+}
+
+/* Heading styles for medieval theme */
+.saving-throws h3, 
+.skills h3,
+.equipment-section h3,
+.features-section h3,
+.spell-slots h3,
+.spell-level-section h3 {
+  color: var(--primary-color);
+  font-family: 'EB Garamond', Georgia, serif;
+  letter-spacing: 1px;
+  font-size: 1.4rem;
+  border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+  padding-bottom: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Medieval Theme Specific Styling */
+body.medieval-theme {
+  --primary-color: #8B4513; /* SaddleBrown */
+  --secondary-color: #A0522D; /* Sienna */
+  --accent-color: #B8860B; /* DarkGoldenrod */
+  --light-text: #3A1E00;
+  --dark-text: #3A1E00;
+  --border-color: #8B4513;
+  --bg-color: #F5F1E3;
+  --card-bg: #EDE5D0;
+  --shadow: 0 4px 8px rgba(46, 26, 0, 0.15);
+  --font-main: 'EB Garamond', 'Palatino Linotype', Georgia, serif;
+  --border-radius: 0.1rem;
+  
+  font-family: var(--font-main);
+  background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+  color: var(--dark-text);
+}
+
+/* Wax seal for medieval theme */
+body.medieval-theme .character-header::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23A52A2A" /><circle cx="50" cy="50" r="40" fill="%23B22222" /><path d="M50,20 L60,40 L82,40 L65,55 L72,75 L50,62 L28,75 L35,55 L18,40 L40,40 Z" fill="%23800000"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 2;
+}
+
+/* Decorative initial letter for medieval theme */
+body.medieval-theme .character-header::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30,20 Q50,20 50,40 Q50,60 30,60 L30,20 Z" fill="none" stroke="%238B4513" stroke-width="3"/><path d="M50,40 Q70,40 70,60 L50,60 L50,40 Z" fill="none" stroke="%238B4513" stroke-width="3"/><path d="M30,60 L30,80 L70,80 L70,60" fill="none" stroke="%238B4513" stroke-width="3"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+/* Medieval theme input styling */
+body.medieval-theme input[type="text"],
+body.medieval-theme textarea,
+body.medieval-theme select {
+  background-color: rgba(245, 241, 227, 0.7);
+  border: 1px solid var(--border-color);
+  color: var(--dark-text);
+  font-family: var(--font-main);
+}
+
+/* Medieval theme rich text editor */
+body.medieval-theme .rich-text-editor {
+  background-color: rgba(245, 241, 227, 0.7);
+  border: 1px solid var(--border-color);
+  font-family: var(--font-main);
+  padding: 10px;
+  position: relative;
+}
+
+body.medieval-theme .rich-text-editor::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M5,5 L15,5 L15,15 L5,15 Z" fill="none" stroke="%238B4513" stroke-width="1.5"/></svg>');
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+body.medieval-theme .rich-text-editor::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M25,25 L35,25 L35,35 L25,35 Z" fill="none" stroke="%238B4513" stroke-width="1.5"/></svg>');
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Medieval theme toolbar */
+body.medieval-theme .rich-text-toolbar {
+  background-color: #EDE5D0;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+}
+
+body.medieval-theme .rich-text-toolbar button {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--dark-text);
+  border: 1px solid var(--border-color);
+}
+
+body.medieval-theme .rich-text-toolbar button:hover {
+  background-color: rgba(139, 69, 19, 0.2);
+}
+
+body.medieval-theme .rich-text-toolbar button.active {
+  background-color: rgba(139, 69, 19, 0.3);
+}
+
+/* Special styling for the character selection screen */
+body.medieval-theme .character-select-screen {
+  background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+}
+
+body.medieval-theme .select-container {
+  box-shadow: 0 6px 15px rgba(46, 26, 0, 0.3);
+  position: relative;
+}
+
+/* Add medieval style scrolls to character selection buttons */
+body.medieval-theme .primary-btn::before,
+body.medieval-theme .secondary-btn::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  width: 12px;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="30" viewBox="0 0 12 30"><path d="M2,0 Q-2,5 2,10 Q-2,15 2,20 Q-2,25 2,30" fill="none" stroke="%238B4513" stroke-width="1"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center left;
+  opacity: 0.6;
+}
+
+body.medieval-theme .primary-btn::after,
+body.medieval-theme .secondary-btn::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  width: 12px;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="30" viewBox="0 0 12 30"><path d="M10,0 Q14,5 10,10 Q14,15 10,20 Q14,25 10,30" fill="none" stroke="%238B4513" stroke-width="1"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center right;
+  opacity: 0.6;
+}
+
+/* Style spell slot containers */
+body.medieval-theme .spell-slot-level {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  position: relative;
+  border: 1px solid var(--border-color);
+  padding: 5px;
+  background-color: rgba(245, 241, 227, 0.5);
+}
+
+body.medieval-theme .spell-slot-level::before {
+  content: '✧';
+  position: absolute;
+  left: -15px;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+/* Style abilities with faux embossed look */
+body.medieval-theme .ability {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+body.medieval-theme .ability label {
+  font-family: 'EB Garamond', serif;
+  font-weight: 600;
+  font-variant: small-caps;
+  letter-spacing: 1px;
+}
+
+body.medieval-theme .ability-score {
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+body.medieval-theme .ability-modifier {
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Apply old-style numbering to spell levels */
+body.medieval-theme .spell-level-section h3::before {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-style: italic;
+  margin-right: 5px;
+}
+
+body.medieval-theme .spell-level-section[data-level="1"] h3::before {
+  content: "I.";
+}
+
+body.medieval-theme .spell-level-section[data-level="2"] h3::before {
+  content: "II.";
+}
+
+body.medieval-theme .spell-level-section[data-level="3"] h3::before {
+  content: "III.";
+}
+
+body.medieval-theme .spell-level-section[data-level="4"] h3::before {
+  content: "IV.";
+}
+
+body.medieval-theme .spell-level-section[data-level="5"] h3::before {
+  content: "V.";
+}
+
+body.medieval-theme .spell-level-section[data-level="6"] h3::before {
+  content: "VI.";
+}
+
+body.medieval-theme .spell-level-section[data-level="7"] h3::before {
+  content: "VII.";
+}
+
+body.medieval-theme .spell-level-section[data-level="8"] h3::before {
+  content: "VIII.";
+}
+
+body.medieval-theme .spell-level-section[data-level="9"] h3::before {
+  content: "IX.";
+}
+
+/* Medieval title styling */
+.medieval-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  color: #8B4513;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+  letter-spacing: 2px;
+  position: relative;
+  padding: 10px 0 20px;
+  margin-bottom: 30px !important;
+}
+
+.medieval-title::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="8" viewBox="0 0 200 8"><path d="M0,4 Q10,0 20,4 T40,4 T60,4 T80,4 T100,4 T120,4 T140,4 T160,4 T180,4 T200,4" stroke="%238B4513" fill="none" stroke-width="1.5"/></svg>');
+  background-repeat: repeat-x;
+}
+
+.medieval-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="8" viewBox="0 0 200 8"><path d="M0,4 Q10,8 20,4 T40,4 T60,4 T80,4 T100,4 T120,4 T140,4 T160,4 T180,4 T200,4" stroke="%238B4513" fill="none" stroke-width="1.5"/></svg>');
+  background-repeat: repeat-x;
+}
+
+body.medieval-theme .medieval-title {
+  color: #5D2906;
+}
+
+/* Add decorative label above saving throws and skills */
+body.medieval-theme .saving-throws h3,
+body.medieval-theme .skills h3 {
+  font-family: 'EB Garamond', serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+}
+
+body.medieval-theme .saving-throws h3::before,
+body.medieval-theme .skills h3::before {
+  content: '★';
+  position: absolute;
+  left: 10px;
+  color: #8B4513;
+}
+
+body.medieval-theme .saving-throws h3::after,
+body.medieval-theme .skills h3::after {
+  content: '★';
+  position: absolute;
+  right: 10px;
+  color: #8B4513;
+}
+
+/* Style the tab buttons for medieval theme */
+body.medieval-theme .tab-button {
+  font-family: 'EB Garamond', serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: rgba(237, 229, 208, 0.5);
+  border: 1px solid var(--border-color);
+  margin-right: 2px;
+  transition: all 0.3s ease;
+}
+
+body.medieval-theme .tab-button:hover {
+  background-color: rgba(139, 69, 19, 0.1);
+}
+
+body.medieval-theme .tab-button.active {
+  background-color: rgba(139, 69, 19, 0.2);
+  border-bottom-color: transparent;
+}
+
+/* Add a decorative background to the character trait sections */
+body.medieval-theme .trait-section {
+  background-color: rgba(245, 241, 227, 0.7);
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+body.medieval-theme .trait-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="10" viewBox="0 0 20 10"><path d="M0,10 L0,3 Q5,0 10,3 Q15,6 20,3 L20,10 Z" fill="%238B4513" fill-opacity="0.1"/></svg>');
+  background-repeat: repeat-x;
 }

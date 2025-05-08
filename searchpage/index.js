@@ -69,7 +69,7 @@ const nextButton = document.getElementById("next-page");
 const pageTitle = document.getElementById("page-title");
 const modalContent = document.getElementById("modal-content");
 
-// Page configuration
+// Page configuration@
 const pages = [
   { title: "i3WM_", jsonFile: "json/i3wm.json" },
   { title: "TMUX_", jsonFile: "json/tmux.json" },

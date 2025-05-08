@@ -224,6 +224,12 @@ function initApp() {
       input.value = '';
       if (input.type === 'checkbox') {
         input.checked = false;
+        
+        // Reset proficiency states and tooltips
+        if (input.classList.contains('proficiency-check')) {
+          input.setAttribute('data-state', 'none');
+          updateProficiencyTooltip(input, 'Not Proficient');
+        }
       }
     });
     
@@ -246,6 +252,9 @@ function initApp() {
     currentCharacter = null;
     unsavedChanges = false;
     showCharacterSheet();
+    
+    // Reinitialize all QoL features to ensure proper functionality
+    initQoLFeatures();
   }
 
   // Function to handle folder upload
@@ -383,6 +392,8 @@ function initApp() {
         
         loadCharacterData(characterData);
         showCharacterSheet();
+        // Reinitialize QoL features for the loaded character
+        initQoLFeatures();
         showUploadSuccess("Character data loaded successfully (no image found).");
       } catch (error) {
         showUploadError("Error loading character file: " + error.message);
@@ -451,7 +462,7 @@ function initApp() {
     imageReader.readAsDataURL(imageFile);
   }
 
-  // Function to load JSON with an image
+  // Function to load JSON with image
   function loadJsonWithImage(jsonFile, imageFile) {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -465,26 +476,32 @@ function initApp() {
           return;
         }
         
-        // Load the image
-        const imageReader = new FileReader();
-        imageReader.onload = function(imgEvent) {
-          if (characterPortrait) {
-            // Store the image in the character data
-            characterData.portrait = imgEvent.target.result;
-            
-            // Then load the character with the image
-            loadCharacterData(characterData);
-            showCharacterSheet();
-            showUploadSuccess("Character data and image loaded successfully.");
+        // Load character data first
+        loadCharacterData(characterData);
+        
+        // Then load the character image
+        const imgReader = new FileReader();
+        imgReader.onload = function(imgEvent) {
+          if (characterPortrait && imagePlaceholder) {
+            // Show the character portrait and hide placeholder
+            characterPortrait.src = imgEvent.target.result;
+            characterPortrait.style.display = 'block';
+            imagePlaceholder.style.display = 'none';
           }
-        };
-        imageReader.onerror = function() {
-          showUploadError("Error reading image file. Character data was loaded without the image.");
-          // Still load the character data even if image fails
-          loadCharacterData(characterData);
+          
           showCharacterSheet();
+          // Reinitialize QoL features for the loaded character
+          initQoLFeatures();
+          showUploadSuccess("Character loaded successfully with image.");
         };
-        imageReader.readAsDataURL(imageFile);
+        imgReader.onerror = function() {
+          showUploadError("Error reading image file.");
+          // Still load the character data even if image fails
+          showCharacterSheet();
+          // Reinitialize QoL features for the loaded character
+          initQoLFeatures();
+        };
+        imgReader.readAsDataURL(imageFile);
       } catch (error) {
         showUploadError("Error loading character file: " + error.message);
         console.error('Error parsing JSON:', error);
@@ -532,16 +549,40 @@ function initApp() {
     // Update HP bar
     updateHpBar();
     
-    // Load saving throws
+    // Load saving throws with new proficiency states
     if (data.savingThrows) {
       const savingThrows = document.querySelectorAll('.save');
       const savingThrowData = [
-        { key: 'strength', check: data.savingThrows.strength?.proficient || false, value: data.savingThrows.strength?.value },
-        { key: 'dexterity', check: data.savingThrows.dexterity?.proficient || false, value: data.savingThrows.dexterity?.value },
-        { key: 'constitution', check: data.savingThrows.constitution?.proficient || false, value: data.savingThrows.constitution?.value },
-        { key: 'intelligence', check: data.savingThrows.intelligence?.proficient || false, value: data.savingThrows.intelligence?.value },
-        { key: 'wisdom', check: data.savingThrows.wisdom?.proficient || false, value: data.savingThrows.wisdom?.value },
-        { key: 'charisma', check: data.savingThrows.charisma?.proficient || false, value: data.savingThrows.charisma?.value }
+        { 
+          key: 'strength', 
+          proficiencyState: data.savingThrows.strength?.proficiencyState || 'none',
+          value: data.savingThrows.strength?.value 
+        },
+        { 
+          key: 'dexterity', 
+          proficiencyState: data.savingThrows.dexterity?.proficiencyState || 'none',
+          value: data.savingThrows.dexterity?.value 
+        },
+        { 
+          key: 'constitution', 
+          proficiencyState: data.savingThrows.constitution?.proficiencyState || 'none',
+          value: data.savingThrows.constitution?.value 
+        },
+        { 
+          key: 'intelligence', 
+          proficiencyState: data.savingThrows.intelligence?.proficiencyState || 'none',
+          value: data.savingThrows.intelligence?.value 
+        },
+        { 
+          key: 'wisdom', 
+          proficiencyState: data.savingThrows.wisdom?.proficiencyState || 'none',
+          value: data.savingThrows.wisdom?.value 
+        },
+        { 
+          key: 'charisma', 
+          proficiencyState: data.savingThrows.charisma?.proficiencyState || 'none',
+          value: data.savingThrows.charisma?.value 
+        }
       ];
       
       savingThrows.forEach((save, index) => {
@@ -549,34 +590,126 @@ function initApp() {
           const checkbox = save.querySelector('.proficiency-check');
           const input = save.querySelector('.save-value');
           
-          if (checkbox) checkbox.checked = savingThrowData[index].check;
+          if (checkbox) {
+            // Handle legacy data format (backward compatibility)
+            if (data.savingThrows[savingThrowData[index].key]?.proficient === true) {
+              checkbox.setAttribute('data-state', 'proficient');
+              checkbox.checked = true; // Update checkbox checked property
+            } 
+            // Handle new proficiency state format
+            else if (savingThrowData[index].proficiencyState) {
+              checkbox.setAttribute('data-state', savingThrowData[index].proficiencyState);
+              // Update checkbox checked property based on state
+              checkbox.checked = (savingThrowData[index].proficiencyState === 'proficient' || 
+                                   savingThrowData[index].proficiencyState === 'expertise');
+            } else {
+              checkbox.setAttribute('data-state', 'none');
+              checkbox.checked = false; // Update checkbox checked property
+            }
+            
+            // Update tooltip based on the state
+            updateTooltipBasedOnState(checkbox);
+          }
+          
           if (input) input.value = savingThrowData[index].value || '';
         }
       });
     }
     
-    // Load skills
+    // Load skills with new proficiency states
     if (data.skills) {
       const skills = document.querySelectorAll('.skill');
       const skillData = [
-        { key: 'acrobatics', check: data.skills.acrobatics?.proficient || false, value: data.skills.acrobatics?.value },
-        { key: 'animalHandling', check: data.skills.animalHandling?.proficient || false, value: data.skills.animalHandling?.value },
-        { key: 'arcana', check: data.skills.arcana?.proficient || false, value: data.skills.arcana?.value },
-        { key: 'athletics', check: data.skills.athletics?.proficient || false, value: data.skills.athletics?.value },
-        { key: 'deception', check: data.skills.deception?.proficient || false, value: data.skills.deception?.value },
-        { key: 'history', check: data.skills.history?.proficient || false, value: data.skills.history?.value },
-        { key: 'insight', check: data.skills.insight?.proficient || false, value: data.skills.insight?.value },
-        { key: 'intimidation', check: data.skills.intimidation?.proficient || false, value: data.skills.intimidation?.value },
-        { key: 'investigation', check: data.skills.investigation?.proficient || false, value: data.skills.investigation?.value },
-        { key: 'medicine', check: data.skills.medicine?.proficient || false, value: data.skills.medicine?.value },
-        { key: 'nature', check: data.skills.nature?.proficient || false, value: data.skills.nature?.value },
-        { key: 'perception', check: data.skills.perception?.proficient || false, value: data.skills.perception?.value },
-        { key: 'performance', check: data.skills.performance?.proficient || false, value: data.skills.performance?.value },
-        { key: 'persuasion', check: data.skills.persuasion?.proficient || false, value: data.skills.persuasion?.value },
-        { key: 'religion', check: data.skills.religion?.proficient || false, value: data.skills.religion?.value },
-        { key: 'sleightOfHand', check: data.skills.sleightOfHand?.proficient || false, value: data.skills.sleightOfHand?.value },
-        { key: 'stealth', check: data.skills.stealth?.proficient || false, value: data.skills.stealth?.value },
-        { key: 'survival', check: data.skills.survival?.proficient || false, value: data.skills.survival?.value }
+        { 
+          key: 'acrobatics', 
+          proficiencyState: data.skills.acrobatics?.proficiencyState || 'none',
+          value: data.skills.acrobatics?.value 
+        },
+        { 
+          key: 'animalHandling', 
+          proficiencyState: data.skills.animalHandling?.proficiencyState || 'none',
+          value: data.skills.animalHandling?.value 
+        },
+        { 
+          key: 'arcana', 
+          proficiencyState: data.skills.arcana?.proficiencyState || 'none',
+          value: data.skills.arcana?.value 
+        },
+        { 
+          key: 'athletics', 
+          proficiencyState: data.skills.athletics?.proficiencyState || 'none',
+          value: data.skills.athletics?.value 
+        },
+        { 
+          key: 'deception', 
+          proficiencyState: data.skills.deception?.proficiencyState || 'none',
+          value: data.skills.deception?.value 
+        },
+        { 
+          key: 'history', 
+          proficiencyState: data.skills.history?.proficiencyState || 'none',
+          value: data.skills.history?.value 
+        },
+        { 
+          key: 'insight', 
+          proficiencyState: data.skills.insight?.proficiencyState || 'none',
+          value: data.skills.insight?.value 
+        },
+        { 
+          key: 'intimidation', 
+          proficiencyState: data.skills.intimidation?.proficiencyState || 'none',
+          value: data.skills.intimidation?.value 
+        },
+        { 
+          key: 'investigation', 
+          proficiencyState: data.skills.investigation?.proficiencyState || 'none',
+          value: data.skills.investigation?.value 
+        },
+        { 
+          key: 'medicine', 
+          proficiencyState: data.skills.medicine?.proficiencyState || 'none',
+          value: data.skills.medicine?.value 
+        },
+        { 
+          key: 'nature', 
+          proficiencyState: data.skills.nature?.proficiencyState || 'none',
+          value: data.skills.nature?.value 
+        },
+        { 
+          key: 'perception', 
+          proficiencyState: data.skills.perception?.proficiencyState || 'none',
+          value: data.skills.perception?.value 
+        },
+        { 
+          key: 'performance', 
+          proficiencyState: data.skills.performance?.proficiencyState || 'none',
+          value: data.skills.performance?.value 
+        },
+        { 
+          key: 'persuasion', 
+          proficiencyState: data.skills.persuasion?.proficiencyState || 'none',
+          value: data.skills.persuasion?.value 
+        },
+        { 
+          key: 'religion', 
+          proficiencyState: data.skills.religion?.proficiencyState || 'none',
+          value: data.skills.religion?.value 
+        },
+        { 
+          key: 'sleightOfHand', 
+          proficiencyState: data.skills.sleightOfHand?.proficiencyState || 'none',
+          value: data.skills.sleightOfHand?.value 
+        },
+        { 
+          key: 'stealth', 
+          proficiencyState: data.skills.stealth?.proficiencyState || 'none',
+          value: data.skills.stealth?.value 
+        },
+        { 
+          key: 'survival', 
+          proficiencyState: data.skills.survival?.proficiencyState || 'none',
+          value: data.skills.survival?.value 
+        }
       ];
       
       skills.forEach((skill, index) => {
@@ -584,7 +717,27 @@ function initApp() {
           const checkbox = skill.querySelector('.proficiency-check');
           const input = skill.querySelector('.skill-value');
           
-          if (checkbox) checkbox.checked = skillData[index].check;
+          if (checkbox) {
+            // Handle legacy data format (backward compatibility)
+            if (data.skills[skillData[index].key]?.proficient === true) {
+              checkbox.setAttribute('data-state', 'proficient');
+              checkbox.checked = true; // Update checkbox checked property
+            } 
+            // Handle new proficiency state format
+            else if (skillData[index].proficiencyState) {
+              checkbox.setAttribute('data-state', skillData[index].proficiencyState);
+              // Update checkbox checked property based on state
+              checkbox.checked = (skillData[index].proficiencyState === 'proficient' || 
+                                   skillData[index].proficiencyState === 'expertise');
+            } else {
+              checkbox.setAttribute('data-state', 'none');
+              checkbox.checked = false; // Update checkbox checked property
+            }
+            
+            // Update tooltip based on the state
+            updateTooltipBasedOnState(checkbox);
+          }
+          
           if (input) input.value = skillData[index].value || '';
         }
       });
@@ -929,8 +1082,13 @@ function initApp() {
         const checkbox = save.querySelector('.proficiency-check');
         const input = save.querySelector('.save-value');
         
+        let proficiencyState = 'none';
+        if (checkbox) {
+          proficiencyState = checkbox.getAttribute('data-state') || 'none';
+        }
+        
         data[abilityNames[index]] = {
-          proficient: checkbox ? checkbox.checked : false,
+          proficiencyState: proficiencyState,
           value: input ? input.value : ''
         };
       }
@@ -955,8 +1113,13 @@ function initApp() {
         const checkbox = skill.querySelector('.proficiency-check');
         const input = skill.querySelector('.skill-value');
         
+        let proficiencyState = 'none';
+        if (checkbox) {
+          proficiencyState = checkbox.getAttribute('data-state') || 'none';
+        }
+        
         data[skillNames[index]] = {
-          proficient: checkbox ? checkbox.checked : false,
+          proficiencyState: proficiencyState,
           value: input ? input.value : ''
         };
       }
@@ -1078,7 +1241,7 @@ function initApp() {
       'sorcerer-theme', 'warlock-theme', 'artificer-theme', 'bloodhunter-theme',
       'cyberpunk-theme', 'ethereal-theme', 'infernal-theme', 'nature-theme',
       'vampire-theme', 'desert-theme', 'winter-theme', 'halloween-theme',
-      'celestial-theme', 'retro-theme', 'pirate-theme'
+      'celestial-theme', 'retro-theme', 'pirate-theme', 'medieval-theme'
     );
     
     // Add the selected theme class
@@ -1444,6 +1607,112 @@ function initApp() {
     });
   }
 
+  // Function to set up three-state proficiency toggles
+  function setupProficiencyExpertise() {
+    const proficiencyChecks = document.querySelectorAll('.proficiency-check');
+    
+    proficiencyChecks.forEach(check => {
+      // Initialize state attribute if not present
+      if (!check.hasAttribute('data-state')) {
+        check.setAttribute('data-state', 'none');
+        check.checked = false; // Ensure it starts unchecked
+      } else {
+        // Make sure checkbox checked state matches data-state
+        const state = check.getAttribute('data-state');
+        check.checked = (state === 'proficient' || state === 'expertise');
+      }
+      
+      // Initialize tooltips based on current state
+      updateTooltipBasedOnState(check);
+      
+      // First, remove any existing click listeners to avoid duplicates
+      check.removeEventListener('click', proficiencyClickHandler);
+      
+      // Add click handler for state cycling
+      check.addEventListener('click', proficiencyClickHandler);
+    });
+  }
+  
+  // Separate the handler function for reuse and clarity
+  function proficiencyClickHandler(e) {
+    // Prevent default checkbox behavior
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Get current state
+    const currentState = this.getAttribute('data-state') || 'none';
+    let nextState;
+    
+    // Determine next state in cycle: none -> proficient -> expertise -> none
+    if (currentState === 'none') {
+      nextState = 'proficient';
+      this.checked = true; // Update checkbox state
+    } else if (currentState === 'proficient') {
+      nextState = 'expertise';
+      this.checked = true; // Update checkbox state
+    } else {
+      nextState = 'none';
+      this.checked = false; // Update checkbox state
+    }
+    
+    // Set new state
+    this.setAttribute('data-state', nextState);
+    
+    // Debug output to help diagnose issues
+    console.log(`Proficiency state changed: ${currentState} -> ${nextState}, checkbox.checked: ${this.checked}`);
+    
+    // Update tooltip
+    updateProficiencyTooltip(this, getTooltipForState(nextState));
+    
+    // Mark changes
+    unsavedChanges = true;
+    
+    // Return false to prevent default checkbox behavior
+    return false;
+  }
+
+  // Function to get tooltip text based on state
+  function getTooltipForState(state) {
+    switch (state) {
+      case 'proficient':
+        return 'Proficient';
+      case 'expertise':
+        return 'Expertise';
+      default:
+        return 'Not Proficient';
+    }
+  }
+
+  // Function to update tooltip text
+  function updateProficiencyTooltip(checkbox, text) {
+    const tooltip = checkbox.nextElementSibling;
+    if (tooltip && tooltip.classList.contains('skill-tooltip')) {
+      tooltip.textContent = text;
+    }
+  }
+
+  // Function to update tooltips based on current state
+  function updateTooltipBasedOnState(checkbox) {
+    if (!checkbox) return;
+    
+    const state = checkbox.getAttribute('data-state') || 'none';
+    updateProficiencyTooltip(checkbox, getTooltipForState(state));
+  }
+
+  // Function to update all skill values - now a stub since the functionality is disabled
+  function updateAllSkillValues() {
+    // This function is intentionally disabled per user request
+    // Skills should not auto-calculate based on proficiency state
+    return;
+  }
+  
+  // Function to update the skill modifier - now a stub since the functionality is disabled
+  function updateSkillModifier(checkbox) {
+    // This function is intentionally disabled per user request
+    // Skills should not auto-calculate based on proficiency
+    return;
+  }
+
   // Initialize additional QoL features
   function initQoLFeatures() {
     setupAbilityScoreTabbing();
@@ -1451,5 +1720,6 @@ function initApp() {
     setupRichTextFormatting();
     setupCollapsibleSections();
     setupSpellSlotTracking();
+    setupProficiencyExpertise();
   }
 }
