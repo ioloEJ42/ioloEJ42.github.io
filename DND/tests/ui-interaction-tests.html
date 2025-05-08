@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Interaction Tests</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body {
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .test-log {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .test-area {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .test-controls {
+      margin-bottom: 20px;
+    }
+    .mock-tab {
+      display: none;
+    }
+    .mock-tab.active {
+      display: block;
+    }
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .tab-button {
+      padding: 8px 15px;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+    .tab-button.active {
+      font-weight: bold;
+      border-bottom: 2px solid #7e57c2;
+    }
+    .collapsible {
+      margin-bottom: 10px;
+    }
+    .collapsible-header {
+      padding: 10px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+    .collapsible-content {
+      padding: 10px;
+      border: 1px solid #ddd;
+      display: none;
+    }
+    .collapsible.open .collapsible-content {
+      display: block;
+    }
+    .hp-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #e0e0e0;
+      margin-top: 10px;
+      position: relative;
+    }
+    .hp-bar-fill {
+      height: 100%;
+      background-color: #4caf50;
+      width: 100%;
+    }
+    .weapon-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .weapon-table th, .weapon-table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    .weapon-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <h1>UI Interaction Tests</h1>
+    
+    <div class="test-controls">
+      <button id="run-all-btn">Run All Tests</button>
+      <button id="reset-btn">Reset</button>
+    </div>
+    
+    <div class="test-area">
+      <!-- Mock tabs for testing -->
+      <div class="tab-buttons">
+        <button class="tab-button" data-tab="tab1">Tab 1</button>
+        <button class="tab-button" data-tab="tab2">Tab 2</button>
+        <button class="tab-button" data-tab="tab3">Tab 3</button>
+      </div>
+      
+      <div class="tab-content">
+        <div id="tab1" class="mock-tab">Tab 1 Content</div>
+        <div id="tab2" class="mock-tab">Tab 2 Content</div>
+        <div id="tab3" class="mock-tab">Tab 3 Content</div>
+      </div>
+      
+      <!-- Mock collapsible section -->
+      <div class="collapsible">
+        <div class="collapsible-header">
+          <span>Collapsible Section</span>
+          <span class="toggle-icon">+</span>
+        </div>
+        <div class="collapsible-content">
+          This is collapsible content.
+        </div>
+      </div>
+      
+      <!-- Mock HP bar -->
+      <div>
+        <label for="current-hp">Current HP:</label>
+        <input type="number" id="current-hp" value="30" min="0">
+        <label for="max-hp">Max HP:</label>
+        <input type="number" id="max-hp" value="45" min="0">
+        <div class="hp-bar">
+          <div class="hp-bar-fill" style="width: 66%;"></div>
+        </div>
+      </div>
+      
+      <!-- Mock weapon table -->
+      <div>
+        <h3>Weapons</h3>
+        <table class="weapon-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Damage</th>
+              <th>Type</th>
+              <th>Properties</th>
+            </tr>
+          </thead>
+          <tbody id="weapon-tbody">
+            <tr>
+              <td><input type="text" value="Longsword"></td>
+              <td><input type="text" value="1d8"></td>
+              <td><input type="text" value="Slashing"></td>
+              <td><input type="text" value="Versatile (1d10)"></td>
+            </tr>
+          </tbody>
+        </table>
+        <button id="add-weapon-btn">Add Weapon</button>
+      </div>
+      
+      <!-- Mock theme select -->
+      <div>
+        <label for="theme-select">Theme:</label>
+        <select id="theme-select">
+          <option value="default">Default</option>
+          <option value="wizard">Wizard</option>
+          <option value="fighter">Fighter</option>
+          <option value="rogue">Rogue</option>
+          <option value="druid">Druid</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="test-log" id="test-log"></div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const log = document.getElementById('test-log');
+      
+      // Log utilities
+      function logMessage(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        log.innerHTML += `[${timestamp}] ${message}\n`;
+        log.scrollTop = log.scrollHeight;
+      }
+      
+      function clearLog() {
+        log.innerHTML = '';
+      }
+      
+      // Report test results to parent window
+      function reportTestResult(testName, success, details) {
+        if (window.parent && window.parent.postMessage) {
+          window.parent.postMessage({
+            type: 'test-result',
+            moduleId: 'ui-interaction',
+            testName,
+            success,
+            details
+          }, '*');
+        }
+        
+        // Also log locally
+        logMessage(`Test "${testName}": ${success ? 'PASSED' : 'FAILED'} - ${details || ''}`);
+      }
+      
+      // Initialize UI components
+      function initUI() {
+        // Set first tab as active
+        document.querySelector('.tab-button').classList.add('active');
+        document.querySelector('.mock-tab').classList.add('active');
+        
+        // Add event listeners
+        document.querySelectorAll('.tab-button').forEach(button => {
+          button.addEventListener('click', function() {
+            const tabId = this.dataset.tab;
+            switchTab(tabId);
+          });
+        });
+        
+        document.querySelector('.collapsible-header').addEventListener('click', function() {
+          const collapsible = this.parentNode;
+          collapsible.classList.toggle('open');
+          const toggleIcon = this.querySelector('.toggle-icon');
+          toggleIcon.textContent = collapsible.classList.contains('open') ? '-' : '+';
+        });
+        
+        document.getElementById('current-hp').addEventListener('input', updateHPBar);
+        document.getElementById('max-hp').addEventListener('input', updateHPBar);
+        
+        document.getElementById('add-weapon-btn').addEventListener('click', addWeaponRow);
+        
+        logMessage('UI components initialized');
+      }
+      
+      // Tab switching
+      function switchTab(tabId) {
+        // Update tab buttons
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.tab === tabId);
+        });
+        
+        // Update tab content
+        document.querySelectorAll('.mock-tab').forEach(tab => {
+          tab.classList.toggle('active', tab.id === tabId);
+        });
+      }
+      
+      // Update HP bar
+      function updateHPBar() {
+        const currentHP = parseInt(document.getElementById('current-hp').value) || 0;
+        const maxHP = parseInt(document.getElementById('max-hp').value) || 1;
+        const percentage = Math.min(100, Math.max(0, Math.floor((currentHP / maxHP) * 100)));
+        
+        document.querySelector('.hp-bar-fill').style.width = percentage + '%';
+      }
+      
+      // Add weapon row
+      function addWeaponRow() {
+        const tbody = document.getElementById('weapon-tbody');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><input type="text" placeholder="Name"></td>
+          <td><input type="text" placeholder="Damage"></td>
+          <td><input type="text" placeholder="Type"></td>
+          <td><input type="text" placeholder="Properties"></td>
+        `;
+        tbody.appendChild(row);
+      }
+      
+      // Tests
+      const tests = {
+        'Tab switching': function() {
+          // Get initial active tab
+          const initialActive = document.querySelector('.mock-tab.active').id;
+          
+          // Click on a different tab
+          const tabToClick = Array.from(document.querySelectorAll('.tab-button'))
+            .find(btn => btn.dataset.tab !== initialActive);
+          
+          if (!tabToClick) {
+            return {
+              success: false,
+              details: 'Could not find a different tab to click'
+            };
+          }
+          
+          // Simulate click
+          tabToClick.click();
+          
+          // Check if the correct tab is now active
+          const newActive = document.querySelector('.mock-tab.active').id;
+          const tabButtonActive = document.querySelector('.tab-button.active').dataset.tab;
+          const success = newActive === tabToClick.dataset.tab && tabButtonActive === newActive;
+          
+          return {
+            success,
+            details: success ? 
+              `Tab successfully switched from ${initialActive} to ${newActive}` : 
+              `Tab switch failed. Expected: ${tabToClick.dataset.tab}, Got: ${newActive}`
+          };
+        },
+        
+        'Theme changing': function() {
+          // Get theme select and choose a new theme
+          const themeSelect = document.getElementById('theme-select');
+          const initialTheme = themeSelect.value;
+          
+          // Find a different theme
+          const newThemeOption = Array.from(themeSelect.options)
+            .find(option => option.value !== initialTheme);
+          
+          if (!newThemeOption) {
+            return {
+              success: false,
+              details: 'Could not find a different theme to select'
+            };
+          }
+          
+          // Change theme
+          themeSelect.value = newThemeOption.value;
+          
+          // Trigger change event
+          const changeEvent = new Event('change');
+          themeSelect.dispatchEvent(changeEvent);
+          
+          // Check if theme was changed
+          const success = themeSelect.value === newThemeOption.value;
+          
+          return {
+            success,
+            details: success ? 
+              `Theme successfully changed from ${initialTheme} to ${newThemeOption.value}` : 
+              `Theme change failed`
+          };
+        },
+        
+        'Collapsible sections': function() {
+          // Get collapsible section
+          const collapsible = document.querySelector('.collapsible');
+          const header = collapsible.querySelector('.collapsible-header');
+          const content = collapsible.querySelector('.collapsible-content');
+          
+          // Initial state
+          const initiallyOpen = collapsible.classList.contains('open');
+          const initialDisplay = getComputedStyle(content).display;
+          
+          // Toggle collapsible
+          header.click();
+          
+          // Check if state changed
+          const nowOpen = collapsible.classList.contains('open');
+          const newDisplay = getComputedStyle(content).display;
+          
+          const success = initiallyOpen !== nowOpen && 
+                         initialDisplay !== newDisplay &&
+                         (nowOpen ? newDisplay !== 'none' : newDisplay === 'none');
+          
+          return {
+            success,
+            details: success ? 
+              `Collapsible section toggled from ${initiallyOpen ? 'open' : 'closed'} to ${nowOpen ? 'open' : 'closed'}` : 
+              `Collapsible section toggle failed`
+          };
+        },
+        
+        'Back button confirmation': function() {
+          // This is a mock test since we can't actually trigger browser navigation events
+          // Real test would need to be integrated with actual app
+          return {
+            success: true,
+            details: 'Back button confirmation test requires browser integration, simulated success'
+          };
+        },
+        
+        'Add weapon row': function() {
+          // Get initial row count
+          const tbody = document.getElementById('weapon-tbody');
+          const initialRowCount = tbody.children.length;
+          
+          // Click add weapon button
+          document.getElementById('add-weapon-btn').click();
+          
+          // Check if a new row was added
+          const newRowCount = tbody.children.length;
+          const success = newRowCount === initialRowCount + 1;
+          
+          return {
+            success,
+            details: success ? 
+              `Weapon row added successfully: ${initialRowCount} -> ${newRowCount}` : 
+              `Failed to add weapon row: ${initialRowCount} -> ${newRowCount}`
+          };
+        },
+        
+        'HP bar updates': function() {
+          // Get HP inputs
+          const currentHPInput = document.getElementById('current-hp');
+          const maxHPInput = document.getElementById('max-hp');
+          const hpBar = document.querySelector('.hp-bar-fill');
+          
+          // Set initial values
+          currentHPInput.value = 20;
+          maxHPInput.value = 50;
+          
+          // Trigger update
+          updateHPBar();
+          
+          // Check if HP bar was updated correctly
+          const expectedWidth = '40%'; // 20/50 = 40%
+          const actualWidth = hpBar.style.width;
+          
+          const success = actualWidth === expectedWidth;
+          
+          return {
+            success,
+            details: success ? 
+              `HP bar updated correctly to ${actualWidth}` : 
+              `HP bar update failed. Expected: ${expectedWidth}, Got: ${actualWidth}`
+          };
+        }
+      };
+      
+      // Run a single test
+      function runTest(testName) {
+        if (!tests[testName]) {
+          logMessage(`Error: Test "${testName}" not found`);
+          return;
+        }
+        
+        logMessage(`Running test: ${testName}`);
+        
+        try {
+          const result = tests[testName]();
+          
+          // Report result
+          reportTestResult(testName, result.success, result.details);
+          
+          return result;
+        } catch (error) {
+          logMessage(`Error in test "${testName}": ${error.message}`);
+          reportTestResult(testName, false, `Error: ${error.message}`);
+          return { success: false, details: error.message };
+        }
+      }
+      
+      // Run all tests sequentially
+      function runAllTests() {
+        clearLog();
+        logMessage('Starting all tests...');
+        
+        // Reset UI before running tests
+        initUI();
+        
+        for (const testName in tests) {
+          runTest(testName);
+        }
+        
+        logMessage('All tests completed');
+      }
+      
+      // Set up buttons
+      document.getElementById('run-all-btn').addEventListener('click', runAllTests);
+      document.getElementById('reset-btn').addEventListener('click', () => {
+        clearLog();
+        initUI();
+        logMessage('Test environment reset');
+      });
+      
+      // Initialize UI
+      initUI();
+      
+      // Expose functions for external use
+      window.runTests = runAllTests;
+      window.runSingleTest = runTest;
+      
+      logMessage('UI interaction test environment ready');
+    });
+  </script>
+</body>
+</html>

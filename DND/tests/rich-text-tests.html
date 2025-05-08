@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rich Text Formatting Tests</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body {
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .test-editor {
+      margin-bottom: 20px;
+    }
+    .test-controls {
+      margin-bottom: 10px;
+    }
+    .test-status {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    .test-log {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <h1>Rich Text Formatting Tests</h1>
+    
+    <div class="test-controls">
+      <button id="run-all-btn">Run All Tests</button>
+      <button id="reset-btn">Reset</button>
+    </div>
+    
+    <div class="test-editor">
+      <h2>Test Editor</h2>
+      <div id="rich-text-editor-container"></div>
+    </div>
+    
+    <div class="test-log" id="test-log"></div>
+  </div>
+  
+  <!-- Import the original rich text script -->
+  <script src="../rich-text.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Test setup
+      const log = document.getElementById('test-log');
+      const editorContainer = document.getElementById('rich-text-editor-container');
+      let editor;
+      let toolbar;
+      
+      // Create a test editor
+      function setupTestEditor() {
+        // Clear existing editor
+        editorContainer.innerHTML = '';
+        
+        // Create new editor
+        editor = document.createElement('div');
+        editor.id = 'test-editor';
+        editor.className = 'rich-text-editor';
+        editor.contentEditable = true;
+        editor.dataset.label = 'Test Editor';
+        editor.innerHTML = 'This is test content for rich text formatting.';
+        
+        // Add editor to container
+        editorContainer.appendChild(editor);
+        
+        // Apply rich text formatting
+        if (window.richTextFormatting && typeof window.richTextFormatting.apply === 'function') {
+          window.richTextFormatting.apply(editor);
+          
+          // Get the toolbar
+          const container = editor.parentNode;
+          toolbar = container.querySelector('.rich-text-toolbar');
+          
+          return true;
+        } else {
+          logMessage('Error: Rich text formatting not available');
+          return false;
+        }
+      }
+      
+      // Log a message to the test log
+      function logMessage(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        log.innerHTML += `[${timestamp}] ${message}\n`;
+        log.scrollTop = log.scrollHeight;
+      }
+      
+      // Clear the test log
+      function clearLog() {
+        log.innerHTML = '';
+      }
+      
+      // Reset tests
+      function resetTests() {
+        clearLog();
+        setupTestEditor();
+        logMessage('Test environment reset');
+      }
+      
+      // Send test result to parent window
+      function reportTestResult(testName, success, details) {
+        if (window.parent && window.parent.postMessage) {
+          window.parent.postMessage({
+            type: 'test-result',
+            moduleId: 'rich-text',
+            testName,
+            success,
+            details
+          }, '*');
+        }
+        
+        // Also log locally
+        logMessage(`Test "${testName}": ${success ? 'PASSED' : 'FAILED'} - ${details || ''}`);
+      }
+      
+      // Tests
+      const tests = {
+        'Toolbar appears on focus': function() {
+          return new Promise((resolve) => {
+            // Focus the editor
+            editor.focus();
+            
+            // Check after a short delay
+            setTimeout(() => {
+              const isHidden = toolbar.classList.contains('toolbar-hidden');
+              const success = !isHidden;
+              resolve({
+                success,
+                details: success ? 
+                  'Toolbar correctly displayed when editor focused' : 
+                  'Toolbar remained hidden even after focus'
+              });
+            }, 200);
+          });
+        },
+        
+        'Toolbar disappears on blur': function() {
+          return new Promise((resolve) => {
+            // First focus to ensure toolbar is visible
+            editor.focus();
+            
+            // Then blur after a short delay
+            setTimeout(() => {
+              editor.blur();
+              
+              // Check after another delay
+              setTimeout(() => {
+                const isHidden = toolbar.classList.contains('toolbar-hidden');
+                const success = isHidden;
+                resolve({
+                  success,
+                  details: success ? 
+                    'Toolbar correctly hidden when editor lost focus' : 
+                    'Toolbar remained visible after blur'
+                });
+              }, 200);
+            }, 100);
+          });
+        },
+        
+        'Bold formatting with button': function() {
+          return new Promise((resolve) => {
+            // Select all text in the editor
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Find and click the bold button
+            const boldButton = toolbar.querySelector('[data-command="bold"]');
+            if (!boldButton) {
+              resolve({
+                success: false,
+                details: 'Could not find bold button in toolbar'
+              });
+              return;
+            }
+            
+            boldButton.click();
+            
+            // Check if text became bold
+            setTimeout(() => {
+              const hasBoldText = editor.innerHTML.includes('<b>') || 
+                                 editor.innerHTML.includes('<strong>');
+              resolve({
+                success: hasBoldText,
+                details: hasBoldText ? 
+                  `Bold formatting applied: ${editor.innerHTML}` : 
+                  `Bold formatting not applied: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'Italic formatting with button': function() {
+          return new Promise((resolve) => {
+            // Reset content
+            editor.innerHTML = 'Test italic formatting';
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Find and click the italic button
+            const italicButton = toolbar.querySelector('[data-command="italic"]');
+            if (!italicButton) {
+              resolve({
+                success: false,
+                details: 'Could not find italic button in toolbar'
+              });
+              return;
+            }
+            
+            italicButton.click();
+            
+            // Check if text became italic
+            setTimeout(() => {
+              const hasItalicText = editor.innerHTML.includes('<i>') || 
+                                   editor.innerHTML.includes('<em>');
+              resolve({
+                success: hasItalicText,
+                details: hasItalicText ? 
+                  `Italic formatting applied: ${editor.innerHTML}` : 
+                  `Italic formatting not applied: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'Underline formatting with button': function() {
+          return new Promise((resolve) => {
+            // Reset content
+            editor.innerHTML = 'Test underline formatting';
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Find and click the underline button
+            const underlineButton = toolbar.querySelector('[data-command="underline"]');
+            if (!underlineButton) {
+              resolve({
+                success: false,
+                details: 'Could not find underline button in toolbar'
+              });
+              return;
+            }
+            
+            underlineButton.click();
+            
+            // Check if text became underlined
+            setTimeout(() => {
+              const hasUnderlineText = editor.innerHTML.includes('<u>');
+              resolve({
+                success: hasUnderlineText,
+                details: hasUnderlineText ? 
+                  `Underline formatting applied: ${editor.innerHTML}` : 
+                  `Underline formatting not applied: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'Bold formatting with Ctrl+B': function() {
+          return new Promise((resolve) => {
+            // Reset content
+            editor.innerHTML = 'Test keyboard shortcuts';
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Focus the editor
+            editor.focus();
+            
+            // Simulate Ctrl+B keypress
+            const keyEvent = new KeyboardEvent('keydown', {
+              key: 'b',
+              code: 'KeyB',
+              ctrlKey: true,
+              bubbles: true
+            });
+            
+            editor.dispatchEvent(keyEvent);
+            
+            // Check if text became bold
+            setTimeout(() => {
+              const hasBoldText = editor.innerHTML.includes('<b>') || 
+                                 editor.innerHTML.includes('<strong>');
+              resolve({
+                success: hasBoldText,
+                details: hasBoldText ? 
+                  `Bold shortcut worked: ${editor.innerHTML}` : 
+                  `Bold shortcut failed: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'Italic formatting with Ctrl+I': function() {
+          return new Promise((resolve) => {
+            // Reset content
+            editor.innerHTML = 'Test keyboard shortcuts';
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Focus the editor
+            editor.focus();
+            
+            // Simulate Ctrl+I keypress
+            const keyEvent = new KeyboardEvent('keydown', {
+              key: 'i',
+              code: 'KeyI',
+              ctrlKey: true,
+              bubbles: true
+            });
+            
+            editor.dispatchEvent(keyEvent);
+            
+            // Check if text became italic
+            setTimeout(() => {
+              const hasItalicText = editor.innerHTML.includes('<i>') || 
+                                   editor.innerHTML.includes('<em>');
+              resolve({
+                success: hasItalicText,
+                details: hasItalicText ? 
+                  `Italic shortcut worked: ${editor.innerHTML}` : 
+                  `Italic shortcut failed: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'Underline formatting with Ctrl+U': function() {
+          return new Promise((resolve) => {
+            // Reset content
+            editor.innerHTML = 'Test keyboard shortcuts';
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Focus the editor
+            editor.focus();
+            
+            // Simulate Ctrl+U keypress
+            const keyEvent = new KeyboardEvent('keydown', {
+              key: 'u',
+              code: 'KeyU',
+              ctrlKey: true,
+              bubbles: true
+            });
+            
+            editor.dispatchEvent(keyEvent);
+            
+            // Check if text became underlined
+            setTimeout(() => {
+              const hasUnderlineText = editor.innerHTML.includes('<u>');
+              resolve({
+                success: hasUnderlineText,
+                details: hasUnderlineText ? 
+                  `Underline shortcut worked: ${editor.innerHTML}` : 
+                  `Underline shortcut failed: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'Bullet list creation': function() {
+          return new Promise((resolve) => {
+            // Reset content
+            editor.innerHTML = 'Item 1\nItem 2\nItem 3';
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Find and click the bullet list button
+            const bulletButton = toolbar.querySelector('[data-command="insertUnorderedList"]');
+            if (!bulletButton) {
+              resolve({
+                success: false,
+                details: 'Could not find bullet list button in toolbar'
+              });
+              return;
+            }
+            
+            bulletButton.click();
+            
+            // Check if list was created
+            setTimeout(() => {
+              const hasList = editor.innerHTML.includes('<ul>') && 
+                             editor.innerHTML.includes('<li>');
+              resolve({
+                success: hasList,
+                details: hasList ? 
+                  `Bullet list created: ${editor.innerHTML}` : 
+                  `Bullet list not created: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'Numbered list creation': function() {
+          return new Promise((resolve) => {
+            // Reset content
+            editor.innerHTML = 'Step 1\nStep 2\nStep 3';
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Find and click the numbered list button
+            const numberedButton = toolbar.querySelector('[data-command="insertOrderedList"]');
+            if (!numberedButton) {
+              resolve({
+                success: false,
+                details: 'Could not find numbered list button in toolbar'
+              });
+              return;
+            }
+            
+            numberedButton.click();
+            
+            // Check if list was created
+            setTimeout(() => {
+              const hasList = editor.innerHTML.includes('<ol>') && 
+                             editor.innerHTML.includes('<li>');
+              resolve({
+                success: hasList,
+                details: hasList ? 
+                  `Numbered list created: ${editor.innerHTML}` : 
+                  `Numbered list not created: ${editor.innerHTML}`
+              });
+            }, 100);
+          });
+        },
+        
+        'HTML formatting preserved on save': function() {
+          return new Promise((resolve) => {
+            // Populate with formatted content
+            editor.innerHTML = '<strong>Bold text</strong> and <em>italic text</em> and <u>underlined text</u>';
+            
+            // Create a mock save/load operation
+            const savedHTML = editor.innerHTML;
+            const testObj = { content: savedHTML };
+            const jsonStr = JSON.stringify(testObj);
+            const parsedObj = JSON.parse(jsonStr);
+            
+            // Success if the HTML is preserved through JSON stringify/parse
+            const success = parsedObj.content === savedHTML;
+            resolve({
+              success,
+              details: success ? 
+                'HTML formatting preserved through JSON operations' : 
+                `Original: ${savedHTML}, After JSON: ${parsedObj.content}`
+            });
+          });
+        },
+        
+        'HTML formatting preserved on load': function() {
+          return new Promise((resolve) => {
+            // Test HTML string with various formatting
+            const testHTML = '<strong>Bold</strong> <em>italic</em> <u>underline</u> <ul><li>List item</li></ul>';
+            
+            // Set content directly (simulating load)
+            editor.innerHTML = testHTML;
+            
+            // Success if the HTML is rendered correctly
+            const success = editor.innerHTML === testHTML;
+            resolve({
+              success,
+              details: success ? 
+                'HTML formatting preserved when loading content' : 
+                `Expected: ${testHTML}, Actual: ${editor.innerHTML}`
+            });
+          });
+        }
+      };
+      
+      // Run a single test
+      async function runTest(testName) {
+        if (!tests[testName]) {
+          logMessage(`Error: Test "${testName}" not found`);
+          return;
+        }
+        
+        logMessage(`Running test: ${testName}`);
+        
+        try {
+          // Reset the editor for this test
+          setupTestEditor();
+          
+          // Run the test
+          const result = await tests[testName]();
+          
+          // Report result
+          reportTestResult(testName, result.success, result.details);
+          
+          return result;
+        } catch (error) {
+          logMessage(`Error in test "${testName}": ${error.message}`);
+          reportTestResult(testName, false, `Error: ${error.message}`);
+          return { success: false, details: error.message };
+        }
+      }
+      
+      // Run all tests sequentially
+      async function runAllTests() {
+        clearLog();
+        logMessage('Starting all tests...');
+        
+        for (const testName in tests) {
+          await runTest(testName);
+        }
+        
+        logMessage('All tests completed');
+      }
+      
+      // Set up test environment
+      setupTestEditor();
+      
+      // Set up buttons
+      document.getElementById('run-all-btn').addEventListener('click', runAllTests);
+      document.getElementById('reset-btn').addEventListener('click', resetTests);
+      
+      // Expose functions for external use
+      window.runTests = runAllTests;
+      window.runSingleTest = runTest;
+      
+      logMessage('Test environment ready');
+    });
+  </script>
+</body>
+</html> 

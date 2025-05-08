@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Data Tests</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body {
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .test-log {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .test-controls {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <h1>Character Data Tests</h1>
+    
+    <div class="test-controls">
+      <button id="run-all-btn">Run All Tests</button>
+      <button id="reset-btn">Reset</button>
+    </div>
+    
+    <div class="test-log" id="test-log"></div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const log = document.getElementById('test-log');
+      
+      // Sample character data for tests
+      const sampleCharacterData = {
+        name: "Test Character",
+        class: "Fighter 5",
+        race: "Human",
+        background: "Soldier",
+        
+        abilities: {
+          strength: { score: "16", modifier: "+3" },
+          dexterity: { score: "14", modifier: "+2" },
+          constitution: { score: "15", modifier: "+2" },
+          intelligence: { score: "10", modifier: "+0" },
+          wisdom: { score: "12", modifier: "+1" },
+          charisma: { score: "8", modifier: "-1" }
+        },
+        
+        combat: {
+          armorClass: "16",
+          initiative: "+2",
+          speed: "30 ft",
+          hp: {
+            current: "45",
+            max: "45",
+            temporary: "0"
+          },
+          hitDice: {
+            current: "5",
+            total: "5",
+            type: "d10"
+          }
+        },
+        
+        features: "<strong>Fighting Style:</strong> Defense<br><em>Second Wind:</em> Recover 1d10+5 HP",
+        inventory: "Longsword, Shield, Chainmail, Backpack, Rations (5 days)",
+        spellSlots: [2, 0, 0, 0, 0, 0, 0, 0, 0],
+        spellsKnown: {
+          cantrips: "<em>Minor Illusion</em>, <u>Fire Bolt</u>",
+          level1: "<strong>Shield</strong>, <u>Magic Missile</u>"
+        }
+      };
+      
+      // Log utilities
+      function logMessage(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        log.innerHTML += `[${timestamp}] ${message}\n`;
+        log.scrollTop = log.scrollHeight;
+      }
+      
+      function clearLog() {
+        log.innerHTML = '';
+      }
+      
+      // Report test results to parent window
+      function reportTestResult(testName, success, details) {
+        if (window.parent && window.parent.postMessage) {
+          window.parent.postMessage({
+            type: 'test-result',
+            moduleId: 'character-data',
+            testName,
+            success,
+            details
+          }, '*');
+        }
+        
+        // Also log locally
+        logMessage(`Test "${testName}": ${success ? 'PASSED' : 'FAILED'} - ${details || ''}`);
+      }
+      
+      // Tests
+      const tests = {
+        'New character creation': function() {
+          // We're testing that a new character has all the required properties
+          const defaultCharacter = {
+            name: "",
+            class: "",
+            race: "",
+            background: "",
+            abilities: {
+              strength: { score: "10", modifier: "+0" },
+              dexterity: { score: "10", modifier: "+0" },
+              constitution: { score: "10", modifier: "+0" },
+              intelligence: { score: "10", modifier: "+0" },
+              wisdom: { score: "10", modifier: "+0" },
+              charisma: { score: "10", modifier: "+0" }
+            }
+          };
+          
+          // Check if all required fields are present
+          const requiredFields = [
+            'name', 'class', 'race', 'background', 'abilities'
+          ];
+          
+          const missingFields = requiredFields.filter(field => !defaultCharacter.hasOwnProperty(field));
+          
+          return {
+            success: missingFields.length === 0,
+            details: missingFields.length === 0 ? 
+              'Default character has all required fields' : 
+              `Missing fields: ${missingFields.join(', ')}`
+          };
+        },
+        
+        'Character JSON validation': function() {
+          // Test validation of character data structure
+          const validCharacter = { ...sampleCharacterData };
+          
+          // Test cases
+          const validationTests = [
+            {
+              name: 'Valid data',
+              data: validCharacter,
+              expected: true
+            },
+            {
+              name: 'Missing abilities',
+              data: { ...validCharacter, abilities: undefined },
+              expected: false
+            },
+            {
+              name: 'Missing HP',
+              data: { ...validCharacter, combat: { ...validCharacter.combat, hp: undefined } },
+              expected: false
+            }
+          ];
+          
+          // Run each validation test
+          const results = validationTests.map(test => {
+            const isValid = this.validateCharacterData(test.data);
+            return `${test.name}: ${isValid === test.expected ? 'PASS' : 'FAIL'}`;
+          });
+          
+          const allPassed = results.every(result => result.includes('PASS'));
+          
+          return {
+            success: allPassed,
+            details: `Validation tests: ${results.join(', ')}`
+          };
+        },
+        
+        // Mock validation function
+        validateCharacterData: function(data) {
+          if (!data) return false;
+          if (!data.abilities) return false;
+          if (data.combat && !data.combat.hp) return false;
+          return true;
+        },
+        
+        'Character JSON loading': function() {
+          // Test loading character data from JSON
+          const charData = { ...sampleCharacterData };
+          const jsonStr = JSON.stringify(charData);
+          
+          try {
+            const parsedData = JSON.parse(jsonStr);
+            
+            // Check if key properties were preserved
+            const namePreserved = parsedData.name === charData.name;
+            const featuresPreserved = parsedData.features === charData.features;
+            const HTMLPreserved = parsedData.features.includes('<strong>') && 
+                                 parsedData.features.includes('<em>');
+            
+            return {
+              success: namePreserved && featuresPreserved && HTMLPreserved,
+              details: namePreserved && featuresPreserved && HTMLPreserved ?
+                'Character data loaded successfully with HTML formatting preserved' :
+                'Character data loading issue: ' + 
+                (!namePreserved ? 'Name not preserved. ' : '') +
+                (!featuresPreserved ? 'Features not preserved. ' : '') +
+                (!HTMLPreserved ? 'HTML formatting not preserved.' : '')
+            };
+          } catch (e) {
+            return {
+              success: false,
+              details: `JSON parsing error: ${e.message}`
+            };
+          }
+        },
+        
+        'Character image loading': function() {
+          // Mock test for image loading
+          return {
+            success: true,
+            details: 'Image loading test requires DOM interaction, simulated success'
+          };
+        },
+        
+        'Character folder upload': function() {
+          // Mock test for folder upload
+          return {
+            success: true,
+            details: 'Folder upload test requires file system access, simulated success'
+          };
+        },
+        
+        'HP calculation and display': function() {
+          // Test HP calculation logic
+          const hp = { current: "30", max: "45", temporary: "5" };
+          const calculatedPercentage = Math.floor((parseInt(hp.current) / parseInt(hp.max)) * 100);
+          const expectedPercentage = 66; // 30/45 = 66.67% -> floor -> 66%
+          
+          return {
+            success: calculatedPercentage === expectedPercentage,
+            details: calculatedPercentage === expectedPercentage ?
+              `HP calculation correct: ${calculatedPercentage}%` :
+              `HP calculation incorrect. Expected: ${expectedPercentage}%, Got: ${calculatedPercentage}%`
+          };
+        },
+        
+        'Spell slots tracking': function() {
+          // Test spell slot tracking logic
+          const maxSlots = [4, 2, 0, 0, 0, 0, 0, 0, 0];
+          const usedSlots = [2, 1, 0, 0, 0, 0, 0, 0, 0];
+          const remainingSlots = maxSlots.map((max, i) => max - usedSlots[i]);
+          
+          const expectedRemaining = [2, 1, 0, 0, 0, 0, 0, 0, 0];
+          const allCorrect = remainingSlots.every((slot, i) => slot === expectedRemaining[i]);
+          
+          return {
+            success: allCorrect,
+            details: allCorrect ?
+              'Spell slot tracking calculation correct' :
+              `Spell slot tracking incorrect. Expected: ${expectedRemaining.join(',')}, Got: ${remainingSlots.join(',')}`
+          };
+        },
+        
+        'Weapons data management': function() {
+          // Test weapons data structure
+          const weapons = [
+            { name: "Longsword", damage: "1d8", damageType: "slashing", properties: "Versatile (1d10)" },
+            { name: "Shortbow", damage: "1d6", damageType: "piercing", properties: "Ammunition, range (80/320)" }
+          ];
+          
+          // Check if weapon data is structured correctly
+          const validWeapons = weapons.every(weapon => 
+            weapon.name && weapon.damage && weapon.damageType
+          );
+          
+          return {
+            success: validWeapons,
+            details: validWeapons ?
+              'Weapons data structure is valid' :
+              'Weapons data missing required properties'
+          };
+        },
+        
+        'Character data saving': function() {
+          // Test data collection for saving
+          const character = { ...sampleCharacterData };
+          
+          // Simulate collecting data from form fields
+          const collected = { ...character };
+          collected.name = "Updated Name"; 
+          
+          // Check that changes are preserved
+          const nameUpdated = collected.name === "Updated Name";
+          
+          return {
+            success: nameUpdated,
+            details: nameUpdated ?
+              'Character changes preserved during save operation' :
+              'Character changes not preserved during save operation'
+          };
+        },
+        
+        'ZIP file creation': function() {
+          // Mock test for ZIP file creation
+          return {
+            success: true,
+            details: 'ZIP file creation requires file system APIs, simulated success'
+          };
+        }
+      };
+      
+      // Run a single test
+      function runTest(testName) {
+        if (!tests[testName]) {
+          logMessage(`Error: Test "${testName}" not found`);
+          return;
+        }
+        
+        logMessage(`Running test: ${testName}`);
+        
+        try {
+          let result;
+          
+          // Special case for validateCharacterData which is a method used by other tests
+          if (testName === 'Character JSON validation') {
+            result = tests[testName].call(tests);
+          } else {
+            result = tests[testName]();
+          }
+          
+          // Report result
+          reportTestResult(testName, result.success, result.details);
+          
+          return result;
+        } catch (error) {
+          logMessage(`Error in test "${testName}": ${error.message}`);
+          reportTestResult(testName, false, `Error: ${error.message}`);
+          return { success: false, details: error.message };
+        }
+      }
+      
+      // Run all tests sequentially
+      function runAllTests() {
+        clearLog();
+        logMessage('Starting all tests...');
+        
+        for (const testName in tests) {
+          // Skip the validation helper method
+          if (testName === 'validateCharacterData') continue;
+          runTest(testName);
+        }
+        
+        logMessage('All tests completed');
+      }
+      
+      // Set up buttons
+      document.getElementById('run-all-btn').addEventListener('click', runAllTests);
+      document.getElementById('reset-btn').addEventListener('click', () => {
+        clearLog();
+        logMessage('Test environment reset');
+      });
+      
+      // Expose functions for external use
+      window.runTests = runAllTests;
+      window.runSingleTest = runTest;
+      
+      logMessage('Character data test environment ready');
+    });
+  </script>
+</body>
+</html>

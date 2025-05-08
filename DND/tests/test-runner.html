@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D&D Character Sheet - Test Suite</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      color: #7e57c2;
+    }
+    .test-panel {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .test-header {
+      background-color: #7e57c2;
+      color: white;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .test-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .test-controls {
+      display: flex;
+      gap: 10px;
+    }
+    .test-controls button {
+      background-color: rgba(255,255,255,0.3);
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .test-controls button:hover {
+      background-color: rgba(255,255,255,0.5);
+    }
+    .test-body {
+      padding: 15px;
+    }
+    .test-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .test-item {
+      padding: 8px 12px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .test-item.success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    .test-item.error {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    .test-item.pending {
+      background-color: #e3f2fd;
+      color: #1565c0;
+    }
+    .test-name {
+      font-weight: 500;
+    }
+    .test-status {
+      font-size: 14px;
+    }
+    .test-details {
+      margin-top: 5px;
+      padding: 8px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      display: none;
+    }
+    .test-summary {
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .test-iframe {
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      display: none;
+    }
+    #global-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    #global-controls button {
+      background-color: #7e57c2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    #global-controls button:hover {
+      background-color: #6a3cb5;
+    }
+  </style>
+</head>
+<body>
+  <h1>D&D Character Sheet Test Suite</h1>
+  
+  <div id="global-controls">
+    <button id="run-all-tests">Run All Tests</button>
+    <button id="run-failed-tests">Run Failed Tests</button>
+    <button id="reset-all-tests">Reset All Tests</button>
+  </div>
+  
+  <!-- Rich Text Formatting Tests -->
+  <div class="test-panel">
+    <div class="test-header">
+      <h2>Rich Text Formatting Tests</h2>
+      <div class="test-controls">
+        <button class="run-tests-btn" data-module="rich-text">Run Tests</button>
+        <button class="toggle-iframe-btn" data-module="rich-text">Show/Hide Iframe</button>
+      </div>
+    </div>
+    <div class="test-body">
+      <iframe class="test-iframe" id="rich-text-iframe" src="rich-text-tests.html"></iframe>
+      <ul class="test-list" id="rich-text-tests">
+        <!-- Test items will be added here -->
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Character Data Tests -->
+  <div class="test-panel">
+    <div class="test-header">
+      <h2>Character Data Tests</h2>
+      <div class="test-controls">
+        <button class="run-tests-btn" data-module="character-data">Run Tests</button>
+        <button class="toggle-iframe-btn" data-module="character-data">Show/Hide Iframe</button>
+      </div>
+    </div>
+    <div class="test-body">
+      <iframe class="test-iframe" id="character-data-iframe" src="character-data-tests.html"></iframe>
+      <ul class="test-list" id="character-data-tests">
+        <!-- Test items will be added here -->
+      </ul>
+    </div>
+  </div>
+  
+  <!-- UI Interaction Tests -->
+  <div class="test-panel">
+    <div class="test-header">
+      <h2>UI Interaction Tests</h2>
+      <div class="test-controls">
+        <button class="run-tests-btn" data-module="ui-interaction">Run Tests</button>
+        <button class="toggle-iframe-btn" data-module="ui-interaction">Show/Hide Iframe</button>
+      </div>
+    </div>
+    <div class="test-body">
+      <iframe class="test-iframe" id="ui-interaction-iframe" src="ui-interaction-tests.html"></iframe>
+      <ul class="test-list" id="ui-interaction-tests">
+        <!-- Test items will be added here -->
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Accessibility Tests -->
+  <div class="test-panel">
+    <div class="test-header">
+      <h2>Accessibility Tests</h2>
+      <div class="test-controls">
+        <button class="run-tests-btn" data-module="accessibility">Run Tests</button>
+        <button class="toggle-iframe-btn" data-module="accessibility">Show/Hide Iframe</button>
+      </div>
+    </div>
+    <div class="test-body">
+      <iframe class="test-iframe" id="accessibility-iframe" src="accessibility-tests.html"></iframe>
+      <ul class="test-list" id="accessibility-tests">
+        <!-- Test items will be added here -->
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Summary Section -->
+  <div class="test-summary" id="test-summary">
+    No tests have been run yet.
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Test configuration
+      const testModules = [
+        {
+          id: 'rich-text',
+          name: 'Rich Text Formatting',
+          tests: [
+            { name: 'Toolbar appears on focus', status: 'pending' },
+            { name: 'Toolbar disappears on blur', status: 'pending' },
+            { name: 'Bold formatting with button', status: 'pending' },
+            { name: 'Italic formatting with button', status: 'pending' },
+            { name: 'Underline formatting with button', status: 'pending' },
+            { name: 'Bold formatting with Ctrl+B', status: 'pending' },
+            { name: 'Italic formatting with Ctrl+I', status: 'pending' },
+            { name: 'Underline formatting with Ctrl+U', status: 'pending' },
+            { name: 'Bullet list creation', status: 'pending' },
+            { name: 'Numbered list creation', status: 'pending' },
+            { name: 'HTML formatting preserved on save', status: 'pending' },
+            { name: 'HTML formatting preserved on load', status: 'pending' }
+          ]
+        },
+        {
+          id: 'character-data',
+          name: 'Character Data',
+          tests: [
+            { name: 'New character creation', status: 'pending' },
+            { name: 'Character JSON loading', status: 'pending' },
+            { name: 'Character JSON validation', status: 'pending' },
+            { name: 'Character image loading', status: 'pending' },
+            { name: 'Character folder upload', status: 'pending' },
+            { name: 'HP calculation and display', status: 'pending' },
+            { name: 'Spell slots tracking', status: 'pending' },
+            { name: 'Weapons data management', status: 'pending' },
+            { name: 'Character data saving', status: 'pending' },
+            { name: 'ZIP file creation', status: 'pending' }
+          ]
+        },
+        {
+          id: 'ui-interaction',
+          name: 'UI Interaction',
+          tests: [
+            { name: 'Tab switching', status: 'pending' },
+            { name: 'Theme changing', status: 'pending' },
+            { name: 'Collapsible sections', status: 'pending' },
+            { name: 'Back button confirmation', status: 'pending' },
+            { name: 'Add weapon row', status: 'pending' },
+            { name: 'HP bar updates', status: 'pending' }
+          ]
+        },
+        {
+          id: 'accessibility',
+          name: 'Accessibility',
+          tests: [
+            { name: 'ARIA attributes present', status: 'pending' },
+            { name: 'Keyboard navigation', status: 'pending' },
+            { name: 'Focus management', status: 'pending' },
+            { name: 'Screen reader compatibility', status: 'pending' }
+          ]
+        }
+      ];
+      
+      // Initialize test lists
+      testModules.forEach(module => {
+        const testList = document.getElementById(`${module.id}-tests`);
+        if (testList) {
+          module.tests.forEach(test => {
+            const listItem = document.createElement('li');
+            listItem.className = `test-item ${test.status}`;
+            listItem.dataset.test = test.name;
+            
+            const testName = document.createElement('span');
+            testName.className = 'test-name';
+            testName.textContent = test.name;
+            
+            const testStatus = document.createElement('span');
+            testStatus.className = 'test-status';
+            testStatus.textContent = test.status;
+            
+            const testDetails = document.createElement('div');
+            testDetails.className = 'test-details';
+            
+            listItem.appendChild(testName);
+            listItem.appendChild(testStatus);
+            listItem.appendChild(testDetails);
+            
+            // Toggle details view on click
+            listItem.addEventListener('click', () => {
+              testDetails.style.display = testDetails.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            testList.appendChild(listItem);
+          });
+        }
+      });
+      
+      // Toggle iframe visibility
+      const toggleButtons = document.querySelectorAll('.toggle-iframe-btn');
+      toggleButtons.forEach(button => {
+        const moduleId = button.dataset.module;
+        button.addEventListener('click', () => {
+          const iframe = document.getElementById(`${moduleId}-iframe`);
+          if (iframe) {
+            iframe.style.display = iframe.style.display === 'block' ? 'none' : 'block';
+          }
+        });
+      });
+      
+      // Run tests for a specific module
+      const runTestButtons = document.querySelectorAll('.run-tests-btn');
+      runTestButtons.forEach(button => {
+        const moduleId = button.dataset.module;
+        button.addEventListener('click', () => {
+          runTestsForModule(moduleId);
+        });
+      });
+      
+      // Run all tests
+      document.getElementById('run-all-tests').addEventListener('click', () => {
+        testModules.forEach(module => {
+          runTestsForModule(module.id);
+        });
+      });
+      
+      // Run only failed tests
+      document.getElementById('run-failed-tests').addEventListener('click', () => {
+        testModules.forEach(module => {
+          const testItems = document.querySelectorAll(`#${module.id}-tests .test-item.error`);
+          testItems.forEach(item => {
+            const testName = item.dataset.test;
+            runSingleTest(module.id, testName);
+          });
+        });
+      });
+      
+      // Reset all tests
+      document.getElementById('reset-all-tests').addEventListener('click', () => {
+        testModules.forEach(module => {
+          const testItems = document.querySelectorAll(`#${module.id}-tests .test-item`);
+          testItems.forEach(item => {
+            item.className = 'test-item pending';
+            const statusEl = item.querySelector('.test-status');
+            if (statusEl) {
+              statusEl.textContent = 'pending';
+            }
+            const detailsEl = item.querySelector('.test-details');
+            if (detailsEl) {
+              detailsEl.textContent = '';
+              detailsEl.style.display = 'none';
+            }
+          });
+        });
+        
+        updateSummary();
+      });
+      
+      // Function to run tests for a specific module
+      function runTestsForModule(moduleId) {
+        const iframe = document.getElementById(`${moduleId}-iframe`);
+        if (iframe && iframe.contentWindow) {
+          // Make sure the iframe is visible
+          iframe.style.display = 'block';
+          
+          // If the module has a runTests function, call it
+          if (typeof iframe.contentWindow.runTests === 'function') {
+            iframe.contentWindow.runTests();
+          }
+          
+          // Set up message listener for test results
+          window.addEventListener('message', receiveTestResults);
+        }
+      }
+      
+      // Function to run a single test
+      function runSingleTest(moduleId, testName) {
+        const iframe = document.getElementById(`${moduleId}-iframe`);
+        if (iframe && iframe.contentWindow) {
+          // Make sure the iframe is visible
+          iframe.style.display = 'block';
+          
+          // If the module has a runSingleTest function, call it
+          if (typeof iframe.contentWindow.runSingleTest === 'function') {
+            iframe.contentWindow.runSingleTest(testName);
+          }
+        }
+      }
+      
+      // Receive test results from iframes
+      function receiveTestResults(event) {
+        if (event.data && event.data.type === 'test-result') {
+          const { moduleId, testName, success, details } = event.data;
+          
+          // Find the test item
+          const testItem = document.querySelector(`#${moduleId}-tests .test-item[data-test="${testName}"]`);
+          if (testItem) {
+            // Update the test item
+            testItem.className = `test-item ${success ? 'success' : 'error'}`;
+            
+            const statusEl = testItem.querySelector('.test-status');
+            if (statusEl) {
+              statusEl.textContent = success ? 'passed' : 'failed';
+            }
+            
+            const detailsEl = testItem.querySelector('.test-details');
+            if (detailsEl && details) {
+              detailsEl.textContent = details;
+            }
+          }
+          
+          // Update summary
+          updateSummary();
+        }
+      }
+      
+      // Update test summary
+      function updateSummary() {
+        const summaryEl = document.getElementById('test-summary');
+        if (summaryEl) {
+          let total = 0;
+          let passed = 0;
+          let failed = 0;
+          let pending = 0;
+          
+          document.querySelectorAll('.test-item').forEach(item => {
+            total++;
+            if (item.classList.contains('success')) {
+              passed++;
+            } else if (item.classList.contains('error')) {
+              failed++;
+            } else {
+              pending++;
+            }
+          });
+          
+          summaryEl.innerHTML = `
+            <strong>Total Tests:</strong> ${total} |
+            <span style="color: #2e7d32;"><strong>Passed:</strong> ${passed}</span> |
+            <span style="color: #c62828;"><strong>Failed:</strong> ${failed}</span> |
+            <span style="color: #1565c0;"><strong>Pending:</strong> ${pending}</span>
+          `;
+        }
+      }
+    });
+  </script>
+</body>
+</html> 
