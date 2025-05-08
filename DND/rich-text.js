@@ -44,6 +44,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const toolbarTemplate = document.getElementById('rich-text-toolbar-template');
     if (!toolbarTemplate) return;
     
+    // Skip if the editor is already inside a rich-text-editor-container
+    if (editor.parentNode.classList.contains('rich-text-editor-container')) {
+      return;
+    }
+    
+    // Remove any existing rich-text-editor-container parent if exists elsewhere in DOM
+    const existingContainer = document.querySelector(`.rich-text-editor-container #${editor.id}`);
+    if (existingContainer) {
+      const parent = existingContainer.parentNode;
+      parent.parentNode.insertBefore(existingContainer, parent);
+      parent.remove();
+    }
+    
     // Create toolbar container
     const container = document.createElement('div');
     container.className = 'rich-text-editor-container';

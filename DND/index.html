@@ -14,23 +14,34 @@
     <script src="rich-text.js"></script>
   </head>
   <body>
-    <!-- Initial character selection screen -->
+    <!-- Character Selection Screen -->
     <div id="character-select-screen" class="character-select-screen">
       <div class="select-container">
-        <h1 class="medieval-title">D&D Character Sheet</h1>
+        <h1>D&D Character Sheet</h1>
+        
         <div class="select-options">
-          <div class="upload-options">
-            <button id="load-character-btn" class="primary-btn">Load Character</button>
-            <div class="upload-dropdown">
-              <button id="load-json-btn" class="upload-option">JSON File</button>
-              <button id="load-image-btn" class="upload-option">Image File</button>
-              <button id="load-folder-btn" class="upload-option">Character Folder</button>
-            </div>
+          <!-- Replace regular buttons with wax seal buttons -->
+          <div class="wax-seal-btn new-character-seal" id="new-character-btn">
+            <div class="wax-seal-btn-text">New Character</div>
           </div>
-          <button id="new-character-btn" class="secondary-btn">New Character</button>
+          
+          <div class="wax-seal-btn load-character-seal" id="load-character-btn">
+            <div class="wax-seal-btn-text">Load Character</div>
+          </div>
+          
+          <!-- Hidden file inputs -->
           <input type="file" id="character-file-input" webkitdirectory directory multiple style="display: none;" />
           <input type="file" id="json-file-input" accept=".json" style="display: none;" />
           <input type="file" id="image-file-input" accept="image/*" style="display: none;" />
+          
+          <!-- Upload options dropdown - styled to be visible on the map background -->
+          <div class="upload-dropdown" id="upload-dropdown" style="display: none; background-color: #F5DEB3; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);">
+            <button class="upload-option" id="load-json-btn">Load JSON</button>
+            <button class="upload-option" id="load-image-btn">Load Image</button>
+            <button class="upload-option" id="load-folder-btn">Load Character Folder</button>
+          </div>
+          
+          <!-- Error and success messages -->
           <div id="upload-error" class="error-message"></div>
           <div id="upload-success" class="success-message"></div>
         </div>
@@ -493,52 +504,52 @@
         </div>
 
         <div class="spell-content">
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="0">
             <h3>Cantrips</h3>
             <div id="cantrips" class="rich-text-editor" contenteditable="true" data-placeholder="Enter cantrips here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="1">
             <h3>1st Level</h3>
             <div id="level-1-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 1st level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="2">
             <h3>2nd Level</h3>
             <div id="level-2-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 2nd level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="3">
             <h3>3rd Level</h3>
             <div id="level-3-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 3rd level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="4">
             <h3>4th Level</h3>
             <div id="level-4-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 4th level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="5">
             <h3>5th Level</h3>
             <div id="level-5-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 5th level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="6">
             <h3>6th Level</h3>
             <div id="level-6-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 6th level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="7">
             <h3>7th Level</h3>
             <div id="level-7-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 7th level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="8">
             <h3>8th Level</h3>
             <div id="level-8-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 8th level spells here..."></div>
           </div>
 
-          <div class="spell-level-section">
+          <div class="spell-level-section" data-level="9">
             <h3>9th Level</h3>
             <div id="level-9-spells" class="rich-text-editor" contenteditable="true" data-placeholder="Enter 9th level spells here..."></div>
           </div>

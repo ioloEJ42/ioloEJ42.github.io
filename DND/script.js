@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize all components and listeners
   initApp();
   initQoLFeatures();
+  
+  // Initialize medieval theme
+  loadTheme();
+  
+  // Show the character selection screen initially
+  showCharacterSelect();
 });
 
 function initApp() {
@@ -42,20 +48,71 @@ function initApp() {
 
   // Add event listeners for the initial screen
   if (loadCharacterBtn) {
-    // The main button now doesn't do anything directly
-    // It just shows the dropdown on hover
-  }
-  
-  if (loadJsonBtn) {
-    loadJsonBtn.addEventListener('click', () => jsonFileInput.click());
-  }
-  
-  if (loadImageBtn) {
-    loadImageBtn.addEventListener('click', () => imageFileInput.click());
-  }
-  
-  if (loadFolderBtn) {
-    loadFolderBtn.addEventListener('click', () => characterFileInput.click());
+    // Show dropdown when load character seal is clicked
+    loadCharacterBtn.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent document click from immediately closing the dropdown
+      
+      const uploadDropdown = document.getElementById('upload-dropdown');
+      if (uploadDropdown) {
+        // Toggle dropdown visibility
+        const isVisible = uploadDropdown.style.display === 'block';
+        
+        // Hide any visible dropdowns first
+        const allDropdowns = document.querySelectorAll('.upload-dropdown');
+        allDropdowns.forEach(dropdown => {
+          dropdown.style.display = 'none';
+        });
+        
+        // If dropdown was not visible before, show it
+        if (!isVisible) {
+          // Calculate position below the load button
+          const btnRect = loadCharacterBtn.getBoundingClientRect();
+          const containerRect = document.querySelector('.select-container').getBoundingClientRect();
+          
+          uploadDropdown.style.position = 'absolute';
+          uploadDropdown.style.top = (btnRect.bottom - containerRect.top + 10) + 'px';
+          uploadDropdown.style.left = (btnRect.left - containerRect.left + btnRect.width/2 - 100) + 'px';
+          uploadDropdown.style.display = 'block';
+          
+          // Ensure the upload buttons in the dropdown have their event listeners
+          const loadJsonBtn = document.getElementById('load-json-btn');
+          const loadImageBtn = document.getElementById('load-image-btn');
+          const loadFolderBtn = document.getElementById('load-folder-btn');
+          
+          if (loadJsonBtn) {
+            loadJsonBtn.onclick = function(e) {
+              e.stopPropagation();
+              jsonFileInput.click();
+              uploadDropdown.style.display = 'none';
+            };
+          }
+          
+          if (loadImageBtn) {
+            loadImageBtn.onclick = function(e) {
+              e.stopPropagation();
+              imageFileInput.click();
+              uploadDropdown.style.display = 'none';
+            };
+          }
+          
+          if (loadFolderBtn) {
+            loadFolderBtn.onclick = function(e) {
+              e.stopPropagation();
+              characterFileInput.click();
+              uploadDropdown.style.display = 'none';
+            };
+          }
+          
+          // Close dropdown when clicking elsewhere
+          document.addEventListener('click', function closeDropdown(e) {
+            if (!uploadDropdown.contains(e.target) && e.target !== loadCharacterBtn) {
+              uploadDropdown.style.display = 'none';
+              document.removeEventListener('click', closeDropdown);
+            }
+          });
+        }
+      }
+    });
   }
   
   if (newCharacterBtn) {
@@ -1164,6 +1221,7 @@ function initApp() {
     if (characterSelectScreen && characterSheet) {
       characterSelectScreen.style.display = 'none';
       characterSheet.style.display = 'block';
+      
       // Ensure the first tab is active
       switchTab('main');
       
@@ -1172,6 +1230,9 @@ function initApp() {
       if (characterNameInput) {
         characterNameInput.focus();
       }
+      
+      // Ensure rich text formatting is correctly applied
+      setupRichTextFormatting();
     }
   }
 
@@ -1229,25 +1290,17 @@ function initApp() {
   }
 
   function applyTheme() {
-    if (!themeSelect) return;
-    
-    const theme = themeSelect.value;
+    const themeSelect = document.getElementById('theme-select');
+    const theme = themeSelect ? themeSelect.value : 'medieval';
     
     // Remove all theme classes
-    document.body.classList.remove(
-      'dark-theme', 'parchment-theme', 'wizard-theme', 'barbarian-theme',
-      'bard-theme', 'cleric-theme', 'druid-theme', 'fighter-theme',
-      'monk-theme', 'paladin-theme', 'ranger-theme', 'rogue-theme',
-      'sorcerer-theme', 'warlock-theme', 'artificer-theme', 'bloodhunter-theme',
-      'cyberpunk-theme', 'ethereal-theme', 'infernal-theme', 'nature-theme',
-      'vampire-theme', 'desert-theme', 'winter-theme', 'halloween-theme',
-      'celestial-theme', 'retro-theme', 'pirate-theme', 'medieval-theme'
-    );
+    document.body.classList.remove('light-theme', 'dark-theme', 'medieval-theme');
     
-    // Add the selected theme class
-    if (theme !== 'light') {
-      document.body.classList.add(`${theme}-theme`);
-    }
+    // Add the selected theme class or default to medieval
+    document.body.classList.add(theme + '-theme');
+    
+    // Save the theme preference to local storage
+    localStorage.setItem('dnd-theme', theme);
   }
 
   function updateHpBar() {
@@ -1385,136 +1438,27 @@ function initApp() {
 
   // QoL improvement - Rich text basic formatting
   function setupRichTextFormatting() {
+    // Clear any existing rich-text-editor-containers first
+    const existingContainers = document.querySelectorAll('.rich-text-editor-container');
+    existingContainers.forEach(container => {
+      const editor = container.querySelector('[contenteditable="true"]');
+      if (editor) {
+        // Move the editor outside the container to its original position
+        container.parentNode.insertBefore(editor, container);
+        container.remove();
+      }
+    });
+
     // Apply rich text editing to all contenteditable elements
     const richTextEditors = document.querySelectorAll('[contenteditable="true"]');
-    const toolbarTemplate = document.getElementById('rich-text-toolbar-template');
     
-    if (!toolbarTemplate) return;
-    
-    richTextEditors.forEach(editor => {
-      // Create toolbar container
-      const container = document.createElement('div');
-      container.className = 'rich-text-editor-container';
-      
-      // Clone toolbar template
-      const toolbar = toolbarTemplate.querySelector('.rich-text-toolbar').cloneNode(true);
-      
-      // Insert toolbar before editor
-      editor.parentNode.insertBefore(container, editor);
-      container.appendChild(toolbar);
-      container.appendChild(editor);
-      
-      // Add toolbar button functionality
-      const buttons = toolbar.querySelectorAll('button');
-      
-      // Accessibility improvements for toolbar buttons
-      buttons.forEach(button => {
-        const command = button.getAttribute('data-command');
-        button.setAttribute('aria-label', button.getAttribute('title') || command);
-        button.setAttribute('role', 'button');
-        
-        button.addEventListener('click', () => {
-          if (command) {
-            document.execCommand(command, false, null);
-            editor.focus();
-            
-            // Toggle active state for buttons
-            if (['bold', 'italic', 'underline'].includes(command)) {
-              if (document.queryCommandState(command)) {
-                button.classList.add('active');
-                button.setAttribute('aria-pressed', 'true');
-              } else {
-                button.classList.remove('active');
-                button.setAttribute('aria-pressed', 'false');
-              }
-            }
-          }
-        });
+    if (window.richTextFormatting && window.richTextFormatting.apply) {
+      richTextEditors.forEach(editor => {
+        window.richTextFormatting.apply(editor);
       });
-      
-      // Update button states when editor is focused
-      editor.addEventListener('keyup', updateToolbar);
-      editor.addEventListener('mouseup', updateToolbar);
-      editor.addEventListener('focus', updateToolbar);
-      
-      function updateToolbar() {
-        buttons.forEach(button => {
-          const command = button.getAttribute('data-command');
-          if (['bold', 'italic', 'underline'].includes(command)) {
-            if (document.queryCommandState(command)) {
-              button.classList.add('active');
-              button.setAttribute('aria-pressed', 'true');
-            } else {
-              button.classList.remove('active');
-              button.setAttribute('aria-pressed', 'false');
-            }
-          }
-        });
-      }
-      
-      // Keyboard shortcuts
-      editor.addEventListener('keydown', (e) => {
-        // Bold: Ctrl+B
-        if (e.ctrlKey && e.key.toLowerCase() === 'b') {
-          e.preventDefault();
-          document.execCommand('bold', false, null);
-          updateToolbar();
-        }
-        // Italic: Ctrl+I
-        else if (e.ctrlKey && e.key.toLowerCase() === 'i') {
-          e.preventDefault();
-          document.execCommand('italic', false, null);
-          updateToolbar();
-        }
-        // Underline: Ctrl+U
-        else if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-          e.preventDefault();
-          document.execCommand('underline', false, null);
-          updateToolbar();
-        }
-      });
-      
-      // Handle paste to preserve formatting if it's HTML
-      editor.addEventListener('paste', (e) => {
-        // Cancel the default paste action
-        e.preventDefault();
-        
-        // Get clipboard data
-        let text;
-        let isHTML = false;
-        
-        if (e.clipboardData || e.originalEvent.clipboardData) {
-          // Check for HTML content first
-          if (e.clipboardData.types.indexOf('text/html') !== -1) {
-            text = e.clipboardData.getData('text/html');
-            isHTML = true;
-          } else {
-            text = e.clipboardData.getData('text/plain');
-          }
-        } else if (window.clipboardData) {
-          text = window.clipboardData.getData('Text');
-        }
-        
-        // Insert the content
-        if (isHTML) {
-          // Clean up HTML to remove unwanted tags and styles
-          const cleanHTML = sanitizeHTML(text);
-          document.execCommand('insertHTML', false, cleanHTML);
-        } else {
-          document.execCommand('insertText', false, text);
-        }
-      });
-      
-      // Track changes
-      editor.addEventListener('input', () => {
-        unsavedChanges = true;
-      });
-      
-      // Accessibility improvements for rich text editors
-      editor.setAttribute('role', 'textbox');
-      editor.setAttribute('aria-multiline', 'true');
-      editor.setAttribute('aria-label', editor.dataset.label || 'Rich text editor');
-    });
+    } else {
+      console.warn('Rich text formatting module not available');
+    }
   }
 
   // Function to sanitize HTML for paste operations
@@ -1722,4 +1666,31 @@ function initApp() {
     setupSpellSlotTracking();
     setupProficiencyExpertise();
   }
+
+  // Load theme preference from local storage
+  function loadTheme() {
+    const themeSelect = document.getElementById('theme-select');
+    if (themeSelect) {
+      // Get theme from local storage or default to medieval
+      const savedTheme = localStorage.getItem('dnd-theme') || 'medieval';
+      themeSelect.value = savedTheme;
+      
+      // Apply the theme
+      applyTheme();
+    }
+  }
+
+  // Add a global document click handler to close dropdowns
+  document.addEventListener('click', function(e) {
+    const uploadDropdown = document.getElementById('upload-dropdown');
+    const loadCharacterBtn = document.getElementById('load-character-btn');
+    
+    // Close dropdown when clicking outside
+    if (uploadDropdown && 
+        uploadDropdown.style.display === 'block' && 
+        !uploadDropdown.contains(e.target) && 
+        (!loadCharacterBtn || !loadCharacterBtn.contains(e.target))) {
+      uploadDropdown.style.display = 'none';
+    }
+  });
 }

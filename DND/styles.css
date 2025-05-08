@@ -19,14 +19,14 @@
 /* Medieval Theme (Default) */
 body {
   --primary-color: #8B4513; /* SaddleBrown */
-  --secondary-color: #A0522D; /* Sienna */
-  --accent-color: #B8860B; /* DarkGoldenrod */
-  --light-text: #3A1E00;
-  --dark-text: #3A1E00;
-  --border-color: #8B4513;
-  --bg-color: #F5F1E3;
-  --card-bg: #EDE5D0;
-  --shadow: 0 4px 8px rgba(46, 26, 0, 0.15);
+  --secondary-color: #7A4B9D; /* Rich purple */
+  --accent-color: #D98B2D; /* Golden amber */
+  --light-text: #F5DEB3; /* Wheat */
+  --dark-text: #3C2A3A; /* Deep purple-brown */
+  --border-color: #6F4D3E; /* Rich brown */
+  --bg-color: #E8D7A1; /* Soft parchment */
+  --card-bg: #F5DEB3; /* Wheat */
+  --shadow: 0 4px 8px rgba(59, 42, 32, 0.25);
   --font-main: 'EB Garamond', 'Palatino Linotype', Georgia, serif;
   --border-radius: 0.1rem;
   
@@ -123,21 +123,109 @@ input, select, textarea, button {
   align-items: center;
   min-height: 100vh;
   background-color: var(--bg-color);
-  background-image: inherit;
+  background-image: url('images/medievalmap.jpg');
+  background-size: cover;
+  background-position: center;
   position: relative;
+}
+
+/* Semi-transparent overlay for better readability */
+.character-select-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(232, 215, 161, 0.7); /* Matching var(--bg-color) with transparency */
+  z-index: 1;
 }
 
 .select-container {
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
-  padding: 2rem;
+  padding: 2.5rem;
   width: 90%;
-  max-width: 500px;
+  max-width: 550px;
   box-shadow: var(--shadow);
   text-align: center;
   border: 2px solid var(--border-color);
   position: relative;
   overflow: hidden;
+  background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+  z-index: 2;
+}
+
+/* Wax seal buttons for character selection screen */
+.wax-seal-btn {
+  background-color: transparent;
+  border: none;
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 1rem auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.wax-seal-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #A52A2A; /* Wax seal color */
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.new-character-seal::before {
+  background-color: #8B4513; /* Brown wax seal color */
+}
+
+.load-character-seal::before {
+  background-color: #7A4B9D; /* Purple wax seal color */
+}
+
+.wax-seal-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 70%;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 2;
+}
+
+.new-character-seal::after {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M40,30 L60,30 L60,45 L75,45 L75,55 L60,55 L60,70 L40,70 L40,55 L25,55 L25,45 L40,45 Z" fill="none" stroke="%23F5DEB3" stroke-width="2"/></svg>');
+}
+
+.load-character-seal::after {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30,40 L50,60 L70,40 M50,60 L50,20" fill="none" stroke="%23F5DEB3" stroke-width="2"/></svg>');
+}
+
+.wax-seal-btn:hover {
+  transform: scale(1.05);
+}
+
+.wax-seal-btn-text {
+  position: relative;
+  z-index: 3;
+  color: var(--light-text);
+  font-family: 'EB Garamond', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 /* Medieval decorative elements */
@@ -166,14 +254,15 @@ input, select, textarea, button {
 }
 
 .select-container h1 {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   color: var(--primary-color);
   font-family: 'EB Garamond', Georgia, serif;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 2.2rem;
+  letter-spacing: 2px;
+  font-size: 2.5rem;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .select-container h1::after {
@@ -182,8 +271,8 @@ input, select, textarea, button {
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
-  width: 40%;
-  height: 1px;
+  width: 60%;
+  height: 2px;
   background: var(--primary-color);
 }
 
@@ -288,19 +377,44 @@ input, select, textarea, button {
 }
 
 .tab-button {
-  padding: 0.15rem 0.5rem;
-  background-color: transparent;
-  border: none;
+  font-family: 'EB Garamond', serif;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: var(--transition);
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: rgba(139, 69, 19, 0.2);
+}
+
+.tab-button:hover {
+  background-color: rgba(139, 69, 19, 0.1);
 }
 
 .tab-button.active {
   background-color: var(--primary-color);
   color: white;
+  border-color: var(--primary-color);
+}
+
+.tab-button.active::before {
+  background-color: var(--accent-color);
 }
 
 .tab-content {
@@ -316,15 +430,46 @@ input, select, textarea, button {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
-  border-bottom: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   position: relative;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  padding-bottom: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Decorative banner above character sheet */
+.character-header::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60" width="800" height="60"><rect width="800" height="40" y="10" fill="%237A4B9D" rx="5" ry="5"/><path d="M50,10 L60,0 L740,0 L750,10 L750,50 L740,60 L60,60 L50,50 Z" fill="%236A4E9D" stroke="%236F4D3E" stroke-width="2" /><text x="400" y="35" font-family="EB Garamond" font-size="24" fill="%23F5DEB3" text-anchor="middle">CHARACTER SHEET</text></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  z-index: 1;
+}
+
+/* Stylish input fields for character info */
+.character-header .input-group input {
+  background-color: rgba(245, 222, 179, 0.7);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.5rem;
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
+}
+
+.character-header .input-group label {
+  font-family: 'EB Garamond', serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--primary-color);
 }
 
 .input-group {
@@ -381,53 +526,39 @@ input, select, textarea, button {
 }
 
 .ability {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.25rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  text-align: center;
-  flex: 1;
-  min-width: 60px;
-  max-width: 80px;
-  background-color: rgba(237, 229, 208, 0.6);
+  border: 2px solid var(--border-color);
+  background-color: rgba(245, 222, 179, 0.6);
   position: relative;
-  z-index: 2;
+  padding: 0.5rem 0.25rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .ability label {
+  font-family: 'EB Garamond', serif;
   font-weight: 600;
-  margin-bottom: 0.25rem;
-  font-size: 0.75rem;
+  font-variant: small-caps;
+  letter-spacing: 1px;
+  color: var(--primary-color);
 }
 
 .ability-score {
-  width: 2.5rem;
-  height: 2.5rem;
-  text-align: center;
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background-color: var(--card-bg);
-  color: var(--dark-text);
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.4rem;
+  border: 2px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.5);
+  font-family: 'EB Garamond', serif;
 }
 
 .ability-modifier {
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  background-color: var(--card-bg);
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.2rem;
+  border: 2px solid var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.5);
   color: var(--primary-color);
   font-weight: bold;
-  margin: 0 auto;
-  text-align: center;
+  font-family: 'EB Garamond', serif;
 }
 
 /* HP Section */
@@ -576,22 +707,22 @@ input, select, textarea, button {
 
 /* Custom tristate proficiency checkbox styling */
 .proficiency-check {
+  width: 1.1rem;
+  height: 1.1rem;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  width: 1rem;
-  height: 1rem;
   border: 2px solid var(--border-color);
   border-radius: 50%;
-  margin-right: 0.25rem;
+  margin-right: 0.5rem;
   cursor: pointer;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.2s ease;
-  opacity: 0.8;
+  transition: all 0.25s ease;
+  opacity: 0.9;
   box-sizing: border-box;
   outline: none;
   background-color: transparent;
@@ -1407,15 +1538,15 @@ body.dark-theme .skill:hover {
 .upload-dropdown {
   display: none;
   position: absolute;
-  top: calc(100% - 1px);
-  left: 0;
-  z-index: 10;
-  width: 100%;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  z-index: 1000;
+  min-width: 200px;
+  text-align: left;
+  margin-top: 10px;
 }
 
 .upload-options:hover .upload-dropdown,
@@ -1427,17 +1558,18 @@ body.dark-theme .skill:hover {
   display: block;
   width: 100%;
   text-align: left;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--dark-text);
   transition: var(--transition);
+  font-family: 'EB Garamond', serif;
 }
 
 .upload-option:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(139, 69, 19, 0.1);
   color: var(--primary-color);
 }
 
@@ -1476,8 +1608,8 @@ body.dark-theme .upload-option:hover {
 .character-header {
   border-bottom: 1px solid var(--border-color);
   position: relative;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .hp-bar {
@@ -1507,11 +1639,12 @@ body.dark-theme .upload-option:hover {
 .spell-slots,
 .spell-level-section {
   border: 1px solid var(--border-color);
-  background-color: rgba(237, 229, 208, 0.6);
+  background-color: rgba(245, 222, 179, 0.8);
   position: relative;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
   border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
 }
 
 /* Add decorative corners to sections */
@@ -1525,8 +1658,8 @@ body.dark-theme .upload-option:hover {
   position: absolute;
   top: -5px;
   left: -5px;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border-top: 2px solid var(--border-color);
   border-left: 2px solid var(--border-color);
   border-radius: 2px 0 0 0;
@@ -1542,8 +1675,8 @@ body.dark-theme .upload-option:hover {
   position: absolute;
   bottom: -5px;
   right: -5px;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border-bottom: 2px solid var(--border-color);
   border-right: 2px solid var(--border-color);
   border-radius: 0 0 2px 0;
@@ -1558,354 +1691,211 @@ body.dark-theme .upload-option:hover {
 .spell-level-section h3 {
   color: var(--primary-color);
   font-family: 'EB Garamond', Georgia, serif;
-  letter-spacing: 1px;
-  font-size: 1.4rem;
-  border-bottom: 1px solid rgba(139, 69, 19, 0.3);
-  padding-bottom: 0.25rem;
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+  border-bottom: 2px solid rgba(139, 69, 19, 0.3);
+  padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
-/* Medieval Theme Specific Styling */
-body.medieval-theme {
-  --primary-color: #8B4513; /* SaddleBrown */
-  --secondary-color: #A0522D; /* Sienna */
-  --accent-color: #B8860B; /* DarkGoldenrod */
-  --light-text: #3A1E00;
-  --dark-text: #3A1E00;
-  --border-color: #8B4513;
-  --bg-color: #F5F1E3;
-  --card-bg: #EDE5D0;
-  --shadow: 0 4px 8px rgba(46, 26, 0, 0.15);
-  --font-main: 'EB Garamond', 'Palatino Linotype', Georgia, serif;
-  --border-radius: 0.1rem;
-  
-  font-family: var(--font-main);
-  background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
-  color: var(--dark-text);
-}
-
-/* Wax seal for medieval theme */
+/* Enhanced medieval decorative wax seal */
 body.medieval-theme .character-header::after {
   content: '';
   position: absolute;
-  bottom: -15px;
+  bottom: -20px;
   right: 20px;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23A52A2A" /><circle cx="50" cy="50" r="40" fill="%23B22222" /><path d="M50,20 L60,40 L82,40 L65,55 L72,75 L50,62 L28,75 L35,55 L18,40 L40,40 Z" fill="%23800000"/></svg>');
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 2;
 }
 
-/* Decorative initial letter for medieval theme */
-body.medieval-theme .character-header::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: 10px;
-  width: 40px;
-  height: 40px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30,20 Q50,20 50,40 Q50,60 30,60 L30,20 Z" fill="none" stroke="%238B4513" stroke-width="3"/><path d="M50,40 Q70,40 70,60 L50,60 L50,40 Z" fill="none" stroke="%238B4513" stroke-width="3"/><path d="M30,60 L30,80 L70,80 L70,60" fill="none" stroke="%238B4513" stroke-width="3"/></svg>');
-  background-size: contain;
-  background-repeat: no-repeat;
-  z-index: 1;
-  opacity: 0.6;
-}
-
-/* Medieval theme input styling */
+/* Input field styling for medieval theme */
 body.medieval-theme input[type="text"],
 body.medieval-theme textarea,
 body.medieval-theme select {
-  background-color: rgba(245, 241, 227, 0.7);
+  background-color: rgba(245, 222, 179, 0.7);
   border: 1px solid var(--border-color);
   color: var(--dark-text);
   font-family: var(--font-main);
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
 }
 
-/* Medieval theme rich text editor */
-body.medieval-theme .rich-text-editor {
-  background-color: rgba(245, 241, 227, 0.7);
+body.medieval-theme input[type="text"]:focus,
+body.medieval-theme textarea:focus,
+body.medieval-theme select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 1px rgba(217, 139, 45, 0.4);
+  outline: none;
+}
+
+/* Section background styling */
+.equipment-section, 
+.features-section,
+.saving-throws, 
+.skills,
+.spell-slots,
+.spell-level-section {
   border: 1px solid var(--border-color);
-  font-family: var(--font-main);
-  padding: 10px;
+  background-color: rgba(245, 222, 179, 0.8);
   position: relative;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
 }
 
-body.medieval-theme .rich-text-editor::before {
-  content: '';
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 20px;
-  height: 20px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M5,5 L15,5 L15,15 L5,15 Z" fill="none" stroke="%238B4513" stroke-width="1.5"/></svg>');
-  background-repeat: no-repeat;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-body.medieval-theme .rich-text-editor::after {
-  content: '';
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  width: 20px;
-  height: 20px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M25,25 L35,25 L35,35 L25,35 Z" fill="none" stroke="%238B4513" stroke-width="1.5"/></svg>');
-  background-repeat: no-repeat;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-/* Medieval theme toolbar */
-body.medieval-theme .rich-text-toolbar {
-  background-color: #EDE5D0;
-  border: 1px solid var(--border-color);
-  border-bottom: none;
-}
-
-body.medieval-theme .rich-text-toolbar button {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: var(--dark-text);
-  border: 1px solid var(--border-color);
-}
-
-body.medieval-theme .rich-text-toolbar button:hover {
-  background-color: rgba(139, 69, 19, 0.2);
-}
-
-body.medieval-theme .rich-text-toolbar button.active {
-  background-color: rgba(139, 69, 19, 0.3);
-}
-
-/* Special styling for the character selection screen */
-body.medieval-theme .character-select-screen {
-  background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
-}
-
-body.medieval-theme .select-container {
-  box-shadow: 0 6px 15px rgba(46, 26, 0, 0.3);
+/* Improved proficiency check styling */
+.proficiency-check {
+  width: 1.1rem;
+  height: 1.1rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  cursor: pointer;
   position: relative;
-}
-
-/* Add medieval style scrolls to character selection buttons */
-body.medieval-theme .primary-btn::before,
-body.medieval-theme .secondary-btn::before {
-  content: '';
-  position: absolute;
-  left: 10px;
-  width: 12px;
-  height: 100%;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="30" viewBox="0 0 12 30"><path d="M2,0 Q-2,5 2,10 Q-2,15 2,20 Q-2,25 2,30" fill="none" stroke="%238B4513" stroke-width="1"/></svg>');
-  background-repeat: no-repeat;
-  background-position: center left;
-  opacity: 0.6;
-}
-
-body.medieval-theme .primary-btn::after,
-body.medieval-theme .secondary-btn::after {
-  content: '';
-  position: absolute;
-  right: 10px;
-  width: 12px;
-  height: 100%;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="30" viewBox="0 0 12 30"><path d="M10,0 Q14,5 10,10 Q14,15 10,20 Q14,25 10,30" fill="none" stroke="%238B4513" stroke-width="1"/></svg>');
-  background-repeat: no-repeat;
-  background-position: center right;
-  opacity: 0.6;
-}
-
-/* Style spell slot containers */
-body.medieval-theme .spell-slot-level {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
-  position: relative;
-  border: 1px solid var(--border-color);
-  padding: 5px;
-  background-color: rgba(245, 241, 227, 0.5);
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  opacity: 0.9;
+  box-sizing: border-box;
+  outline: none;
+  background-color: transparent;
 }
 
-body.medieval-theme .spell-slot-level::before {
-  content: '✧';
-  position: absolute;
-  left: -15px;
-  color: var(--primary-color);
-  font-size: 1.2rem;
-}
-
-/* Style abilities with faux embossed look */
-body.medieval-theme .ability {
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-body.medieval-theme .ability label {
-  font-family: 'EB Garamond', serif;
-  font-weight: 600;
-  font-variant: small-caps;
-  letter-spacing: 1px;
-}
-
-body.medieval-theme .ability-score {
-  border: 1px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-body.medieval-theme .ability-modifier {
-  border: 1px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Apply old-style numbering to spell levels */
-body.medieval-theme .spell-level-section h3::before {
+/* Apply old-style Roman numeral styling to spell levels */
+body .spell-level-section h3::before {
   font-family: 'EB Garamond', serif;
   font-weight: 400;
   font-style: italic;
   margin-right: 5px;
 }
 
-body.medieval-theme .spell-level-section[data-level="1"] h3::before {
+body .spell-level-section[data-level="1"] h3::before {
   content: "I.";
 }
 
-body.medieval-theme .spell-level-section[data-level="2"] h3::before {
+body .spell-level-section[data-level="2"] h3::before {
   content: "II.";
 }
 
-body.medieval-theme .spell-level-section[data-level="3"] h3::before {
+body .spell-level-section[data-level="3"] h3::before {
   content: "III.";
 }
 
-body.medieval-theme .spell-level-section[data-level="4"] h3::before {
+body .spell-level-section[data-level="4"] h3::before {
   content: "IV.";
 }
 
-body.medieval-theme .spell-level-section[data-level="5"] h3::before {
+body .spell-level-section[data-level="5"] h3::before {
   content: "V.";
 }
 
-body.medieval-theme .spell-level-section[data-level="6"] h3::before {
+body .spell-level-section[data-level="6"] h3::before {
   content: "VI.";
 }
 
-body.medieval-theme .spell-level-section[data-level="7"] h3::before {
+body .spell-level-section[data-level="7"] h3::before {
   content: "VII.";
 }
 
-body.medieval-theme .spell-level-section[data-level="8"] h3::before {
+body .spell-level-section[data-level="8"] h3::before {
   content: "VIII.";
 }
 
-body.medieval-theme .spell-level-section[data-level="9"] h3::before {
+body .spell-level-section[data-level="9"] h3::before {
   content: "IX.";
 }
 
-/* Medieval title styling */
-.medieval-title {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-weight: 700;
-  font-size: 2.5rem;
-  text-transform: uppercase;
-  color: #8B4513;
-  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
-  letter-spacing: 2px;
+/* Decorative section markers */
+.saving-throws h3::before,
+.skills h3::before,
+.equipment-section h3::before,
+.features-section h3::before,
+.spell-slots h3::before {
+  content: '✧';
+  margin-right: 8px;
+  color: var(--accent-color);
+}
+
+.saving-throws h3::after,
+.skills h3::after,
+.equipment-section h3::after,
+.features-section h3::after,
+.spell-slots h3::after {
+  content: '✧';
+  margin-left: 8px;
+  color: var(--accent-color);
+}
+
+/* Decorative abilities display */
+.ability {
+  border: 2px solid var(--border-color);
+  background-color: rgba(245, 222, 179, 0.6);
   position: relative;
-  padding: 10px 0 20px;
-  margin-bottom: 30px !important;
+  padding: 0.5rem 0.25rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-.medieval-title::before {
-  content: "";
-  position: absolute;
-  top: -5px;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="8" viewBox="0 0 200 8"><path d="M0,4 Q10,0 20,4 T40,4 T60,4 T80,4 T100,4 T120,4 T140,4 T160,4 T180,4 T200,4" stroke="%238B4513" fill="none" stroke-width="1.5"/></svg>');
-  background-repeat: repeat-x;
-}
-
-.medieval-title::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="8" viewBox="0 0 200 8"><path d="M0,4 Q10,8 20,4 T40,4 T60,4 T80,4 T100,4 T120,4 T140,4 T160,4 T180,4 T200,4" stroke="%238B4513" fill="none" stroke-width="1.5"/></svg>');
-  background-repeat: repeat-x;
-}
-
-body.medieval-theme .medieval-title {
-  color: #5D2906;
-}
-
-/* Add decorative label above saving throws and skills */
-body.medieval-theme .saving-throws h3,
-body.medieval-theme .skills h3 {
+.ability label {
   font-family: 'EB Garamond', serif;
   font-weight: 600;
-  text-transform: uppercase;
+  font-variant: small-caps;
   letter-spacing: 1px;
-  text-align: center;
-  position: relative;
+  color: var(--primary-color);
 }
 
-body.medieval-theme .saving-throws h3::before,
-body.medieval-theme .skills h3::before {
-  content: '★';
-  position: absolute;
-  left: 10px;
-  color: #8B4513;
-}
-
-body.medieval-theme .saving-throws h3::after,
-body.medieval-theme .skills h3::after {
-  content: '★';
-  position: absolute;
-  right: 10px;
-  color: #8B4513;
-}
-
-/* Style the tab buttons for medieval theme */
-body.medieval-theme .tab-button {
+.ability-score {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.4rem;
+  border: 2px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.5);
   font-family: 'EB Garamond', serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-  background-color: rgba(237, 229, 208, 0.5);
-  border: 1px solid var(--border-color);
-  margin-right: 2px;
-  transition: all 0.3s ease;
 }
 
-body.medieval-theme .tab-button:hover {
-  background-color: rgba(139, 69, 19, 0.1);
+.ability-modifier {
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.2rem;
+  border: 2px solid var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.5);
+  color: var(--primary-color);
+  font-weight: bold;
+  font-family: 'EB Garamond', serif;
 }
 
-body.medieval-theme .tab-button.active {
-  background-color: rgba(139, 69, 19, 0.2);
-  border-bottom-color: transparent;
-}
-
-/* Add a decorative background to the character trait sections */
-body.medieval-theme .trait-section {
-  background-color: rgba(245, 241, 227, 0.7);
-  border: 1px solid var(--border-color);
-  padding: 1rem;
-  border-radius: var(--border-radius);
+/* Decorative dividers between sections */
+.abilities-section,
+.combat-stats,
+.equipment-section,
+.skills-saves-section {
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-body.medieval-theme .trait-section::before {
+.abilities-section::after,
+.combat-stats::after,
+.equipment-section::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 10px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="10" viewBox="0 0 20 10"><path d="M0,10 L0,3 Q5,0 10,3 Q15,6 20,3 L20,10 Z" fill="%238B4513" fill-opacity="0.1"/></svg>');
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 6px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="6" viewBox="0 0 100 6"><path d="M0,3 Q10,0 20,3 T40,3 T60,3 T80,3 T100,3" stroke="%236F4D3E" stroke-width="1" fill="none"/></svg>');
   background-repeat: repeat-x;
+  opacity: 0.6;
 }
