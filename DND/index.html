@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Add JSZip for folder download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Rich text functionality -->
+    <script src="rich-text.js"></script>
   </head>
   <body>
     <!-- Initial character selection screen -->
@@ -15,14 +19,32 @@
       <div class="select-container">
         <h1>D&D Character Sheet</h1>
         <div class="select-options">
-          <button id="load-character-btn" class="primary-btn">
-            Load Character
-          </button>
-          <button id="new-character-btn" class="secondary-btn">
-            New Character
-          </button>
-          <input type="file" id="character-file-input" accept=".json" style="display: none;" />
+          <div class="upload-options">
+            <button id="load-character-btn" class="primary-btn">Load Character</button>
+            <div class="upload-dropdown">
+              <button id="load-json-btn" class="upload-option">JSON File</button>
+              <button id="load-image-btn" class="upload-option">Image File</button>
+              <button id="load-folder-btn" class="upload-option">Character Folder</button>
+            </div>
+          </div>
+          <button id="new-character-btn" class="secondary-btn">New Character</button>
+          <input type="file" id="character-file-input" webkitdirectory directory multiple style="display: none;" />
+          <input type="file" id="json-file-input" accept=".json" style="display: none;" />
+          <input type="file" id="image-file-input" accept="image/*" style="display: none;" />
+          <div id="upload-error" class="error-message"></div>
+          <div id="upload-success" class="success-message"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- Rich text toolbar template -->
+    <div id="rich-text-toolbar-template" style="display: none;">
+      <div class="rich-text-toolbar">
+        <button type="button" data-command="bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
+        <button type="button" data-command="italic" title="Italic (Ctrl+I)"><em>I</em></button>
+        <button type="button" data-command="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+        <button type="button" data-command="insertUnorderedList" title="Bullet List"><span>•</span></button>
+        <button type="button" data-command="insertOrderedList" title="Numbered List"><span>#</span></button>
       </div>
     </div>
 
@@ -31,18 +53,18 @@
       <!-- Character Controls and Theme Options -->
       <div class="top-controls">
         <div class="control-group">
-          <button id="back-btn" class="outline-btn">Back</button>
-          <button id="save-character-btn" class="primary-btn">Download</button>
+          <button id="back-btn" class="outline-btn" aria-label="Back to character selection">Back</button>
+          <button id="save-character-btn" class="primary-btn" aria-label="Download character">Download</button>
         </div>
 
-        <div class="tabs">
-          <button class="tab-button active" data-tab="main">Character</button>
-          <button class="tab-button" data-tab="spells">Spells</button>
-          <button class="tab-button" data-tab="personal">Notes</button>
+        <div class="tabs" role="tablist" aria-label="Character sections">
+          <button class="tab-button active" data-tab="main" role="tab" aria-selected="true" aria-controls="main" tabindex="0" id="tab-main">Character</button>
+          <button class="tab-button" data-tab="spells" role="tab" aria-selected="false" aria-controls="spells" tabindex="-1" id="tab-spells">Spells</button>
+          <button class="tab-button" data-tab="personal" role="tab" aria-selected="false" aria-controls="personal" tabindex="-1" id="tab-personal">Notes</button>
         </div>
 
         <div class="control-group">
-          <select id="theme-select">
+          <select id="theme-select" aria-label="Select theme">
             <option value="light">Light</option>
             <option value="dark">Dark</option>
             <option value="parchment">Parchment</option>
@@ -82,7 +104,7 @@
       </div>
 
       <!-- Main Tab Content -->
-      <div id="main" class="tab-content active">
+      <div id="main" class="tab-content active" role="tabpanel" aria-labelledby="tab-main" aria-hidden="false">
         <div class="character-header">
           <div class="input-group">
             <label for="character-name">Character Name</label>
@@ -140,12 +162,12 @@
             <div class="hp-section">
               <div class="hp-label">Hit Points</div>
               <div class="hp-tracker">
-                <input type="text" id="current-hp" class="hp-current" placeholder="Current" />
+                <input type="text" id="current-hp" class="hp-current" placeholder="Current" aria-label="Current hit points" />
                 <span class="hp-separator">/</span>
-                <input type="text" id="max-hp" class="hp-max" placeholder="Max" />
+                <input type="text" id="max-hp" class="hp-max" placeholder="Max" aria-label="Maximum hit points" />
               </div>
               <div class="hp-bar-container">
-                <div class="hp-bar" id="hp-bar"></div>
+                <div class="hp-bar" id="hp-bar" role="progressbar" aria-valuemin="0" aria-valuenow="0" aria-valuemax="100" aria-label="Health bar"></div>
               </div>
             </div>
           </div>
@@ -359,7 +381,7 @@
       </div>
 
       <!-- Spells Tab Content -->
-      <div id="spells" class="tab-content">
+      <div id="spells" class="tab-content" role="tabpanel" aria-labelledby="tab-spells" aria-hidden="true">
         <div class="spell-header">
           <div class="spellcasting-info">
             <div class="input-group">
@@ -388,58 +410,58 @@
             <h3>Spell Slots</h3>
             <div class="spell-slots-container">
               <div class="spell-slot-level">
-                <label>1st:</label>
-                <input type="text" id="slots-used-1" class="slot-used" />
+                <label for="slots-used-1">1st:</label>
+                <input type="text" id="slots-used-1" class="slot-used" aria-label="Level 1 spell slots used" />
                 /
-                <input type="text" id="slots-total-1" class="slot-total" />
+                <input type="text" id="slots-total-1" class="slot-total" aria-label="Level 1 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>2nd:</label>
-                <input type="text" id="slots-used-2" class="slot-used" />
+                <label for="slots-used-2">2nd:</label>
+                <input type="text" id="slots-used-2" class="slot-used" aria-label="Level 2 spell slots used" />
                 /
-                <input type="text" id="slots-total-2" class="slot-total" />
+                <input type="text" id="slots-total-2" class="slot-total" aria-label="Level 2 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>3rd:</label>
-                <input type="text" id="slots-used-3" class="slot-used" />
+                <label for="slots-used-3">3rd:</label>
+                <input type="text" id="slots-used-3" class="slot-used" aria-label="Level 3 spell slots used" />
                 /
-                <input type="text" id="slots-total-3" class="slot-total" />
+                <input type="text" id="slots-total-3" class="slot-total" aria-label="Level 3 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>4th:</label>
-                <input type="text" id="slots-used-4" class="slot-used" />
+                <label for="slots-used-4">4th:</label>
+                <input type="text" id="slots-used-4" class="slot-used" aria-label="Level 4 spell slots used" />
                 /
-                <input type="text" id="slots-total-4" class="slot-total" />
+                <input type="text" id="slots-total-4" class="slot-total" aria-label="Level 4 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>5th:</label>
-                <input type="text" id="slots-used-5" class="slot-used" />
+                <label for="slots-used-5">5th:</label>
+                <input type="text" id="slots-used-5" class="slot-used" aria-label="Level 5 spell slots used" />
                 /
-                <input type="text" id="slots-total-5" class="slot-total" />
+                <input type="text" id="slots-total-5" class="slot-total" aria-label="Level 5 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>6th:</label>
-                <input type="text" id="slots-used-6" class="slot-used" />
+                <label for="slots-used-6">6th:</label>
+                <input type="text" id="slots-used-6" class="slot-used" aria-label="Level 6 spell slots used" />
                 /
-                <input type="text" id="slots-total-6" class="slot-total" />
+                <input type="text" id="slots-total-6" class="slot-total" aria-label="Level 6 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>7th:</label>
-                <input type="text" id="slots-used-7" class="slot-used" />
+                <label for="slots-used-7">7th:</label>
+                <input type="text" id="slots-used-7" class="slot-used" aria-label="Level 7 spell slots used" />
                 /
-                <input type="text" id="slots-total-7" class="slot-total" />
+                <input type="text" id="slots-total-7" class="slot-total" aria-label="Level 7 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>8th:</label>
-                <input type="text" id="slots-used-8" class="slot-used" />
+                <label for="slots-used-8">8th:</label>
+                <input type="text" id="slots-used-8" class="slot-used" aria-label="Level 8 spell slots used" />
                 /
-                <input type="text" id="slots-total-8" class="slot-total" />
+                <input type="text" id="slots-total-8" class="slot-total" aria-label="Level 8 spell slots total" />
               </div>
               <div class="spell-slot-level">
-                <label>9th:</label>
-                <input type="text" id="slots-used-9" class="slot-used" />
+                <label for="slots-used-9">9th:</label>
+                <input type="text" id="slots-used-9" class="slot-used" aria-label="Level 9 spell slots used" />
                 /
-                <input type="text" id="slots-total-9" class="slot-total" />
+                <input type="text" id="slots-total-9" class="slot-total" aria-label="Level 9 spell slots total" />
               </div>
             </div>
           </div>
@@ -499,7 +521,7 @@
       </div>
 
       <!-- Personal Tab Content -->
-      <div id="personal" class="tab-content">
+      <div id="personal" class="tab-content" role="tabpanel" aria-labelledby="tab-personal" aria-hidden="true">
         <div class="personal-details">
           <div class="character-appearance">
             <div class="character-image">
@@ -543,5 +565,8 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="rich-text.js"></script>
+    <!-- Include for testing, remove in production -->
+    <script src="test-rich-text.js"></script>
   </body>
 </html>

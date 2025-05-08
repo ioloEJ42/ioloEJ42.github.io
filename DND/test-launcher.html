@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D&D Character Sheet - Rich Text Test</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .test-controls {
+      padding: 1rem;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    .test-controls h2 {
+      margin-top: 0;
+    }
+    .test-controls button {
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #7e57c2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .test-controls button:hover {
+      background-color: #6a3cb5;
+    }
+    .test-log {
+      margin-top: 1rem;
+      height: 200px;
+      overflow-y: auto;
+      background-color: #2d2d2d;
+      color: #fff;
+      padding: 0.5rem;
+      font-family: monospace;
+      border-radius: 4px;
+    }
+    .test-log p {
+      margin: 0;
+      padding: 0.25rem 0;
+    }
+    .test-log .success {
+      color: #4caf50;
+    }
+    .test-log .error {
+      color: #f44336;
+    }
+    iframe {
+      border: 1px solid #ccc;
+      width: 100%;
+      height: calc(100vh - 300px);
+    }
+  </style>
+</head>
+<body>
+  <div class="test-controls">
+    <h2>Rich Text Formatting Test</h2>
+    <div>
+      <button id="load-test">Load Formatting Test Character</button>
+      <button id="create-new">Create New Character</button>
+      <button id="test-formatting">Test Text Formatting</button>
+      <button id="test-save">Test Save/Load</button>
+      <button id="clear-log">Clear Log</button>
+    </div>
+    <div class="test-log" id="test-log"></div>
+  </div>
+  
+  <iframe id="app-frame" src="index.html"></iframe>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const iframe = document.getElementById('app-frame');
+      const testLog = document.getElementById('test-log');
+      const loadTestBtn = document.getElementById('load-test');
+      const createNewBtn = document.getElementById('create-new');
+      const testFormattingBtn = document.getElementById('test-formatting');
+      const testSaveBtn = document.getElementById('test-save');
+      const clearLogBtn = document.getElementById('clear-log');
+      
+      // Helper to log messages
+      function log(message, isError = false) {
+        const p = document.createElement('p');
+        p.textContent = message;
+        p.className = isError ? 'error' : 'success';
+        testLog.appendChild(p);
+        testLog.scrollTop = testLog.scrollHeight;
+      }
+      
+      // Wait for iframe to load
+      iframe.onload = function() {
+        log('App loaded in iframe');
+      };
+      
+      // Load the test character
+      loadTestBtn.addEventListener('click', function() {
+        log('Loading formatting test character...');
+        
+        // Get the app window
+        const appWindow = iframe.contentWindow;
+        if (!appWindow) {
+          log('Failed to access app window', true);
+          return;
+        }
+        
+        // Simulate loading the test character
+        fetch('Characters/formatting_test.json')
+          .then(response => response.json())
+          .then(data => {
+            // Access the app's functions
+            const app = appWindow;
+            
+            // Check if loadCharacterData exists
+            if (typeof app.loadCharacterData === 'function') {
+              app.loadCharacterData(data);
+              app.showCharacterSheet();
+              log('Test character loaded successfully');
+            } else {
+              // Try to find the function in the iframe scope
+              appWindow.eval(`
+                if (typeof loadCharacterData === 'function') {
+                  const data = ${JSON.stringify(data)};
+                  loadCharacterData(data);
+                  showCharacterSheet();
+                }
+              `);
+              log('Attempted to load character using iframe eval');
+            }
+          })
+          .catch(error => {
+            log('Error loading test character: ' + error.message, true);
+          });
+      });
+      
+      // Create new character
+      createNewBtn.addEventListener('click', function() {
+        log('Creating new character...');
+        
+        const appWindow = iframe.contentWindow;
+        if (!appWindow) {
+          log('Failed to access app window', true);
+          return;
+        }
+        
+        if (typeof appWindow.createNewCharacter === 'function') {
+          appWindow.createNewCharacter();
+          log('New character created');
+        } else {
+          appWindow.eval(`
+            if (typeof createNewCharacter === 'function') {
+              createNewCharacter();
+            }
+          `);
+          log('Attempted to create character using iframe eval');
+        }
+      });
+      
+      // Test rich text formatting
+      testFormattingBtn.addEventListener('click', function() {
+        log('Testing rich text formatting...');
+        
+        const appWindow = iframe.contentWindow;
+        if (!appWindow) {
+          log('Failed to access app window', true);
+          return;
+        }
+        
+        // Inject test content into each editable area
+        appWindow.eval(`
+          // List of areas to test
+          const testAreas = [
+            'features',
+            'inventory',
+            'cantrips',
+            'level-1-spells',
+            'appearance-notes',
+            'background-content'
+          ];
+          
+          // Add formatted text to each area
+          testAreas.forEach((id, index) => {
+            const element = document.getElementById(id);
+            if (element) {
+              // Create different formatting for each area
+              element.innerHTML = \`
+                <p>This is <b>bold</b> text</p>
+                <p>This is <i>italic</i> text</p>
+                <p>This is <u>underlined</u> text</p>
+                <p>This is <b><i>bold and italic</i></b> text</p>
+                <p>This is text with a <b>bold word</b> in the middle</p>
+                <ul>
+                  <li>List item 1</li>
+                  <li>List item with <i>italic</i></li>
+                </ul>
+              \`;
+            }
+          });
+          
+          console.log('Applied test formatting to all areas');
+        `);
+        
+        log('Applied test formatting to editable areas');
+        log('Please manually check if formatting appears correctly in all tabs');
+      });
+      
+      // Test save and load
+      testSaveBtn.addEventListener('click', function() {
+        log('Testing save and load functionality...');
+        
+        const appWindow = iframe.contentWindow;
+        if (!appWindow) {
+          log('Failed to access app window', true);
+          return;
+        }
+        
+        // Generate unique test content
+        const testContent = `<p>Test content with <b>bold</b> and <i>italic</i> at ${new Date().toISOString()}</p>`;
+        
+        appWindow.eval(`
+          // Add unique test content to features
+          const features = document.getElementById('features');
+          if (features) {
+            features.innerHTML = '${testContent}';
+            console.log('Added test content to features');
+          }
+          
+          // Collect all data
+          const testData = collectCharacterData();
+          console.log('Collected character data', testData);
+          
+          // Check if features content was preserved
+          if (testData.features === '${testContent}') {
+            console.log('SUCCESS: HTML formatting preserved in collectCharacterData');
+          } else {
+            console.error('FAIL: HTML formatting was not preserved');
+            console.log('Expected:', '${testContent}');
+            console.log('Actual:', testData.features);
+          }
+        `);
+        
+        // Get evaluation results
+        appWindow.eval(`
+          const features = document.getElementById('features');
+          if (features) {
+            const currentContent = features.innerHTML;
+            if (currentContent === '${testContent}') {
+              window.parent.postMessage({
+                type: 'test-result', 
+                success: true,
+                message: 'Rich text formatting successfully preserved'
+              }, '*');
+            } else {
+              window.parent.postMessage({
+                type: 'test-result',
+                success: false,
+                message: 'Rich text formatting was lost',
+                expected: '${testContent}',
+                actual: currentContent
+              }, '*');
+            }
+          }
+        `);
+        
+        log('Manual inspection required: Check if formatting is preserved after switching tabs');
+      });
+      
+      // Handle messages from iframe
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'test-result') {
+          if (event.data.success) {
+            log(event.data.message);
+          } else {
+            log(event.data.message, true);
+            log(`Expected: ${event.data.expected}`, true);
+            log(`Actual: ${event.data.actual}`, true);
+          }
+        }
+      });
+      
+      // Clear log
+      clearLogBtn.addEventListener('click', function() {
+        testLog.innerHTML = '';
+        log('Log cleared');
+      });
+    });
+  </script>
+</body>
+</html> 

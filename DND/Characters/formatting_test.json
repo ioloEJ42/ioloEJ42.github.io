@@ -1,0 +1,92 @@
+{
+  "name": "Formatting Test",
+  "class": "Wizard 7",
+  "race": "High Elf",
+  "background": "Sage",
+  "theme": "wizard",
+  
+  "abilities": {
+    "strength": {
+      "score": "8",
+      "modifier": "-1"
+    },
+    "dexterity": {
+      "score": "14",
+      "modifier": "+2"
+    },
+    "constitution": {
+      "score": "12",
+      "modifier": "+1"
+    },
+    "intelligence": {
+      "score": "18",
+      "modifier": "+4"
+    },
+    "wisdom": {
+      "score": "13",
+      "modifier": "+1"
+    },
+    "charisma": {
+      "score": "10",
+      "modifier": "+0"
+    }
+  },
+  
+  "combat": {
+    "armorClass": "14",
+    "initiative": "+2",
+    "speed": "30 ft",
+    "hp": {
+      "current": "35",
+      "max": "35"
+    },
+    "hitDice": "7d6"
+  },
+  
+  "features": "<p>This character has <b>various features</b> which utilize <i>different</i> formatting styles, including:</p><ul><li>The ability to cast <u>arcane spells</u></li><li><b><i>Arcane Recovery</i></b>: Once per day, you can recover spell slots during a short rest</li><li><u>Spell Mastery</u>: At 18th level, select 1st and 2nd level spells to cast without using spell slots</li></ul><p>Additionally, they have proficiency in <b>Arcana</b> and <i>History</i> skills.</p>",
+  
+  "inventory": "<p><b>Spell Components Pouch</b> - Contains rare materials needed for spellcasting</p><p><i>Spellbook</i> - A leather-bound tome containing all known spells</p><ul><li><u>Staff of Defense</u> (requires attunement)</li><li><b>Potion of Greater Healing</b> (2)</li><li>50 feet of <i>silk rope</i></li><li>Backpack containing:<ul><li>Bedroll</li><li><b>Rations</b> (5 days)</li><li><i>Waterskin</i></li></ul></li></ul>",
+  
+  "spellcasting": {
+    "class": "Wizard",
+    "ability": "int",
+    "saveDC": "15",
+    "attackBonus": "+7",
+    "slots": {
+      "1": { "used": "3", "total": "4" },
+      "2": { "used": "2", "total": "3" },
+      "3": { "used": "1", "total": "3" },
+      "4": { "used": "0", "total": "1" },
+      "5": { "used": "0", "total": "0" },
+      "6": { "used": "0", "total": "0" },
+      "7": { "used": "0", "total": "0" },
+      "8": { "used": "0", "total": "0" },
+      "9": { "used": "0", "total": "0" }
+    }
+  },
+  
+  "spells": {
+    "cantrips": "<p><b>Firebolt</b>: Ranged spell attack, 1d10 fire damage</p><p><i>Mage Hand</i>: Create a spectral hand to manipulate objects</p><p><u>Prestidigitation</u>: Create minor magical effects</p><p><b><i>Dancing Lights</i></b>: Create four torch-sized lights</p>",
+    "level1": "<ul><li><b>Magic Missile</b>: 3 darts, 1d4+1 force damage each, always hit</li><li><i>Shield</i>: Reaction, +5 AC until next turn</li><li><u>Find Familiar</u>: Summon a spirit to serve as a familiar</li></ul>",
+    "level2": "<p><b>Misty Step</b>: Bonus action teleport up to 30 feet</p><p><i>Scorching Ray</i>: 3 ranged spell attacks, 2d6 fire damage each</p>",
+    "level3": "<p><b>Fireball</b>: 20-foot radius sphere, 8d6 fire damage, Dex save for half</p><p><i>Counterspell</i>: Reaction to counter a spell</p>",
+    "level4": "<p><b>Greater Invisibility</b>: Target becomes invisible for concentration (up to 1 minute)</p>",
+    "level5": "",
+    "level6": "",
+    "level7": "",
+    "level8": "",
+    "level9": ""
+  },
+  
+  "appearance": "<p>This character has <b>silver-white hair</b> that flows down to their shoulders, with <i>bright blue eyes</i> that seem to <u>glow faintly</u> when casting spells. They stand 5'10\" tall with a slender build typical of high elves.</p><p>They typically wear <b>blue robes</b> adorned with <i>silver arcane symbols</i> along the hems.</p>",
+  
+  "personalBackground": "<p>Born into a <b>noble family</b> of elven <i>arcanists</i>, they spent centuries studying the <u>magical arts</u> before venturing out into the world.</p><p>They served as an <b><i>apprentice</i></b> to the renowned wizard Thalasian for over fifty years before striking out on their own.</p>",
+  
+  "personalityTraits": "<p><b>Meticulous</b> and <i>precise</i> in all things, particularly when it comes to <u>magical research</u>.</p><p>Has a tendency to <b>speak in unnecessarily complex terms</b> when explaining magical concepts.</p>",
+  
+  "ideals": "<p><b>Knowledge</b>: The pursuit of arcane knowledge is the highest calling.</p><p><i>Balance</i>: Magic must be used <u>responsibly</u> and with care.</p>",
+  
+  "bonds": "<p>Sworn to protect the <b>ancient knowledge</b> contained in their <i>family's spellbook</i>, passed down for <u>generations</u>.</p>",
+  
+  "flaws": "<p><b>Arrogant</b> about their magical abilities and often <i>dismissive</i> of those who don't understand arcane concepts.</p><p>Has a <u>fear of water</u> after nearly drowning as a child.</p>"
+} 

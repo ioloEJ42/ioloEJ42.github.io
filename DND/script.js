@@ -11,6 +11,13 @@ function initApp() {
   const loadCharacterBtn = document.getElementById('load-character-btn');
   const newCharacterBtn = document.getElementById('new-character-btn');
   const characterFileInput = document.getElementById('character-file-input');
+  const jsonFileInput = document.getElementById('json-file-input');
+  const imageFileInput = document.getElementById('image-file-input');
+  const loadJsonBtn = document.getElementById('load-json-btn');
+  const loadImageBtn = document.getElementById('load-image-btn');
+  const loadFolderBtn = document.getElementById('load-folder-btn');
+  const uploadError = document.getElementById('upload-error');
+  const uploadSuccess = document.getElementById('upload-success');
 
   // DOM Elements - Character Sheet
   const characterSheet = document.getElementById('character-sheet');
@@ -28,10 +35,27 @@ function initApp() {
   // Current character data
   let currentCharacter = null;
   let unsavedChanges = false;
+  let characterImageFile = null;
+  
+  // Maximum allowed image file size (5MB)
+  const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
   // Add event listeners for the initial screen
   if (loadCharacterBtn) {
-    loadCharacterBtn.addEventListener('click', () => characterFileInput.click());
+    // The main button now doesn't do anything directly
+    // It just shows the dropdown on hover
+  }
+  
+  if (loadJsonBtn) {
+    loadJsonBtn.addEventListener('click', () => jsonFileInput.click());
+  }
+  
+  if (loadImageBtn) {
+    loadImageBtn.addEventListener('click', () => imageFileInput.click());
+  }
+  
+  if (loadFolderBtn) {
+    loadFolderBtn.addEventListener('click', () => characterFileInput.click());
   }
   
   if (newCharacterBtn) {
@@ -39,7 +63,15 @@ function initApp() {
   }
   
   if (characterFileInput) {
-    characterFileInput.addEventListener('change', handleFileUpload);
+    characterFileInput.addEventListener('change', handleFolderUpload);
+  }
+  
+  if (jsonFileInput) {
+    jsonFileInput.addEventListener('change', handleJsonUpload);
+  }
+  
+  if (imageFileInput) {
+    imageFileInput.addEventListener('change', handleImageUpload);
   }
   
   // Add event listeners for the character sheet
@@ -65,7 +97,7 @@ function initApp() {
   
   // Add event listener for character image upload
   if (uploadImageInput && imagePlaceholder) {
-    uploadImageInput.addEventListener('change', handleImageUpload);
+    uploadImageInput.addEventListener('change', handleProfileImageUpload);
     imagePlaceholder.addEventListener('click', () => uploadImageInput.click());
   }
   
@@ -91,6 +123,98 @@ function initApp() {
       unsavedChanges = true;
     });
   });
+  
+  // Handle JSON file upload (single file)
+  function handleJsonUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Reset error and success messages
+    resetMessages();
+    
+    if (!file.name.toLowerCase().endsWith('.json')) {
+      showUploadError("The selected file is not a JSON file.");
+      return;
+    }
+    
+    // Check file size - limit to 10MB for JSON
+    if (file.size > 10 * 1024 * 1024) {
+      showUploadError("JSON file too large. Maximum size is 10MB.");
+      return;
+    }
+    
+    // Load the JSON file
+    loadJsonOnly(file);
+    
+    // Reset the file input
+    event.target.value = '';
+  }
+  
+  // Handle image file upload (single file)
+  function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Reset error and success messages
+    resetMessages();
+    
+    if (!file.type.startsWith('image/')) {
+      showUploadError("The selected file is not an image.");
+      return;
+    }
+    
+    // Check image file size
+    if (file.size > MAX_IMAGE_SIZE) {
+      showUploadError(`Image file too large. Maximum size is ${MAX_IMAGE_SIZE / (1024 * 1024)}MB.`);
+      return;
+    }
+    
+    // Create new character with the image
+    createNewCharacterWithImage(file);
+    
+    // Reset the file input
+    event.target.value = '';
+  }
+  
+  // Function to handle profile image upload (when already in character sheet)
+  function handleProfileImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file || !characterPortrait || !imagePlaceholder) return;
+    
+    // Check image file size
+    if (file.size > MAX_IMAGE_SIZE) {
+      showUploadError(`Image file too large. Maximum size is ${MAX_IMAGE_SIZE / (1024 * 1024)}MB.`);
+      return;
+    }
+    
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      characterPortrait.src = e.target.result;
+      characterPortrait.style.display = 'block';
+      imagePlaceholder.style.display = 'none';
+      unsavedChanges = true;
+    };
+    
+    reader.onerror = function() {
+      showUploadError("Error reading image file.");
+    };
+    
+    reader.readAsDataURL(file);
+  }
+  
+  // Function to reset error and success messages
+  function resetMessages() {
+    if (uploadError) {
+      uploadError.style.display = 'none';
+      uploadError.textContent = '';
+    }
+    
+    if (uploadSuccess) {
+      uploadSuccess.style.display = 'none';
+      uploadSuccess.textContent = '';
+    }
+  }
 
   // Show new character sheet
   function createNewCharacter() {
@@ -113,6 +237,9 @@ function initApp() {
     const hpBar = document.getElementById('hp-bar');
     if (hpBar) {
       hpBar.style.width = '100%';
+      // Reset HP color classes
+      hpBar.classList.remove('low', 'medium');
+      hpBar.classList.add('high');
     }
     
     // Show character sheet
@@ -121,28 +248,252 @@ function initApp() {
     showCharacterSheet();
   }
 
-  // Handle JSON file upload
-  function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+  // Function to handle folder upload
+  function handleFolderUpload(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
     
+    // Reset error and success messages
+    resetMessages();
+    
+    // Check for unsupported or dangerous file types
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      // Check for potentially dangerous file types
+      if (file.name.endsWith('.exe') || file.name.endsWith('.bat') || 
+          file.name.endsWith('.sh') || file.name.endsWith('.php')) {
+        showUploadError("Potentially dangerous file detected. Only JSON and image files are allowed.");
+        event.target.value = ''; // Clear the file input
+        return;
+      }
+    }
+    
+    // Check files in the folder
+    let jsonFiles = [];
+    let imageFiles = [];
+    
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.name.toLowerCase().endsWith('.json')) {
+        // Check JSON file size
+        if (file.size > 10 * 1024 * 1024) {
+          showUploadError("JSON file too large. Maximum size is 10MB.");
+          event.target.value = '';
+          return;
+        }
+        jsonFiles.push(file);
+      } else if (file.type.startsWith('image/')) {
+        // Check image file size
+        if (file.size > MAX_IMAGE_SIZE) {
+          showUploadError(`Image file too large. Maximum size is ${MAX_IMAGE_SIZE / (1024 * 1024)}MB.`);
+          event.target.value = '';
+          return;
+        }
+        imageFiles.push(file);
+      }
+    }
+    
+    // Handle case where multiple JSON files exist
+    if (jsonFiles.length > 1) {
+      showUploadError("Multiple JSON files found. Please upload a folder with only one character JSON file.");
+      event.target.value = '';
+      return;
+    }
+    
+    // Handle case where multiple image files exist
+    if (imageFiles.length > 1) {
+      showUploadError("Multiple image files found. Please upload a folder with only one character image.");
+      event.target.value = '';
+      return;
+    }
+    
+    // Case 1: No files found at all
+    if (jsonFiles.length === 0 && imageFiles.length === 0) {
+      showUploadError("No character data or image found in the folder.");
+      event.target.value = '';
+      return;
+    }
+    
+    // Case 2: Only JSON file exists
+    if (jsonFiles.length === 1 && imageFiles.length === 0) {
+      const jsonFile = jsonFiles[0];
+      loadJsonOnly(jsonFile);
+    }
+    // Case 3: Only image file exists
+    else if (jsonFiles.length === 0 && imageFiles.length === 1) {
+      const imageFile = imageFiles[0];
+      createNewCharacterWithImage(imageFile);
+    }
+    // Case 4: Both JSON and image exist
+    else {
+      const jsonFile = jsonFiles[0];
+      const imageFile = imageFiles[0];
+      loadJsonWithImage(jsonFile, imageFile);
+    }
+    
+    // Reset the file input so the same folder can be loaded again if needed
+    event.target.value = '';
+  }
+  
+  // Function to show upload error
+  function showUploadError(message) {
+    if (uploadError) {
+      uploadError.textContent = message;
+      uploadError.style.display = 'block';
+      uploadError.setAttribute('role', 'alert'); // Accessibility improvement
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        uploadError.style.display = 'none';
+        uploadError.removeAttribute('role');
+      }, 5000);
+    } else {
+      alert(message);
+    }
+  }
+
+  // Function to show upload success
+  function showUploadSuccess(message) {
+    if (uploadSuccess) {
+      uploadSuccess.textContent = message;
+      uploadSuccess.style.display = 'block';
+      uploadSuccess.setAttribute('role', 'status'); // Accessibility improvement
+      
+      // Auto-hide after 3 seconds
+      setTimeout(() => {
+        uploadSuccess.style.display = 'none';
+        uploadSuccess.removeAttribute('role');
+      }, 3000);
+    }
+  }
+
+  // Function to load only a JSON file
+  function loadJsonOnly(jsonFile) {
     const reader = new FileReader();
-    
     reader.onload = function(e) {
       try {
         const characterData = JSON.parse(e.target.result);
+        
+        // Validate character data
+        const validationResult = validateCharacterData(characterData);
+        if (!validationResult.valid) {
+          showUploadError("Invalid character data: " + validationResult.message);
+          return;
+        }
+        
         loadCharacterData(characterData);
         showCharacterSheet();
+        showUploadSuccess("Character data loaded successfully (no image found).");
       } catch (error) {
-        alert('Error loading character file: ' + error.message);
+        showUploadError("Error loading character file: " + error.message);
         console.error('Error parsing JSON:', error);
       }
     };
+    reader.onerror = function() {
+      showUploadError("Error reading JSON file.");
+    };
+    reader.readAsText(jsonFile);
+  }
+
+  // Function to validate character data
+  function validateCharacterData(data) {
+    // Check for basic required fields
+    if (!data) {
+      return { valid: false, message: "Empty character data" };
+    }
     
-    reader.readAsText(file);
+    // Check that certain fields exist and are in the right format
+    if (!data.name) {
+      return { valid: false, message: "Missing character name" };
+    }
     
-    // Reset the file input so the same file can be loaded again if needed
-    event.target.value = '';
+    // Make sure abilities are in the right format if they exist
+    if (data.abilities) {
+      const requiredAbilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+      for (const ability of requiredAbilities) {
+        if (data.abilities[ability] && 
+            (typeof data.abilities[ability] !== 'object' || 
+             data.abilities[ability] === null)) {
+          return { valid: false, message: `Invalid format for ${ability} ability` };
+        }
+      }
+    }
+    
+    // Check HP format if it exists
+    if (data.combat && data.combat.hp) {
+      if (typeof data.combat.hp !== 'object' || data.combat.hp === null) {
+        return { valid: false, message: "Invalid format for HP data" };
+      }
+    }
+    
+    // If we get here, the character data is valid enough to load
+    return { valid: true };
+  }
+
+  // Function to create a new character with just an image
+  function createNewCharacterWithImage(imageFile) {
+    // Create a new blank character
+    createNewCharacter();
+    
+    // Then load the image
+    const imageReader = new FileReader();
+    imageReader.onload = function(imgEvent) {
+      if (characterPortrait && imagePlaceholder) {
+        characterPortrait.src = imgEvent.target.result;
+        characterPortrait.style.display = 'block';
+        imagePlaceholder.style.display = 'none';
+        showUploadSuccess("Character image loaded successfully (new character created).");
+      }
+    };
+    imageReader.onerror = function() {
+      showUploadError("Error reading image file.");
+    };
+    imageReader.readAsDataURL(imageFile);
+  }
+
+  // Function to load JSON with an image
+  function loadJsonWithImage(jsonFile, imageFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const characterData = JSON.parse(e.target.result);
+        
+        // Validate character data
+        const validationResult = validateCharacterData(characterData);
+        if (!validationResult.valid) {
+          showUploadError("Invalid character data: " + validationResult.message);
+          return;
+        }
+        
+        // Load the image
+        const imageReader = new FileReader();
+        imageReader.onload = function(imgEvent) {
+          if (characterPortrait) {
+            // Store the image in the character data
+            characterData.portrait = imgEvent.target.result;
+            
+            // Then load the character with the image
+            loadCharacterData(characterData);
+            showCharacterSheet();
+            showUploadSuccess("Character data and image loaded successfully.");
+          }
+        };
+        imageReader.onerror = function() {
+          showUploadError("Error reading image file. Character data was loaded without the image.");
+          // Still load the character data even if image fails
+          loadCharacterData(characterData);
+          showCharacterSheet();
+        };
+        imageReader.readAsDataURL(imageFile);
+      } catch (error) {
+        showUploadError("Error loading character file: " + error.message);
+        console.error('Error parsing JSON:', error);
+      }
+    };
+    reader.onerror = function() {
+      showUploadError("Error reading JSON file.");
+    };
+    reader.readAsText(jsonFile);
   }
 
   // Load character data into the form
@@ -310,6 +661,26 @@ function initApp() {
       themeSelect.value = data.theme;
       applyTheme();
     }
+    
+    // Ensure rich text formatting is applied after loading
+    setTimeout(() => {
+      // Refresh the rich text editors in case the formatting wasn't applied
+      if (window.richTextFormatting) {
+        const allEditors = document.querySelectorAll('[contenteditable="true"]');
+        allEditors.forEach(editor => {
+          if (!editor.parentNode.classList.contains('rich-text-editor-container')) {
+            window.richTextFormatting.apply(editor);
+          }
+        });
+      }
+      
+      // Make sure we're on the right tab
+      if (currentTab) {
+        switchTab(currentTab);
+      } else {
+        switchTab('main');
+      }
+    }, 100);
   }
 
   // Helper functions for loading data into form fields
@@ -324,7 +695,8 @@ function initApp() {
     const element = document.getElementById(id);
     if (element && value !== undefined) {
       if (element.isContentEditable) {
-        element.innerHTML = value.replace(/\n/g, '<br>');
+        // Set HTML content directly for contenteditable elements
+        element.innerHTML = value;
       } else {
         element.value = value;
       }
@@ -338,23 +710,105 @@ function initApp() {
     }
   }
 
-  // Save character data to JSON file
+  // Update saveCharacterData for folder download
   function saveCharacterData() {
+    // Ensure rich text formatting is preserved before saving
+    if (typeof ensureRichTextPreservation === 'function') {
+      ensureRichTextPreservation();
+    }
+    
     const characterData = collectCharacterData();
     const characterName = characterData.name || 'character';
-    const filename = `${characterName.replace(/\s+/g, '_').toLowerCase()}.json`;
+    const sanitizedName = sanitizeFileName(characterName);
     
+    // Create a folder-like structure using JSZip
+    createZip(characterData, sanitizedName);
+  }
+  
+  // Function to sanitize file names
+  function sanitizeFileName(fileName) {
+    if (!fileName) return 'character';
+    
+    // Replace spaces with underscores
+    let sanitized = fileName.replace(/\s+/g, '_');
+    
+    // Remove special characters that might cause issues in file systems
+    sanitized = sanitized.replace(/[\\/:*?"<>|]/g, '');
+    
+    // Handle other special characters by converting to ASCII-friendly versions
+    sanitized = sanitized.replace(/[àáâãäå]/g, 'a')
+                        .replace(/[èéêë]/g, 'e')
+                        .replace(/[ìíîï]/g, 'i')
+                        .replace(/[òóôõö]/g, 'o')
+                        .replace(/[ùúûü]/g, 'u')
+                        .replace(/[ýÿ]/g, 'y')
+                        .replace(/æ/g, 'ae')
+                        .replace(/ç/g, 'c')
+                        .replace(/ñ/g, 'n')
+                        .replace(/[^\w\-\.]/g, '');
+    
+    // Convert to lowercase for consistency
+    sanitized = sanitized.toLowerCase();
+    
+    // If the name ends up empty after sanitization, use a default
+    if (!sanitized) {
+      sanitized = 'character';
+    }
+    
+    return sanitized;
+  }
+  
+  // Function to create a zip file containing the character data and image
+  function createZip(characterData, baseName) {
+    // Check if JSZip is available
+    if (typeof JSZip === 'undefined') {
+      // Load JSZip dynamically if not available
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      script.onload = function() {
+        createZipWithLibrary(characterData, baseName);
+      };
+      document.head.appendChild(script);
+    } else {
+      createZipWithLibrary(characterData, baseName);
+    }
+  }
+  
+  // Function to create a zip with the JSZip library
+  function createZipWithLibrary(characterData, baseName) {
+    const zip = new JSZip();
+    
+    // Extract the portrait image if present
+    const portraitData = characterData.portrait;
+    // Remove the large base64 image from the JSON data to avoid duplication
+    delete characterData.portrait;
+    
+    // Add the JSON file
     const jsonString = JSON.stringify(characterData, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
+    zip.file(`${baseName}.json`, jsonString);
     
-    // Create download link
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    a.click();
+    // Add the portrait image if available
+    if (portraitData && portraitData.startsWith('data:image')) {
+      // Extract base64 data
+      const imageType = portraitData.split(';')[0].split(':')[1];
+      const extension = imageType.split('/')[1];
+      const base64Data = portraitData.split(',')[1];
+      
+      // Add image to zip
+      zip.file(`${baseName}.${extension}`, base64Data, {base64: true});
+    }
     
-    // Clean up
-    URL.revokeObjectURL(a.href);
+    // Generate the zip file
+    zip.generateAsync({type: 'blob'}).then(function(content) {
+      // Create download link
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(content);
+      a.download = `${baseName}.zip`;
+      a.click();
+      
+      // Clean up
+      URL.revokeObjectURL(a.href);
+    });
     
     unsavedChanges = false;
   }
@@ -457,7 +911,8 @@ function initApp() {
     if (!element) return '';
     
     if (element.isContentEditable) {
-      return element.innerHTML.replace(/<br>/g, '\n').replace(/<[^>]*>/g, ''); // Basic strip HTML tags
+      // For all rich text contenteditable areas, preserve HTML formatting
+      return element.innerHTML;
     } else {
       return element.value || '';
     }
@@ -548,6 +1003,12 @@ function initApp() {
       characterSheet.style.display = 'block';
       // Ensure the first tab is active
       switchTab('main');
+      
+      // Accessibility improvements - set focus to first input
+      const characterNameInput = document.getElementById('character-name');
+      if (characterNameInput) {
+        characterNameInput.focus();
+      }
     }
   }
 
@@ -562,27 +1023,44 @@ function initApp() {
     if (characterSheet && characterSelectScreen) {
       characterSheet.style.display = 'none';
       characterSelectScreen.style.display = 'flex';
+      
+      // Accessibility improvement - focus the new character button
+      if (newCharacterBtn) {
+        newCharacterBtn.focus();
+      }
     }
   }
 
+  // Add current tab tracking
+  let currentTab = 'main';
+
   function switchTab(tabId) {
+    // Update current tab tracking
+    currentTab = tabId;
+    
     // Hide all tab contents
     tabContents.forEach(content => {
       content.classList.remove('active');
+      content.setAttribute('aria-hidden', 'true'); // Accessibility improvement
     });
     
     // Show the selected tab content
     const selectedTab = document.getElementById(tabId);
     if (selectedTab) {
       selectedTab.classList.add('active');
+      selectedTab.setAttribute('aria-hidden', 'false'); // Accessibility improvement
     }
     
     // Update active tab button
     tabButtons.forEach(button => {
       if (button.dataset.tab === tabId) {
         button.classList.add('active');
+        button.setAttribute('aria-selected', 'true'); // Accessibility improvement
+        button.setAttribute('tabindex', '0');
       } else {
         button.classList.remove('active');
+        button.setAttribute('aria-selected', 'false'); // Accessibility improvement
+        button.setAttribute('tabindex', '-1');
       }
     });
   }
@@ -609,22 +1087,6 @@ function initApp() {
     }
   }
 
-  function handleImageUpload(event) {
-    const file = event.target.files[0];
-    if (!file || !characterPortrait || !imagePlaceholder) return;
-    
-    const reader = new FileReader();
-    
-    reader.onload = function(e) {
-      characterPortrait.src = e.target.result;
-      characterPortrait.style.display = 'block';
-      imagePlaceholder.style.display = 'none';
-      unsavedChanges = true;
-    };
-    
-    reader.readAsDataURL(file);
-  }
-
   function updateHpBar() {
     const currentHp = document.getElementById('current-hp');
     const maxHp = document.getElementById('max-hp');
@@ -641,11 +1103,27 @@ function initApp() {
       hpBar.classList.remove('high', 'medium', 'low');
       if (percentage <= 25) {
         hpBar.classList.add('low');
+        
+        // Accessibility improvement - alert when HP is low
+        if (percentage > 0) {
+          hpBar.setAttribute('aria-label', 'Health critically low');
+        } else {
+          hpBar.setAttribute('aria-label', 'No health remaining');
+        }
       } else if (percentage <= 50) {
         hpBar.classList.add('medium');
+        hpBar.setAttribute('aria-label', 'Health below half');
       } else {
         hpBar.classList.add('high');
+        hpBar.setAttribute('aria-label', 'Health is good');
       }
+      
+      // Set ARIA values for accessibility
+      hpBar.setAttribute('role', 'progressbar');
+      hpBar.setAttribute('aria-valuemin', '0');
+      hpBar.setAttribute('aria-valuemax', max.toString());
+      hpBar.setAttribute('aria-valuenow', current.toString());
+      hpBar.setAttribute('aria-valuetext', `${current} out of ${max} hit points`);
     }
   }
 
@@ -657,9 +1135,9 @@ function initApp() {
     const newRow = document.createElement('tr');
     
     newRow.innerHTML = `
-      <td><input type="text" class="weapon-name" value="${weaponData?.name || ''}"></td>
-      <td><input type="text" class="weapon-bonus" value="${weaponData?.attackBonus || ''}"></td>
-      <td><input type="text" class="weapon-damage" value="${weaponData?.damage || ''}"></td>
+      <td><input type="text" class="weapon-name" value="${weaponData?.name || ''}" aria-label="Weapon name"></td>
+      <td><input type="text" class="weapon-bonus" value="${weaponData?.attackBonus || ''}" aria-label="Attack bonus"></td>
+      <td><input type="text" class="weapon-damage" value="${weaponData?.damage || ''}" aria-label="Damage formula"></td>
     `;
     
     tbody.appendChild(newRow);
@@ -744,21 +1222,162 @@ function initApp() {
 
   // QoL improvement - Rich text basic formatting
   function setupRichTextFormatting() {
-    const richTextEditors = document.querySelectorAll('.rich-text-editor');
+    // Apply rich text editing to all contenteditable elements
+    const richTextEditors = document.querySelectorAll('[contenteditable="true"]');
+    const toolbarTemplate = document.getElementById('rich-text-toolbar-template');
+    
+    if (!toolbarTemplate) return;
     
     richTextEditors.forEach(editor => {
-      // Handle paste to strip formatting
+      // Create toolbar container
+      const container = document.createElement('div');
+      container.className = 'rich-text-editor-container';
+      
+      // Clone toolbar template
+      const toolbar = toolbarTemplate.querySelector('.rich-text-toolbar').cloneNode(true);
+      
+      // Insert toolbar before editor
+      editor.parentNode.insertBefore(container, editor);
+      container.appendChild(toolbar);
+      container.appendChild(editor);
+      
+      // Add toolbar button functionality
+      const buttons = toolbar.querySelectorAll('button');
+      
+      // Accessibility improvements for toolbar buttons
+      buttons.forEach(button => {
+        const command = button.getAttribute('data-command');
+        button.setAttribute('aria-label', button.getAttribute('title') || command);
+        button.setAttribute('role', 'button');
+        
+        button.addEventListener('click', () => {
+          if (command) {
+            document.execCommand(command, false, null);
+            editor.focus();
+            
+            // Toggle active state for buttons
+            if (['bold', 'italic', 'underline'].includes(command)) {
+              if (document.queryCommandState(command)) {
+                button.classList.add('active');
+                button.setAttribute('aria-pressed', 'true');
+              } else {
+                button.classList.remove('active');
+                button.setAttribute('aria-pressed', 'false');
+              }
+            }
+          }
+        });
+      });
+      
+      // Update button states when editor is focused
+      editor.addEventListener('keyup', updateToolbar);
+      editor.addEventListener('mouseup', updateToolbar);
+      editor.addEventListener('focus', updateToolbar);
+      
+      function updateToolbar() {
+        buttons.forEach(button => {
+          const command = button.getAttribute('data-command');
+          if (['bold', 'italic', 'underline'].includes(command)) {
+            if (document.queryCommandState(command)) {
+              button.classList.add('active');
+              button.setAttribute('aria-pressed', 'true');
+            } else {
+              button.classList.remove('active');
+              button.setAttribute('aria-pressed', 'false');
+            }
+          }
+        });
+      }
+      
+      // Keyboard shortcuts
+      editor.addEventListener('keydown', (e) => {
+        // Bold: Ctrl+B
+        if (e.ctrlKey && e.key.toLowerCase() === 'b') {
+          e.preventDefault();
+          document.execCommand('bold', false, null);
+          updateToolbar();
+        }
+        // Italic: Ctrl+I
+        else if (e.ctrlKey && e.key.toLowerCase() === 'i') {
+          e.preventDefault();
+          document.execCommand('italic', false, null);
+          updateToolbar();
+        }
+        // Underline: Ctrl+U
+        else if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+          e.preventDefault();
+          document.execCommand('underline', false, null);
+          updateToolbar();
+        }
+      });
+      
+      // Handle paste to preserve formatting if it's HTML
       editor.addEventListener('paste', (e) => {
+        // Cancel the default paste action
         e.preventDefault();
-        const text = (e.originalEvent || e).clipboardData.getData('text/plain');
-        document.execCommand('insertText', false, text);
+        
+        // Get clipboard data
+        let text;
+        let isHTML = false;
+        
+        if (e.clipboardData || e.originalEvent.clipboardData) {
+          // Check for HTML content first
+          if (e.clipboardData.types.indexOf('text/html') !== -1) {
+            text = e.clipboardData.getData('text/html');
+            isHTML = true;
+          } else {
+            text = e.clipboardData.getData('text/plain');
+          }
+        } else if (window.clipboardData) {
+          text = window.clipboardData.getData('Text');
+        }
+        
+        // Insert the content
+        if (isHTML) {
+          // Clean up HTML to remove unwanted tags and styles
+          const cleanHTML = sanitizeHTML(text);
+          document.execCommand('insertHTML', false, cleanHTML);
+        } else {
+          document.execCommand('insertText', false, text);
+        }
       });
       
       // Track changes
       editor.addEventListener('input', () => {
         unsavedChanges = true;
       });
+      
+      // Accessibility improvements for rich text editors
+      editor.setAttribute('role', 'textbox');
+      editor.setAttribute('aria-multiline', 'true');
+      editor.setAttribute('aria-label', editor.dataset.label || 'Rich text editor');
     });
+  }
+
+  // Function to sanitize HTML for paste operations
+  function sanitizeHTML(html) {
+    // Create a temporary element
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    
+    // Remove unwanted elements
+    const unwantedElements = temp.querySelectorAll('script, style, link, meta');
+    unwantedElements.forEach(el => el.remove());
+    
+    // Remove all attributes except some allowed ones
+    const allElements = temp.querySelectorAll('*');
+    const allowedAttributes = ['href', 'src', 'alt', 'title'];
+    
+    allElements.forEach(el => {
+      Array.from(el.attributes).forEach(attr => {
+        if (!allowedAttributes.includes(attr.name)) {
+          el.removeAttribute(attr.name);
+        }
+      });
+    });
+    
+    // Return the cleaned HTML
+    return temp.innerHTML;
   }
 
   // QoL improvement - Toggle sections visibility to save space
@@ -774,15 +1393,51 @@ function initApp() {
       indicator.style.fontSize = '0.7em';
       header.appendChild(indicator);
       
-      header.addEventListener('click', () => {
+      // Make headers focusable and keyboard accessible
+      header.setAttribute('tabindex', '0');
+      header.setAttribute('role', 'button');
+      header.setAttribute('aria-expanded', 'true');
+      
+      const toggleSection = () => {
         const content = header.nextElementSibling;
         if (content) {
           if (content.style.display === 'none') {
             content.style.display = '';
             indicator.innerHTML = ' ▼';
+            header.setAttribute('aria-expanded', 'true');
           } else {
             content.style.display = 'none';
             indicator.innerHTML = ' ►';
+            header.setAttribute('aria-expanded', 'false');
+          }
+        }
+      };
+      
+      // Support both click and keyboard activation
+      header.addEventListener('click', toggleSection);
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleSection();
+        }
+      });
+    });
+  }
+  
+  // Add spell slot tracking warning
+  function setupSpellSlotTracking() {
+    const spellSlotUsedInputs = document.querySelectorAll('.slot-used');
+    const spellSlotTotalInputs = document.querySelectorAll('.slot-total');
+    
+    spellSlotUsedInputs.forEach((input, index) => {
+      input.addEventListener('change', () => {
+        const totalInput = spellSlotTotalInputs[index];
+        if (totalInput) {
+          const used = parseInt(input.value) || 0;
+          const total = parseInt(totalInput.value) || 0;
+          
+          if (used > total && total > 0) {
+            showUploadError(`Warning: You've used more level ${index+1} spell slots than you have available.`);
           }
         }
       });
@@ -795,5 +1450,6 @@ function initApp() {
     setupDoubleClearInputs();
     setupRichTextFormatting();
     setupCollapsibleSections();
+    setupSpellSlotTracking();
   }
 }

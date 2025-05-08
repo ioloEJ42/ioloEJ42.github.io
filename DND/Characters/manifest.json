@@ -17,6 +17,18 @@
       "filename": "Seraphina_Moonshadow.json",
       "class": "Druid 6",
       "race": "Wood Elf"
+    },
+    {
+      "name": "Test Character",
+      "filename": "test_character.json",
+      "class": "Fighter 5",
+      "race": "Human"
+    },
+    {
+      "name": "Formatting Test",
+      "filename": "formatting_test.json",
+      "class": "Wizard 7",
+      "race": "High Elf"
     }
   ]
 }

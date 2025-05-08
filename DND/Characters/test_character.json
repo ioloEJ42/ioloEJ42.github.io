@@ -1,0 +1,61 @@
+{
+  "name": "Test Character",
+  "class": "Fighter 5",
+  "race": "Human",
+  "background": "Soldier",
+  "theme": "fighter",
+  
+  "abilities": {
+    "strength": {
+      "score": "16",
+      "modifier": "+3"
+    },
+    "dexterity": {
+      "score": "14",
+      "modifier": "+2"
+    },
+    "constitution": {
+      "score": "15",
+      "modifier": "+2"
+    },
+    "intelligence": {
+      "score": "10",
+      "modifier": "+0"
+    },
+    "wisdom": {
+      "score": "12",
+      "modifier": "+1"
+    },
+    "charisma": {
+      "score": "8",
+      "modifier": "-1"
+    }
+  },
+  
+  "combat": {
+    "armorClass": "17",
+    "initiative": "+2",
+    "speed": "30 ft",
+    "hp": {
+      "current": "45",
+      "max": "45"
+    },
+    "hitDice": "5d10"
+  },
+  
+  "features": "<p>This is a <b>bold</b> feature and an <i>italic</i> feature and an <u>underlined</u> feature.</p><ul><li>First item</li><li>Second item</li></ul>",
+  
+  "inventory": "<p>Weapon: <b>Longsword</b></p><p>Armor: <b>Chain Mail</b></p><p>Backpack containing:<ul><li>Bedroll</li><li>Rope, 50ft</li><li><i>Potion of Healing</i></li></ul></p>",
+  
+  "appearance": "<p>This character has <b>dark hair</b> and <i>green eyes</i>.</p>",
+  
+  "personalBackground": "<p>Grew up in a <b>small village</b> before joining the <u>king's army</u>.</p>",
+  
+  "personalityTraits": "<p>Brave and <b>strong-willed</b></p>",
+  
+  "ideals": "<p><i>Justice</i> and <b>Honor</b></p>",
+  
+  "bonds": "<p>Sworn to protect the <u>royal family</u></p>",
+  
+  "flaws": "<p>Sometimes <b>too reckless</b> in combat</p>"
+} 
