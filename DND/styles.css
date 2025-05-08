@@ -9,8 +9,8 @@
   --bg-color: #f5f5f5;
   --card-bg: #ffffff;
   --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-main: 'MedievalSharp', cursive;
+  --font-mono: 'MedievalSharp', cursive;
   --padding: 0.5rem;
   --border-radius: 0.25rem;
   --transition: all 0.3s ease;
@@ -27,7 +27,7 @@ body {
   --bg-color: #E8D7A1; /* Soft parchment */
   --card-bg: #F5DEB3; /* Wheat */
   --shadow: 0 4px 8px rgba(59, 42, 32, 0.25);
-  --font-main: 'EB Garamond', 'Palatino Linotype', Georgia, serif;
+  --font-main: 'MedievalSharp', cursive;
   --border-radius: 0.1rem;
   
   font-family: var(--font-main);
@@ -63,7 +63,6 @@ body::after {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="15" viewBox="0 0 100 15"><path d="M0,5 Q10,10 20,5 T40,5 T60,5 T80,5 T100,5 V15 H0 Z" fill="%238B4513"/></svg>');
   background-repeat: repeat-x;
   z-index: 1000;
-  transform: rotate(180deg);
 }
 
 /* Dark Theme */
@@ -156,179 +155,77 @@ input, select, textarea, button {
   z-index: 2;
 }
 
-/* Wax seal buttons for character selection screen */
-.wax-seal-btn {
-  background-color: transparent;
-  border: none;
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 1rem auto;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  display: block;
-}
-
-.wax-seal-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #A52A2A; /* Wax seal color */
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  z-index: 1;
-}
-
-.new-character-seal::before {
-  background-color: #8B4513; /* Brown wax seal color */
-}
-
-.load-character-seal::before {
-  background-color: #7A4B9D; /* Purple wax seal color */
-}
-
-.wax-seal-btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 70%;
-  height: 70%;
-  transform: translate(-50%, -50%);
-  background-repeat: no-repeat;
-  background-position: center;
-  z-index: 2;
-}
-
-.new-character-seal::after {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M40,30 L60,30 L60,45 L75,45 L75,55 L60,55 L60,70 L40,70 L40,55 L25,55 L25,45 L40,45 Z" fill="none" stroke="%23F5DEB3" stroke-width="2"/></svg>');
-}
-
-.load-character-seal::after {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30,40 L50,60 L70,40 M50,60 L50,20" fill="none" stroke="%23F5DEB3" stroke-width="2"/></svg>');
-}
-
-.wax-seal-btn:hover {
-  transform: scale(1.05);
-}
-
-.wax-seal-btn-text {
-  position: relative;
-  z-index: 3;
-  color: var(--light-text);
-  font-family: 'EB Garamond', serif;
-  font-weight: 600;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 0.5rem;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Medieval decorative elements */
-.select-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20"><path d="M0,0 L5,5 L10,0 L15,5 L20,0 L25,5 L30,0 L35,5 L40,0 L40,20 L0,20 Z" fill="%238B4513" fill-opacity="0.2"/></svg>');
-  background-repeat: repeat-x;
-  opacity: 0.7;
-}
-
-.select-container::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20"><path d="M0,20 L5,15 L10,20 L15,15 L20,20 L25,15 L30,20 L35,15 L40,20 L40,0 L0,0 Z" fill="%238B4513" fill-opacity="0.2"/></svg>');
-  background-repeat: repeat-x;
-  opacity: 0.7;
-}
-
 .select-container h1 {
-  margin-bottom: 2.5rem;
-  color: var(--primary-color);
-  font-family: 'EB Garamond', Georgia, serif;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  color: var(--dark-text);
   font-size: 2.5rem;
+  margin-bottom: 2rem;
   position: relative;
-  padding-bottom: 15px;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  font-family: 'MedievalSharp', cursive;
+  text-transform: uppercase;
+  letter-spacing: 3px;
 }
 
 .select-container h1::after {
-  content: "";
+  content: '';
   position: absolute;
-  left: 50%;
   bottom: 0;
-  transform: translateX(-50%);
-  width: 60%;
+  left: 0;
+  width: 100%;
   height: 2px;
-  background: var(--primary-color);
+  background-color: var(--primary-color);
 }
 
 .select-options {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: relative;
 }
 
-/* Button Styles - Medieval theme */
 .primary-btn, .secondary-btn, .outline-btn {
-  padding: 0.6rem 1rem;
+  padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
+  border: none;
   cursor: pointer;
-  font-weight: 500;
-  transition: var(--transition);
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  position: relative;
-  overflow: hidden;
+  transition: var(--transition);
 }
 
 .primary-btn {
   background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border: 1px solid #6a330e;
+  color: var(--light-text);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .primary-btn:hover {
-  background-color: var(--primary-color);
-  opacity: 0.9;
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
 }
 
 .secondary-btn {
   background-color: var(--secondary-color);
-  color: white;
-  border: none;
-  border: 1px solid #854321;
+  color: var(--light-text);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .secondary-btn:hover {
-  background-color: var(--secondary-color);
-  opacity: 0.9;
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
 }
 
 .outline-btn {
   background-color: transparent;
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--border-color);
+  color: var(--dark-text);
 }
 
 .outline-btn:hover {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .icon {
@@ -377,20 +274,17 @@ input, select, textarea, button {
 }
 
 .tab-button {
-  font-family: 'EB Garamond', serif;
-  padding: 0.25rem 0.75rem;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  padding: 0.75rem 1.25rem;
+  background: none;
+  border: none;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.1rem;
+  color: var(--dark-text);
   cursor: pointer;
-  transition: var(--transition);
-  font-weight: 500;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-right: 3px;
   position: relative;
-  overflow: hidden;
+  transition: var(--transition);
+  opacity: 0.7;
+  letter-spacing: 1px;
 }
 
 .tab-button::before {
@@ -449,7 +343,7 @@ input, select, textarea, button {
   left: 0;
   right: 0;
   height: 40px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60" width="800" height="60"><rect width="800" height="40" y="10" fill="%237A4B9D" rx="5" ry="5"/><path d="M50,10 L60,0 L740,0 L750,10 L750,50 L740,60 L60,60 L50,50 Z" fill="%236A4E9D" stroke="%236F4D3E" stroke-width="2" /><text x="400" y="35" font-family="EB Garamond" font-size="24" fill="%23F5DEB3" text-anchor="middle">CHARACTER SHEET</text></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60" width="800" height="60"><rect width="800" height="40" y="10" fill="%237A4B9D" rx="5" ry="5"/><path d="M50,10 L60,0 L740,0 L750,10 L750,50 L740,60 L60,60 L50,50 Z" fill="%236A4E9D" stroke="%236F4D3E" stroke-width="2" /><text x="400" y="35" font-family="MedievalSharp" font-size="24" fill="%23F5DEB3" text-anchor="middle">CHARACTER SHEET</text></svg>');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -458,18 +352,16 @@ input, select, textarea, button {
 
 /* Stylish input fields for character info */
 .character-header .input-group input {
-  background-color: rgba(245, 222, 179, 0.7);
-  border: 1px solid var(--border-color);
-  padding: 0.35rem 0.5rem;
-  font-family: 'EB Garamond', serif;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  font-family: 'MedievalSharp', cursive;
+  letter-spacing: 1px;
 }
 
 .character-header .input-group label {
-  font-family: 'EB Garamond', serif;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: var(--primary-color);
+  font-family: 'MedievalSharp', cursive;
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
 
 .input-group {
@@ -534,31 +426,41 @@ input, select, textarea, button {
 }
 
 .ability label {
-  font-family: 'EB Garamond', serif;
-  font-weight: 600;
-  font-variant: small-caps;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.85rem;
   letter-spacing: 1px;
-  color: var(--primary-color);
+  color: var(--dark-text);
+  font-weight: 600;
+  font-family: 'MedievalSharp', cursive;
+  margin-bottom: 0.5rem;
 }
 
 .ability-score {
-  width: 2.75rem;
-  height: 2.75rem;
-  font-size: 1.4rem;
-  border: 2px solid var(--border-color);
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  margin: 0 auto 0.5rem;
+  padding: 0;
+  font-family: 'MedievalSharp', cursive;
   background-color: rgba(255, 255, 255, 0.5);
-  font-family: 'EB Garamond', serif;
 }
 
 .ability-modifier {
-  width: 2.2rem;
-  height: 2.2rem;
-  font-size: 1.2rem;
-  border: 2px solid var(--accent-color);
-  background-color: rgba(255, 255, 255, 0.5);
-  color: var(--primary-color);
-  font-weight: bold;
-  font-family: 'EB Garamond', serif;
+  width: 2.25rem;
+  height: 2.25rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: 'MedievalSharp', cursive;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  margin: 0 auto;
+  padding: 0;
+  background-color: var(--card-bg);
 }
 
 /* HP Section */
@@ -1543,7 +1445,7 @@ body.dark-theme .skill:hover {
   border-radius: var(--border-radius);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  z-index: 1000;
+  z-index: 9999;
   min-width: 200px;
   text-align: left;
   margin-top: 10px;
@@ -1565,7 +1467,7 @@ body.dark-theme .skill:hover {
   font-size: 1rem;
   color: var(--dark-text);
   transition: var(--transition);
-  font-family: 'EB Garamond', serif;
+  font-family: 'MedievalSharp', cursive;
 }
 
 .upload-option:hover {
@@ -1690,7 +1592,7 @@ body.dark-theme .upload-option:hover {
 .spell-slots h3,
 .spell-level-section h3 {
   color: var(--primary-color);
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'MedievalSharp', cursive;
   letter-spacing: 2px;
   font-size: 1.5rem;
   border-bottom: 2px solid rgba(139, 69, 19, 0.3);
@@ -1776,10 +1678,13 @@ body.medieval-theme select:focus {
 
 /* Apply old-style Roman numeral styling to spell levels */
 body .spell-level-section h3::before {
-  font-family: 'EB Garamond', serif;
-  font-weight: 400;
-  font-style: italic;
-  margin-right: 5px;
+  content: "•";
+  position: absolute;
+  left: -1.5rem;
+  top: 0;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 2rem;
+  color: var(--primary-color);
 }
 
 body .spell-level-section[data-level="1"] h3::before {
@@ -1849,31 +1754,40 @@ body .spell-level-section[data-level="9"] h3::before {
 }
 
 .ability label {
-  font-family: 'EB Garamond', serif;
-  font-weight: 600;
-  font-variant: small-caps;
-  letter-spacing: 1px;
-  color: var(--primary-color);
+  display: block;
+  text-align: center;
+  margin-bottom: 0.25rem;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .ability-score {
-  width: 2.75rem;
-  height: 2.75rem;
-  font-size: 1.4rem;
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  margin: 0.5rem auto;
+  text-align: center;
+  font-size: 1.5rem;
+  font-family: 'MedievalSharp', cursive;
+  border-radius: 50%;
   border: 2px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.5);
-  font-family: 'EB Garamond', serif;
+  background-color: rgba(245, 222, 179, 0.7);
 }
 
 .ability-modifier {
-  width: 2.2rem;
-  height: 2.2rem;
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 auto;
+  text-align: center;
   font-size: 1.2rem;
-  border: 2px solid var(--accent-color);
-  background-color: rgba(255, 255, 255, 0.5);
-  color: var(--primary-color);
-  font-weight: bold;
-  font-family: 'EB Garamond', serif;
+  font-weight: 700;
+  font-family: 'MedievalSharp', cursive;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  padding-top: 1px;
 }
 
 /* Decorative dividers between sections */

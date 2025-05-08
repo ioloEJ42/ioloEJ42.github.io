@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
     <!-- Add JSZip for folder download -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- Rich text functionality -->
@@ -20,14 +20,9 @@
         <h1>D&D Character Sheet</h1>
         
         <div class="select-options">
-          <!-- Replace regular buttons with wax seal buttons -->
-          <div class="wax-seal-btn new-character-seal" id="new-character-btn">
-            <div class="wax-seal-btn-text">New Character</div>
-          </div>
-          
-          <div class="wax-seal-btn load-character-seal" id="load-character-btn">
-            <div class="wax-seal-btn-text">Load Character</div>
-          </div>
+          <!-- Standard buttons instead of wax seals -->
+          <button class="primary-btn" id="new-character-btn">New Character</button>
+          <button class="secondary-btn" id="load-character-btn">Load Character</button>
           
           <!-- Hidden file inputs -->
           <input type="file" id="character-file-input" webkitdirectory directory multiple style="display: none;" />
