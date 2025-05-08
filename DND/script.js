@@ -48,7 +48,7 @@ function initApp() {
 
   // Add event listeners for the initial screen
   if (loadCharacterBtn) {
-    // Show dropdown when load character seal is clicked
+    // Show dropdown when load character button is clicked
     loadCharacterBtn.addEventListener('click', function(e) {
       e.stopPropagation(); // Prevent document click from immediately closing the dropdown
       
@@ -57,14 +57,9 @@ function initApp() {
         // Toggle dropdown visibility
         const isVisible = uploadDropdown.style.display === 'block';
         
-        // Hide any visible dropdowns first
-        const allDropdowns = document.querySelectorAll('.upload-dropdown');
-        allDropdowns.forEach(dropdown => {
-          dropdown.style.display = 'none';
-        });
-        
-        // If dropdown was not visible before, show it
-        if (!isVisible) {
+        if (isVisible) {
+          uploadDropdown.style.display = 'none';
+        } else {
           // Calculate position below the load button
           const btnRect = loadCharacterBtn.getBoundingClientRect();
           const containerRect = document.querySelector('.select-container').getBoundingClientRect();
@@ -74,7 +69,7 @@ function initApp() {
           uploadDropdown.style.left = (btnRect.left - containerRect.left + btnRect.width/2 - 100) + 'px';
           uploadDropdown.style.display = 'block';
           
-          // Ensure the upload buttons in the dropdown have their event listeners
+          // Add click handlers for dropdown buttons
           const loadJsonBtn = document.getElementById('load-json-btn');
           const loadImageBtn = document.getElementById('load-image-btn');
           const loadFolderBtn = document.getElementById('load-folder-btn');
