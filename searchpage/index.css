@@ -3,53 +3,23 @@
   --pure-black: #000000;
   --dot-size: 2px;
   --dot-space: 22px;
+  --terminal-green: #00ff00;
+  --terminal-text: #d3d7cf;
+  --terminal-bg: #000000;
+  --terminal-header-bg: #333333;
 }
 
 /* Base styles */
 body {
-  background-color: var(--pure-black);
-  font-family: "Inter", monospace;
+  background-color: var(--terminal-bg);
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
   margin: 0;
   min-height: 100vh;
-  color: var(--pure-white);
+  color: var(--terminal-text);
   overflow-x: hidden;
 }
 
-/* Noise overlay */
-.noise {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.1;
-  z-index: -2;
-  background: repeating-conic-gradient(
-    #000 0%,
-    transparent 0.00003%,
-    transparent 0.0003%,
-    transparent 0.003%
-  );
-  pointer-events: none;
-}
 
-/* Dot grid */
-.grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(
-    circle,
-    var(--pure-white) var(--dot-size),
-    transparent var(--dot-size)
-  );
-  background-size: var(--dot-space) var(--dot-space);
-  opacity: 0.1;
-  z-index: -1;
-  pointer-events: none;
-}
 
 /* Main container */
 #main-container {
@@ -65,10 +35,38 @@ body {
 }
 
 #main-content {
-  border: 2px solid var(--pure-white);
+  border: 2px solid var(--terminal-text);
   padding: min(10vw, 30px);
   position: relative;
-  background: var(--pure-black);
+  background: var(--terminal-bg);
+}
+
+/* Terminal header */
+#main-content::before {
+  content: "user@terminal: ~/dashboard";
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  background: var(--terminal-header-bg);
+  padding: 2px 10px;
+  border: 1px solid var(--terminal-text);
+  border-bottom: none;
+  font-size: 12px;
+  color: var(--terminal-text);
+}
+
+/* Terminal controls */
+#main-content::after {
+  content: "□ ▭ ×";
+  position: absolute;
+  top: -25px;
+  right: 10px;
+  background: var(--terminal-header-bg);
+  padding: 2px 10px;
+  border: 1px solid var(--terminal-text);
+  border-bottom: none;
+  font-size: 12px;
+  color: var(--terminal-text);
 }
 
 /* Time */
@@ -77,7 +75,7 @@ body {
   font-size: min(15vw, 40px);
   font-weight: bold;
   margin-bottom: 30px;
-  font-family: monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
 }
 
 /* Search section */
@@ -88,25 +86,62 @@ body {
   align-items: center;
   margin: 20px 0;
   padding: 15px;
-  border: 1px solid var(--pure-white);
+  border: 1px solid var(--terminal-text);
   box-sizing: border-box;
   gap: 10px;
   font-size: min(7vw, 14px);
+  position: relative;
+}
+
+/* Terminal prompt for search */
+#search-input-cont {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#search-input-cont::before {
+  content: "$";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--terminal-green);
+  font-weight: bold;
+}
+
+#search-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--terminal-text);
+  color: var(--terminal-text);
+  padding: 8px 0;
+  width: 100%;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  text-transform: uppercase;
+  padding-left: 15px; /* Space for the prompt */
+  height: 35px; /* Match button height */
+  box-sizing: border-box;
 }
 
 .button {
-  background-color: var(--pure-black);
-  color: var(--pure-white);
-  border: 1px solid var(--pure-white);
+  background-color: var(--terminal-bg);
+  color: var(--terminal-text);
+  border: 1px solid var(--terminal-text);
   padding: 8px 15px;
   cursor: pointer;
-  font-family: monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
   text-transform: uppercase;
+  height: 35px; /* Set a fixed height for consistency */
+  box-sizing: border-box; /* Include border in height calculation */
+  display: flex;
+  align-items: center;
 }
 
 .button:hover {
-  background-color: var(--pure-white);
-  color: var(--pure-black);
+  background-color: var(--terminal-text);
+  color: var(--terminal-bg);
 }
 
 #search-engine-select {
@@ -114,23 +149,8 @@ body {
   appearance: none;
 }
 
-#search-input-cont {
-  flex: 1;
-}
-
-#search-input {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--pure-white);
-  color: var(--pure-white);
-  padding: 8px 0;
-  width: 100%;
-  font-family: monospace;
-  text-transform: uppercase;
-}
-
 #search-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(211, 215, 207, 0.5);
 }
 
 /* Links grid */
@@ -142,9 +162,21 @@ body {
   margin-top: 20px;
 }
 
+/* Terminal box styling with ASCII characters */
 .link-group {
-  border: 1px solid var(--pure-white);
+  position: relative;
   padding: 15px;
+  background: var(--terminal-bg);
+  border: 1px solid var(--terminal-text);
+}
+
+.link-group::before {
+  content: none; /* Remove the before pseudo-element */
+}
+
+/* ASCII box corners */
+.link-group::after {
+  content: none; /* Remove the ASCII box drawing */
 }
 
 .link-group ul {
@@ -154,10 +186,10 @@ body {
 }
 
 .link-group-title {
-  color: var(--pure-white);
+  color: var(--terminal-green);
   margin-bottom: 15px;
   font-weight: bold;
-  font-family: monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
   position: relative;
 }
 
@@ -168,7 +200,7 @@ body {
   left: 0;
   width: 100%;
   height: 1px;
-  background: var(--pure-white);
+  background: var(--terminal-text);
 }
 
 ul {
@@ -181,13 +213,14 @@ a {
   text-decoration: none;
   display: block;
   padding: 5px 0;
-  color: var(--pure-white);
-  font-family: monospace;
+  color: var(--terminal-text);
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
 }
 
 /* Simple underline on hover */
 a:hover .link-text {
   text-decoration: underline;
+  color: var(--terminal-green);
 }
 
 /* Responsive design */
@@ -216,10 +249,10 @@ a:hover .link-text {
   width: 20px; /* reduced from 40px */
   height: 20px; /* reduced from 40px */
   border-radius: 50%;
-  background: var(--pure-black);
-  color: var(--pure-white);
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
   border: none; /* removed border */
-  font-family: monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
   font-size: 12px; /* reduced from 20px */
   cursor: pointer;
   display: flex;
@@ -244,8 +277,8 @@ a:hover .link-text {
 }
 
 .modal-content {
-  background: var(--pure-black);
-  border: 2px solid var(--pure-white);
+  background: var(--terminal-bg);
+  border: 2px solid var(--terminal-text);
   width: 80%;
   height: 80%;
   position: relative;
@@ -268,8 +301,8 @@ a:hover .link-text {
   width: 20px;
   height: 20px;
   border: none;
-  background: var(--pure-black);
-  color: var(--pure-white);
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
   font-size: 12px;
   cursor: pointer;
   display: flex;
@@ -282,8 +315,8 @@ a:hover .link-text {
 .modal-button:hover,
 .modal-button:hover {
   opacity: 0.8;
-  background: var(--pure-black);
-  color: var(--pure-white);
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
 }
 
 #page-title {
@@ -292,9 +325,9 @@ a:hover .link-text {
 }
 
 .nav-button {
-  background: var(--pure-black);
-  color: var(--pure-white);
-  border: 1px solid var(--pure-white);
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  border: 1px solid var(--terminal-text);
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -305,8 +338,8 @@ a:hover .link-text {
 }
 
 .nav-button:hover {
-  background: var(--pure-white);
-  color: var(--pure-black);
+  background: var(--terminal-text);
+  color: var(--terminal-bg);
 }
 
 /* Modal content styling */
@@ -325,7 +358,7 @@ a:hover .link-text {
   font-weight: bold;
   margin-bottom: 15px;
   font-family: monospace;
-  color: var(--pure-white);
+  color: var(--terminal-text);
   text-transform: uppercase;
 }
 
@@ -343,12 +376,12 @@ a:hover .link-text {
 }
 
 .shortcut-key {
-  color: var(--pure-white);
+  color: var(--terminal-text);
   opacity: 0.8;
 }
 
 .shortcut-desc {
-  color: var(--pure-white);
+  color: var(--terminal-text);
 }
 
 /* Update modal content div */
@@ -364,11 +397,11 @@ a:hover .link-text {
 }
 
 .modal-body::-webkit-scrollbar-track {
-  background: var(--pure-black); /* Match modal background */
+  background: var(--terminal-bg); /* Match modal background */
 }
 
 .modal-body::-webkit-scrollbar-thumb {
-  background: var(--pure-white); /* Match theme color */
+  background: var(--terminal-text); /* Match theme color */
   opacity: 0.5;
   border-radius: 4px;
 }
