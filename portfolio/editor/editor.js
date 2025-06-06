@@ -99,7 +99,7 @@ const api = {
   // Load blogs list
   async loadBlogs() {
     try {
-      const response = await fetch('../data/blogs.json');
+      const response = await fetch('../data/blogs/index.json');
       if (!response.ok) {
         throw new Error(`Failed to load blog posts (${response.status})`);
       }
@@ -671,7 +671,7 @@ function downloadBlogsJson(newBlog) {
   };
   
   // Download the file
-  downloadFile('blogs.json', JSON.stringify(blogsData, null, 2));
+  downloadFile('blogs/index.json', JSON.stringify(blogsData, null, 2));
 }
 
 // Toggle dark/light mode

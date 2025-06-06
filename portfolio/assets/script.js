@@ -274,17 +274,25 @@ async function loadJsonData(filename) {
   console.log(`$ curl -s https://api.portfolio.local/data/${filename}.json`);
 
   try {
-    const response = await fetch(`data/${filename}.json`);
+    // Handle special case for blogs main data file
+    let url;
+    if (filename === "blogs") {
+      url = "data/blogs/index.json";
+    } else {
+      url = `data/${filename}.json`;
+    }
+
+    const response = await fetch(url);
 
     if (!response.ok) {
       console.error(
-        `curl: (404) Not Found - ${filename}.json (${response.status})`
+        `curl: (404) Not Found - ${url} (${response.status})`
       );
       return null;
     }
 
     const data = await response.json();
-    console.log(`$ jq . data/${filename}.json | head -3`);
+    console.log(`$ jq . ${url} | head -3`);
     console.log(`{...}`); // Simulating partial output of jq
 
     // Cache the data

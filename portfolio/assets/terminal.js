@@ -188,7 +188,7 @@ class TerminalEmulator {
    */
   async loadBlogs() {
     try {
-      const blogsResponse = await fetch("data/blogs.json");
+      const blogsResponse = await fetch("data/blogs/index.json");
       if (!blogsResponse.ok) return;
 
       const blogsData = await blogsResponse.json();
