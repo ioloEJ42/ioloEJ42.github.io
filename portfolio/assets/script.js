@@ -280,6 +280,10 @@ async function loadJsonData(filename) {
       url = "data/blogs/index.json";
     } else if (filename === "projects") {
       url = "data/projects/index.json";
+    } else if (filename === "profile") {
+      url = "data/home/profile.json";
+    } else if (filename === "series") {
+      url = "data/series/index.json";
     } else {
       url = `data/${filename}.json`;
     }
