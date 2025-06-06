@@ -118,7 +118,7 @@ class TerminalEmulator {
    */
   async loadProjects() {
     try {
-      const projectsResponse = await fetch("data/projects.json");
+      const projectsResponse = await fetch("data/projects/index.json");
       if (!projectsResponse.ok) return;
 
       const projectsData = await projectsResponse.json();

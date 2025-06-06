@@ -83,7 +83,7 @@ const api = {
   // Load projects list
   async loadProjects() {
     try {
-      const response = await fetch('../data/projects.json');
+      const response = await fetch('../data/projects/index.json');
       if (!response.ok) {
         throw new Error(`Failed to load projects (${response.status})`);
       }
@@ -646,7 +646,7 @@ function downloadProjectsJson(newProject) {
   };
   
   // Download the file
-  downloadFile('projects.json', JSON.stringify(projectsData, null, 2));
+  downloadFile('projects/index.json', JSON.stringify(projectsData, null, 2));
 }
 
 // Download updated blogs.json

@@ -274,10 +274,12 @@ async function loadJsonData(filename) {
   console.log(`$ curl -s https://api.portfolio.local/data/${filename}.json`);
 
   try {
-    // Handle special case for blogs main data file
+    // Handle special cases for projects and blogs main data files
     let url;
     if (filename === "blogs") {
       url = "data/blogs/index.json";
+    } else if (filename === "projects") {
+      url = "data/projects/index.json";
     } else {
       url = `data/${filename}.json`;
     }
