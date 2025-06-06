@@ -91,10 +91,10 @@
         // Define files to check
         const filesToCheck = [
           // CSS files
-          "styles.css",
+          "assets/styles.css",
           // JS files
           "components.js",
-          "script.js",
+          "assets/script.js",
           // HTML files
           "index.html",
           "projects.html",
@@ -102,16 +102,27 @@
           "blog.html",
           "project.html",
           "contact.html",
-          // Data directory
+          "series.html",
+          "series-detail.html",
+          // Data directories
           "data/",
-          // JSON files
-          "data/profile.json",
-          "data/projects.json",
-          "data/blogs.json",
+          "data/home/",
+          "data/projects/",
+          "data/blogs/",
+          "data/series/",
+          // JSON files - updated paths
+          "data/home/profile.json",
+          "data/projects/index.json",
+          "data/blogs/index.json",
+          "data/series/index.json",
           // Project details
           "data/projects/minimal-dashboard.json",
+          "data/projects/file-integrity-monitor.json",
+          "data/projects/ascii-art-generator.json",
           // Blog posts
-          "data/blogs/minimalism-in-web-design.json",
+          "data/blogs/welcome-to-my-blog.json",
+          // Series content
+          "data/series/topology-tuesdays.json",
           // External resources
           "./images/logo.svg",
         ];
@@ -152,13 +163,15 @@
         const results = document.getElementById("results");
         results.innerHTML = "<h2>Checking JSON Files...</h2>";
 
-        // JSON files to check
+        // JSON files to check - updated paths
         const jsonFiles = [
-          "data/profile.json",
-          "data/projects.json",
-          "data/blogs.json",
+          "data/home/profile.json",
+          "data/projects/index.json",
+          "data/blogs/index.json",
+          "data/series/index.json",
           "data/projects/minimal-dashboard.json",
-          "data/blogs/minimalism-in-web-design.json",
+          "data/blogs/welcome-to-my-blog.json",
+          "data/series/topology-tuesdays.json"
         ];
 
         let resultsHTML = "<h2>JSON File Check Results</h2>";
