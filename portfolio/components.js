@@ -21,6 +21,9 @@ const Components = {
             activePage === "blogs" ? "active" : ""
           }"><a href="blogs.html">$ BLOGS</a></li>
           <li class="${
+            activePage === "series" ? "active" : ""
+          }"><a href="series.html">$ SERIES</a></li>
+          <li class="${
             activePage === "interface" ? "active" : ""
           }"><a href="interface.html">$ TERMINAL</a></li>
           <li class="${

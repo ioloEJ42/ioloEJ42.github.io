@@ -1,0 +1,11 @@
+{
+  "collections": [
+    {
+      "id": "topology-tuesdays",
+      "title": "Topology Tuesdays",
+      "date": "March 15, 2025",
+      "description": "Weekly network design challenges featuring real-world scenarios. Build enterprise networks from scratch and redesign inherited topologies using Cisco Packet Tracer.",
+      "tags": ["Networking", "Cisco", "Network Design"]
+    }
+  ]
+} 
