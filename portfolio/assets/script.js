@@ -676,7 +676,31 @@ async function loadSeriesDetail() {
     // Update document title
     document.title = `${seriesMeta.title} | PORTFOLIO_`;
 
-    // Now load the full series content if available, otherwise use the description
+    // Try to load HTML content first
+    try {
+      const response = await fetch(`data/series/${seriesId}/index.html`);
+      
+      if (response.ok) {
+        // Simulate loading time but shorter
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        
+        // Get the HTML content
+        const htmlContent = await response.text();
+        
+        // Extract the body content from the HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlContent;
+        const bodyContent = tempDiv.querySelector('body').innerHTML;
+        
+        // Display the content
+        contentContainer.innerHTML = bodyContent;
+        return;
+      }
+    } catch (error) {
+      console.warn(`Could not load HTML content for series ${seriesId}:`, error);
+    }
+
+    // Fallback to JSON content if HTML content is not available
     const seriesContent = await loadJsonData(`series/${seriesId}`);
     if (seriesContent) {
       // Simulate loading time but shorter
@@ -691,9 +715,9 @@ async function loadSeriesDetail() {
         <div class="series-tags">
           ${seriesMeta.tags.map(tag => `<span class="series-tag">${tag}</span>`).join("")}
         </div>
-        <div class="series-episodes">
-          <h2>Episodes</h2>
-          <p>No episodes available yet. Check back soon!</p>
+        <div class="series-installments">
+          <h2>Installments</h2>
+          <p>No installments available yet. Check back soon!</p>
         </div>
       `;
     }

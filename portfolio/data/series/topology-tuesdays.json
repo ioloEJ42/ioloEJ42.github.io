@@ -1,9 +1,0 @@
-{
-  "id": "topology-tuesdays",
-  "title": "Topology Tuesdays",
-  "date": "March 15, 2025",
-  "description": "Weekly network design challenges featuring real-world scenarios. Build enterprise networks from scratch and redesign inherited topologies using Cisco Packet Tracer.",
-  "content": "<div class='series-description'><p>Welcome to <strong>Topology Tuesdays</strong>, a weekly series dedicated to network design challenges using Cisco Packet Tracer. Each Tuesday, I'll post a new network design challenge based on real-world scenarios that network engineers face in their day-to-day work.</p><p>These challenges are designed to help you improve your network design skills, understand common networking concepts, and gain practical experience with Cisco devices in a simulated environment.</p></div><div class='series-features'><h2>What to Expect</h2><ul><li>Real-world network design scenarios</li><li>Step-by-step solutions with explanations</li><li>Downloadable Packet Tracer files</li><li>Best practices for enterprise network design</li><li>Troubleshooting tips and common pitfalls</li></ul></div><div class='series-episodes'><h2>Episodes</h2><p>The first episode will be published on March 22, 2025. Check back then!</p><div class='coming-soon'><p>Episode 1: Building a Small Business Network</p><p class='episode-date'>Coming March 22, 2025</p></div></div>",
-  "tags": ["Networking", "Cisco", "Network Design", "Packet Tracer", "Enterprise Networks"],
-  "episodes": []
-} 
