@@ -11,7 +11,7 @@ function isTextFile(filePath) {
     return textExtensions.includes(path.extname(filePath).toLowerCase());
 }
 
-function escapeHtml(text) {
+function escapeHtml(text) { 
     return text
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
