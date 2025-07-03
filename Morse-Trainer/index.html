@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Trainer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="main-container">
+        <div id="main-content">
+            <h1 id="page-title">Morse Code Trainer</h1>
+            
+            <div id="practice-section">
+                <div id="word-display">
+                    <h2>Current Word:</h2>
+                    <div id="current-word">Loading...</div>
+                </div>
+                
+                <div id="input-section">
+                    <label for="morse-input">Enter Morse Code:</label>
+                    <div id="input-container">
+                        <input type="text" id="morse-input" placeholder="Type . or - then press space" autocomplete="off">
+                        <div id="input-hint">Use . for dot, - for dash, space to submit</div>
+                    </div>
+                </div>
+                
+
+            </div>
+            
+            <div id="controls">
+                <button id="new-word-btn" class="button">New Word</button>
+                <button id="theme-toggle" class="button">Light</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 

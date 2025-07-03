@@ -1,0 +1,188 @@
+:root {
+  --pure-white: #ffffff;
+  --pure-black: #000000;
+  --text-color: #ffffff;
+  --bg-color: #000000;
+  --error-red: #ff0000;
+  --success-green: #00ff00;
+}
+
+/* Light mode variables */
+[data-theme="light"] {
+  --text-color: #000000;
+  --bg-color: #ffffff;
+}
+
+/* Base styles */
+body {
+  background-color: var(--bg-color);
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-color);
+  overflow-x: hidden;
+}
+
+/* Main container */
+#main-container {
+  margin: auto;
+  display: flex;
+  width: min(800px, 90%);
+  padding: min(15vw, 30px) 0;
+  box-sizing: border-box;
+  min-height: inherit;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+
+#main-content {
+  border: 2px solid var(--text-color);
+  padding: min(10vw, 30px);
+  position: relative;
+  background: var(--bg-color);
+}
+
+/* Page title */
+#page-title {
+  text-align: center;
+  font-size: min(8vw, 32px);
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: var(--text-color);
+}
+
+/* Practice section */
+#practice-section {
+  margin: 30px 0;
+}
+
+#word-display {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid var(--text-color);
+}
+
+#word-display h2 {
+  margin: 0 0 15px 0;
+  color: var(--text-color);
+  font-size: min(5vw, 18px);
+}
+
+#current-word {
+  font-size: min(10vw, 48px);
+  font-weight: bold;
+  color: var(--text-color);
+  letter-spacing: 2px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Input section */
+#input-section {
+  margin: 30px 0;
+  padding: 20px;
+  border: 1px solid var(--text-color);
+}
+
+#input-section label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--text-color);
+  font-size: min(4vw, 16px);
+}
+
+#input-container {
+  position: relative;
+}
+
+#morse-input {
+  background: transparent;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  padding: 12px;
+  width: 100%;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  font-size: min(4vw, 16px);
+  box-sizing: border-box;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+#morse-input:focus {
+  outline: none;
+  border-color: var(--text-color);
+}
+
+#morse-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] #morse-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+#input-hint {
+  margin-top: 8px;
+  font-size: min(3vw, 12px);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+[data-theme="light"] #input-hint {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Error state */
+#morse-input.error {
+  border-color: var(--error-red);
+  color: var(--error-red);
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Controls */
+#controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.button {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  font-size: min(3.5vw, 14px);
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+/* Responsive design */
+@media (max-width: 650px) {
+  #controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .button {
+    width: 100%;
+    max-width: 200px;
+  }
+} 
