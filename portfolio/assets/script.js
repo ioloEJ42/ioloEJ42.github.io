@@ -32,6 +32,9 @@
               activePage === "blogs" ? "active" : ""
             }"><a href="blogs.html">$ BLOGS</a></li>
             <li class="${
+              activePage === "series" ? "active" : ""
+            }"><a href="series.html">$ SERIES</a></li>
+            <li class="${
               activePage === "interface" ? "active" : ""
             }"><a href="interface.html">$ TERMINAL</a></li>
             <li class="${
@@ -78,6 +81,8 @@
       return "projects";
     } else if (filename === "blogs.html") {
       return "blogs";
+    } else if (filename === "series.html") {
+      return "series";
     } else if (filename === "interface.html") {
       return "interface";
     } else if (filename === "contact.html") {
@@ -86,6 +91,8 @@
       return "project";
     } else if (filename === "blog.html") {
       return "blog";
+    } else if (filename === "series-detail.html") {
+      return "series-detail";
     }
     return "home";
   }
@@ -172,11 +179,17 @@ async function initializePage() {
     case "blogs":
       loadBlogsContent();
       break;
+    case "series":
+      loadSeriesContent();
+      break;
     case "project":
       loadProjectDetail();
       break;
     case "blog":
       loadBlogDetail();
+      break;
+    case "series-detail":
+      loadSeriesDetail();
       break;
     case "interface":
       // Terminal interface page doesn't need data loading
@@ -206,6 +219,8 @@ function getCurrentPage() {
     return "projects";
   } else if (filename === "blogs.html") {
     return "blogs";
+  } else if (filename === "series.html") {
+    return "series";
   } else if (filename === "interface.html") {
     return "interface";
   } else if (filename === "contact.html") {
@@ -214,6 +229,8 @@ function getCurrentPage() {
     return "project";
   } else if (filename === "blog.html") {
     return "blog";
+  } else if (filename === "series-detail.html") {
+    return "series-detail";
   }
 
   return "home"; // Default
@@ -257,17 +274,31 @@ async function loadJsonData(filename) {
   console.log(`$ curl -s https://api.portfolio.local/data/${filename}.json`);
 
   try {
-    const response = await fetch(`data/${filename}.json`);
+    // Handle special cases for projects and blogs main data files
+    let url;
+    if (filename === "blogs") {
+      url = "data/blogs/index.json";
+    } else if (filename === "projects") {
+      url = "data/projects/index.json";
+    } else if (filename === "profile") {
+      url = "data/home/profile.json";
+    } else if (filename === "series") {
+      url = "data/series/index.json";
+    } else {
+      url = `data/${filename}.json`;
+    }
+
+    const response = await fetch(url);
 
     if (!response.ok) {
       console.error(
-        `curl: (404) Not Found - ${filename}.json (${response.status})`
+        `curl: (404) Not Found - ${url} (${response.status})`
       );
       return null;
     }
 
     const data = await response.json();
-    console.log(`$ jq . data/${filename}.json | head -3`);
+    console.log(`$ jq . ${url} | head -3`);
     console.log(`{...}`); // Simulating partial output of jq
 
     // Cache the data
@@ -385,6 +416,84 @@ async function loadBlogsContent() {
     }
   }
   console.log("$ blogs loaded");
+}
+
+// Series page content
+async function loadSeriesContent() {
+  console.log("$ loading series...");
+  const seriesContainer = document.querySelector(".terminal-output");
+  if (seriesContainer) {
+    // Simulate SSH connection time but shorter
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const seriesData = await loadJsonData("series");
+    if (seriesData && seriesData.collections) {
+      if (seriesData.collections.length > 0) {
+        // Sort series by date, newest first
+        const sortedSeries = [...seriesData.collections].sort((a, b) => {
+          const dateA = new Date(a.date || 0);
+          const dateB = new Date(b.date || 0);
+          return dateB - dateA; // Descending order (newest first)
+        });
+
+        // Create a grid layout but only include the actual series
+        let output = "";
+        output += "<div class='series-grid'>";
+        
+        // Only add the actual series we have
+        if (sortedSeries.length > 0) {
+          const series = sortedSeries[0];
+          output += `
+            <a href="series-detail.html?id=${series.id}" class="series-terminal">
+              <div class="terminal-window">
+                <div class="terminal-header">
+                  <div class="terminal-buttons">
+                    <div class="terminal-button close"></div>
+                    <div class="terminal-button minimize"></div>
+                    <div class="terminal-button maximize"></div>
+                  </div>
+                  <div class="terminal-title">${series.title}</div>
+                </div>
+                <div class="terminal-body">
+                  <div class="terminal-line">
+                    <div class="terminal-prompt">
+                      <span class="terminal-user">user</span>
+                      <span>@</span>
+                      <span class="terminal-host">portfolio</span>
+                      <span>:</span>
+                      <span class="terminal-path">~/series</span>
+                      <span>$</span>
+                    </div>
+                    <div class="terminal-command">cat description.txt</div>
+                  </div>
+                  <div class="terminal-output">
+                    <p>${series.description}</p>
+                    <div class="series-tags">
+                      ${series.tags.map(tag => `<span class="series-tag">${tag}</span>`).join("")}
+                    </div>
+                    <p class="read-more">$ cd ${series.id} && ls -la</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          `;
+        }
+        
+        output += "</div>";
+        seriesContainer.innerHTML = output;
+        
+        // Initialize terminal effects for the newly created terminals
+        addBlinkingCursors();
+        simulateCommandTyping();
+      } else {
+        seriesContainer.innerHTML = "<p>No series found.</p>";
+      }
+    } else {
+      seriesContainer.innerHTML =
+        "<p>find: cannot access './': Connection timed out</p>";
+    }
+  }
+  console.log("$ series loaded");
 }
 
 // Project detail page
@@ -527,6 +636,93 @@ async function loadBlogDetail() {
     }
   }
   console.log(`$ blog ${blogId} loaded`);
+}
+
+// Series detail page
+async function loadSeriesDetail() {
+  const seriesId = getUrlParam("id");
+  if (!seriesId) {
+    window.location.href = "series.html";
+    return;
+  }
+
+  console.log(`$ loading series ${seriesId}...`);
+  const contentContainer = document.getElementById("series-content");
+  const titleEl = document.getElementById("series-title");
+  const dateEl = document.getElementById("series-date");
+  const filenameEl = document.getElementById("series-filename");
+
+  if (contentContainer) {
+    // First load series metadata
+    const seriesData = await loadJsonData("series");
+    if (!seriesData || !seriesData.collections) {
+      contentContainer.innerHTML =
+        "<p>less: series.txt: No such file or directory</p>";
+      return;
+    }
+
+    const seriesMeta = seriesData.collections.find((s) => s.id === seriesId);
+    if (!seriesMeta) {
+      contentContainer.innerHTML =
+        "<p>less: series.txt: No such file or directory</p>";
+      return;
+    }
+
+    // Update page title and series metadata
+    if (titleEl) titleEl.textContent = seriesMeta.title;
+    if (dateEl) dateEl.textContent = "Date: " + seriesMeta.date;
+    if (filenameEl) filenameEl.textContent = seriesId + ".txt";
+
+    // Update document title
+    document.title = `${seriesMeta.title} | PORTFOLIO_`;
+
+    // Try to load HTML content first
+    try {
+      const response = await fetch(`data/series/${seriesId}/index.html`);
+      
+      if (response.ok) {
+        // Simulate loading time but shorter
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        
+        // Get the HTML content
+        const htmlContent = await response.text();
+        
+        // Extract the body content from the HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlContent;
+        const bodyContent = tempDiv.querySelector('body').innerHTML;
+        
+        // Display the content
+        contentContainer.innerHTML = bodyContent;
+        return;
+      }
+    } catch (error) {
+      console.warn(`Could not load HTML content for series ${seriesId}:`, error);
+    }
+
+    // Fallback to JSON content if HTML content is not available
+    const seriesContent = await loadJsonData(`series/${seriesId}`);
+    if (seriesContent) {
+      // Simulate loading time but shorter
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      contentContainer.innerHTML = seriesContent.content;
+    } else {
+      // If no detailed content is available, use the description from metadata
+      contentContainer.innerHTML = `
+        <div class="series-description">
+          <p>${seriesMeta.description}</p>
+        </div>
+        <div class="series-tags">
+          ${seriesMeta.tags.map(tag => `<span class="series-tag">${tag}</span>`).join("")}
+        </div>
+        <div class="series-installments">
+          <h2>Installments</h2>
+          <p>No installments available yet. Check back soon!</p>
+        </div>
+      `;
+    }
+  }
+  console.log(`$ series ${seriesId} loaded`);
 }
 
 // Add blinking cursor animation to elements
