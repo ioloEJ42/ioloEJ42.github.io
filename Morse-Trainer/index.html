@@ -7,6 +7,58 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Letters Sidebar (left) -->
+    <div id="letters-sidebar" class="sidebar letters-sidebar">
+        <div class="sidebar-header">
+            <h3>Letters</h3>
+            <button id="close-letters" class="close-btn">×</button>
+        </div>
+        <div id="letters-content" class="sidebar-content">
+            <!-- Letters content will be populated by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Numbers Sidebar (right) -->
+    <div id="numbers-sidebar" class="sidebar numbers-sidebar">
+        <div class="sidebar-header">
+            <h3>Numbers</h3>
+            <button id="close-numbers" class="close-btn">×</button>
+        </div>
+        <div id="numbers-content" class="sidebar-content">
+            <!-- Numbers content will be populated by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Settings Popup -->
+    <div id="settings-popup" class="settings-popup">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>Settings</h3>
+                <button id="close-settings" class="close-btn">×</button>
+            </div>
+            <div class="settings-body">
+                <div class="setting-group">
+                    <h4>Difficulty Mode</h4>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="difficulty" value="singular" checked>
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Singular Mode</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="difficulty" value="sentence">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Sentence Mode</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <button id="save-settings" class="button">Save</button>
+            </div>
+        </div>
+    </div>
+    
     <div id="main-container">
         <div id="main-content">
             <h1 id="page-title">Morse Code Trainer</h1>
@@ -31,6 +83,8 @@
             <div id="controls">
                 <button id="new-word-btn" class="button">New Word</button>
                 <button id="theme-toggle" class="button">Light</button>
+                <button id="hint-btn" class="button">Show Hint Panels</button>
+                <button id="settings-btn" class="button">Settings</button>
             </div>
         </div>
     </div>

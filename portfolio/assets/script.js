@@ -74,7 +74,7 @@
     if (
       filename === "index.html" ||
       filename === "" ||
-      pathname.endsWith("/portfolio/")
+      pathname.endsWith("/Portfolio/")
     ) {
       return "home";
     } else if (filename === "projects.html") {
@@ -212,7 +212,7 @@ function getCurrentPage() {
   if (
     filename === "index.html" ||
     filename === "" ||
-    pathname.endsWith("/portfolio/")
+    pathname.endsWith("/Portfolio/")
   ) {
     return "home";
   } else if (filename === "projects.html") {

@@ -31,7 +31,7 @@ A terminal-themed portfolio website with a custom browser dashboard. This projec
 ## Structure
 
 - `index.html` - Custom browser dashboard
-- `/portfolio/` - Terminal-themed portfolio website
+- `/Portfolio/` - Terminal-themed portfolio website
   - `index.html` - Portfolio homepage
   - `projects.html` - Projects listing as terminal output
   - `blogs.html` - Blog posts as terminal output
@@ -59,7 +59,7 @@ npx http-server
 
 ### Editing Content
 
-1. Update JSON files in the `/portfolio/data/` directory to modify your content
+1. Update JSON files in the `/Portfolio/data/` directory to modify your content
 2. The portfolio automatically loads content from these JSON files
 3. Add new projects and blog posts by creating new JSON files
 
@@ -75,7 +75,7 @@ This site is designed to be deployed to GitHub Pages:
 ## Customization
 
 - Edit the JSON files to update content
-- Modify CSS variables in `portfolio/styles.css` to change the terminal colors
+- Modify CSS variables in `Portfolio/styles.css` to change the terminal colors
 - Update terminal command simulations in components.js
 
 ## License
