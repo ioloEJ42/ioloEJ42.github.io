@@ -14,49 +14,127 @@ class MorseTrainer {
             '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'
         };
         
-        this.words = [
-            'HELLO', 'WORLD', 'MORSE', 'CODE', 'TRAINER', 'SIGNAL', 'MESSAGE',
-            'COMMUNICATION', 'RADIO', 'TELEGRAPH', 'DOT', 'DASH', 'SOS', 'HELP',
-            'EMERGENCY', 'RESCUE', 'SAVE', 'LIFE', 'DANGER', 'WARNING', 'STOP',
-            'GO', 'YES', 'NO', 'OKAY', 'FINE', 'GOOD', 'BAD', 'UP', 'DOWN',
-            'LEFT', 'RIGHT', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'FIRE', 'WATER',
-            'EARTH', 'AIR', 'SUN', 'MOON', 'STAR', 'SKY', 'SEA', 'LAND', 'TREE',
-            'FLOWER', 'BIRD', 'FISH', 'DOG', 'CAT', 'HORSE', 'COW', 'SHEEP'
-        ];
+        // Organize words by difficulty level
+        this.wordsByLevel = {
+            easy: [
+                'HELLO', 'WORLD', 'MORSE', 'CODE', 'DOT', 'DASH', 'SOS', 'HELP',
+                'SAVE', 'LIFE', 'STOP', 'GO', 'YES', 'NO', 'OKAY', 'FINE', 'GOOD',
+                'BAD', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'FIRE', 'WATER', 'EARTH',
+                'AIR', 'SUN', 'MOON', 'STAR', 'SKY', 'SEA', 'LAND', 'TREE', 'BIRD',
+                'FISH', 'DOG', 'CAT', 'HORSE', 'COW', 'SHEEP', 'BOOK', 'PEN', 'MAP',
+                'KEY', 'DOOR', 'WIND', 'RAIN', 'SNOW', 'HOT', 'COLD', 'WARM', 'COOL'
+            ],
+            medium: [
+                'TRAINER', 'SIGNAL', 'MESSAGE', 'RADIO', 'TELEGRAPH', 'EMERGENCY',
+                'RESCUE', 'DANGER', 'WARNING', 'NORTH', 'SOUTH', 'EAST', 'WEST',
+                'FLOWER', 'BEAUTY', 'STRONG', 'WEAK', 'QUICK', 'SLOW', 'BIG', 'SMALL',
+                'HAPPY', 'SAD', 'ANGRY', 'CALM', 'LOUD', 'QUIET', 'BRIGHT', 'DARK',
+                'LIGHT', 'HEAVY', 'FAST', 'SLOW', 'NEW', 'OLD', 'YOUNG', 'RICH',
+                'POOR', 'HIGH', 'LOW', 'NEAR', 'FAR', 'OPEN', 'CLOSE', 'START',
+                'FINISH', 'BEGIN', 'END', 'FIRST', 'LAST', 'BEST', 'WORST'
+            ],
+            hard: [
+                'COMMUNICATION', 'EMERGENCY', 'SITUATION', 'DEPARTMENT', 'ACCOMMODATIONS',
+                'CONSTRUCTION', 'IMMEDIATELY', 'ASSISTANCE', 'REQUIRED', 'BUILDING',
+                'HOSPITAL', 'RESTAURANT', 'STATION', 'NEARBY', 'AVAILABLE',
+                'DIFFICULT', 'IMPORTANT', 'NECESSARY', 'POSSIBLE', 'DIFFERENT',
+                'BEAUTIFUL', 'WONDERFUL', 'EXCELLENT', 'FANTASTIC', 'AMAZING',
+                'INCREDIBLE', 'WONDERFUL', 'SPECTACULAR', 'MAGNIFICENT', 'EXTRAORDINARY',
+                'REMARKABLE', 'OUTSTANDING', 'SUPERIOR', 'EXCEPTIONAL', 'PHENOMENAL',
+                'TREMENDOUS', 'ENORMOUS', 'GIGANTIC', 'COLOSSAL', 'MASSIVE',
+                'IMMENSE', 'VAST', 'HUGE', 'TREMENDOUS', 'FANTASTIC', 'INCREDIBLE'
+            ]
+        };
         
-        this.sentences = [
-            'HELLO WORLD',
-            'MORSE CODE TRAINER',
-            'SOS EMERGENCY',
-            'HELP NEEDED NOW',
-            'SAVE THE DAY',
-            'GOOD MORNING',
-            'GOOD NIGHT',
-            'THANK YOU',
-            'YOU ARE WELCOME',
-            'PLEASE HELP ME',
-            'I NEED ASSISTANCE',
-            'CALL FOR HELP',
-            'EMERGENCY SITUATION',
-            'FIRE IN THE BUILDING',
-            'MEDICAL EMERGENCY',
-            'POLICE NEEDED',
-            'AMBULANCE REQUIRED',
-            'FIRE DEPARTMENT CALL',
-            'RESCUE TEAM NEEDED',
-            'DANGER AHEAD',
-            'STOP IMMEDIATELY',
-            'PROCEED WITH CAUTION',
-            'ROAD CLOSED AHEAD',
-            'CONSTRUCTION ZONE',
-            'SCHOOL ZONE',
-            'HOSPITAL AHEAD',
-            'GAS STATION NEARBY',
-            'RESTAURANT OPEN',
-            'HOTEL ACCOMMODATIONS',
-            'PARKING AVAILABLE',
-            'NO PARKING ZONE'
-        ];
+        // Organize sentences by difficulty level
+        this.sentencesByLevel = {
+            easy: [
+                'HELLO WORLD',
+                'GOOD MORNING',
+                'GOOD NIGHT',
+                'THANK YOU',
+                'PLEASE HELP',
+                'SAVE THE DAY',
+                'CALL FOR HELP',
+                'STOP NOW',
+                'GO AHEAD',
+                'YES PLEASE',
+                'NO THANKS',
+                'OKAY FINE',
+                'UP THERE',
+                'DOWN HERE',
+                'LEFT SIDE',
+                'RIGHT NOW',
+                'FIRE ALARM',
+                'WATER NEEDED',
+                'SUN IS HOT',
+                'MOON IS BRIGHT',
+                'STAR LIGHT',
+                'SKY IS BLUE',
+                'SEA IS DEEP',
+                'LAND IS GREEN',
+                'TREE IS TALL',
+                'BIRD CAN FLY',
+                'FISH CAN SWIM',
+                'DOG IS LOYAL',
+                'CAT IS CLEAN',
+                'HORSE IS FAST'
+            ],
+            medium: [
+                'MORSE CODE TRAINER',
+                'SOS EMERGENCY CALL',
+                'HELP NEEDED NOW',
+                'SAVE THE DAY',
+                'YOU ARE WELCOME',
+                'PLEASE HELP ME',
+                'I NEED ASSISTANCE',
+                'EMERGENCY SITUATION',
+                'FIRE IN BUILDING',
+                'MEDICAL EMERGENCY',
+                'POLICE NEEDED NOW',
+                'AMBULANCE REQUIRED',
+                'FIRE DEPARTMENT CALL',
+                'RESCUE TEAM NEEDED',
+                'DANGER AHEAD STOP',
+                'STOP IMMEDIATELY',
+                'PROCEED WITH CAUTION',
+                'ROAD CLOSED AHEAD',
+                'CONSTRUCTION ZONE',
+                'SCHOOL ZONE SLOW',
+                'HOSPITAL AHEAD',
+                'GAS STATION NEARBY',
+                'RESTAURANT OPEN NOW',
+                'HOTEL ACCOMMODATIONS',
+                'PARKING AVAILABLE',
+                'NO PARKING ZONE',
+                'KEEP OUT AREA',
+                'PRIVATE PROPERTY',
+                'ENTRANCE ONLY',
+                'EXIT THIS WAY'
+            ],
+            hard: [
+                'EMERGENCY MEDICAL ASSISTANCE REQUIRED IMMEDIATELY',
+                'FIRE DEPARTMENT RESPONSE NEEDED URGENTLY',
+                'POLICE OFFICER BACKUP REQUESTED IMMEDIATELY',
+                'AMBULANCE DISPATCH REQUIRED FOR MEDICAL EMERGENCY',
+                'RESCUE TEAM DEPLOYMENT NECESSARY FOR CRITICAL SITUATION',
+                'CONSTRUCTION ZONE AHEAD PROCEED WITH EXTREME CAUTION',
+                'HOSPITAL EMERGENCY ROOM ACCESS AVAILABLE IMMEDIATELY',
+                'RESTAURANT ACCOMMODATIONS AVAILABLE FOR LARGE GROUPS',
+                'HOTEL RESERVATION CONFIRMATION REQUIRED IMMEDIATELY',
+                'PARKING FACILITIES ACCESS RESTRICTED TO AUTHORIZED PERSONNEL',
+                'PRIVATE PROPERTY ENTRANCE FORBIDDEN WITHOUT PERMISSION',
+                'SCHOOL ZONE SPEED LIMIT ENFORCED DURING OPERATING HOURS',
+                'GAS STATION FACILITIES AVAILABLE FOR PUBLIC USE',
+                'EMERGENCY EXIT ROUTE CLEARANCE REQUIRED IMMEDIATELY',
+                'SECURITY ALARM SYSTEM ACTIVATION IN PROGRESS',
+                'WEATHER WARNING SYSTEM ALERT FOR SEVERE CONDITIONS',
+                'TRAFFIC CONTROL SYSTEM MALFUNCTION DETECTED',
+                'ELECTRICAL POWER SYSTEM RESTORATION IN PROGRESS',
+                'WATER SUPPLY SYSTEM MAINTENANCE SCHEDULED',
+                'COMMUNICATION NETWORK ACCESS RESTRICTED TEMPORARILY'
+            ]
+        };
         
         this.currentWord = '';
         this.currentMorse = '';
@@ -64,7 +142,9 @@ class MorseTrainer {
         this.numbersSidebarOpen = false;
         this.settingsOpen = false;
         this.difficultyMode = 'singular'; // 'singular' or 'sentence'
-        this.pendingDifficultyMode = 'singular'; // For settings changes before saving
+        this.difficultyLevel = 'easy'; // 'easy', 'medium', 'hard'
+        this.pendingDifficultyMode = 'singular';
+        this.pendingDifficultyLevel = 'easy';
         
         this.init();
     }
@@ -144,6 +224,14 @@ class MorseTrainer {
         difficultyRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 this.pendingDifficultyMode = e.target.value;
+            });
+        });
+        
+        // Difficulty level radio buttons
+        const levelRadios = document.querySelectorAll('input[name="level"]');
+        levelRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.pendingDifficultyLevel = e.target.value;
             });
         });
         
@@ -240,32 +328,41 @@ class MorseTrainer {
     
     openSettings() {
         this.settingsOpen = true;
-        this.pendingDifficultyMode = this.difficultyMode; // Reset pending to current
+        this.pendingDifficultyMode = this.difficultyMode;
+        this.pendingDifficultyLevel = this.difficultyLevel;
         const settingsPopup = document.getElementById('settings-popup');
         settingsPopup.classList.add('open');
         
         // Set the current difficulty mode in the radio buttons
-        const currentRadio = document.querySelector(`input[name="difficulty"][value="${this.difficultyMode}"]`);
-        if (currentRadio) {
-            currentRadio.checked = true;
+        const currentDifficultyRadio = document.querySelector(`input[name="difficulty"][value="${this.difficultyMode}"]`);
+        if (currentDifficultyRadio) {
+            currentDifficultyRadio.checked = true;
+        }
+        
+        // Set the current difficulty level in the radio buttons
+        const currentLevelRadio = document.querySelector(`input[name="level"][value="${this.difficultyLevel}"]`);
+        if (currentLevelRadio) {
+            currentLevelRadio.checked = true;
         }
     }
     
     closeSettings() {
         this.settingsOpen = false;
-        this.pendingDifficultyMode = this.difficultyMode; // Reset pending to current
+        this.pendingDifficultyMode = this.difficultyMode;
+        this.pendingDifficultyLevel = this.difficultyLevel;
         const settingsPopup = document.getElementById('settings-popup');
         settingsPopup.classList.remove('open');
     }
     
     saveSettings() {
-        // Apply the pending difficulty mode
+        // Apply the pending settings
         this.difficultyMode = this.pendingDifficultyMode;
+        this.difficultyLevel = this.pendingDifficultyLevel;
         
         // Close the settings popup
         this.closeSettings();
         
-        // Load a new word with the new difficulty mode
+        // Load a new word with the new settings
         this.loadNewWord();
         
         // Focus back to the input
@@ -313,12 +410,15 @@ class MorseTrainer {
     }
     
     loadNewWord() {
+        let wordList;
+        
         if (this.difficultyMode === 'singular') {
-            this.currentWord = this.words[Math.floor(Math.random() * this.words.length)];
+            wordList = this.wordsByLevel[this.difficultyLevel];
         } else {
-            this.currentWord = this.sentences[Math.floor(Math.random() * this.sentences.length)];
+            wordList = this.sentencesByLevel[this.difficultyLevel];
         }
         
+        this.currentWord = wordList[Math.floor(Math.random() * wordList.length)];
         this.currentMorse = this.wordToMorse(this.currentWord);
         
         document.getElementById('current-word').textContent = this.currentWord;
