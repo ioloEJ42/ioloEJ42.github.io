@@ -509,6 +509,27 @@ async function loadProjectDetail() {
   const terminalTitleEl = document.querySelector('.terminal-title');
   if (terminalTitleEl) terminalTitleEl.textContent = terminalTitle;
 
+  // Update prompt and command lines
+  const promptEls = document.querySelectorAll('.terminal-prompt');
+  promptEls.forEach(el => {
+    el.innerHTML = `
+      <span class="terminal-user">${projectId}</span>
+      <span>@</span>
+      <span class="terminal-host">projects.portfolio.local</span>
+      <span>:</span>
+      <span class="terminal-path">~/code/${projectId}</span>
+      <span>$</span>
+    `;
+  });
+  const commandEls = document.querySelectorAll('.terminal-command');
+  commandEls.forEach(el => {
+    if (el.classList.contains('blink-cursor')) {
+      el.textContent = '';
+    } else {
+      el.textContent = 'cat README.md';
+    }
+  });
+
   console.log(`$ loading project ${projectId}...`);
   const contentContainer = document.getElementById("project-content");
   const projectDirectory = document.getElementById("project-directory");
@@ -604,6 +625,27 @@ async function loadBlogDetail() {
   const terminalTitleEl = document.querySelector('.terminal-title');
   if (terminalTitleEl) terminalTitleEl.textContent = terminalTitle;
 
+  // Update prompt and command lines
+  const promptEls = document.querySelectorAll('.terminal-prompt');
+  promptEls.forEach(el => {
+    el.innerHTML = `
+      <span class="terminal-user">${blogId}</span>
+      <span>@</span>
+      <span class="terminal-host">blogs.portfolio.local</span>
+      <span>:</span>
+      <span class="terminal-path">~/posts</span>
+      <span>$</span>
+    `;
+  });
+  const commandEls = document.querySelectorAll('.terminal-command');
+  commandEls.forEach(el => {
+    if (el.classList.contains('blink-cursor')) {
+      el.textContent = '';
+    } else {
+      el.innerHTML = `less <span id="blog-filename">${blogId}.md</span>`;
+    }
+  });
+
   console.log(`$ loading blog ${blogId}...`);
   const contentContainer = document.getElementById("blog-content");
   const titleEl = document.getElementById("blog-title");
@@ -660,6 +702,27 @@ async function loadSeriesDetail() {
   const terminalTitle = `ssh ${seriesId}@series.portfolio.local`;
   const terminalTitleEl = document.querySelector('.terminal-title');
   if (terminalTitleEl) terminalTitleEl.textContent = terminalTitle;
+
+  // Update prompt and command lines
+  const promptEls = document.querySelectorAll('.terminal-prompt');
+  promptEls.forEach(el => {
+    el.innerHTML = `
+      <span class="terminal-user">${seriesId}</span>
+      <span>@</span>
+      <span class="terminal-host">series.portfolio.local</span>
+      <span>:</span>
+      <span class="terminal-path">~/series/${seriesId}</span>
+      <span>$</span>
+    `;
+  });
+  const commandEls = document.querySelectorAll('.terminal-command');
+  commandEls.forEach(el => {
+    if (el.classList.contains('blink-cursor')) {
+      el.textContent = '';
+    } else {
+      el.innerHTML = `less <span id="series-filename">${seriesId}.txt</span>`;
+    }
+  });
 
   console.log(`$ loading series ${seriesId}...`);
   const contentContainer = document.getElementById("series-content");
