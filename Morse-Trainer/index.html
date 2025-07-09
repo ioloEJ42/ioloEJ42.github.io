@@ -38,6 +38,22 @@
             </div>
             <div class="settings-body">
                 <div class="setting-group">
+                    <h4>Translation Direction</h4>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="direction" value="en-to-morse" checked>
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">English → Morse</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="direction" value="morse-to-en">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Morse → English</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
                     <h4>Difficulty Mode</h4>
                     <div class="radio-group">
                         <label class="radio-option">
@@ -88,7 +104,6 @@
                         <button id="random-streak-btn" class="button small-button">Random</button>
                     </div>
                     <div class="test-controls">
-                        <button id="next-word-preview-btn" class="button test-button">Next Word Preview</button>
                         <button id="answer-revealer-btn" class="button test-button">Answer Revealer</button>
                     </div>
                     <div class="points-display">
@@ -116,7 +131,7 @@
             
             <div id="practice-section">
                 <div id="word-display">
-                    <h2>Current Word:</h2>
+                    <h2 id="current-label">Current Word:</h2>
                     <div id="current-word">Loading...</div>
                 </div>
                 

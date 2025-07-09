@@ -16,6 +16,8 @@ class MorseTrainer {
         this.difficultyLevel = 'easy'; // 'easy', 'medium', 'hard'
         this.pendingDifficultyMode = 'singular';
         this.pendingDifficultyLevel = 'easy';
+        this.translationDirection = 'en-to-morse'; // 'en-to-morse' or 'morse-to-en'
+        this.pendingTranslationDirection = 'en-to-morse';
         
         // Streak tracking
         this.currentStreak = 0;
@@ -43,7 +45,6 @@ class MorseTrainer {
         this.developerText = '';
         
         // Developer testing features
-        this.nextWordPreviewEnabled = false;
         this.answerRevealerEnabled = false;
         
         // Hide developer section by default
@@ -615,6 +616,14 @@ class MorseTrainer {
             });
         });
         
+        // Translation direction radio buttons
+        const directionRadios = document.querySelectorAll('input[name="direction"]');
+        directionRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.pendingTranslationDirection = e.target.value;
+            });
+        });
+        
         // Test streak functionality (developer mode)
         const testStreakBtn = document.getElementById('test-streak-btn');
         const testStreakInput = document.getElementById('test-streak-input');
@@ -622,7 +631,6 @@ class MorseTrainer {
         const streakIncrement10 = document.getElementById('streak-increment-10');
         const streakIncrement100 = document.getElementById('streak-increment-100');
         const randomStreakBtn = document.getElementById('random-streak-btn');
-        const nextWordPreviewBtn = document.getElementById('next-word-preview-btn');
         const answerRevealerBtn = document.getElementById('answer-revealer-btn');
         
         testStreakBtn.addEventListener('click', () => {
@@ -669,19 +677,6 @@ class MorseTrainer {
             this.saveStreaks();
         });
         
-        // Next Word Preview toggle
-        nextWordPreviewBtn.addEventListener('click', () => {
-            this.nextWordPreviewEnabled = !this.nextWordPreviewEnabled;
-            nextWordPreviewBtn.classList.toggle('active', this.nextWordPreviewEnabled);
-            nextWordPreviewBtn.textContent = this.nextWordPreviewEnabled ? 'Hide Next Word' : 'Next Word Preview';
-            
-            if (this.nextWordPreviewEnabled) {
-                this.showNextWordPreview();
-            } else {
-                this.hideNextWordPreview();
-            }
-        });
-        
         // Answer Revealer toggle
         answerRevealerBtn.addEventListener('click', () => {
             this.answerRevealerEnabled = !this.answerRevealerEnabled;
@@ -703,32 +698,70 @@ class MorseTrainer {
             }
         });
         
-        // Keyboard shortcuts
+        // Keyboard shortcuts and developer mode detection
         document.addEventListener('keydown', (e) => {
-            // Developer mode key sequence detection
-            this.checkDeveloperText(e.key);
-            
+            // Developer mode key sequence detection (global) - only active in English->Morse mode
+            if (this.translationDirection === 'en-to-morse') {
+                this.developerText += e.key.toLowerCase();
+                if (this.developerText.includes('konami')) {
+                    this.developerMode = !this.developerMode;
+                    this.developerText = '';
+                    // Show/hide developer section
+                    const developerSection = document.querySelector('.developer-section');
+                    if (developerSection) {
+                        developerSection.style.display = this.developerMode ? 'block' : 'none';
+                    }
+                    // Show notification for both activation and deactivation
+                    if (this.developerMode) {
+                        this.showDeveloperNotification('Developer Mode Activated');
+                    } else {
+                        this.showDeveloperNotification('Developer Mode Deactivated');
+                    }
+                    // Clean up developer features when deactivating
+                    if (!this.developerMode) {
+                        this.hideAnswerRevealer();
+                        this.answerRevealerEnabled = false;
+                        // Reset button states
+                        const answerRevealerBtn = document.getElementById('answer-revealer-btn');
+                        if (answerRevealerBtn) {
+                            answerRevealerBtn.classList.remove('active');
+                            answerRevealerBtn.textContent = 'Answer Revealer';
+                        }
+                        // Reset test streak input
+                        const testStreakInput = document.getElementById('test-streak-input');
+                        if (testStreakInput) {
+                            testStreakInput.value = '';
+                        }
+                    }
+                    // Visual feedback
+                    document.body.style.border = this.developerMode ? '3px solid #00ff00' : 'none';
+                }
+                // Keep only last 10 characters to prevent memory buildup
+                if (this.developerText.length > 10) {
+                    this.developerText = this.developerText.slice(-10);
+                }
+            } else {
+                // Reset developer text when not in English->Morse mode
+                this.developerText = '';
+            }
             // H key to toggle both sidebars (works even when input is focused)
             if (e.key.toLowerCase() === 'h') {
                 e.preventDefault();
                 this.toggleBothSidebars();
                 return;
             }
-            
             // S key to toggle settings (works even when input is focused)
             if (e.key.toLowerCase() === 's') {
                 e.preventDefault();
                 this.toggleSettings();
                 return;
             }
-            
             // Enter key to save settings when settings is open
             if (e.key === 'Enter' && this.settingsOpen) {
                 e.preventDefault();
                 this.saveSettings();
                 return;
             }
-            
             // Escape key to close sidebars and settings
             if (e.key === 'Escape') {
                 if (this.settingsOpen) {
@@ -737,66 +770,6 @@ class MorseTrainer {
                     this.closeBothSidebars();
                 }
                 return;
-            }
-        });
-        
-        // Developer mode detection
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT') {
-                this.developerText += e.key.toLowerCase();
-                
-                // Check for "konami" (case insensitive)
-                if (this.developerText.includes('konami')) {
-                    this.developerMode = !this.developerMode;
-                    this.developerText = '';
-                    
-                    // Show/hide developer section
-                    const developerSection = document.querySelector('.developer-section');
-                    if (developerSection) {
-                        developerSection.style.display = this.developerMode ? 'block' : 'none';
-                    }
-                    
-                    // Show notification for both activation and deactivation
-                    if (this.developerMode) {
-                        this.showDeveloperNotification('Developer Mode Activated');
-                    } else {
-                        this.showDeveloperNotification('Developer Mode Deactivated');
-                    }
-                    
-                    // Clean up developer features when deactivating
-                    if (!this.developerMode) {
-                        this.hideNextWordPreview();
-                        this.hideAnswerRevealer();
-                        this.nextWordPreviewEnabled = false;
-                        this.answerRevealerEnabled = false;
-                        
-                        // Reset button states
-                        const nextWordPreviewBtn = document.getElementById('next-word-preview-btn');
-                        const answerRevealerBtn = document.getElementById('answer-revealer-btn');
-                        if (nextWordPreviewBtn) {
-                            nextWordPreviewBtn.classList.remove('active');
-                            nextWordPreviewBtn.textContent = 'Next Word Preview';
-                        }
-                        if (answerRevealerBtn) {
-                            answerRevealerBtn.classList.remove('active');
-                            answerRevealerBtn.textContent = 'Answer Revealer';
-                        }
-                        
-                        // Reset test streak input
-                        const testStreakInput = document.getElementById('test-streak-input');
-                        if (testStreakInput) {
-                            testStreakInput.value = '';
-                        }
-                    }
-                    
-                    // Visual feedback
-                    document.body.style.border = this.developerMode ? '3px solid #00ff00' : 'none';
-                }
-                
-                // Keep only last 10 characters to prevent memory buildup
-                if (this.developerText.length > 10) {
-                    this.developerText = this.developerText.slice(-10);
-                }
             }
         });
         
@@ -860,6 +833,7 @@ class MorseTrainer {
         this.settingsOpen = true;
         this.pendingDifficultyMode = this.difficultyMode;
         this.pendingDifficultyLevel = this.difficultyLevel;
+        this.pendingTranslationDirection = this.translationDirection;
         const settingsPopup = document.getElementById('settings-popup');
         settingsPopup.classList.add('open');
         
@@ -873,6 +847,12 @@ class MorseTrainer {
         const currentLevelRadio = document.querySelector(`input[name="level"][value="${this.difficultyLevel}"]`);
         if (currentLevelRadio) {
             currentLevelRadio.checked = true;
+        }
+        
+        // Set the current translation direction in the radio buttons
+        const currentDirectionRadio = document.querySelector(`input[name="direction"][value="${this.translationDirection}"]`);
+        if (currentDirectionRadio) {
+            currentDirectionRadio.checked = true;
         }
         
         // Show/hide developer section based on mode
@@ -893,6 +873,7 @@ class MorseTrainer {
         this.settingsOpen = false;
         this.pendingDifficultyMode = this.difficultyMode;
         this.pendingDifficultyLevel = this.difficultyLevel;
+        this.pendingTranslationDirection = this.translationDirection;
         const settingsPopup = document.getElementById('settings-popup');
         settingsPopup.classList.remove('open');
     }
@@ -901,6 +882,22 @@ class MorseTrainer {
         // Apply the pending settings
         this.difficultyMode = this.pendingDifficultyMode;
         this.difficultyLevel = this.pendingDifficultyLevel;
+        this.translationDirection = this.pendingTranslationDirection;
+        
+        // If switching to Morse->English mode, disable developer mode
+        if (this.translationDirection === 'morse-to-en') {
+            this.developerMode = false;
+            this.developerText = '';
+            this.hideAnswerRevealer();
+            this.answerRevealerEnabled = false;
+            // Reset visual feedback
+            document.body.style.border = 'none';
+            // Hide developer section
+            const developerSection = document.querySelector('.developer-section');
+            if (developerSection) {
+                developerSection.style.display = 'none';
+            }
+        }
         
         // Update points based on new difficulty
         this.updatePoints();
@@ -908,7 +905,7 @@ class MorseTrainer {
         // Close the settings popup
         this.closeSettings();
         
-        // Load a new word with the new settings
+        // Load a new word with the new settings (this will update the label)
         this.loadNewWord();
         
         // Focus back to the input
@@ -957,7 +954,11 @@ class MorseTrainer {
     
     loadNewWord() {
         let wordList;
-        
+        // Update label based on mode
+        const label = document.getElementById('current-label');
+        if (label) {
+            label.textContent = this.difficultyMode === 'singular' ? 'Current Word:' : 'Current Sentence:';
+        }
         if (this.difficultyMode === 'singular') {
             wordList = this.wordsByLevel[this.difficultyLevel];
         } else {
@@ -1030,55 +1031,6 @@ class MorseTrainer {
         } else {
             html.setAttribute('data-theme', 'light');
             themeToggle.textContent = 'Dark';
-        }
-    }
-    
-    showNextWordPreview() {
-        // Get the next word without changing the current one
-        let wordList;
-        if (this.difficultyMode === 'singular') {
-            wordList = this.wordsByLevel[this.difficultyLevel];
-        } else {
-            wordList = this.sentencesByLevel[this.difficultyLevel];
-        }
-        
-        const nextWord = wordList[Math.floor(Math.random() * wordList.length)];
-        const nextMorse = this.wordToMorse(nextWord);
-        
-        // Create or update preview element
-        let previewElement = document.getElementById('next-word-preview');
-        if (!previewElement) {
-            previewElement = document.createElement('div');
-            previewElement.id = 'next-word-preview';
-            previewElement.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 255, 0, 0.9);
-                color: black;
-                padding: 15px 20px;
-                border-radius: 8px;
-                font-family: monospace;
-                font-size: 14px;
-                z-index: 10000;
-                border: 2px solid #00ff00;
-                box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-            `;
-            document.body.appendChild(previewElement);
-        }
-        
-        previewElement.innerHTML = `
-            <div style="font-weight: bold; margin-bottom: 5px;">Next Word Preview:</div>
-            <div style="font-size: 16px; margin-bottom: 5px;">${nextWord}</div>
-            <div style="font-size: 12px; opacity: 0.8;">Morse: ${nextMorse}</div>
-        `;
-    }
-    
-    hideNextWordPreview() {
-        const previewElement = document.getElementById('next-word-preview');
-        if (previewElement) {
-            previewElement.remove();
         }
     }
     
