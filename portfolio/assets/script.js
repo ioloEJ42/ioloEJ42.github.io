@@ -504,6 +504,11 @@ async function loadProjectDetail() {
     return;
   }
 
+  // Set terminal title to ssh style
+  const terminalTitle = `ssh ${projectId}@projects.portfolio.local`;
+  const terminalTitleEl = document.querySelector('.terminal-title');
+  if (terminalTitleEl) terminalTitleEl.textContent = terminalTitle;
+
   console.log(`$ loading project ${projectId}...`);
   const contentContainer = document.getElementById("project-content");
   const projectDirectory = document.getElementById("project-directory");
@@ -594,6 +599,11 @@ async function loadBlogDetail() {
     return;
   }
 
+  // Set terminal title to ssh style
+  const terminalTitle = `ssh ${blogId}@blogs.portfolio.local`;
+  const terminalTitleEl = document.querySelector('.terminal-title');
+  if (terminalTitleEl) terminalTitleEl.textContent = terminalTitle;
+
   console.log(`$ loading blog ${blogId}...`);
   const contentContainer = document.getElementById("blog-content");
   const titleEl = document.getElementById("blog-title");
@@ -645,6 +655,11 @@ async function loadSeriesDetail() {
     window.location.href = "series.html";
     return;
   }
+
+  // Set terminal title to ssh style
+  const terminalTitle = `ssh ${seriesId}@series.portfolio.local`;
+  const terminalTitleEl = document.querySelector('.terminal-title');
+  if (terminalTitleEl) terminalTitleEl.textContent = terminalTitle;
 
   console.log(`$ loading series ${seriesId}...`);
   const contentContainer = document.getElementById("series-content");
