@@ -48,6 +48,14 @@
       "date": "2024-05-01",
       "description": "A comprehensive educational platform exploring seven steganography techniques with LSB implementation, a recommendation system, and quality assessment tools.",
       "tags": ["Python", "React", "Tailwind CSS", "Steganography", "Cybersecurity", "Educational"]
+    },
+    {
+      "id": "morse-trainer",
+      "title": "Morse Code Trainer",
+      "date": "2024-06-01",
+      "description": "A web-based Morse code training app with bidirectional translation, difficulty levels, streak tracking, and developer mode.",
+      "tags": ["JavaScript", "HTML", "CSS", "Learning", "Gamified", "Frontend"],
+      "thumbnail": "morse-thumb.png"
     }
   ]
 } 

@@ -1,54 +1,54 @@
-# Terminal Portfolio
+# Personal Development Hub
 
-A terminal-themed portfolio website with a custom browser dashboard. This project features a minimal, ultra-fast loading experience styled to look like a traditional Linux terminal.
+A comprehensive collection of web-based tools, games, and projects. This repository serves as a central hub for various interactive applications and utilities, all built with vanilla web technologies for maximum performance and portability.
 
-## Features
+## Projects
 
 ### Dashboard
+- **Location**: `index.html` (root)
+- **Purpose**: Custom browser homepage/new tab replacement
+- **Features**: Search functionality with multiple engines, categorized quick links, terminal-themed interface
+- **Usage**: Configure with New Tab Override extension in Firefox
 
-- Custom browser homepage/new tab replacement
-- Search functionality with multiple engine options
-- Categorized links
-- Dark theme with grid background
+### Portfolio
+- **Location**: `/Portfolio/`
+- **Purpose**: Terminal-themed personal portfolio website
+- **Features**: Interactive terminal interface, project showcase, blog system, contact form
+- **Technology**: JSON-based content management, simulated SSH sessions
 
-### Terminal Portfolio
+### D&D Character Sheet
+- **Location**: `/DND/`
+- **Purpose**: Interactive digital character sheet for Dungeons & Dragons
+- **Features**: Character creation, stat tracking, spell management, rich text notes, multiple themes
+- **Technology**: Local storage, file import/export, responsive design
 
-- Interactive terminal interface
-- Simulated SSH sessions
-- Real terminal commands and responses
-- Blog and project display as terminal output
-- Contact form styled as shell script input
+### Morse Code Trainer
+- **Location**: `/Morse-Trainer/`
+- **Purpose**: Interactive Morse code learning application
+- **Features**: Bidirectional translation (English ↔ Morse), difficulty levels, streak tracking, visual effects
+- **Technology**: Progressive difficulty, developer mode, localStorage persistence
 
-### Technical Details
+### Hexathon
+- **Location**: `/Hexathon/`
+- **Purpose**: Hex color guessing game
+- **Features**: Daily challenges, random mode, educational content about hex colors
+- **Technology**: Wordle-style feedback system, color theory education
 
-- Built with vanilla HTML, CSS, and JavaScript
-- No frameworks or build tools
-- JSON-based content management
-- Optimized for near-zero loading times
-- JetBrains Mono font for authentic terminal look
-- Responsive design for all device sizes
+## Technical Stack
 
-## Structure
-
-- `index.html` - Custom browser dashboard
-- `/Portfolio/` - Terminal-themed portfolio website
-  - `index.html` - Portfolio homepage
-  - `projects.html` - Projects listing as terminal output
-  - `blogs.html` - Blog posts as terminal output
-  - `project.html` - Project detail with README.md simulation
-  - `blog.html` - Blog post detail with less command simulation
-  - `contact.html` - Contact form as shell script
-  - `/data/` - JSON data files for content
+- **Frontend**: Vanilla HTML, CSS, JavaScript
+- **Build Tools**: None - direct deployment ready
+- **Fonts**: JetBrains Mono, Inter, MedievalSharp
+- **Storage**: localStorage, JSON files
+- **Deployment**: GitHub Pages compatible
 
 ## Development
 
 ### Prerequisites
-
-- A web server for local development (to avoid CORS issues)
+- Web server for local development (to avoid CORS issues)
 - Basic knowledge of HTML, CSS, and JavaScript
 
-### Setting Up Local Development
-
+### Local Setup
 ```bash
 # Using Python's built-in HTTP server
 python -m http.server
@@ -57,26 +57,34 @@ python -m http.server
 npx http-server
 ```
 
-### Editing Content
-
-1. Update JSON files in the `/Portfolio/data/` directory to modify your content
-2. The portfolio automatically loads content from these JSON files
-3. Add new projects and blog posts by creating new JSON files
+### Project Structure
+```
+/
+├── index.html              # Main dashboard
+├── Searchpage/             # Dashboard assets
+├── Portfolio/              # Terminal portfolio
+├── DND/                    # D&D character sheet
+├── Morse-Trainer/          # Morse code trainer
+├── Hexathon/               # Hex color game
+└── README.md
+```
 
 ## Deployment
 
-This site is designed to be deployed to GitHub Pages:
+All projects are designed for GitHub Pages deployment:
 
-1. Push the repository to GitHub
-2. Go to repository Settings > Pages
-3. Select the branch you want to deploy from (usually `main`)
-4. Your site will be available at `https://[username].github.io/[repository]`
+1. Push repository to GitHub
+2. Enable Pages in repository settings
+3. Select deployment branch (usually `main`)
+4. Access at `https://github.com/ioloEJ42/ioloEJ42.github.io`
 
 ## Customization
 
-- Edit the JSON files to update content
-- Modify CSS variables in `Portfolio/styles.css` to change the terminal colors
-- Update terminal command simulations in components.js
+- **Dashboard**: Modify links and search engines in `index.html`
+- **Portfolio**: Update JSON files in `/Portfolio/data/`
+- **D&D Sheet**: Add custom themes in `/DND/styles.css`
+- **Morse Trainer**: Extend word lists in `/Morse-Trainer/data.js`
+- **Hexathon**: Customize color palettes in `/Hexathon/script.js`
 
 ## License
 

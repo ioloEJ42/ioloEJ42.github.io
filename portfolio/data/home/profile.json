@@ -1,15 +1,5 @@
 {
   "name": "Iolo Evans Jones",
   "title": "Cybersecurity Specialist & Developer",
-  "bio": "<p>I'm a cybersecurity specialist with a strong programming background, currently pursuing a master's degree in Cybersecurity With Technology (NCSC accredited) at Cardiff University. My work combines security principles with efficient development practices.</p><br><p>Having achieved a 1st class honors in Computer Science, I'm now focused on SOC analysis, security automation, and penetration testing. I'm actively developing my skills on TryHackMe (top 10%) while creating tools that enhance digital security.</p>",
-  "skills": [
-    "Python",
-    "JavaScript/TypeScript",
-    "React",
-    "Tailwind CSS",
-    "Bash Scripting",
-    "Security Analysis",
-    "Digital Forensics",
-    "Network Security"
-  ]
+  "bio": "<p>I'm a cybersecurity specialist with a strong programming background, currently pursuing a master's degree in Cybersecurity With Technology (NCSC accredited) at Cardiff University. My work combines security principles with efficient development practices.</p><br><p>Having achieved a 1st class honors in Computer Science, I'm now focused on SOC analysis, security automation, and penetration testing. I'm actively developing my skills on TryHackMe (top 10%) while creating tools that enhance digital security.</p>"
 } 

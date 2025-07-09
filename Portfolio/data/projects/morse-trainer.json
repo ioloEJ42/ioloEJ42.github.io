@@ -1,0 +1,10 @@
+{
+  "id": "morse-trainer",
+  "title": "Morse Code Trainer",
+  "description": "A web-based Morse code training app with bidirectional translation, difficulty levels, streak tracking, and developer mode.",
+  "date": "2024-06-01",
+  "tags": ["JavaScript", "HTML", "CSS", "Learning", "Gamified", "Frontend"],
+  "github": "https://github.com/ioloEJ42/ioloEJ42.github.io/tree/main/Morse-Trainer",
+  "live": "/Morse-Trainer/index.html",
+  "content": "<h2>Project Overview</h2><p>Morse Code Trainer is a web application designed to help users learn and practice Morse code in a fun, interactive way. It supports both English→Morse and Morse→English translation, with multiple difficulty levels, streak and points tracking, and a hidden developer mode for advanced users and testing.</p><h2>Key Features</h2><ul><li><strong>Bidirectional Translation:</strong> Practice both English→Morse and Morse→English</li><li><strong>Difficulty Modes:</strong> Choose between word or sentence practice, and select easy, medium, or hard levels</li><li><strong>Streak & Points System:</strong> Track your progress with streaks, points, and visual effects for high scores</li><li><strong>Developer Mode:</strong> Unlock advanced testing tools and answer revealers with a secret code</li><li><strong>Accessible & Responsive:</strong> Works on all devices, keyboard-friendly, and visually clear</li></ul><h2>Technical Implementation</h2><ul><li><strong>HTML5 & CSS3:</strong> Custom UI, responsive design, and terminal-inspired effects</li><li><strong>Vanilla JavaScript:</strong> All logic, state, and effects implemented without frameworks</li><li><strong>LocalStorage:</strong> Persistent streaks and points across sessions</li></ul><h2>How It Works</h2><ul><li>Choose your translation direction and difficulty in the settings</li><li>Type your answer and press space to submit</li><li>Hints and Morse code charts are available for reference</li><li>Unlock developer mode for streak testing and answer reveal</li></ul>"
+} 
