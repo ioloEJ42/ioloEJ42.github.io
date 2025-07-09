@@ -1,140 +1,11 @@
 // Morse Code Trainer
 class MorseTrainer {
     constructor() {
-        this.morseCode = {
-            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
-            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
-            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
-            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
-            'Y': '-.--', 'Z': '--..'
-        };
-        
-        this.morseNumbers = {
-            '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
-            '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'
-        };
-        
-        // Organize words by difficulty level
-        this.wordsByLevel = {
-            easy: [
-                'HELLO', 'WORLD', 'MORSE', 'CODE', 'DOT', 'DASH', 'SOS', 'HELP',
-                'SAVE', 'LIFE', 'STOP', 'GO', 'YES', 'NO', 'OKAY', 'FINE', 'GOOD',
-                'BAD', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'FIRE', 'WATER', 'EARTH',
-                'AIR', 'SUN', 'MOON', 'STAR', 'SKY', 'SEA', 'LAND', 'TREE', 'BIRD',
-                'FISH', 'DOG', 'CAT', 'HORSE', 'COW', 'SHEEP', 'BOOK', 'PEN', 'MAP',
-                'KEY', 'DOOR', 'WIND', 'RAIN', 'SNOW', 'HOT', 'COLD', 'WARM', 'COOL'
-            ],
-            medium: [
-                'TRAINER', 'SIGNAL', 'MESSAGE', 'RADIO', 'TELEGRAPH', 'EMERGENCY',
-                'RESCUE', 'DANGER', 'WARNING', 'NORTH', 'SOUTH', 'EAST', 'WEST',
-                'FLOWER', 'BEAUTY', 'STRONG', 'WEAK', 'QUICK', 'SLOW', 'BIG', 'SMALL',
-                'HAPPY', 'SAD', 'ANGRY', 'CALM', 'LOUD', 'QUIET', 'BRIGHT', 'DARK',
-                'LIGHT', 'HEAVY', 'FAST', 'SLOW', 'NEW', 'OLD', 'YOUNG', 'RICH',
-                'POOR', 'HIGH', 'LOW', 'NEAR', 'FAR', 'OPEN', 'CLOSE', 'START',
-                'FINISH', 'BEGIN', 'END', 'FIRST', 'LAST', 'BEST', 'WORST'
-            ],
-            hard: [
-                'COMMUNICATION', 'EMERGENCY', 'SITUATION', 'DEPARTMENT', 'ACCOMMODATIONS',
-                'CONSTRUCTION', 'IMMEDIATELY', 'ASSISTANCE', 'REQUIRED', 'BUILDING',
-                'HOSPITAL', 'RESTAURANT', 'STATION', 'NEARBY', 'AVAILABLE',
-                'DIFFICULT', 'IMPORTANT', 'NECESSARY', 'POSSIBLE', 'DIFFERENT',
-                'BEAUTIFUL', 'WONDERFUL', 'EXCELLENT', 'FANTASTIC', 'AMAZING',
-                'INCREDIBLE', 'WONDERFUL', 'SPECTACULAR', 'MAGNIFICENT', 'EXTRAORDINARY',
-                'REMARKABLE', 'OUTSTANDING', 'SUPERIOR', 'EXCEPTIONAL', 'PHENOMENAL',
-                'TREMENDOUS', 'ENORMOUS', 'GIGANTIC', 'COLOSSAL', 'MASSIVE',
-                'IMMENSE', 'VAST', 'HUGE', 'TREMENDOUS', 'FANTASTIC', 'INCREDIBLE'
-            ]
-        };
-        
-        // Organize sentences by difficulty level
-        this.sentencesByLevel = {
-            easy: [
-                'HELLO WORLD',
-                'GOOD MORNING',
-                'GOOD NIGHT',
-                'THANK YOU',
-                'PLEASE HELP',
-                'SAVE THE DAY',
-                'CALL FOR HELP',
-                'STOP NOW',
-                'GO AHEAD',
-                'YES PLEASE',
-                'NO THANKS',
-                'OKAY FINE',
-                'UP THERE',
-                'DOWN HERE',
-                'LEFT SIDE',
-                'RIGHT NOW',
-                'FIRE ALARM',
-                'WATER NEEDED',
-                'SUN IS HOT',
-                'MOON IS BRIGHT',
-                'STAR LIGHT',
-                'SKY IS BLUE',
-                'SEA IS DEEP',
-                'LAND IS GREEN',
-                'TREE IS TALL',
-                'BIRD CAN FLY',
-                'FISH CAN SWIM',
-                'DOG IS LOYAL',
-                'CAT IS CLEAN',
-                'HORSE IS FAST'
-            ],
-            medium: [
-                'MORSE CODE TRAINER',
-                'SOS EMERGENCY CALL',
-                'HELP NEEDED NOW',
-                'SAVE THE DAY',
-                'YOU ARE WELCOME',
-                'PLEASE HELP ME',
-                'I NEED ASSISTANCE',
-                'EMERGENCY SITUATION',
-                'FIRE IN BUILDING',
-                'MEDICAL EMERGENCY',
-                'POLICE NEEDED NOW',
-                'AMBULANCE REQUIRED',
-                'FIRE DEPARTMENT CALL',
-                'RESCUE TEAM NEEDED',
-                'DANGER AHEAD STOP',
-                'STOP IMMEDIATELY',
-                'PROCEED WITH CAUTION',
-                'ROAD CLOSED AHEAD',
-                'CONSTRUCTION ZONE',
-                'SCHOOL ZONE SLOW',
-                'HOSPITAL AHEAD',
-                'GAS STATION NEARBY',
-                'RESTAURANT OPEN NOW',
-                'HOTEL ACCOMMODATIONS',
-                'PARKING AVAILABLE',
-                'NO PARKING ZONE',
-                'KEEP OUT AREA',
-                'PRIVATE PROPERTY',
-                'ENTRANCE ONLY',
-                'EXIT THIS WAY'
-            ],
-            hard: [
-                'EMERGENCY MEDICAL ASSISTANCE REQUIRED IMMEDIATELY',
-                'FIRE DEPARTMENT RESPONSE NEEDED URGENTLY',
-                'POLICE OFFICER BACKUP REQUESTED IMMEDIATELY',
-                'AMBULANCE DISPATCH REQUIRED FOR MEDICAL EMERGENCY',
-                'RESCUE TEAM DEPLOYMENT NECESSARY FOR CRITICAL SITUATION',
-                'CONSTRUCTION ZONE AHEAD PROCEED WITH EXTREME CAUTION',
-                'HOSPITAL EMERGENCY ROOM ACCESS AVAILABLE IMMEDIATELY',
-                'RESTAURANT ACCOMMODATIONS AVAILABLE FOR LARGE GROUPS',
-                'HOTEL RESERVATION CONFIRMATION REQUIRED IMMEDIATELY',
-                'PARKING FACILITIES ACCESS RESTRICTED TO AUTHORIZED PERSONNEL',
-                'PRIVATE PROPERTY ENTRANCE FORBIDDEN WITHOUT PERMISSION',
-                'SCHOOL ZONE SPEED LIMIT ENFORCED DURING OPERATING HOURS',
-                'GAS STATION FACILITIES AVAILABLE FOR PUBLIC USE',
-                'EMERGENCY EXIT ROUTE CLEARANCE REQUIRED IMMEDIATELY',
-                'SECURITY ALARM SYSTEM ACTIVATION IN PROGRESS',
-                'WEATHER WARNING SYSTEM ALERT FOR SEVERE CONDITIONS',
-                'TRAFFIC CONTROL SYSTEM MALFUNCTION DETECTED',
-                'ELECTRICAL POWER SYSTEM RESTORATION IN PROGRESS',
-                'WATER SUPPLY SYSTEM MAINTENANCE SCHEDULED',
-                'COMMUNICATION NETWORK ACCESS RESTRICTED TEMPORARILY'
-            ]
-        };
+        // Use data from external data.js file
+        this.morseCode = MORSE_DATA.morseCode;
+        this.morseNumbers = MORSE_DATA.morseNumbers;
+        this.wordsByLevel = MORSE_DATA.wordsByLevel;
+        this.sentencesByLevel = MORSE_DATA.sentencesByLevel;
         
         this.currentWord = '';
         this.currentMorse = '';
@@ -150,9 +21,36 @@ class MorseTrainer {
         this.currentStreak = 0;
         this.bestStreak = 0;
         
-        // Developer mode
+        // Points system (invisible, used for effects)
+        this.currentPoints = 0;
+        this.bestPoints = 0;
+        
+        // Difficulty multipliers
+        this.difficultyMultipliers = {
+            easy: 0.2,
+            medium: 0.5,
+            hard: 1.0
+        };
+        
+        // Mode multipliers
+        this.modeMultipliers = {
+            singular: 0.5,
+            sentence: 1.0
+        };
+        
+        // Initialize developer mode
         this.developerMode = false;
         this.developerText = '';
+        
+        // Developer testing features
+        this.nextWordPreviewEnabled = false;
+        this.answerRevealerEnabled = false;
+        
+        // Hide developer section by default
+        const developerSection = document.querySelector('.developer-section');
+        if (developerSection) {
+            developerSection.style.display = 'none';
+        }
         
         this.init();
     }
@@ -170,59 +68,10 @@ class MorseTrainer {
         this.developerMode = false;
     }
     
-    checkDeveloperText(key) {
-        // Add the key to the text
-        this.developerText += key;
-        
-        // Keep only the last 10 characters
-        if (this.developerText.length > 10) {
-            this.developerText = this.developerText.slice(-10);
-        }
-        
-        // Debug: log the current text
-        console.log('Key pressed:', key);
-        console.log('Current text:', this.developerText);
-        
-        // Check if the text contains "konami"
-        if (this.developerText.includes('konami')) {
-            console.log('Developer mode detected!');
-            
-            if (!this.developerMode) {
-                console.log('Activating developer mode!');
-                this.activateDeveloperMode();
-            }
-            
-            // Clear the text after activation
-            this.developerText = '';
-        }
-    }
-    
-    activateDeveloperMode() {
-        this.developerMode = true;
-        this.showDeveloperMode();
-        
-        // Show a subtle notification
-        this.showDeveloperNotification();
-    }
-    
-    showDeveloperMode() {
-        const testSection = document.querySelector('.setting-group:last-child');
-        if (testSection) {
-            testSection.style.display = 'block';
-        }
-    }
-    
-    hideDeveloperMode() {
-        const testSection = document.querySelector('.setting-group:last-child');
-        if (testSection) {
-            testSection.style.display = 'none';
-        }
-    }
-    
-    showDeveloperNotification() {
+    showDeveloperNotification(message) {
         // Create a subtle notification
         const notification = document.createElement('div');
-        notification.textContent = 'Developer Mode Activated';
+        notification.textContent = message;
         notification.style.cssText = `
             position: fixed;
             top: 20px;
@@ -251,6 +100,8 @@ class MorseTrainer {
         // Load streaks from localStorage
         const savedCurrentStreak = localStorage.getItem('morseTrainerCurrentStreak');
         const savedBestStreak = localStorage.getItem('morseTrainerBestStreak');
+        const savedCurrentPoints = localStorage.getItem('morseTrainerCurrentPoints');
+        const savedBestPoints = localStorage.getItem('morseTrainerBestPoints');
         
         if (savedCurrentStreak !== null) {
             this.currentStreak = parseInt(savedCurrentStreak);
@@ -259,17 +110,46 @@ class MorseTrainer {
         if (savedBestStreak !== null) {
             this.bestStreak = parseInt(savedBestStreak);
         }
+        
+        if (savedCurrentPoints !== null) {
+            this.currentPoints = parseFloat(savedCurrentPoints);
+        } else {
+            this.currentPoints = this.calculatePoints(this.currentStreak);
+        }
+        
+        if (savedBestPoints !== null) {
+            this.bestPoints = parseFloat(savedBestPoints);
+        } else {
+            this.bestPoints = this.calculatePoints(this.bestStreak);
+        }
     }
     
     saveStreaks() {
         // Save streaks to localStorage
         localStorage.setItem('morseTrainerCurrentStreak', this.currentStreak.toString());
         localStorage.setItem('morseTrainerBestStreak', this.bestStreak.toString());
+        localStorage.setItem('morseTrainerCurrentPoints', this.currentPoints.toString());
+        localStorage.setItem('morseTrainerBestPoints', this.bestPoints.toString());
+    }
+    
+    calculatePoints(streak) {
+        const difficultyMultiplier = this.difficultyMultipliers[this.difficultyLevel];
+        const modeMultiplier = this.modeMultipliers[this.difficultyMode];
+        return streak * difficultyMultiplier * modeMultiplier;
+    }
+    
+    updatePoints() {
+        this.currentPoints = this.calculatePoints(this.currentStreak);
+        this.bestPoints = Math.max(this.bestPoints, this.currentPoints);
     }
     
     updateStreakDisplay() {
         const currentStreakElement = document.getElementById('current-streak');
         const bestStreakElement = document.getElementById('best-streak');
+        const currentPointsElement = document.getElementById('current-points-display');
+        const bestPointsElement = document.getElementById('best-points-display');
+        const currentPointsIndicator = document.getElementById('current-points-indicator');
+        const bestPointsIndicator = document.getElementById('best-points-indicator');
         
         if (currentStreakElement) {
             currentStreakElement.textContent = this.currentStreak;
@@ -280,13 +160,34 @@ class MorseTrainer {
             bestStreakElement.textContent = this.bestStreak;
             this.applyStreakStyling(bestStreakElement, this.bestStreak);
         }
+        
+        // Update points display in developer mode
+        if (currentPointsElement) {
+            currentPointsElement.textContent = this.currentPoints.toFixed(1);
+        }
+        
+        if (bestPointsElement) {
+            bestPointsElement.textContent = this.bestPoints.toFixed(1);
+        }
+        
+        // Update points indicators in main display
+        if (currentPointsIndicator) {
+            currentPointsIndicator.textContent = this.currentPoints.toFixed(1);
+        }
+        
+        if (bestPointsIndicator) {
+            bestPointsIndicator.textContent = this.bestPoints.toFixed(1);
+        }
     }
     
     applyStreakStyling(element, streakValue) {
         // Remove all existing streak and lap classes
         element.className = element.className.replace(/streak-\d+/g, '').replace(/lap-\d+/g, '').trim();
         
-        if (streakValue === 0) {
+        // Calculate points for effects
+        const points = this.calculatePoints(streakValue);
+        
+        if (points === 0) {
             element.classList.add('streak-0');
             this.removeDynamicEffects(element);
             return;
@@ -294,8 +195,8 @@ class MorseTrainer {
         
         // Calculate which cycle (lap) we're in and the position within that cycle
         const cycleLength = 30; // Complete color cycle
-        const cycle = Math.floor((streakValue - 1) / cycleLength);
-        const positionInCycle = ((streakValue - 1) % cycleLength);
+        const cycle = Math.floor((points - 1) / cycleLength);
+        const positionInCycle = ((points - 1) % cycleLength);
         
         // Apply the appropriate streak color class
         element.classList.add(`streak-${positionInCycle}`);
@@ -306,82 +207,82 @@ class MorseTrainer {
             element.classList.add(`lap-${lapNumber}`);
         }
         
-        // Apply dynamic effects based on streak value
-        this.applyDynamicEffects(element, streakValue);
+        // Apply dynamic effects based on points value
+        this.applyDynamicEffects(element, points);
     }
     
-    applyDynamicEffects(element, streakValue) {
+    applyDynamicEffects(element, pointsValue) {
         // Remove any existing dynamic effects
         this.removeDynamicEffects(element);
         
-        // Base effects that scale with streak
-        const effects = this.calculateEffects(streakValue);
+        // Base effects that scale with points
+        const effects = this.calculateEffects(pointsValue);
         
         // Apply the calculated effects
         Object.keys(effects).forEach(property => {
             element.style[property] = effects[property];
         });
         
-        // Add special effects for milestone streaks
-        this.addMilestoneEffects(element, streakValue);
+        // Add special effects for milestone points
+        this.addMilestoneEffects(element, pointsValue);
     }
     
-    calculateEffects(streakValue) {
+    calculateEffects(pointsValue) {
         const effects = {};
         
-        // Scale effects based on streak value
-        const scale = Math.min(streakValue / 50, 3); // Cap at 3x scale
-        const glowIntensity = Math.min(streakValue / 20, 5); // Cap at 5px glow
-        const rotationSpeed = Math.min(streakValue / 10, 2); // Cap at 2s rotation
+        // Scale effects based on points value
+        const scale = Math.min(pointsValue / 50, 3); // Cap at 3x scale
+        const glowIntensity = Math.min(pointsValue / 20, 5); // Cap at 5px glow
+        const rotationSpeed = Math.min(pointsValue / 10, 2); // Cap at 2s rotation
         
         // Text shadow (glow effect)
-        if (streakValue > 0) {
-            const color = this.getStreakColor(streakValue);
+        if (pointsValue > 0) {
+            const color = this.getStreakColor(pointsValue);
             effects.textShadow = `0 0 ${glowIntensity}px ${color}, 0 0 ${glowIntensity * 2}px ${color}`;
         }
         
-        // Scale effect for high streaks
-        if (streakValue > 20) {
+        // Scale effect for high points
+        if (pointsValue > 20) {
             effects.transform = `scale(${1 + (scale - 1) * 0.1})`;
         }
         
-        // Rotation effect for very high streaks
-        if (streakValue > 50) {
+        // Rotation effect for very high points
+        if (pointsValue > 50) {
             effects.animation = `streakRotate ${rotationSpeed}s linear infinite`;
         }
         
-        // Pulse effect for extremely high streaks
-        if (streakValue > 100) {
+        // Pulse effect for extremely high points
+        if (pointsValue > 100) {
             effects.animation = `streakRotate ${rotationSpeed}s linear infinite, streakPulse ${2 / scale}s ease-in-out infinite`;
         }
         
-        // Rainbow trail effect for legendary streaks
-        if (streakValue > 200) {
+        // Rainbow trail effect for legendary points
+        if (pointsValue > 200) {
             effects.animation += ', rainbowTrail 1s linear infinite';
         }
         
-        // Matrix-style glitch effect for god-tier streaks
-        if (streakValue > 500) {
+        // Matrix-style glitch effect for god-tier points
+        if (pointsValue > 500) {
             effects.animation += ', matrixGlitch 0.5s ease-in-out infinite';
         }
         
-        // Reality-bending effects for mythical streaks
-        if (streakValue > 750) {
+        // Reality-bending effects for mythical points
+        if (pointsValue > 750) {
             effects.animation += ', realityBend 3s ease-in-out infinite';
         }
         
-        // Universe-shattering effects for streak 1000
-        if (streakValue >= 1000) {
+        // Universe-shattering effects for points 1000
+        if (pointsValue >= 1000) {
             effects.animation = 'universeShatter 1s ease-in-out infinite';
         }
         
         return effects;
     }
     
-    getStreakColor(streakValue) {
+    getStreakColor(pointsValue) {
         // Calculate color based on position in cycle
         const cycleLength = 30;
-        const positionInCycle = ((streakValue - 1) % cycleLength);
+        const positionInCycle = ((pointsValue - 1) % cycleLength);
         
         // Color wheel - 30 colors from red through the spectrum back to red
         const colors = [
@@ -395,69 +296,69 @@ class MorseTrainer {
         return colors[positionInCycle] || '#ff0000';
     }
     
-    addMilestoneEffects(element, streakValue) {
-        // Special effects for milestone streaks
-        if (streakValue >= 50) {
+    addMilestoneEffects(element, pointsValue) {
+        // Special effects for milestone points
+        if (pointsValue >= 50) {
             element.style.border = '2px solid currentColor';
             element.style.borderRadius = '8px';
             element.style.padding = '4px 8px';
         }
         
-        if (streakValue >= 100) {
+        if (pointsValue >= 100) {
             element.style.boxShadow = '0 0 20px currentColor, inset 0 0 10px currentColor';
         }
         
-        if (streakValue >= 150) {
+        if (pointsValue >= 150) {
             element.style.background = 'linear-gradient(45deg, currentColor, transparent)';
             element.style.backgroundSize = '200% 200%';
             element.style.animation += ', gradientShift 3s ease-in-out infinite';
         }
         
-        if (streakValue >= 200) {
+        if (pointsValue >= 200) {
             element.style.textShadow += ', 0 0 30px white, 0 0 40px white';
             element.style.fontWeight = '900';
         }
         
         // Epic milestone effects
-        if (streakValue >= 300) {
-            this.addParticleEffect(element, streakValue);
+        if (pointsValue >= 300) {
+            this.addParticleEffect(element, pointsValue);
         }
         
-        if (streakValue >= 400) {
+        if (pointsValue >= 400) {
             element.style.filter = 'hue-rotate(180deg) brightness(1.5)';
             element.style.animation += ', epicPulse 0.3s ease-in-out infinite';
         }
         
-        if (streakValue >= 500) {
-            this.addScreenShake(streakValue);
+        if (pointsValue >= 500) {
+            this.addScreenShake(pointsValue);
             element.style.textShadow += ', 0 0 50px gold, 0 0 100px gold';
         }
         
-        if (streakValue >= 600) {
+        if (pointsValue >= 600) {
             element.style.background = 'radial-gradient(circle, currentColor, transparent, currentColor)';
             element.style.backgroundSize = '300% 300%';
             element.style.animation += ', epicRadial 2s ease-in-out infinite';
         }
         
-        if (streakValue >= 700) {
+        if (pointsValue >= 700) {
             this.addLightningEffect(element);
         }
         
-        if (streakValue >= 800) {
+        if (pointsValue >= 800) {
             element.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
             element.style.animation += ', shapeShift 1s ease-in-out infinite';
         }
         
-        if (streakValue >= 900) {
+        if (pointsValue >= 900) {
             this.addTimeWarpEffect(element);
         }
         
-        if (streakValue >= 1000) {
+        if (pointsValue >= 1000) {
             this.addUniverseEffect(element);
         }
     }
     
-    addParticleEffect(element, streakValue) {
+    addParticleEffect(element, pointsValue) {
         // Create particle container if it doesn't exist
         let particleContainer = document.getElementById('particle-container');
         if (!particleContainer) {
@@ -476,7 +377,7 @@ class MorseTrainer {
         }
         
         // Create particles
-        const particleCount = Math.min(streakValue / 10, 50);
+        const particleCount = Math.min(pointsValue / 10, 50);
         for (let i = 0; i < particleCount; i++) {
             this.createParticle(particleContainer, element);
         }
@@ -509,8 +410,8 @@ class MorseTrainer {
         }, 2000);
     }
     
-    addScreenShake(streakValue) {
-        const intensity = Math.min(streakValue / 100, 10);
+    addScreenShake(pointsValue) {
+        const intensity = Math.min(pointsValue / 100, 10);
         const shakeDuration = 500;
         
         document.body.style.animation = `screenShake ${shakeDuration}ms ease-in-out`;
@@ -609,6 +510,9 @@ class MorseTrainer {
             this.bestStreak = this.currentStreak;
         }
         
+        // Update points
+        this.updatePoints();
+        
         this.saveStreaks();
         this.updateStreakDisplay();
         this.highlightStreak();
@@ -616,6 +520,7 @@ class MorseTrainer {
     
     resetStreak() {
         this.currentStreak = 0;
+        this.updatePoints();
         this.saveStreaks();
         this.updateStreakDisplay();
     }
@@ -710,16 +615,83 @@ class MorseTrainer {
             });
         });
         
-        // Test streak functionality (temporary)
+        // Test streak functionality (developer mode)
         const testStreakBtn = document.getElementById('test-streak-btn');
         const testStreakInput = document.getElementById('test-streak-input');
+        const streakIncrement1 = document.getElementById('streak-increment-1');
+        const streakIncrement10 = document.getElementById('streak-increment-10');
+        const streakIncrement100 = document.getElementById('streak-increment-100');
+        const randomStreakBtn = document.getElementById('random-streak-btn');
+        const nextWordPreviewBtn = document.getElementById('next-word-preview-btn');
+        const answerRevealerBtn = document.getElementById('answer-revealer-btn');
         
         testStreakBtn.addEventListener('click', () => {
             const testValue = parseInt(testStreakInput.value);
-            if (!isNaN(testValue) && testValue >= 0) {
+            if (!isNaN(testValue) && testValue >= 0 && testValue <= 1000) {
                 this.currentStreak = testValue;
+                this.updatePoints();
                 this.updateStreakDisplay();
                 this.saveStreaks();
+            }
+        });
+        
+        // Streak increment buttons
+        streakIncrement1.addEventListener('click', () => {
+            this.currentStreak = Math.min(this.currentStreak + 1, 1000);
+            testStreakInput.value = this.currentStreak;
+            this.updatePoints();
+            this.updateStreakDisplay();
+            this.saveStreaks();
+        });
+        
+        streakIncrement10.addEventListener('click', () => {
+            this.currentStreak = Math.min(this.currentStreak + 10, 1000);
+            testStreakInput.value = this.currentStreak;
+            this.updatePoints();
+            this.updateStreakDisplay();
+            this.saveStreaks();
+        });
+        
+        streakIncrement100.addEventListener('click', () => {
+            this.currentStreak = Math.min(this.currentStreak + 100, 1000);
+            testStreakInput.value = this.currentStreak;
+            this.updateStreakDisplay();
+            this.saveStreaks();
+        });
+        
+        // Random streak generator
+        randomStreakBtn.addEventListener('click', () => {
+            const randomStreak = Math.floor(Math.random() * 1001); // 0-1000
+            this.currentStreak = randomStreak;
+            testStreakInput.value = this.currentStreak;
+            this.updatePoints();
+            this.updateStreakDisplay();
+            this.saveStreaks();
+        });
+        
+        // Next Word Preview toggle
+        nextWordPreviewBtn.addEventListener('click', () => {
+            this.nextWordPreviewEnabled = !this.nextWordPreviewEnabled;
+            nextWordPreviewBtn.classList.toggle('active', this.nextWordPreviewEnabled);
+            nextWordPreviewBtn.textContent = this.nextWordPreviewEnabled ? 'Hide Next Word' : 'Next Word Preview';
+            
+            if (this.nextWordPreviewEnabled) {
+                this.showNextWordPreview();
+            } else {
+                this.hideNextWordPreview();
+            }
+        });
+        
+        // Answer Revealer toggle
+        answerRevealerBtn.addEventListener('click', () => {
+            this.answerRevealerEnabled = !this.answerRevealerEnabled;
+            answerRevealerBtn.classList.toggle('active', this.answerRevealerEnabled);
+            answerRevealerBtn.textContent = this.answerRevealerEnabled ? 'Hide Answer' : 'Answer Revealer';
+            
+            if (this.answerRevealerEnabled) {
+                this.showAnswerRevealer();
+            } else {
+                this.hideAnswerRevealer();
             }
         });
         
@@ -765,6 +737,66 @@ class MorseTrainer {
                     this.closeBothSidebars();
                 }
                 return;
+            }
+        });
+        
+        // Developer mode detection
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') {
+                this.developerText += e.key.toLowerCase();
+                
+                // Check for "konami" (case insensitive)
+                if (this.developerText.includes('konami')) {
+                    this.developerMode = !this.developerMode;
+                    this.developerText = '';
+                    
+                    // Show/hide developer section
+                    const developerSection = document.querySelector('.developer-section');
+                    if (developerSection) {
+                        developerSection.style.display = this.developerMode ? 'block' : 'none';
+                    }
+                    
+                    // Show notification for both activation and deactivation
+                    if (this.developerMode) {
+                        this.showDeveloperNotification('Developer Mode Activated');
+                    } else {
+                        this.showDeveloperNotification('Developer Mode Deactivated');
+                    }
+                    
+                    // Clean up developer features when deactivating
+                    if (!this.developerMode) {
+                        this.hideNextWordPreview();
+                        this.hideAnswerRevealer();
+                        this.nextWordPreviewEnabled = false;
+                        this.answerRevealerEnabled = false;
+                        
+                        // Reset button states
+                        const nextWordPreviewBtn = document.getElementById('next-word-preview-btn');
+                        const answerRevealerBtn = document.getElementById('answer-revealer-btn');
+                        if (nextWordPreviewBtn) {
+                            nextWordPreviewBtn.classList.remove('active');
+                            nextWordPreviewBtn.textContent = 'Next Word Preview';
+                        }
+                        if (answerRevealerBtn) {
+                            answerRevealerBtn.classList.remove('active');
+                            answerRevealerBtn.textContent = 'Answer Revealer';
+                        }
+                        
+                        // Reset test streak input
+                        const testStreakInput = document.getElementById('test-streak-input');
+                        if (testStreakInput) {
+                            testStreakInput.value = '';
+                        }
+                    }
+                    
+                    // Visual feedback
+                    document.body.style.border = this.developerMode ? '3px solid #00ff00' : 'none';
+                }
+                
+                // Keep only last 10 characters to prevent memory buildup
+                if (this.developerText.length > 10) {
+                    this.developerText = this.developerText.slice(-10);
+                }
             }
         });
         
@@ -845,9 +877,15 @@ class MorseTrainer {
         
         // Show/hide developer section based on mode
         if (this.developerMode) {
-            this.showDeveloperMode();
+            const developerSection = document.querySelector('.developer-section');
+            if (developerSection) {
+                developerSection.style.display = 'block';
+            }
         } else {
-            this.hideDeveloperMode();
+            const developerSection = document.querySelector('.developer-section');
+            if (developerSection) {
+                developerSection.style.display = 'none';
+            }
         }
     }
     
@@ -863,6 +901,9 @@ class MorseTrainer {
         // Apply the pending settings
         this.difficultyMode = this.pendingDifficultyMode;
         this.difficultyLevel = this.pendingDifficultyLevel;
+        
+        // Update points based on new difficulty
+        this.updatePoints();
         
         // Close the settings popup
         this.closeSettings();
@@ -930,6 +971,11 @@ class MorseTrainer {
         document.getElementById('morse-input').value = '';
         document.getElementById('morse-input').classList.remove('error');
         
+        // Update answer revealer if enabled
+        if (this.answerRevealerEnabled) {
+            this.showAnswerRevealer();
+        }
+        
         // Focus the input
         document.getElementById('morse-input').focus();
     }
@@ -984,6 +1030,93 @@ class MorseTrainer {
         } else {
             html.setAttribute('data-theme', 'light');
             themeToggle.textContent = 'Dark';
+        }
+    }
+    
+    showNextWordPreview() {
+        // Get the next word without changing the current one
+        let wordList;
+        if (this.difficultyMode === 'singular') {
+            wordList = this.wordsByLevel[this.difficultyLevel];
+        } else {
+            wordList = this.sentencesByLevel[this.difficultyLevel];
+        }
+        
+        const nextWord = wordList[Math.floor(Math.random() * wordList.length)];
+        const nextMorse = this.wordToMorse(nextWord);
+        
+        // Create or update preview element
+        let previewElement = document.getElementById('next-word-preview');
+        if (!previewElement) {
+            previewElement = document.createElement('div');
+            previewElement.id = 'next-word-preview';
+            previewElement.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 255, 0, 0.9);
+                color: black;
+                padding: 15px 20px;
+                border-radius: 8px;
+                font-family: monospace;
+                font-size: 14px;
+                z-index: 10000;
+                border: 2px solid #00ff00;
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            `;
+            document.body.appendChild(previewElement);
+        }
+        
+        previewElement.innerHTML = `
+            <div style="font-weight: bold; margin-bottom: 5px;">Next Word Preview:</div>
+            <div style="font-size: 16px; margin-bottom: 5px;">${nextWord}</div>
+            <div style="font-size: 12px; opacity: 0.8;">Morse: ${nextMorse}</div>
+        `;
+    }
+    
+    hideNextWordPreview() {
+        const previewElement = document.getElementById('next-word-preview');
+        if (previewElement) {
+            previewElement.remove();
+        }
+    }
+    
+    showAnswerRevealer() {
+        // Create or update answer revealer element
+        let revealerElement = document.getElementById('answer-revealer');
+        if (!revealerElement) {
+            revealerElement = document.createElement('div');
+            revealerElement.id = 'answer-revealer';
+            revealerElement.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(255, 0, 0, 0.9);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                font-family: monospace;
+                font-size: 14px;
+                z-index: 10000;
+                border: 2px solid #ff0000;
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            `;
+            document.body.appendChild(revealerElement);
+        }
+        
+        revealerElement.innerHTML = `
+            <div style="font-weight: bold; margin-bottom: 5px;">Current Answer:</div>
+            <div style="font-size: 16px; margin-bottom: 5px;">${this.currentWord}</div>
+            <div style="font-size: 12px; opacity: 0.8;">Morse: ${this.currentMorse}</div>
+        `;
+    }
+    
+    hideAnswerRevealer() {
+        const revealerElement = document.getElementById('answer-revealer');
+        if (revealerElement) {
+            revealerElement.remove();
         }
     }
 }

@@ -74,14 +74,34 @@
                     </div>
                 </div>
                 
-                <!-- Temporary Test Section -->
-                <div class="setting-group">
-                    <h4>Test Streak Colors (Temporary)</h4>
+                <!-- Developer Mode Section -->
+                <div class="setting-group developer-section">
+                    <h4>Developer Mode</h4>
                     <div class="test-streak-section">
-                        <input type="number" id="test-streak-input" placeholder="Enter streak value" min="0" max="200" class="test-input">
-                        <button id="test-streak-btn" class="button test-button">Test Streak</button>
+                        <input type="number" id="test-streak-input" placeholder="Enter streak value" min="0" max="1000" class="test-input">
+                        <button id="test-streak-btn" class="button test-button">Set Streak</button>
                     </div>
-                    <div class="test-hint">Enter a number to preview the streak color progression</div>
+                    <div class="streak-controls">
+                        <button id="streak-increment-1" class="button small-button">+1</button>
+                        <button id="streak-increment-10" class="button small-button">+10</button>
+                        <button id="streak-increment-100" class="button small-button">+100</button>
+                        <button id="random-streak-btn" class="button small-button">Random</button>
+                    </div>
+                    <div class="test-controls">
+                        <button id="next-word-preview-btn" class="button test-button">Next Word Preview</button>
+                        <button id="answer-revealer-btn" class="button test-button">Answer Revealer</button>
+                    </div>
+                    <div class="points-display">
+                        <div class="points-item">
+                            <span class="points-label">Current Points:</span>
+                            <span id="current-points-display" class="points-value">0.0</span>
+                        </div>
+                        <div class="points-item">
+                            <span class="points-label">Best Points:</span>
+                            <span id="best-points-display" class="points-value">0.0</span>
+                        </div>
+                    </div>
+                    <div class="test-hint">Developer tools for testing streak effects and gameplay</div>
                 </div>
             </div>
             <div class="settings-footer">
@@ -113,10 +133,12 @@
                     <div class="streak-item">
                         <span class="streak-label">Current Streak:</span>
                         <span id="current-streak" class="streak-value">0</span>
+                        <span class="points-indicator">(<span id="current-points-indicator">0.0</span> pts)</span>
                     </div>
                     <div class="streak-item">
                         <span class="streak-label">Best Streak:</span>
                         <span id="best-streak" class="streak-value">0</span>
+                        <span class="points-indicator">(<span id="best-points-indicator">0.0</span> pts)</span>
                     </div>
                 </div>
             </div>
@@ -130,6 +152,7 @@
         </div>
     </div>
     
+    <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 
