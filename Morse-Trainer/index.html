@@ -73,6 +73,16 @@
                         </label>
                     </div>
                 </div>
+                
+                <!-- Temporary Test Section -->
+                <div class="setting-group">
+                    <h4>Test Streak Colors (Temporary)</h4>
+                    <div class="test-streak-section">
+                        <input type="number" id="test-streak-input" placeholder="Enter streak value" min="0" max="200" class="test-input">
+                        <button id="test-streak-btn" class="button test-button">Test Streak</button>
+                    </div>
+                    <div class="test-hint">Enter a number to preview the streak color progression</div>
+                </div>
             </div>
             <div class="settings-footer">
                 <button id="save-settings" class="button">Save</button>
@@ -98,7 +108,17 @@
                     </div>
                 </div>
                 
-
+                <!-- Streak Display -->
+                <div id="streak-display" class="streak-display">
+                    <div class="streak-item">
+                        <span class="streak-label">Current Streak:</span>
+                        <span id="current-streak" class="streak-value">0</span>
+                    </div>
+                    <div class="streak-item">
+                        <span class="streak-label">Best Streak:</span>
+                        <span id="best-streak" class="streak-value">0</span>
+                    </div>
+                </div>
             </div>
             
             <div id="controls">

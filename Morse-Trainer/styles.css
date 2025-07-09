@@ -27,6 +27,7 @@ body {
 .sidebar {
   position: fixed;
   top: 0;
+  width: 300px;
   height: 100vh;
   background-color: var(--bg-color);
   z-index: 2000;
@@ -305,6 +306,54 @@ body {
   font-weight: 500;
 }
 
+/* Test section styles */
+.test-streak-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.test-input {
+  background: transparent;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  padding: 8px 12px;
+  font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+  font-size: 14px;
+  flex: 1;
+  max-width: 120px;
+}
+
+.test-input:focus {
+  outline: none;
+  border-color: var(--text-color);
+}
+
+.test-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .test-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.test-button {
+  padding: 8px 16px;
+  font-size: 12px;
+  min-width: auto;
+}
+
+.test-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+[data-theme="light"] .test-hint {
+  color: rgba(0, 0, 0, 0.7);
+}
+
 .settings-footer {
   display: flex;
   justify-content: center;
@@ -346,6 +395,194 @@ body {
   font-weight: bold;
   margin-bottom: 30px;
   color: var(--text-color);
+}
+
+/* Streak Display */
+.streak-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin: 20px 0;
+  padding: 15px 20px;
+  border: 1px solid var(--text-color);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .streak-display {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.streak-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.streak-label {
+  font-size: min(3.5vw, 14px);
+  color: var(--text-color);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.streak-value {
+  font-size: min(5vw, 24px);
+  font-weight: bold;
+  transition: color 0.3s ease, text-decoration 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Streak color progression - simplified base colors */
+.streak-value.streak-0 { color: #ff0000; }
+
+/* Lap indicators - underline for completed cycles */
+.streak-value.lap-1 { text-decoration: underline; text-decoration-color: currentColor; }
+.streak-value.lap-2 { text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 2px; }
+.streak-value.lap-3 { text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 3px; }
+.streak-value.lap-4 { text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 4px; }
+.streak-value.lap-5 { text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 5px; }
+
+/* Dynamic animations for high streaks */
+@keyframes streakRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes streakPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Epic animations for legendary streaks */
+@keyframes rainbowTrail {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes matrixGlitch {
+  0%, 100% { transform: translate(0); }
+  10% { transform: translate(-2px, 2px); }
+  20% { transform: translate(2px, -2px); }
+  30% { transform: translate(-2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  50% { transform: translate(0); }
+}
+
+@keyframes realityBend {
+  0%, 100% { transform: perspective(1000px) rotateY(0deg); }
+  50% { transform: perspective(1000px) rotateY(180deg); }
+}
+
+@keyframes universeShatter {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.5) rotate(90deg); }
+  50% { transform: scale(0.5) rotate(180deg); }
+  75% { transform: scale(2) rotate(270deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+/* Particle effects */
+@keyframes particleFloat {
+  0% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% { 
+    transform: translate(var(--x, 100px), var(--y, -100px)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Screen shake effect */
+@keyframes screenShake {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5px, -5px); }
+  20% { transform: translate(5px, -5px); }
+  30% { transform: translate(-5px, 5px); }
+  40% { transform: translate(5px, 5px); }
+  50% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, -3px); }
+  70% { transform: translate(-3px, 3px); }
+  80% { transform: translate(3px, 3px); }
+  90% { transform: translate(-1px, -1px); }
+}
+
+/* Lightning effect */
+@keyframes lightning {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(3) saturate(2); }
+}
+
+/* Epic pulse */
+@keyframes epicPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Epic radial gradient */
+@keyframes epicRadial {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+
+/* Shape shifting */
+@keyframes shapeShift {
+  0% { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); }
+  25% { clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); }
+  50% { clip-path: polygon(0% 20%, 100% 0%, 80% 100%, 20% 100%); }
+  75% { clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
+  100% { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); }
+}
+
+/* Time warp effect */
+@keyframes timeWarp {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(90deg); }
+  50% { transform: scale(0.9) rotate(180deg); }
+  75% { transform: scale(1.1) rotate(270deg); }
+}
+
+/* Universe expand effect */
+@keyframes universeExpand {
+  0% { 
+    transform: scale(0);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% { 
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Developer notification animation */
+@keyframes slideIn {
+  0% { 
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% { 
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Hide developer section by default */
+.setting-group:last-child {
+  display: none;
+}
+
+.streak-value.highlight {
+  animation: streakPulse 0.6s ease-in-out;
 }
 
 /* Practice section */
@@ -512,6 +749,19 @@ body {
     font-size: 10px;
   }
   
+  .streak-display {
+    gap: 20px;
+    padding: 12px 15px;
+  }
+  
+  .streak-label {
+    font-size: 12px;
+  }
+  
+  .streak-value {
+    font-size: 20px;
+  }
+  
   .settings-content {
     width: 95%;
     max-height: 90vh;
@@ -571,5 +821,14 @@ body {
   
   .numbers-list .morse-code {
     font-size: 9px;
+  }
+  
+  .streak-display {
+    gap: 15px;
+    padding: 10px 12px;
+  }
+  
+  .streak-value {
+    font-size: 18px;
   }
 } 
