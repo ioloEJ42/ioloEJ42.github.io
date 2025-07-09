@@ -545,23 +545,31 @@ class MorseTrainer {
             }
         });
         
-        // Only allow . and - characters, and prevent H and S from being typed
+        // Input filtering based on translation direction
         morseInput.addEventListener('input', (e) => {
             const value = e.target.value;
-            // Remove H, S, and any characters that aren't . or -
-            const filtered = value.replace(/[^.-]/g, '');
-            if (value !== filtered) {
-                e.target.value = filtered;
+            if (this.translationDirection === 'en-to-morse') {
+                // English -> Morse: Only allow . and -
+                const filtered = value.replace(/[^.-]/g, '');
+                if (value !== filtered) {
+                    e.target.value = filtered;
+                }
+            } else {
+                // Morse -> English: Allow letters, numbers, spaces
+                const filtered = value.replace(/[^A-Za-z0-9\s]/g, '').toUpperCase();
+                if (value !== filtered) {
+                    e.target.value = filtered;
+                }
             }
         });
         
-        // Prevent H and S keys from being typed into the input
-        morseInput.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'h' || e.key.toLowerCase() === 's') {
-                e.preventDefault();
-                return;
-            }
-        });
+        // Remove the H and S key prevention - users should be able to type these letters
+        // morseInput.addEventListener('keydown', (e) => {
+        //     if (e.key.toLowerCase() === 'h' || e.key.toLowerCase() === 's') {
+        //         e.preventDefault();
+        //         return;
+        //     }
+        // });
         
         newWordBtn.addEventListener('click', () => {
             this.loadNewWord();
@@ -744,18 +752,7 @@ class MorseTrainer {
                 // Reset developer text when not in English->Morse mode
                 this.developerText = '';
             }
-            // H key to toggle both sidebars (works even when input is focused)
-            if (e.key.toLowerCase() === 'h') {
-                e.preventDefault();
-                this.toggleBothSidebars();
-                return;
-            }
-            // S key to toggle settings (works even when input is focused)
-            if (e.key.toLowerCase() === 's') {
-                e.preventDefault();
-                this.toggleSettings();
-                return;
-            }
+            // Remove S and H keybindings for toggling settings and hints
             // Enter key to save settings when settings is open
             if (e.key === 'Enter' && this.settingsOpen) {
                 e.preventDefault();
@@ -855,17 +852,14 @@ class MorseTrainer {
             currentDirectionRadio.checked = true;
         }
         
-        // Show/hide developer section based on mode
+        // Always show/hide developer section and border based on developerMode
+        const developerSection = document.querySelector('.developer-section');
         if (this.developerMode) {
-            const developerSection = document.querySelector('.developer-section');
-            if (developerSection) {
-                developerSection.style.display = 'block';
-            }
+            if (developerSection) developerSection.style.display = 'block';
+            document.body.style.border = '3px solid #00ff00';
         } else {
-            const developerSection = document.querySelector('.developer-section');
-            if (developerSection) {
-                developerSection.style.display = 'none';
-            }
+            if (developerSection) developerSection.style.display = 'none';
+            document.body.style.border = 'none';
         }
     }
     
@@ -883,31 +877,12 @@ class MorseTrainer {
         this.difficultyMode = this.pendingDifficultyMode;
         this.difficultyLevel = this.pendingDifficultyLevel;
         this.translationDirection = this.pendingTranslationDirection;
-        
-        // If switching to Morse->English mode, disable developer mode
-        if (this.translationDirection === 'morse-to-en') {
-            this.developerMode = false;
-            this.developerText = '';
-            this.hideAnswerRevealer();
-            this.answerRevealerEnabled = false;
-            // Reset visual feedback
-            document.body.style.border = 'none';
-            // Hide developer section
-            const developerSection = document.querySelector('.developer-section');
-            if (developerSection) {
-                developerSection.style.display = 'none';
-            }
-        }
-        
         // Update points based on new difficulty
         this.updatePoints();
-        
         // Close the settings popup
         this.closeSettings();
-        
         // Load a new word with the new settings (this will update the label)
         this.loadNewWord();
-        
         // Focus back to the input
         document.getElementById('morse-input').focus();
     }
@@ -968,9 +943,28 @@ class MorseTrainer {
         this.currentWord = wordList[Math.floor(Math.random() * wordList.length)];
         this.currentMorse = this.wordToMorse(this.currentWord);
         
-        document.getElementById('current-word').textContent = this.currentWord;
-        document.getElementById('morse-input').value = '';
-        document.getElementById('morse-input').classList.remove('error');
+        // Display based on translation direction
+        const currentWordElement = document.getElementById('current-word');
+        const morseInput = document.getElementById('morse-input');
+        const inputHint = document.getElementById('input-hint');
+        const inputLabel = document.getElementById('input-label');
+        
+        if (this.translationDirection === 'en-to-morse') {
+            // English -> Morse: Show English, expect Morse input
+            currentWordElement.textContent = this.currentWord;
+            morseInput.placeholder = 'Type . or - then press space';
+            inputHint.textContent = 'Use . for dot, - for dash, space to submit';
+            inputLabel.textContent = 'Enter Morse Code:';
+        } else {
+            // Morse -> English: Show Morse, expect English input
+            currentWordElement.textContent = this.currentMorse;
+            morseInput.placeholder = 'Type English letters then press space';
+            inputHint.textContent = 'Type the English word/sentence, space to submit';
+            inputLabel.textContent = 'Enter English:';
+        }
+        
+        morseInput.value = '';
+        morseInput.classList.remove('error');
         
         // Update answer revealer if enabled
         if (this.answerRevealerEnabled) {
@@ -978,25 +972,48 @@ class MorseTrainer {
         }
         
         // Focus the input
-        document.getElementById('morse-input').focus();
+        morseInput.focus();
     }
     
     wordToMorse(word) {
+        if (!word) return '';
+        
         return word.split('').map(char => {
             if (char === ' ') return ' ';
-            return this.morseCode[char] || char;
-        }).join(' ');
+            // Only return valid Morse code, ignore unknown characters
+            return this.morseCode[char] || '';
+        }).join(' ').replace(/\s+/g, '').trim();
     }
     
     checkAnswer() {
         const input = document.getElementById('morse-input');
         const userAnswer = input.value.trim();
         
-        // Remove spaces from both answers for comparison
-        const normalizedUserAnswer = userAnswer.replace(/\s/g, '');
-        const normalizedExpectedAnswer = this.currentMorse.replace(/\s/g, '');
+        // Handle empty input
+        if (!userAnswer) {
+            input.classList.add('error');
+            setTimeout(() => {
+                input.classList.remove('error');
+            }, 1000);
+            return;
+        }
         
-        if (normalizedUserAnswer === normalizedExpectedAnswer) {
+        let isCorrect = false;
+        
+        if (this.translationDirection === 'en-to-morse') {
+            // English -> Morse: Compare user's Morse with expected Morse
+            const normalizedUserAnswer = userAnswer.replace(/\s/g, '');
+            const normalizedExpectedAnswer = this.currentMorse.replace(/\s/g, '');
+            isCorrect = normalizedUserAnswer === normalizedExpectedAnswer;
+        } else {
+            // Morse -> English: Convert user's English to Morse and compare
+            const userMorse = this.wordToMorse(userAnswer);
+            const normalizedUserMorse = userMorse.replace(/\s/g, '');
+            const normalizedExpectedMorse = this.currentMorse.replace(/\s/g, '');
+            isCorrect = normalizedUserMorse === normalizedExpectedMorse;
+        }
+        
+        if (isCorrect) {
             // Correct answer
             this.incrementStreak();
             this.loadNewWord();
@@ -1058,10 +1075,21 @@ class MorseTrainer {
             document.body.appendChild(revealerElement);
         }
         
+        let answerText, morseText;
+        if (this.translationDirection === 'en-to-morse') {
+            // English -> Morse: Show English word/sentence as answer
+            answerText = this.currentWord;
+            morseText = this.currentMorse;
+        } else {
+            // Morse -> English: Show English word/sentence as answer
+            answerText = this.currentWord;
+            morseText = this.currentMorse;
+        }
+        
         revealerElement.innerHTML = `
             <div style="font-weight: bold; margin-bottom: 5px;">Current Answer:</div>
-            <div style="font-size: 16px; margin-bottom: 5px;">${this.currentWord}</div>
-            <div style="font-size: 12px; opacity: 0.8;">Morse: ${this.currentMorse}</div>
+            <div style="font-size: 16px; margin-bottom: 5px;">${answerText}</div>
+            <div style="font-size: 12px; opacity: 0.8;">Morse: ${morseText}</div>
         `;
     }
     
